@@ -355,10 +355,10 @@
       </button>
     </div>
 
-    <!-- 5-Step Progress Stepper -->
+    <!-- 4-Step Progress Stepper -->
     <div class="checkout-stepper-bar" id="checkoutStepperBar" hidden>
       <div class="stepper-track">
-        <div class="stepper-progress" id="stepperProgressFill" style="width: 20%;"></div>
+        <div class="stepper-progress" id="stepperProgressFill" style="width: 25%;"></div>
       </div>
       <div class="stepper-steps">
         <button type="button" class="step-indicator active" data-step="1" id="stepIndicator1" title="مراجعة السلة">
@@ -373,12 +373,8 @@
           <span class="step-num">3</span>
           <span class="step-text">الدفع</span>
         </button>
-        <button type="button" class="step-indicator" data-step="4" id="stepIndicator4" title="إيصال التحويل">
+        <button type="button" class="step-indicator" data-step="4" id="stepIndicator4" title="تأكيد الطلب">
           <span class="step-num">4</span>
-          <span class="step-text">الإيصال</span>
-        </button>
-        <button type="button" class="step-indicator" data-step="5" id="stepIndicator5" title="تأكيد الطلب">
-          <span class="step-num">5</span>
           <span class="step-text">التأكيد</span>
         </button>
       </div>
@@ -438,69 +434,12 @@
         </div>
       </div>
 
-      <!-- Step 4: Upload Payment Receipt -->
+      <!-- Step 4: Final Confirmation & Review -->
       <div class="checkout-step-panel" id="checkoutStep4" hidden>
-        <div class="step-intro">
-          <div class="step-badge"><i data-icon="receipt"></i> إثبات التحويل</div>
-          <h3>أرفق سكرين شوت التحويل</h3>
-          <p>ارفع لقطة شاشة لإيصال التحويل لتسريع مراجعة وتأكيد طلبك وتفادي أي تأخير.</p>
-        </div>
-
-        <div class="receipt-upload-box">
-          <div class="receipt-dropzone" id="cartReceiptDropzone">
-            <input type="file" id="cartReceiptFile" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
-            <div class="dropzone-inner" id="cartDropzonePrompt">
-              <div class="dropzone-icon"><i data-icon="upload"></i></div>
-              <h4>اضغط لاختيار صورة الإيصال أو اسحبها هنا</h4>
-              <p>ندعم صيغ PNG, JPG, WebP بحجم حتى 10 ميجابايت (يتم ضغط الصورة تلقائيًا دون فقدان الوضوح).</p>
-            </div>
-            <div class="dropzone-loading" id="cartDropzoneLoading" hidden>
-              <div class="spinner"></div>
-              <span>جاري فحص وضغط صورة الإيصال...</span>
-            </div>
-          </div>
-
-          <!-- Uploaded Preview Box -->
-          <div class="receipt-preview-card" id="cartReceiptPreviewCard" hidden>
-            <div class="receipt-preview-thumb">
-              <img id="cartReceiptPreviewImg" alt="معاينة إيصال التحويل" src="">
-            </div>
-            <div class="receipt-preview-details">
-              <div class="receipt-file-name" id="cartReceiptFileName">receipt.jpg</div>
-              <div class="receipt-file-size" id="cartReceiptFileSize">85 KB</div>
-              <div class="receipt-actions">
-                <button type="button" class="button button-outline small" id="cartChangeReceiptBtn">
-                  <i data-icon="refresh-cw"></i>
-                  <span>تغيير</span>
-                </button>
-                <button type="button" class="button button-outline danger-outline small" id="cartRemoveReceiptBtn">
-                  <i data-icon="trash-2"></i>
-                  <span>حذف</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="transfer-source-block" style="margin-top: 16px;">
-            <label>
-              رقم المحفظة / الحساب المحول منه (اختياري)
-              <input id="cartTransferNumber" placeholder="رقم المحفظة أو اسم الحساب المحول منه" dir="ltr">
-            </label>
-          </div>
-
-          <label class="checkbox-label send-later-option">
-            <input type="checkbox" id="cartSendLaterCheckbox">
-            <span>سأرسل صورة الإيصال لاحقًا في محادثة الواتساب مباشرة</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- Step 5: Final Confirmation & Review -->
-      <div class="checkout-step-panel" id="checkoutStep5" hidden>
         <div class="step-intro">
           <div class="step-badge"><i data-icon="badge-check"></i> الخطوة الأخيرة</div>
           <h3>مراجعة تفاصيل الطلب</h3>
-          <p>راجع طلبك قبل الإرسال لتأكيده وتجهيز المحادثة المباشرة مع المتجر على واتساب.</p>
+          <p>راجع طلبك قبل الإرسال؛ سيتم فتح المحادثة مباشرة مع المتجر على واتساب لتأكيد التنفيذ فوراً.</p>
         </div>
 
         <div class="order-invoice-card" id="cartOrderInvoice">
@@ -524,8 +463,8 @@
               <strong id="invoiceAccountVal">-</strong>
             </div>
             <div class="invoice-row">
-              <span>إيصال التحويل:</span>
-              <span id="invoiceReceiptStatus" class="status-pill active-pill">تم إرفاق الإيصال ✓</span>
+              <span>إثبات التحويل:</span>
+              <span id="invoiceReceiptStatus" class="status-pill active-pill">يُرسل في شات واتساب 💬</span>
             </div>
             <div class="invoice-row total-row">
               <span>المبلغ المطلوب سداده:</span>
@@ -1409,55 +1348,14 @@
           <div id="dialogPaymentMethods" class="payment-methods-selector"></div>
         </div>
 
-        <!-- Compact Optional Payment Proof & Transfer Number -->
-        <details class="payment-proof-accordion" id="paymentProofAccordion">
-          <summary class="payment-proof-summary">
-            <div class="summary-left">
-              <i data-icon="upload-cloud"></i>
-              <span>هل قمت بالتحويل مسبقًا؟ إرفاق إيصال أو رقم المحفظة (اختياري)</span>
-            </div>
-            <i data-icon="chevron-down" class="accordion-arrow"></i>
-          </summary>
-          <div class="payment-proof-drawer">
-            <div class="receipt-upload-box">
-              <div class="receipt-dropzone small-dropzone" id="dialogReceiptDropzone">
-                <input type="file" id="dialogReceiptFile" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
-                <div class="dropzone-inner" id="dialogDropzonePrompt">
-                  <div class="dropzone-icon" style="font-size: 1.2rem;"><i data-icon="upload"></i></div>
-                  <h4 style="font-size: 0.85rem; margin: 4px 0;">إرفاق إيصال التحويل (اختياري)</h4>
-                  <p style="font-size: 0.75rem;">اضغط لاختيار صورة إثبات التحويل إذا قمت بالتحويل مسبقًا.</p>
-                </div>
-                <div class="dropzone-loading" id="dialogDropzoneLoading" hidden>
-                  <div class="spinner"></div>
-                  <span>جاري ضغط الإيصال...</span>
-                </div>
-              </div>
-
-              <div class="receipt-preview-card" id="dialogReceiptPreviewCard" hidden>
-                <div class="receipt-preview-thumb">
-                  <img id="dialogReceiptPreviewImg" alt="معاينة الإيصال" src="">
-                </div>
-                <div class="receipt-preview-details">
-                  <div class="receipt-file-name" id="dialogReceiptFileName">receipt.jpg</div>
-                  <div class="receipt-file-size" id="dialogReceiptFileSize">0 KB</div>
-                  <div class="receipt-actions">
-                    <button type="button" class="button button-outline danger-outline small" id="dialogRemoveReceiptBtn">
-                      <i data-icon="trash-2"></i>
-                      <span>حذف</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="transferDetailsBlock" style="margin-top: 12px;">
-              <label>
-                رقم المحفظة أو الحساب المحول منه (اختياري)
-                <input id="transferNumber" maxlength="50" placeholder="01xxxxxxxxx أو رقم حسابك" dir="ltr">
-              </label>
-            </div>
+        <!-- Compact WhatsApp Confirmation Notice -->
+        <div class="order-whatsapp-notice">
+          <div class="notice-icon"><i data-icon="message-circle"></i></div>
+          <div class="notice-text">
+            <strong>تأكيد الطلب الفوري عبر واتساب</strong>
+            <span>سيتم فتح المحادثة مباشرة مع تفاصيل طلبك. يمكنك إرسال صورة إيصال التحويل في الشات لتأكيد وتنفيذ طلبك في دقائق معدودة.</span>
           </div>
-        </details>
+        </div>
       </section>
 
       <!-- Step 4: Order Summary Card -->
@@ -1584,39 +1482,64 @@
             <input name="aliases" id="editorAliases" maxlength="400" placeholder="مثال: بوبجي، شدات، uc، العاب، شحن">
             <span class="field-hint">تساعد الزوار في الوصول للخدمة عند البحث بأسماء أو أخطاء شائعة.</span>
           </label>
-          <!-- Image Guidelines & Live Preview -->
-          <div id="imageGuidelinesBox" class="span-2 image-guidelines-box">
-            <div class="guideline-badge">
+          <!-- Image Upload Dropzone & External Link -->
+          <div class="span-2 editor-image-box">
+            <label class="form-label-title">
               <i data-icon="image"></i>
-              <span>إرشادات صورة الخدمة (بانر البطاقة)</span>
-            </div>
-            <p class="guideline-text">
-              <strong>الحجم الموصى به:</strong> 1200 × 600 بكسل (النسبة 2:1).<br>
-              ستملأ الصورة بطاقة الخدمة بالكامل كبانر احترافي بدون أي هوامش فارغة. عند رفع صورة من جهازك، يتم قصها وتوسيطها وضغطها تلقائيًا للنسبة 2:1.
-            </p>
-          </div>
-          <label class="span-2">
-            رابط صورة خارجية للخدمة (اختياري)
-            <input name="image" id="editorImage" type="url" placeholder="https://example.com/banner.png">
-          </label>
-          <div class="span-2">
-            <label style="display:inline-block;cursor:pointer;">
-              <span class="button button-outline small">
-                <i data-icon="upload-cloud"></i>
-                <span>رفع صورة من الجهاز (قص وضغط تلقائي 2:1)</span>
-              </span>
+              <span>صورة أو بانر الخدمة (النسبة 2:1)</span>
+            </label>
+            <div class="service-image-dropzone" id="editorImageDropzone">
               <input id="editorImageFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none;">
+              <div class="dropzone-body" id="editorDropzonePrompt">
+                <i data-icon="upload-cloud" class="dropzone-icon"></i>
+                <div class="dropzone-instructions">
+                  <strong>اسحب وأفلت صورة أو شعار الخدمة هنا أو اضغط للاختيار</strong>
+                  <p>يتم قصها وتوسيطها وضغطها بنسبة 2:1 تلقائيًا بحجم خفيف وسرعة فائقة.</p>
+                </div>
+              </div>
+              <div id="imagePreview" class="admin-image-preview-card" hidden></div>
+            </div>
+            <label style="margin-top: 8px;">
+              <span>أو رابط صورة خارجية مباشر:</span>
+              <input name="image" id="editorImage" type="url" placeholder="https://example.com/banner.png">
             </label>
-            <div id="imagePreview" class="admin-image-preview-card" hidden></div>
           </div>
-          <div class="checkbox-group span-2">
-            <label class="checkbox-label">
-              <input type="checkbox" name="visible">
-              <span>تظهر في المتجر للزوار</span>
+
+          <!-- Service Status & Visibility Control -->
+          <div class="span-2 service-status-section">
+            <label class="form-label-title">
+              <i data-icon="activity"></i>
+              <span>حالة ظهور الخدمة في المتجر</span>
             </label>
-            <label class="checkbox-label">
+            <div class="status-radio-group">
+              <label class="status-option active-option">
+                <input type="radio" name="serviceStatus" value="visible" checked>
+                <div class="status-option-content">
+                  <div class="status-dot"></div>
+                  <strong>نشطة ومتاحة</strong>
+                  <span>تظهر في المتجر وجاهزة للطلب فوراً</span>
+                </div>
+              </label>
+              <label class="status-option unavailable-option">
+                <input type="radio" name="serviceStatus" value="unavailable">
+                <div class="status-option-content">
+                  <div class="status-dot"></div>
+                  <strong>غير متاحة حالياً</strong>
+                  <span>تظهر مع شارة غير متاح ولا يمكن طلبها</span>
+                </div>
+              </label>
+              <label class="status-option hidden-option">
+                <input type="radio" name="serviceStatus" value="hidden">
+                <div class="status-option-content">
+                  <div class="status-dot"></div>
+                  <strong>مخفية مؤقتاً</strong>
+                  <span>تختفي تماماً من المتجر والبحث للزوار</span>
+                </div>
+              </label>
+            </div>
+            <label class="checkbox-label featured-label" style="margin-top: 10px;">
               <input type="checkbox" name="featured">
-              <span>ضمن مختارات كينو المميزة (Featured)</span>
+              <span>⭐ إضافة ضمن مختارات كينو المميزة (Featured Card)</span>
             </label>
           </div>
           <label class="span-2">

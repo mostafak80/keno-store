@@ -26,7 +26,7 @@
       if (cleaned.startsWith('00')) {
         cleaned = cleaned.substring(2);
       }
-      // Handle Egyptian local format 010... -> 2010...
+      // Handle Egyptian local format 010... -> 2010... (11 digits starting with 01)
       if (/^01[0125]\d{8}$/.test(cleaned)) {
         cleaned = '2' + cleaned;
       }
@@ -45,25 +45,6 @@
 
     /**
      * Builds structured WhatsApp order message for a single service & plan.
-     * Plain Arabic text without emojis for 100% consistent display across all devices.
-     * 
-     * Exact format:
-     * مرحبًا Keno Store
-     * 
-     * طلب جديد
-     * 
-     * رقم الطلب: {orderID}
-     * 
-     * المنتجات المطلوبة:
-     * 
-     * {products}
-     * 
-     * إجمالي الطلب: {total} ج.م
-     * 
-     * بيانات الحساب / ID:
-     * {customerAccount}
-     * 
-     * برجاء تأكيد الطلب والبدء في التنفيذ.
      */
     buildOrderText(catalog, service, plan, options = {}) {
       const storeName = catalog?.settings?.storeName || 'Keno Store';
@@ -83,6 +64,16 @@
         customerAccount += `\nملاحظة: ${options.orderNote.trim()}`;
       }
 
+      const pm = options.paymentMethod;
+      const paymentInfo = pm ? `${pm.name}${pm.number ? ` (${pm.number})` : ''}` : 'فودافون كاش / إنستاباي';
+
+      let accountLabel = 'بيانات الحساب / ID:';
+      if (service?.category === 'games') accountLabel = 'معرف اللاعب (Player ID):';
+      else if (service?.category === 'entertainment') accountLabel = 'بريد تفعيل الاشتراك:';
+      else if (service?.category === 'ai') accountLabel = 'بريد حساب الذكاء الاصطناعي:';
+      else if (service?.category === 'payments') accountLabel = 'رقم المحفظة / الحساب المستلم:';
+      else if (service?.category === 'social') accountLabel = 'رابط الحساب / الصفحة:';
+
       const lines = [
         `مرحبًا ${storeName}`,
         '',
@@ -90,14 +81,17 @@
         '',
         `رقم الطلب: ${orderCode}`,
         '',
-        'المنتجات المطلوبة:',
-        '',
+        'الخدمة المطلوبة:',
         products,
         '',
         `إجمالي الطلب: ${totalFormatted}`,
         '',
-        'بيانات الحساب / ID:',
+        `طريقة الدفع: ${paymentInfo}`,
+        '',
+        accountLabel,
         customerAccount,
+        '',
+        'ملاحظة: سيتم إرسال صورة إثبات التحويل هنا في المحادثة.',
         '',
         'برجاء تأكيد الطلب والبدء في التنفيذ.'
       ];
@@ -107,7 +101,6 @@
 
     /**
      * Builds structured WhatsApp order message for multiple cart items.
-     * Plain Arabic text without emojis, keeping list format for multiple products.
      */
     buildCartOrderText(catalog, cartItems, options = {}) {
       const storeName = catalog?.settings?.storeName || 'Keno Store';
@@ -136,21 +129,27 @@
         customerAccount += `\nملاحظة: ${options.orderNote.trim()}`;
       }
 
+      const pm = options.paymentMethod;
+      const paymentInfo = pm ? `${pm.name}${pm.number ? ` (${pm.number})` : ''}` : 'فودافون كاش / إنستاباي';
+
       const lines = [
         `مرحبًا ${storeName}`,
         '',
-        'طلب جديد',
+        'طلب سلة جديد',
         '',
         `رقم الطلب: ${orderCode}`,
         '',
         'المنتجات المطلوبة:',
-        '',
         itemsList.join('\n'),
         '',
         `إجمالي الطلب: ${totalFormatted}`,
         '',
-        'بيانات الحساب / ID:',
+        `طريقة الدفع: ${paymentInfo}`,
+        '',
+        'بيانات الحساب / الشحن:',
         customerAccount,
+        '',
+        'ملاحظة: سيتم إرسال صورة إثبات التحويل هنا في المحادثة.',
         '',
         'برجاء تأكيد الطلب والبدء في التنفيذ.'
       ];

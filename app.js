@@ -636,10 +636,16 @@
         priceDisplayHtml = `<strong class="quote-price">${s.plans?.length ? 'غير متاحة حاليًا' : 'حسب الطلب'}</strong>`;
       }
 
-      const badgeHtml = s.badge ? `<span class="card-badge">${esc(s.badge)}</span>` : '';
+      const isUnavailable = s.available === false || s.status === 'unavailable';
+      let badgeHtml = '';
+      if (isUnavailable) {
+        badgeHtml = '<span class="card-badge unavailable-badge">غير متاح حاليًا</span>';
+      } else if (s.badge) {
+        badgeHtml = `<span class="card-badge">${esc(s.badge)}</span>`;
+      }
 
       return `
-        <article class="service-card" data-open-service="${esc(s.id)}" role="button" tabindex="0" aria-label="${esc('عرض وتفاصيل خدمة ' + s.name)}">
+        <article class="service-card ${isUnavailable ? 'is-unavailable' : ''}" data-open-service="${esc(s.id)}" role="button" tabindex="0" aria-label="${esc('عرض وتفاصيل خدمة ' + s.name)}">
           <div class="card-visual ${hasImage ? 'has-image' : toneClass}">
             ${badgeHtml}
             ${visualHtml}
@@ -730,33 +736,63 @@
     if ($('dialogCategory')) $('dialogCategory').textContent = categoryName;
     if ($('dialogDescription')) $('dialogDescription').textContent = service.description || '';
 
-    // Hero Banner for Services with Images
+    // Hero Banner for Services with Images or Prominent Visual Fallback
     const bannerContainer = $('serviceDialogBanner');
-    const bannerImg = $('serviceDialogBannerImg');
-    if (bannerContainer && bannerImg) {
+    if (bannerContainer) {
       if (service.image) {
-        bannerImg.src = service.image;
-        bannerImg.alt = service.name;
         bannerContainer.hidden = false;
+        bannerContainer.className = 'dialog-service-banner has-image';
+        bannerContainer.innerHTML = `<img id="serviceDialogBannerImg" src="${esc(service.image)}" alt="${esc(service.name)}" loading="lazy" decoding="async">`;
       } else {
-        bannerContainer.hidden = true;
-        bannerImg.src = '';
+        bannerContainer.hidden = false;
+        const toneClass = `tone-${service.color || 'blue'}`;
+        bannerContainer.className = `dialog-service-banner is-fallback ${toneClass}`;
+        bannerContainer.innerHTML = `
+          <div class="dialog-banner-inner">
+            <div class="banner-fallback-icon">${icon(service.icon || 'sparkles')}</div>
+            <div class="banner-fallback-mark">${esc(service.mark || 'KENO')}</div>
+          </div>
+        `;
       }
     }
 
-    // Smart contextual prompt for customer account based on category
+    // Smart contextual prompt for customer account based on category & per-service custom field
     const catId = service.category || '';
     const badgeEl = $('accountFieldBadge');
     const descEl = $('accountFieldDesc');
     const accountInput = $('customerAccount');
-    if (catId === 'games') {
+    if (service.accountFieldLabel || service.accountFieldPlaceholder) {
+      if (badgeEl) { badgeEl.textContent = 'مطلوب للتنفيذ'; badgeEl.className = 'account-badge-pill required-pill'; }
+      if (descEl) descEl.textContent = service.accountFieldDesc || `يرجى إدخال ${service.accountFieldLabel || 'البيانات المطلوبة'}`;
+      if (accountInput) accountInput.placeholder = service.accountFieldPlaceholder || 'أدخل البيانات المطلوبة هنا...';
+    } else if (catId === 'games') {
       if (badgeEl) { badgeEl.textContent = 'مطلوب للشحن الفوري'; badgeEl.className = 'account-badge-pill required-pill'; }
       if (descEl) descEl.textContent = 'أدخل معرف اللاعب (Player ID) الخاص بك للشحن التلقائي فوراً.';
-      if (accountInput) accountInput.placeholder = 'مثال: PUBG ID أو Free Fire Player ID';
-    } else if (catId === 'subscriptions') {
+      if (accountInput) accountInput.placeholder = 'مثال: PUBG ID أو Free Fire Player ID أو معرف اللعبة';
+    } else if (catId === 'entertainment') {
       if (badgeEl) { badgeEl.textContent = 'مطلوب لتفعيل الاشتراك'; badgeEl.className = 'account-badge-pill required-pill'; }
       if (descEl) descEl.textContent = 'أدخل البريد الإلكتروني أو الحساب المطلوب تفعيل الباقة عليه.';
       if (accountInput) accountInput.placeholder = 'example@gmail.com أو اسم الحساب';
+    } else if (catId === 'ai') {
+      if (badgeEl) { badgeEl.textContent = 'مطلوب لتفعيل الحساب'; badgeEl.className = 'account-badge-pill required-pill'; }
+      if (descEl) descEl.textContent = 'أدخل البريد الإلكتروني لتفعيل اشتراك الذكاء الاصطناعي (ChatGPT / Claude / إلخ).';
+      if (accountInput) accountInput.placeholder = 'your-email@gmail.com';
+    } else if (catId === 'apps') {
+      if (badgeEl) { badgeEl.textContent = 'مطلوب للتفعيل'; badgeEl.className = 'account-badge-pill required-pill'; }
+      if (descEl) descEl.textContent = 'أدخل البريد الإلكتروني أو بيانات الحساب المراد تفعيل التطبيق عليه.';
+      if (accountInput) accountInput.placeholder = 'البريد الإلكتروني أو رقم الهاتف المسجل';
+    } else if (catId === 'payments') {
+      if (badgeEl) { badgeEl.textContent = 'بيانات التحويل'; badgeEl.className = 'account-badge-pill required-pill'; }
+      if (descEl) descEl.textContent = 'أدخل رقم المحفظة أو الحساب البنكي أو عنوان InstaPay المراد التحويل له.';
+      if (accountInput) accountInput.placeholder = '01xxxxxxxxx أو عنوان إنستاباي';
+    } else if (catId === 'marketing') {
+      if (badgeEl) { badgeEl.textContent = 'تفاصيل الطلب'; badgeEl.className = 'account-badge-pill'; }
+      if (descEl) descEl.textContent = 'أدخل رابط الصفحة أو تفاصيل الحملة الإعلانية أو التصميم المطلوب بدقة.';
+      if (accountInput) accountInput.placeholder = 'رابط الصفحة أو المنشور أو وصف الطلب';
+    } else if (catId === 'social') {
+      if (badgeEl) { badgeEl.textContent = 'رابط الحساب / الصفحة'; badgeEl.className = 'account-badge-pill required-pill'; }
+      if (descEl) descEl.textContent = 'أدخل رابط الحساب أو القناة أو المنشور المراد تزويده.';
+      if (accountInput) accountInput.placeholder = 'https://instagram.com/username أو رابط الحساب';
     } else {
       if (badgeEl) { badgeEl.textContent = 'مطلوب للتنفيذ'; badgeEl.className = 'account-badge-pill'; }
       if (descEl) descEl.textContent = 'اكتب رقم الهاتف أو المعرف المراد شحنه أو تقديم الخدمة له.';
@@ -867,10 +903,21 @@
       if (savingsBadgeEl) savingsBadgeEl.hidden = true;
     }
 
-    // Disable buttons if service has plans but no available plan is selected
-    const isDisabled = service.plans.length > 0 && !plan;
-    if ($('orderButton')) $('orderButton').disabled = isDisabled;
-    if ($('addToCartBtn')) $('addToCartBtn').disabled = isDisabled;
+    // Disable buttons if service is marked unavailable or service has plans but no available plan is selected
+    const isUnavailable = service.available === false || service.status === 'unavailable';
+    const isDisabled = isUnavailable || (service.plans.length > 0 && !plan);
+    if ($('orderButton')) {
+      $('orderButton').disabled = isDisabled;
+      if (isUnavailable) {
+        $('orderButton').textContent = 'الخدمة غير متاحة حالياً';
+      } else {
+        $('orderButton').textContent = 'اطلب الآن عبر واتساب';
+      }
+    }
+    if ($('addToCartBtn')) {
+      $('addToCartBtn').disabled = isDisabled;
+      $('addToCartBtn').hidden = isUnavailable;
+    }
   }
 
   $('planGroups')?.addEventListener('change', event => {
@@ -989,22 +1036,6 @@
     } catch (_) {}
   }
 
-  let dialogUploadedReceipt = null;
-
-  // Single-service receipt upload initialization
-  initReceiptUpload(
-    $('dialogReceiptDropzone'),
-    $('dialogReceiptFile'),
-    $('dialogReceiptPreviewCard'),
-    $('dialogReceiptPreviewImg'),
-    $('dialogReceiptFileName'),
-    $('dialogReceiptFileSize'),
-    $('dialogRemoveReceiptBtn'),
-    null,
-    res => { dialogUploadedReceipt = res; },
-    () => { dialogUploadedReceipt = null; }
-  );
-
   function getOrderOptionsFromDialog() {
     const data = viewData();
     const pm = (data.paymentMethods || []).find(m => m.id === dialogSelectedPaymentId && m.enabled) || null;
@@ -1012,13 +1043,9 @@
       quoteDetails: $('quoteDetails')?.value.trim() || '',
       customerAccount: $('customerAccount')?.value.trim() || '',
       paymentMethod: pm,
-      hasTransferred: !!dialogUploadedReceipt || ($('transferNumber')?.value.trim().length > 0),
-      hasReceipt: !!dialogUploadedReceipt,
-      receipt: dialogUploadedReceipt ? {
-        dataUrl: dialogUploadedReceipt.dataUrl,
-        fileName: dialogUploadedReceipt.fileName,
-        size: dialogUploadedReceipt.compressedSize
-      } : null,
+      hasTransferred: Boolean($('transferNumber')?.value.trim().length > 0),
+      hasReceipt: false,
+      receipt: null,
       transferNumber: $('transferNumber')?.value.trim() || '',
       orderNote: $('orderNote')?.value.trim() || ''
     };
@@ -1305,28 +1332,27 @@
     setCheckoutStep(currentCheckoutStep);
   }
 
-  // --- 5-Step Guided Checkout Controller ---
+  // --- 4-Step Guided Checkout Controller ---
   let currentCheckoutStep = 1;
-  let cartUploadedReceipt = null;
 
   function setCheckoutStep(step) {
     const rawItems = getCartItems();
     if (rawItems.length === 0 && step > 1) {
       step = 1;
     }
-    currentCheckoutStep = Math.max(1, Math.min(5, step));
+    currentCheckoutStep = Math.max(1, Math.min(4, step));
 
     // Update Progress Stepper Bar
     if ($('checkoutStepperBar')) {
       $('checkoutStepperBar').hidden = rawItems.length === 0;
     }
-    const fillPercent = ((currentCheckoutStep - 0.5) / 4.5) * 100;
+    const fillPercent = ((currentCheckoutStep - 0.5) / 3.5) * 100;
     if ($('stepperProgressFill')) {
-      $('stepperProgressFill').style.width = `${Math.max(15, fillPercent)}%`;
+      $('stepperProgressFill').style.width = `${Math.max(20, fillPercent)}%`;
     }
 
     // Update Step Indicators & Panels
-    for (let s = 1; s <= 5; s++) {
+    for (let s = 1; s <= 4; s++) {
       const ind = $(`stepIndicator${s}`);
       const panel = $(`checkoutStep${s}`);
       if (ind) {
@@ -1341,7 +1367,7 @@
     // Step-Specific Preparation
     if (currentCheckoutStep === 3) {
       cartSelectedPaymentId = renderPaymentMethodsList($('cartPaymentMethods'), cartSelectedPaymentId, 'cart-payment');
-    } else if (currentCheckoutStep === 5) {
+    } else if (currentCheckoutStep === 4) {
       renderInvoiceSummary();
     }
 
@@ -1354,7 +1380,7 @@
     if (prevBtn) prevBtn.hidden = currentCheckoutStep === 1;
 
     if (nextBtn && submitBtn) {
-      if (currentCheckoutStep === 5) {
+      if (currentCheckoutStep === 4) {
         nextBtn.hidden = true;
         submitBtn.hidden = false;
       } else {
@@ -1363,8 +1389,7 @@
         const labels = {
           1: 'متابعة للبيانات',
           2: 'متابعة لاختيار وسيلة الدفع',
-          3: 'متابعة لإرفاق إيصال التحويل',
-          4: 'مراجعة وتأكيد الطلب'
+          3: 'مراجعة وتأكيد الطلب'
         };
         const textSpan = nextBtn.querySelector('span');
         if (textSpan) textSpan.textContent = labels[currentCheckoutStep] || 'متابعة';
@@ -1433,36 +1458,14 @@
     }
 
     if ($('invoiceReceiptStatus')) {
-      if (cartUploadedReceipt) {
-        $('invoiceReceiptStatus').className = 'status-pill active-pill';
-        $('invoiceReceiptStatus').textContent = 'تم إرفاق الإيصال بنجاح ✓';
-      } else {
-        $('invoiceReceiptStatus').className = 'status-pill dimmed-status';
-        $('invoiceReceiptStatus').textContent = 'سيتم الإرسال في المحادثة';
-      }
+      $('invoiceReceiptStatus').className = 'status-pill active-pill';
+      $('invoiceReceiptStatus').textContent = 'يُرسل في شات واتساب 💬';
     }
 
     if ($('invoiceTotalAmount')) {
       $('invoiceTotalAmount').textContent = `${money(grandTotal)} ج.م`;
     }
   }
-
-  // Initialize Receipt Upload inside Cart Drawer
-  initReceiptUpload(
-    $('cartReceiptDropzone'),
-    $('cartReceiptFile'),
-    $('cartReceiptPreviewCard'),
-    $('cartReceiptPreviewImg'),
-    $('cartReceiptFileName'),
-    $('cartReceiptFileSize'),
-    $('cartRemoveReceiptBtn'),
-    $('cartChangeReceiptBtn'),
-    res => {
-      cartUploadedReceipt = res;
-      if ($('cartSendLaterCheckbox')) $('cartSendLaterCheckbox').checked = false;
-    },
-    () => { cartUploadedReceipt = null; }
-  );
 
   // Stepper Next Button
   $('cartNextStepBtn')?.addEventListener('click', () => {
@@ -1484,8 +1487,6 @@
       setCheckoutStep(3);
     } else if (currentCheckoutStep === 3) {
       setCheckoutStep(4);
-    } else if (currentCheckoutStep === 4) {
-      setCheckoutStep(5);
     }
   });
 
@@ -1597,12 +1598,8 @@
         customerAccount: $('cartCustomerAccount')?.value.trim() || '',
         customerPhone: $('cartCustomerPhone')?.value.trim() || '',
         transferNumber: $('cartTransferNumber')?.value.trim() || '',
-        hasReceipt: !!cartUploadedReceipt,
-        receipt: cartUploadedReceipt ? {
-          dataUrl: cartUploadedReceipt.dataUrl,
-          fileName: cartUploadedReceipt.fileName,
-          size: cartUploadedReceipt.compressedSize
-        } : null,
+        hasReceipt: false,
+        receipt: null,
         notes: $('cartOrderNote')?.value.trim() || '',
         status: 'pending'
       };
@@ -1996,6 +1993,18 @@
       const isLast = idx === services.length - 1;
       const badgeHtml = s.badge ? `<span class="status-pill featured-status" style="font-size:0.68rem;padding:2px 7px;">${esc(s.badge)}</span>` : '';
 
+      const isHidden = !s.visible || s.status === 'hidden';
+      const isUnavailable = !isHidden && (s.available === false || s.status === 'unavailable');
+
+      let statusBadge = '';
+      if (isHidden) {
+        statusBadge = `<button type="button" class="status-pill clickable hidden-status" data-toggle-status="${esc(s.id)}" title="انقر للتبديل: مخفية -> نشطة">مخفية</button>`;
+      } else if (isUnavailable) {
+        statusBadge = `<button type="button" class="status-pill clickable warning-status" data-toggle-status="${esc(s.id)}" title="انقر للتبديل: غير متاحة -> مخفية">غير متاحة</button>`;
+      } else {
+        statusBadge = `<button type="button" class="status-pill clickable active-pill" data-toggle-status="${esc(s.id)}" title="انقر للتبديل: نشطة -> غير متاحة">نشطة ومتاحة</button>`;
+      }
+
       return `
         <tr>
           <td>
@@ -2009,10 +2018,8 @@
           <td>${s.plans.length} باقة</td>
           <td>${minPrice !== null ? `${money(minPrice)} ج.م` : (s.plans.length ? 'غير متاحة' : 'حسب الطلب')}</td>
           <td>
-            <div class="button-row" style="gap:4px;">
-              <button type="button" class="status-pill clickable ${s.visible ? 'active-pill' : 'hidden-status'}" data-toggle-visible="${esc(s.id)}" title="انقر للتبديل بين إظهار أو إخفاء الخدمة">
-                ${s.visible ? 'ظاهرة للزوار' : 'مخفية'}
-              </button>
+            <div class="button-row" style="gap:4px;flex-wrap:wrap;">
+              ${statusBadge}
               <button type="button" class="status-pill clickable ${s.featured ? 'featured-status' : 'dimmed-status'}" data-toggle-featured="${esc(s.id)}" title="انقر لتمييز الخدمة في المختارات">
                 ${s.featured ? 'مميزة ★' : 'عادية'}
               </button>
@@ -2043,9 +2050,91 @@
   $('adminCategoryFilter')?.addEventListener('change', renderAdminTable);
   $('adminStatusFilter')?.addEventListener('change', renderAdminTable);
 
+  // Admin Services Table Actions (Delegation)
+  $('adminTableBody')?.addEventListener('click', async event => {
+    const editBtn = event.target.closest('[data-edit-service]');
+    if (editBtn) {
+      openEditor(editBtn.dataset.editService);
+      return;
+    }
+
+    const delBtn = event.target.closest('[data-delete-service]');
+    if (delBtn) {
+      const srvId = delBtn.dataset.deleteService;
+      const service = draft?.services.find(s => s.id === srvId);
+      if (!service) return;
+      if (await confirmAction('حذف الخدمة؟', `هل أنت متأكد من حذف خدمة «${service.name}» نهائيًا من الكتالوج؟`, 'حذف الخدمة')) {
+        draft.services = draft.services.filter(s => s.id !== srvId);
+        saveDraft();
+        renderAdmin();
+        toast('تم حذف الخدمة بنجاح.');
+      }
+      return;
+    }
+
+    const toggleStatusBtn = event.target.closest('[data-toggle-status]');
+    if (toggleStatusBtn) {
+      const srvId = toggleStatusBtn.dataset.toggleStatus;
+      const service = draft?.services.find(s => s.id === srvId);
+      if (!service) return;
+      // Cycle: visible -> unavailable -> hidden -> visible
+      if (service.visible && service.available !== false && service.status !== 'unavailable') {
+        service.visible = true;
+        service.available = false;
+        service.status = 'unavailable';
+        toast(`تم تحويل خدمة «${service.name}» إلى غير متاحة حالياً.`);
+      } else if (service.visible) {
+        service.visible = false;
+        service.available = false;
+        service.status = 'hidden';
+        toast(`تم إخفاء خدمة «${service.name}» من المتجر.`);
+      } else {
+        service.visible = true;
+        service.available = true;
+        service.status = 'visible';
+        toast(`تم تفعيل خدمة «${service.name}» وإظهارها للزوار.`);
+      }
+      saveDraft();
+      renderAdminTable();
+      return;
+    }
+
+    const toggleFeaturedBtn = event.target.closest('[data-toggle-featured]');
+    if (toggleFeaturedBtn) {
+      const srvId = toggleFeaturedBtn.dataset.toggleFeatured;
+      const service = draft?.services.find(s => s.id === srvId);
+      if (!service) return;
+      service.featured = !service.featured;
+      saveDraft();
+      renderAdminTable();
+      toast(service.featured ? `تمت إضافة «${service.name}» إلى المختارات المميزة.` : `تمت إزالة «${service.name}» من المختارات المميزة.`);
+      return;
+    }
+
+    const moveBtn = event.target.closest('[data-move-service]');
+    if (moveBtn) {
+      const srvId = moveBtn.dataset.moveService;
+      const dir = moveBtn.dataset.dir;
+      const idx = draft?.services.findIndex(s => s.id === srvId);
+      if (idx === undefined || idx === -1) return;
+      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+      if (targetIdx >= 0 && targetIdx < draft.services.length) {
+        const temp = draft.services[idx];
+        draft.services[idx] = draft.services[targetIdx];
+        draft.services[targetIdx] = temp;
+        saveDraft();
+        renderAdminTable();
+      }
+      return;
+    }
+  });
+
   // --- Admin Tab Switching ---
   const tabButtons = [...document.querySelectorAll('[data-admin-tab]')];
   function switchTab(button) {
+    if (settingsDirty && typeof saveSettingsDraft === 'function') {
+      saveSettingsDraft(true);
+    }
     tabButtons.forEach(b => {
       const active = b === button;
       b.setAttribute('aria-selected', String(active));
@@ -2902,14 +2991,15 @@
     renderAdminOrders();
   });
 
-  // --- Settings Form ---
-  $('settingsForm')?.addEventListener('input', () => { settingsDirty = true; });
-  $('settingsForm')?.addEventListener('submit', event => {
-    event.preventDefault();
+  // --- Settings Form & Auto-Save ---
+  let settingsAutoSaveTimer = null;
+
+  function saveSettingsDraft(silent = false) {
     if (!adminOpen || !draft || publishing) return;
     try {
       const next = JSON.parse(JSON.stringify(draft));
       const form = $('settingsForm');
+      if (!form) return;
       for (const field of ['storeName', 'tagline', 'whatsapp', 'paymentPhone', 'instapay', 'workingHours', 'facebook', 'instagram', 'tiktok', 'telegram', 'announcement']) {
         if (form.elements[field]) {
           next.settings[field] = form.elements[field].value.trim();
@@ -2934,11 +3024,32 @@
       draft = CatalogParser.validate(next);
       settingsDirty = false;
       saveDraft();
-      renderAdmin();
-      toast('تم حفظ الإعدادات في المسودة بنجاح.');
+      if (!silent) {
+        renderAdmin();
+        toast('تم حفظ الإعدادات في المسودة بنجاح.');
+      }
     } catch (error) {
-      showAdminMessage(error.message);
+      if (!silent) showAdminMessage(error.message);
     }
+  }
+
+  $('settingsForm')?.addEventListener('input', () => {
+    settingsDirty = true;
+    clearTimeout(settingsAutoSaveTimer);
+    settingsAutoSaveTimer = setTimeout(() => {
+      saveSettingsDraft(true);
+    }, 700);
+  });
+
+  $('settingsForm')?.addEventListener('change', () => {
+    settingsDirty = true;
+    saveSettingsDraft(true);
+  });
+
+  $('settingsForm')?.addEventListener('submit', event => {
+    event.preventDefault();
+    clearTimeout(settingsAutoSaveTimer);
+    saveSettingsDraft(false);
   });
 
   // --- Service Editor ---
@@ -3009,7 +3120,10 @@
     const imgVal = form.elements.image?.value?.trim() || '';
     const badgeVal = form.elements.badge?.value?.trim() || '';
 
+    const promptEl = $('editorDropzonePrompt');
+
     if (imgVal) {
+      if (promptEl) promptEl.hidden = true;
       previewContainer.hidden = false;
       previewContainer.innerHTML = `
         <div class="admin-image-preview-banner">
@@ -3029,10 +3143,12 @@
         form.elements.image.value = '';
         previewContainer.hidden = true;
         previewContainer.innerHTML = '';
+        if (promptEl) promptEl.hidden = false;
         editorDirty = true;
         updateStickyBar();
       });
     } else {
+      if (promptEl) promptEl.hidden = false;
       previewContainer.hidden = true;
       previewContainer.innerHTML = '';
     }
@@ -3200,8 +3316,18 @@
     }
 
     form.elements.image.value = service.image || '';
-    for (const field of ['visible', 'featured']) {
-      if (form.elements[field]) form.elements[field].checked = Boolean(service[field]);
+
+    let statusVal = 'visible';
+    if (!service.visible || service.status === 'hidden') {
+      statusVal = 'hidden';
+    } else if (service.available === false || service.status === 'unavailable') {
+      statusVal = 'unavailable';
+    }
+    if (form.elements.serviceStatus) {
+      form.elements.serviceStatus.value = statusVal;
+    }
+    if (form.elements.featured) {
+      form.elements.featured.checked = Boolean(service.featured);
     }
     form.elements.notes.value = (service.notes || []).join('\n');
 
@@ -3411,11 +3537,8 @@
   });
 
   // Image Auto-Compression on file upload with 2:1 ratio
-  $('editorImageFile')?.addEventListener('change', async event => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
+  async function processEditorImageFile(file) {
     if (!file) return;
-
     try {
       toast('جارٍ قص وتوسيط وضغط الصورة للنسبة 2:1 تلقائيًا...');
       const compressedDataUrl = await ImageUtils.compressAndResize(file, { targetWidth: 800 });
@@ -3427,7 +3550,39 @@
     } catch (err) {
       toast('خطأ في معالجة الصورة: ' + err.message);
     }
+  }
+
+  $('editorImageFile')?.addEventListener('change', async event => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (file) await processEditorImageFile(file);
   });
+
+  const editorDropzone = $('editorImageDropzone');
+  if (editorDropzone) {
+    editorDropzone.addEventListener('click', e => {
+      if (e.target.closest('button, input')) return;
+      $('editorImageFile')?.click();
+    });
+    ['dragenter', 'dragover'].forEach(evName => {
+      editorDropzone.addEventListener(evName, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        editorDropzone.classList.add('drag-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(evName => {
+      editorDropzone.addEventListener(evName, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        editorDropzone.classList.remove('drag-over');
+      });
+    });
+    editorDropzone.addEventListener('drop', async e => {
+      const file = e.dataTransfer?.files?.[0];
+      if (file) await processEditorImageFile(file);
+    });
+  }
 
   // Preview Service / Changes Button in Sticky Save Bar
   $('previewServiceBtn')?.addEventListener('click', () => {
@@ -3465,9 +3620,11 @@
       for (const field of ['name', 'category', 'description', 'mark', 'badge', 'icon', 'color', 'image', 'aliases']) {
         service[field] = form.elements[field]?.value.trim() || '';
       }
-      for (const field of ['visible', 'featured']) {
-        service[field] = Boolean(form.elements[field]?.checked);
-      }
+      const st = form.elements.serviceStatus?.value || 'visible';
+      service.visible = st !== 'hidden';
+      service.available = st === 'visible';
+      service.status = st;
+      service.featured = Boolean(form.elements.featured?.checked);
 
       service.notes = form.elements.notes.value.split('\n').map(n => n.trim()).filter(Boolean);
       service.plans = JSON.parse(JSON.stringify(currentEditorPlans));
