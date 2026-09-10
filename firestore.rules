@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for Role-Based Access Control (RBAC)
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.token.email.lower())).data;
+    }
+
+    function isAuthorizedAdmin() {
+      return isAuthenticated() && (
+        exists(/databases/$(database)/documents/users/$(request.auth.token.email.lower())) ||
+        request.auth.token.email in ['aboab411@gmail.com', 'aboab411@gmail.com']
+      );
+    }
+
+    function getAdminRole() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.token.email.lower()))
+        ? getUserData().role
+        : (request.auth.token.email in ['aboab411@gmail.com'] ? 'owner' : 'editor');
+    }
+
+    function isOwner() {
+      return isAuthorizedAdmin() && getAdminRole() == 'owner';
+    }
+
+    function isEditorOrOwner() {
+      return isAuthorizedAdmin() && (getAdminRole() == 'owner' || getAdminRole() == 'editor');
+    }
+
+    // Orders Collection
+    // - Public customers can create new orders with status 'pending'
+    // - Only authorized admins can view, update statuses, or delete orders
+    match /orders/{orderId} {
+      allow create: if request.resource.data.keys().hasAll(['id', 'timestamp', 'total', 'status'])
+                    && request.resource.data.status == 'pending';
+      allow read, update, delete: if isAuthorizedAdmin();
+    }
+
+    // Users / Admins Whitelist Collection
+    // - Authenticated users can read to verify their own access
+    // - Only the Owner can grant, edit, or revoke admin privileges
+    match /users/{userEmail} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner();
+    }
+
+    // Services Catalog Collection
+    // - Public read for all customers
+    // - Write allowed for Content Editors and Owners
+    match /services/{serviceId} {
+      allow read: if true;
+      allow write: if isEditorOrOwner();
+    }
+
+    // Payment Methods Collection
+    // - Public read for all customers
+    // - Write allowed for Owners only
+    match /paymentMethods/{methodId} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Store Settings Collection (announcements, contact, social)
+    // - Public read for all customers
+    // - Write allowed for Owners only
+    match /settings/{settingDoc} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+  }
+}

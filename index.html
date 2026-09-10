@@ -1,0 +1,1870 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0e14">
+  <meta name="description" content="متجر كينو للخدمات الرقمية: شحن ألعاب (ببجي، فري فاير، بيس)، اشتراكات ترفيه وذكاء اصطناعي (نتفليكس، شاهد، ChatGPT Plus)، ودفع إلكتروني. تنفيذ فوري وسلة طلبات مجمعة عبر واتساب.">
+  <meta name="keywords" content="كينو ستور, شحن ببجي, شدات ببجي, اشتراك نتفلكس, شات جي بي تي بلس, اشتراك شاهد vip, فودافون كاش, انستاباي, خدمات رقمية مصر">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://kenostore.com/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_EG">
+  <meta property="og:url" content="https://kenostore.com/">
+  <meta property="og:site_name" content="Keno Store — متجر كينو">
+  <meta property="og:title" content="Keno Store | متجر كينو للخدمات الرقمية">
+  <meta property="og:description" content="شحن ألعاب، اشتراكات ترفيه وذكاء اصطناعي، ودفع إلكتروني. تصفّح الباقات والأسعار واطلب خدمتك مباشرة عبر واتساب.">
+  <meta property="og:image" content="https://kenostore.com/assets/logo.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Keno Store | متجر كينو للخدمات الرقمية">
+  <meta name="twitter:description" content="شحن ألعاب، اشتراكات ترفيه وذكاء اصطناعي، ودفع إلكتروني. أسعار واضحة وتنفيذ فوري.">
+  <meta name="twitter:image" content="https://kenostore.com/assets/logo.png">
+
+  <title>Keno Store | كل خدماتك الرقمية في مكان واحد</title>
+
+  <!-- Preload critical assets for speed and zero layout shift -->
+  <link rel="preload" href="./assets/cairo.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="./assets/logo.png" as="image">
+
+  <!-- Icons and Manifest -->
+  <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
+  <link rel="apple-touch-icon" href="./assets/icons/logo-192.png">
+  <link rel="manifest" href="./manifest.json">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Core Modules (Zero-Build Vanilla Architecture) -->
+  <script src="./assets/icons.js" defer></script>
+  <script src="./js/config.js" defer></script>
+  <script src="./js/firebase.js" defer></script>
+  <script src="./js/image.js" defer></script>
+  <script src="./js/order.js" defer></script>
+  <script src="./js/github.js" defer></script>
+  <script src="./js/catalog-parser.js" defer></script>
+  <script src="./js/search.js" defer></script>
+  <script src="./assets/catalog.js" defer></script>
+  <script src="./app.js" defer></script>
+
+  <!-- Structured Data / JSON-LD for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "OnlineBusiness",
+        "@id": "https://kenostore.com/#organization",
+        "name": "Keno Store",
+        "alternateName": "متجر كينو للخدمات الرقمية",
+        "url": "https://kenostore.com/",
+        "logo": "https://kenostore.com/assets/logo.png",
+        "image": "https://kenostore.com/assets/logo.png",
+        "description": "متجر كينو للخدمات الرقمية: شحن ألعاب، اشتراكات ترفيه وذكاء اصطناعي، وخدمات الدفع الإلكتروني.",
+        "currenciesAccepted": "EGP",
+        "paymentAccepted": ["Vodafone Cash", "InstaPay"],
+        "priceRange": "50 - 2000 EGP",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+201064806213",
+          "contactType": "customer service",
+          "availableLanguage": ["Arabic", "English"]
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a href="#catalog" class="skip-link">انتقل إلى الخدمات والأسعار</a>
+
+  <!-- Top Announcement Bar -->
+  <aside class="announcement" aria-label="شريط الإعلانات">
+    <div class="container announcement-inner">
+      <span>
+        <i data-icon="zap"></i>
+        <span id="announcementText">اختار خدمتك، شوف سعرها، وكمّل طلبك مع كينو.</span>
+      </span>
+      <div class="announcement-actions">
+        <button type="button" class="announcement-btn copy-vodafone-quick" title="اضغط لنسخ رقم فودافون كاش">
+          <i data-icon="copy"></i>
+          <span>فودافون كاش: <bdi id="announcementPhone">01064806213</bdi></span>
+        </button>
+        <button type="button" class="announcement-btn copy-instapay-quick" title="اضغط لنسخ حساب إنستاباي" id="announcementInstaBtn" hidden>
+          <i data-icon="copy"></i>
+          <span>إنستاباي: <bdi id="announcementInsta"></bdi></span>
+        </button>
+        <span class="announcement-end" id="announcementHours">متاحون يوميًا من 10 ص حتى 2 ص</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="كينو ستور — الرئيسية">
+        <img src="./assets/logo.png" width="525" height="147" alt="Keno Store — Digital Services" loading="eager" decoding="async">
+      </a>
+      <nav class="desktop-nav" aria-label="القائمة الرئيسية">
+        <a href="#catalog">كل الخدمات</a>
+        <a href="#trust">مميزات كينو</a>
+        <a href="#how">إزاي تطلب؟</a>
+        <a href="#testimonials">آراء العملاء</a>
+        <a href="#faq">الأسئلة الشائعة</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn header-search" data-action="focus-search" aria-label="ابحث عن خدمة">
+          <i data-icon="search"></i>
+        </button>
+        <!-- Header Cart Trigger -->
+        <button type="button" class="cart-btn" id="headerCartBtn" aria-label="فتح سلة الطلبات">
+          <i data-icon="shopping-cart"></i>
+          <span class="cart-label">السلة</span>
+          <span class="cart-badge" id="cartCountBadge" hidden>0</span>
+        </button>
+        <button type="button" class="button button-yellow compact contact-trigger">
+          <i data-icon="messages-square"></i>
+          <span>كلّم كينو</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Storefront Main Content -->
+  <main id="storefront">
+    <!-- Hero Section -->
+    <section class="hero container" id="home" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-line"></span>عالمك الرقمي، أقرب ليك</span>
+        <h1 id="heroTitle">كل اللي تحتاجه أونلاين.<br><span>تلاقيه في كينو.</span></h1>
+        <p>من شحن ألعابك واشتراكك المفضل، لدفع كورساتك وإعلانات شغلك. اطلب خدمة فردية أو جمّع طلباتك في سلة واحدة.</p>
+        <div class="hero-actions">
+          <a href="#catalog" class="button button-red">
+            <span>اكتشف الخدمات</span>
+            <i data-icon="arrow-up-left"></i>
+          </a>
+          <button type="button" class="button button-outline copy-vodafone-quick">
+            <i data-icon="wallet-cards"></i>
+            <span>نسخ فودافون كاش</span>
+          </button>
+          <button type="button" class="button button-outline copy-instapay-quick" id="heroInstaBtn" hidden>
+            <i data-icon="credit-card"></i>
+            <span>نسخ إنستاباي</span>
+          </button>
+        </div>
+        <div class="hero-tags">
+          <span><i data-icon="badge-check"></i>أسعار واضحة وبدون عمولات خفية</span>
+          <span><i data-icon="zap"></i>تنفيذ سريع ومتابعة حقيقية</span>
+          <span><i data-icon="shopping-cart"></i>سلة طلبات مجمعة على واتساب</span>
+        </div>
+      </div>
+
+      <div class="hero-feature hero-theme-red" id="heroFeature">
+        <div class="feature-top">
+          <span class="pill pill-light" id="heroBadge">الأكثر طلبًا</span>
+          <i data-icon="gamepad-2" id="heroIcon"></i>
+        </div>
+        <div class="feature-word" dir="ltr" id="heroFeatureWord">
+          <span id="heroTitleLine1">PLAY MORE</span>
+          <span id="heroTitleLine2">WITH KENO.</span>
+        </div>
+        <p id="heroDescription">شحن ببجي العالمية — شحن فوري وآمن بالـ ID</p>
+        <div class="feature-offer">
+          <strong id="heroQuantity">325 <small>شدة</small></strong>
+          <span class="feature-divider" aria-hidden="true"></span>
+          <strong id="heroPrice">270 <small>جنيه</small></strong>
+        </div>
+        <button type="button" class="button feature-button" id="heroActionButton" data-open-service="pubg" data-plan="pubg-3">
+          <span id="heroButtonText">شوف كل باقات ببجي</span>
+          <i data-icon="arrow-left"></i>
+        </button>
+        <span class="feature-index" id="heroTagline" aria-hidden="true">KENO / FEATURED</span>
+      </div>
+    </section>
+
+    <!-- Trust & Guarantee Section -->
+    <section class="trust-section container" id="trust" aria-labelledby="trustTitle">
+      <h2 id="trustTitle" class="sr-only">ضمانات ومميزات كينو ستور</h2>
+      <div class="trust-grid" id="trustGrid"></div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section class="catalog-section container" id="catalog" aria-labelledby="catalogTitle">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">اختار اللي يناسبك</span>
+          <h2 id="catalogTitle">خدمة لكل احتياج<span class="red-dot">.</span></h2>
+        </div>
+        <p><span id="serviceCount">41</span> خدمة متاحة في مكان واحد</p>
+      </div>
+
+      <!-- Search & Sort Toolbar -->
+      <div class="catalog-toolbar">
+        <div class="search-field">
+          <i data-icon="search"></i>
+          <input id="searchInput" type="search" placeholder="بتدور على إيه؟ ببجي، نتفليكس، شات جي بي تي، كانفا، شدات…" aria-label="ابحث باسم الخدمة أو اللعبة أو الباقة" autocomplete="off">
+          <button type="button" class="icon-btn" id="clearSearch" aria-label="مسح البحث" hidden>
+            <i data-icon="x"></i>
+          </button>
+        </div>
+        <label class="sort-label">
+          <i data-icon="sliders-horizontal"></i>
+          <span class="sr-only">ترتيب الخدمات</span>
+          <select id="sortSelect" aria-label="ترتيب الخدمات المعروضة">
+            <option value="featured">مختارات كينو أولًا</option>
+            <option value="price-asc">السعر: الأقل أولًا</option>
+            <option value="price-desc">السعر: الأعلى أولًا</option>
+            <option value="name">الاسم: أ–ي</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Dynamic Category Tabs -->
+      <nav id="categoryTabs" class="category-tabs" aria-label="تصفية حسب نوع الخدمة"></nav>
+
+      <!-- Results Meta -->
+      <div class="results-meta">
+        <h3 id="resultsTitle">كل الخدمات</h3>
+        <span id="resultCount" aria-live="polite"></span>
+      </div>
+
+      <!-- Service Grid -->
+      <div id="serviceGrid" class="service-grid"></div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" hidden>
+        <i data-icon="search-x"></i>
+        <h3>مش لاقيين خدمة بالاسم ده</h3>
+        <p>جرّب اسم تاني أو تصفّح كل الأقسام، أو اطلب خدمتك الخاصة وهنوفرها لك.</p>
+        <div>
+          <button type="button" id="resetFilters" class="button button-outline">عرض كل الخدمات</button>
+          <button type="button" class="button button-red contact-trigger">طلب خدمة مخصصة</button>
+        </div>
+      </div>
+
+      <!-- Custom Service Banner -->
+      <div class="custom-banner">
+        <div class="custom-icon"><i data-icon="globe"></i></div>
+        <div>
+          <h3>خدمتك مش موجودة في القائمة؟</h3>
+          <p>أي لعبة، اشتراك، تطبيق، منصة أو موقع أونلاين… ابعت لنا طلبك وهنشوفه وننفذه معاك فورًا.</p>
+        </div>
+        <button type="button" class="button button-dark" data-open-service="custom-service">
+          <span>قول لنا محتاج إيه</span>
+          <i data-icon="arrow-up-left"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-section" id="how" aria-labelledby="howTitle">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">من غير تعقيد</span>
+            <h2 id="howTitle">طلبك في ٣ خطوات بسيطة</h2>
+          </div>
+          <p>متابعة شخصية من فريق كينو حتى استلام الخدمة بالكامل.</p>
+        </div>
+        <div class="steps-grid">
+          <article>
+            <span class="step-number">01</span>
+            <i data-icon="mouse-pointer-2"></i>
+            <h3>اختار أو جمّع في السلة</h3>
+            <p>تصفّح الباقات، اطلب خدمة فورية أو أضف عدة خدمات لسلتك بضغطة زر.</p>
+          </article>
+          <article>
+            <span class="step-number">02</span>
+            <i data-icon="messages-square"></i>
+            <h3>أكّد الطلب على واتساب</h3>
+            <p>ابعت طلبك المجهز برقم مرجعي، وهنأكد لك الإتاحة والتحويل فوريًا.</p>
+          </article>
+          <article>
+            <span class="step-number">03</span>
+            <i data-icon="badge-check"></i>
+            <h3>استلم واستمتع</h3>
+            <p>نكمّل الشحن أو تفعيل الاشتراك خلال دقائق، مع ضمان كامل طوال المدة.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verified Customer Reviews Section -->
+    <section class="testimonials-section container" id="testimonials" aria-labelledby="testimonialsTitle">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">تجارب حقيقية</span>
+          <h2 id="testimonialsTitle">آراء عملاء كينو ستور<span class="red-dot">.</span></h2>
+        </div>
+        <p>ثقة مئات العملاء في مصر والوطن العربي</p>
+      </div>
+      <div class="testimonials-grid" id="testimonialsGrid"></div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section container" id="faq" aria-labelledby="faqTitle">
+      <div>
+        <span class="eyebrow">سؤال في بالك؟</span>
+        <h2 id="faqTitle">خلّينا نوضّحه لك.</h2>
+        <p>ولو محتاج أي مساعدة إضافية، فريق كينو متاح دائمًا للرد عليك.</p>
+        <button type="button" class="text-button contact-trigger">
+          <span>اسأل فريق كينو مباشرة</span>
+          <i data-icon="arrow-left"></i>
+        </button>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>إزاي أعرف السعر النهائي للخدمة؟<i data-icon="plus"></i></summary>
+          <p>افتح الخدمة واختار الباقة المناسبة لك؛ الأسعار معروضة بالجنيه المصري واضحة وبدون مصاريف إضافية. الخدمات الموسومة بـ «حسب الطلب» بنحدد سعرها بدقة بعد معرفة مواصفات طلبك وقبل أي تحويل.</p>
+        </details>
+        <details>
+          <summary>إيه طرق الدفع المتاحة؟<i data-icon="plus"></i></summary>
+          <p>الدفع متاح عبر فودافون كاش على الرقم <bdi id="faqPayment">01064806213</bdi>، وكذلك عبر تطبيق <strong>إنستاباي (InstaPay)</strong> لجميع البنوك المصرية. أكّد طلبك أولًا في محادثة واتساب ثم حوّل المبلغ وابعت إثبات التحويل.</p>
+        </details>
+        <details>
+          <summary>هل ممكن أطلب أكتر من خدمة مع بعض؟<i data-icon="plus"></i></summary>
+          <p>نعم! يمكنك الضغط على «أضف إلى السلة» في أي خدمة، ثم فتح سلة الطلبات وإرسال طلب مجمع واحد على واتساب يحتوي على كل الخدمات المطلوبة وحساب إجمالي السعر تلقائيًا.</p>
+        </details>
+        <details>
+          <summary>هل اشتراكات المشاهدة والذكاء الاصطناعي رسمية ومضمونة؟<i data-icon="plus"></i></summary>
+          <p>نعم، جميع الاشتراكات تعمل بشكل ممتاز طوال فترة الاشتراك مع ضمان كامل من كينو. نوع الاشتراك (مشترك أو خاص) وعدد الأجهزة المسموح بها مذكورة بوضوح في تفاصيل وشروط كل باقة.</p>
+        </details>
+        <details>
+          <summary>الخدمة اللي محتاجها مش موجودة في الموقع؟<i data-icon="plus"></i></summary>
+          <p>اضغط على «خدمتك مش في القائمة؟» أو تواصل معنا عبر واتساب برابط الموقع أو اسم الخدمة المطلوبة، وسنراجع الإتاحة ونرد عليك بأفضل سعر في أسرع وقت.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- Multi-Item Cart Drawer & 5-Step Guided Checkout Flow -->
+  <div class="cart-drawer-backdrop" id="cartBackdrop" hidden></div>
+  <aside class="cart-drawer" id="cartDrawer" hidden aria-labelledby="cartDrawerTitle" role="dialog" aria-modal="true">
+    <div class="cart-header">
+      <div class="cart-header-title">
+        <i data-icon="shopping-cart"></i>
+        <h2 id="cartDrawerTitle">سلة الطلبات وإتمام الشراء</h2>
+        <span class="cart-item-count" id="cartItemsCount">0</span>
+      </div>
+      <button type="button" class="icon-btn" id="closeCartBtn" aria-label="إغلاق السلة">
+        <i data-icon="x"></i>
+      </button>
+    </div>
+
+    <!-- 5-Step Progress Stepper -->
+    <div class="checkout-stepper-bar" id="checkoutStepperBar" hidden>
+      <div class="stepper-track">
+        <div class="stepper-progress" id="stepperProgressFill" style="width: 20%;"></div>
+      </div>
+      <div class="stepper-steps">
+        <button type="button" class="step-indicator active" data-step="1" id="stepIndicator1" title="مراجعة السلة">
+          <span class="step-num">1</span>
+          <span class="step-text">السلة</span>
+        </button>
+        <button type="button" class="step-indicator" data-step="2" id="stepIndicator2" title="بيانات الحساب">
+          <span class="step-num">2</span>
+          <span class="step-text">البيانات</span>
+        </button>
+        <button type="button" class="step-indicator" data-step="3" id="stepIndicator3" title="طريقة الدفع">
+          <span class="step-num">3</span>
+          <span class="step-text">الدفع</span>
+        </button>
+        <button type="button" class="step-indicator" data-step="4" id="stepIndicator4" title="إيصال التحويل">
+          <span class="step-num">4</span>
+          <span class="step-text">الإيصال</span>
+        </button>
+        <button type="button" class="step-indicator" data-step="5" id="stepIndicator5" title="تأكيد الطلب">
+          <span class="step-num">5</span>
+          <span class="step-text">التأكيد</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="cart-body" id="cartBody">
+      <!-- Empty Cart State -->
+      <div class="cart-empty" id="cartEmptyState">
+        <i data-icon="shopping-bag"></i>
+        <h3>سلة الطلبات فارغة</h3>
+        <p>تصفّح باقات الألعاب والاشتراكات الرقمية وأضف ما ترغب في طلبه دفعة واحدة وبضغطة واحدة.</p>
+        <button type="button" class="button button-red small" id="cartBrowseBtn">تصفّح الخدمات الآن</button>
+      </div>
+
+      <!-- Step 1: Review Order Items -->
+      <div class="checkout-step-panel" id="checkoutStep1">
+        <div class="cart-items-list" id="cartItemsList"></div>
+      </div>
+
+      <!-- Step 2: Customer Account Information -->
+      <div class="checkout-step-panel" id="checkoutStep2" hidden>
+        <div class="step-intro">
+          <div class="step-badge"><i data-icon="sparkles"></i> بيانات الشحن والتنفيذ</div>
+          <h3>أدخل بيانات الحساب المطلوب</h3>
+          <p>اكتب المعرّف (ID) أو البريد حسب متطلبات كل خدمة لضمان التنفيذ الفوري السريع.</p>
+        </div>
+
+        <div class="form-grid checkout-fields">
+          <label>
+            بيانات الحساب / الـ ID للشحن <span class="required-mark">*</span>
+            <input id="cartCustomerAccount" placeholder="مثال: PUBG Player ID أو بريد الحساب" maxlength="250">
+            <span class="field-hint">إذا طلبت أكثر من خدمة، يمكنك كتابة ID كل خدمة مفصولاً بسطر.</span>
+          </label>
+
+          <label>
+            رقم الهاتف للتواصل أو المتابعة (اختياري)
+            <input id="cartCustomerPhone" type="tel" dir="ltr" placeholder="01xxxxxxxxx" maxlength="25">
+          </label>
+
+          <label>
+            ملاحظات إضافية على الطلب (اختياري)
+            <textarea id="cartOrderNote" rows="2" maxlength="400" placeholder="أي تفاصيل خاصة ترغب في توضيحها لفريق كينو..."></textarea>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 3: Payment Method Selector -->
+      <div class="checkout-step-panel" id="checkoutStep3" hidden>
+        <div class="step-intro">
+          <div class="step-badge"><i data-icon="wallet-cards"></i> وسيلة الدفع والتحويل</div>
+          <h3>اختر طريقة الدفع المناسبة لك</h3>
+          <p>اضغط على وسيلة الدفع لعرض بيانات التحويل ونسخ الرقم أو المعرف مباشرة.</p>
+        </div>
+
+        <div class="payment-methods-section">
+          <div id="cartPaymentMethods" class="payment-methods-selector"></div>
+        </div>
+      </div>
+
+      <!-- Step 4: Upload Payment Receipt -->
+      <div class="checkout-step-panel" id="checkoutStep4" hidden>
+        <div class="step-intro">
+          <div class="step-badge"><i data-icon="receipt"></i> إثبات التحويل</div>
+          <h3>أرفق سكرين شوت التحويل</h3>
+          <p>ارفع لقطة شاشة لإيصال التحويل لتسريع مراجعة وتأكيد طلبك وتفادي أي تأخير.</p>
+        </div>
+
+        <div class="receipt-upload-box">
+          <div class="receipt-dropzone" id="cartReceiptDropzone">
+            <input type="file" id="cartReceiptFile" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
+            <div class="dropzone-inner" id="cartDropzonePrompt">
+              <div class="dropzone-icon"><i data-icon="upload"></i></div>
+              <h4>اضغط لاختيار صورة الإيصال أو اسحبها هنا</h4>
+              <p>ندعم صيغ PNG, JPG, WebP بحجم حتى 10 ميجابايت (يتم ضغط الصورة تلقائيًا دون فقدان الوضوح).</p>
+            </div>
+            <div class="dropzone-loading" id="cartDropzoneLoading" hidden>
+              <div class="spinner"></div>
+              <span>جاري فحص وضغط صورة الإيصال...</span>
+            </div>
+          </div>
+
+          <!-- Uploaded Preview Box -->
+          <div class="receipt-preview-card" id="cartReceiptPreviewCard" hidden>
+            <div class="receipt-preview-thumb">
+              <img id="cartReceiptPreviewImg" alt="معاينة إيصال التحويل" src="">
+            </div>
+            <div class="receipt-preview-details">
+              <div class="receipt-file-name" id="cartReceiptFileName">receipt.jpg</div>
+              <div class="receipt-file-size" id="cartReceiptFileSize">85 KB</div>
+              <div class="receipt-actions">
+                <button type="button" class="button button-outline small" id="cartChangeReceiptBtn">
+                  <i data-icon="refresh-cw"></i>
+                  <span>تغيير</span>
+                </button>
+                <button type="button" class="button button-outline danger-outline small" id="cartRemoveReceiptBtn">
+                  <i data-icon="trash-2"></i>
+                  <span>حذف</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="transfer-source-block" style="margin-top: 16px;">
+            <label>
+              رقم المحفظة / الحساب المحول منه (اختياري)
+              <input id="cartTransferNumber" placeholder="رقم المحفظة أو اسم الحساب المحول منه" dir="ltr">
+            </label>
+          </div>
+
+          <label class="checkbox-label send-later-option">
+            <input type="checkbox" id="cartSendLaterCheckbox">
+            <span>سأرسل صورة الإيصال لاحقًا في محادثة الواتساب مباشرة</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 5: Final Confirmation & Review -->
+      <div class="checkout-step-panel" id="checkoutStep5" hidden>
+        <div class="step-intro">
+          <div class="step-badge"><i data-icon="badge-check"></i> الخطوة الأخيرة</div>
+          <h3>مراجعة تفاصيل الطلب</h3>
+          <p>راجع طلبك قبل الإرسال لتأكيده وتجهيز المحادثة المباشرة مع المتجر على واتساب.</p>
+        </div>
+
+        <div class="order-invoice-card" id="cartOrderInvoice">
+          <div class="invoice-header">
+            <div>
+              <span class="invoice-tag">طلب كينو ستور</span>
+              <h4 id="invoiceOrderCode">#KENO-0000</h4>
+            </div>
+            <div class="invoice-date" id="invoiceDate">الآن</div>
+          </div>
+          <div class="invoice-divider"></div>
+          <div class="invoice-items" id="invoiceItemsSummary"></div>
+          <div class="invoice-divider"></div>
+          <div class="invoice-rows">
+            <div class="invoice-row">
+              <span>وسيلة الدفع:</span>
+              <strong id="invoicePaymentName">فودافون كاش</strong>
+            </div>
+            <div class="invoice-row" id="invoiceAccountRow" hidden>
+              <span>بيانات الحساب:</span>
+              <strong id="invoiceAccountVal">-</strong>
+            </div>
+            <div class="invoice-row">
+              <span>إيصال التحويل:</span>
+              <span id="invoiceReceiptStatus" class="status-pill active-pill">تم إرفاق الإيصال ✓</span>
+            </div>
+            <div class="invoice-row total-row">
+              <span>المبلغ المطلوب سداده:</span>
+              <strong class="total-amount" id="invoiceTotalAmount">0 ج.م</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stepper Navigation Footer -->
+    <div class="cart-footer" id="cartFooter" hidden>
+      <div class="cart-summary-bar">
+        <span>الإجمالي:</span>
+        <strong id="cartGrandTotal">0 ج.م</strong>
+      </div>
+
+      <!-- Step Navigation Buttons -->
+      <div class="stepper-nav-actions">
+        <button type="button" class="button button-outline" id="cartPrevStepBtn" hidden>
+          <i data-icon="arrow-right"></i>
+          <span>السابق</span>
+        </button>
+        <button type="button" class="button button-red flex-1" id="cartNextStepBtn">
+          <span>متابعة للبيانات</span>
+          <i data-icon="arrow-left"></i>
+        </button>
+        <button type="button" class="button button-red flex-1" id="cartSubmitOrderBtn" hidden>
+          <i data-icon="message-circle"></i>
+          <span>إرسال الطلب عبر واتساب</span>
+        </button>
+      </div>
+
+      <div class="cart-sub-actions" id="cartSubActions">
+        <button type="button" class="text-button small" id="cartCopySummaryBtn">
+          <i data-icon="copy"></i>
+          <span>نسخ تفاصيل الطلب</span>
+        </button>
+        <button type="button" class="text-button danger-text small" id="clearCartBtn">
+          <i data-icon="trash-2"></i>
+          <span>تفريغ السلة</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Mobile Bottom Navigation -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="التنقل السريع على الموبايل">
+    <a href="#home" class="mobile-nav-item" aria-label="الرئيسية">
+      <i data-icon="store"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a href="#catalog" class="mobile-nav-item" aria-label="الخدمات">
+      <i data-icon="layout-grid"></i>
+      <span>الخدمات</span>
+    </a>
+    <button type="button" class="mobile-nav-item" id="mobileCartBtn" aria-label="سلة الطلبات">
+      <div class="mobile-nav-cart-wrapper">
+        <i data-icon="shopping-cart"></i>
+        <span class="mobile-cart-badge" id="mobileCartBadge" hidden>0</span>
+      </div>
+      <span>السلة</span>
+    </button>
+    <button type="button" class="mobile-nav-item contact-trigger" aria-label="واتساب">
+      <i data-icon="message-circle"></i>
+      <span>واتساب</span>
+    </button>
+  </nav>
+
+  <!-- Admin View (#admin) -->
+  <section id="adminView" class="admin-view container" hidden aria-labelledby="adminTitle">
+    <div class="admin-heading" id="adminHeading">
+      <div>
+        <span class="eyebrow">KENO / CONTROL ROOM</span>
+        <h1 id="adminTitle">لوحة إدارة المتجر</h1>
+        <p id="adminSubtitle">الخدمات، الباقات، الأقسام والإعدادات في مكان واحد.</p>
+      </div>
+      <a class="button button-outline" href="#catalog">
+        <i data-icon="store"></i>
+        <span>عرض المتجر للزوار</span>
+      </a>
+    </div>
+
+    <!-- Admin Login Layout (Minimal Single-Action Google Portal) -->
+    <div id="adminLogin" class="admin-portal-wrapper">
+      <div class="admin-portal-card">
+        <div class="admin-portal-badge">
+          <i data-icon="shield-check"></i>
+        </div>
+        <div class="admin-portal-header">
+          <span class="portal-tag">بوابة التحكم الآمنة</span>
+          <h2 class="portal-title">Keno Store Admin Portal</h2>
+          <p class="portal-subtitle">تسجيل الدخول مقتصر على مسؤولي ومشرفي المتجر المعتمدين.</p>
+        </div>
+
+        <button type="button" id="googleSignInBtn" class="button button-google-signin full-width">
+          <span class="google-icon-wrapper">
+            <svg viewBox="0 0 48 48" width="22" height="22">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+          </span>
+          <span class="google-btn-text">Sign in with Google</span>
+        </button>
+
+        <div id="loginError" class="admin-portal-error" role="alert" hidden>
+          <i data-icon="alert-circle"></i>
+          <span id="loginErrorText"></span>
+        </div>
+
+        <div class="portal-footer">
+          <a class="portal-back-link" href="#catalog">
+            <i data-icon="arrow-right"></i>
+            <span>العودة إلى المتجر</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Workspace -->
+    <div id="adminWorkspace" hidden>
+      <div class="admin-status-bar">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <strong id="connectionStatus"></strong>
+          <span id="adminRoleBadge" class="status-pill active-pill">المالك</span>
+          <span id="sessionTimerBadge" class="status-pill" style="opacity:0.85;font-size:0.75rem;"><i data-icon="clock"></i> <span id="sessionTimerText">60:00</span></span>
+          <span id="draftStatus" aria-live="polite"></span>
+        </div>
+        <div class="button-row">
+          <button type="button" id="previewDraft" class="button button-outline small">
+            <i data-icon="eye"></i>
+            <span>معاينة المسودة</span>
+          </button>
+          <button type="button" id="publishButton" class="button button-red small">
+            <i data-icon="cloud-upload"></i>
+            <span>نشر التعديلات</span>
+          </button>
+          <button type="button" id="logoutButton" class="icon-btn" aria-label="تسجيل خروج">
+            <i data-icon="log-out"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="adminMessage" class="notice" role="status" hidden></div>
+
+      <!-- Orders & Revenue KPI Overview -->
+      <div class="kpi-grid" id="adminKpiGrid">
+        <div class="kpi-card">
+          <div class="kpi-icon"><i data-icon="shopping-bag"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">إجمالي الطلبات</span>
+            <strong class="kpi-value" id="kpiTotalOrders">0</strong>
+          </div>
+        </div>
+        <div class="kpi-card kpi-pending">
+          <div class="kpi-icon"><i data-icon="clock"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">قيد الانتظار / جديد</span>
+            <strong class="kpi-value" id="kpiPendingOrders">0</strong>
+          </div>
+        </div>
+        <div class="kpi-card kpi-delivered">
+          <div class="kpi-icon"><i data-icon="check-circle-2"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">تم التسليم بنجاح</span>
+            <strong class="kpi-value" id="kpiDeliveredOrders">0</strong>
+          </div>
+        </div>
+        <div class="kpi-card kpi-revenue">
+          <div class="kpi-icon"><i data-icon="circle-dollar-sign"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">إجمالي المبيعات</span>
+            <strong class="kpi-value" id="kpiRevenue">0 ج.م</strong>
+          </div>
+        </div>
+        <div class="kpi-card kpi-popular">
+          <div class="kpi-icon"><i data-icon="sparkles"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">الخدمة الأكثر طلبًا</span>
+            <strong class="kpi-value text-ellipsis" id="kpiPopularService">—</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="admin-stats">
+        <div>
+          <span>الخدمات المتاحة</span>
+          <strong id="adminServiceCount">0</strong>
+        </div>
+        <div>
+          <span>إجمالي الباقات والأسعار</span>
+          <strong id="adminPlanCount">0</strong>
+        </div>
+        <div>
+          <span>الخدمات الظاهرة للزوار</span>
+          <strong id="adminVisibleCount">0</strong>
+        </div>
+        <div>
+          <span>خدمات حسب الطلب</span>
+          <strong id="adminQuoteCount">0</strong>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="admin-tabs" role="tablist" aria-label="أقسام لوحة الإدارة">
+        <button type="button" id="servicesTab" role="tab" aria-selected="true" aria-controls="adminServices" data-admin-tab="adminServices">
+          <i data-icon="layout-grid"></i>
+          <span>الخدمات والأسعار</span>
+        </button>
+        <button type="button" id="featuredTab" role="tab" aria-selected="false" aria-controls="adminFeatured" data-admin-tab="adminFeatured" tabindex="-1">
+          <i data-icon="sparkles"></i>
+          <span>البطاقة المميزة (Hero)</span>
+        </button>
+        <button type="button" id="categoriesTab" role="tab" aria-selected="false" aria-controls="adminCategories" data-admin-tab="adminCategories" tabindex="-1">
+          <i data-icon="layers"></i>
+          <span>إدارة الأقسام</span>
+        </button>
+        <button type="button" id="paymentsTab" role="tab" aria-selected="false" aria-controls="adminPayments" data-admin-tab="adminPayments" tabindex="-1">
+          <i data-icon="wallet-cards"></i>
+          <span>طرق الدفع</span>
+        </button>
+        <button type="button" id="ordersTab" role="tab" aria-selected="false" aria-controls="adminOrders" data-admin-tab="adminOrders" tabindex="-1">
+          <i data-icon="shopping-bag"></i>
+          <span>الطلبات والإيصالات</span>
+          <span class="status-pill active-pill" id="adminOrdersBadge" style="margin-inline-start:4px;padding:1px 7px;font-size:0.7rem;">0</span>
+        </button>
+        <button type="button" id="settingsTab" role="tab" aria-selected="false" aria-controls="adminSettings" data-admin-tab="adminSettings" tabindex="-1">
+          <i data-icon="settings-2"></i>
+          <span>إعدادات المتجر</span>
+        </button>
+        <button type="button" id="backupTab" role="tab" aria-selected="false" aria-controls="adminBackup" data-admin-tab="adminBackup" tabindex="-1">
+          <i data-icon="archive"></i>
+          <span>النسخ والنشر</span>
+        </button>
+      </div>
+
+      <!-- Tab 1: Services Management -->
+      <div id="adminServices" role="tabpanel" aria-labelledby="servicesTab">
+        <div class="admin-toolbar">
+          <label class="search-field">
+            <i data-icon="search"></i>
+            <input type="search" id="adminSearch" placeholder="ابحث عن خدمة لتعديلها..." aria-label="بحث في خدمات الإدارة">
+          </label>
+          <div class="button-row">
+            <select id="adminCategoryFilter" class="button button-outline small" aria-label="تصفية حسب القسم">
+              <option value="all">كل الأقسام</option>
+            </select>
+            <select id="adminStatusFilter" class="button button-outline small" aria-label="تصفية حسب الحالة">
+              <option value="all">كل الحالات</option>
+              <option value="visible">الظاهرة للزوار</option>
+              <option value="hidden">المخفية</option>
+              <option value="featured">المميزة فقط</option>
+            </select>
+            <button type="button" id="addServiceButton" class="button button-red">
+              <i data-icon="plus"></i>
+              <span>إضافة خدمة جديدة</span>
+            </button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>الخدمة</th>
+                <th>القسم</th>
+                <th>عدد الباقات</th>
+                <th>تبدأ من</th>
+                <th>الحالة</th>
+                <th>ترتيب</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Category Management -->
+      <div id="adminCategories" role="tabpanel" aria-labelledby="categoriesTab" hidden>
+        <div class="admin-toolbar">
+          <div>
+            <h3>أقسام المتجر وتصنيف الخدمات</h3>
+            <p class="field-hint">تحكّم في الأقسام المعروضة وأيقوناتها وترتيب ظهورها للزوار.</p>
+          </div>
+          <button type="button" id="addCategoryButton" class="button button-red">
+            <i data-icon="plus"></i>
+            <span>إضافة قسم جديد</span>
+          </button>
+        </div>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>الأيقونة</th>
+                <th>اسم القسم</th>
+                <th>معرّف القسم (ID)</th>
+                <th>عدد الخدمات</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="adminCategoriesBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Payment Methods Management -->
+      <div id="adminPayments" role="tabpanel" aria-labelledby="paymentsTab" hidden>
+        <div class="admin-toolbar">
+          <div>
+            <h3>طرق ووسائل الدفع الإلكتروني</h3>
+            <p class="field-hint">تحكّم في وسائل الدفع المعروضة للعملاء (فودافون كاش، إنستاباي، تيلدا)، وأرقام وروابط التحويل وحالة التفعيل والترتيب.</p>
+          </div>
+          <button type="button" id="addPaymentButton" class="button button-red">
+            <i data-icon="plus"></i>
+            <span>إضافة وسيلة دفع</span>
+          </button>
+        </div>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>الأيقونة</th>
+                <th>وسيلة الدفع</th>
+                <th>رقم أو معرّف الدفع</th>
+                <th>اسم صاحب الحساب</th>
+                <th>الرابط</th>
+                <th>الحالة</th>
+                <th>الترتيب</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="adminPaymentsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Store Settings -->
+      <div id="adminSettings" role="tabpanel" aria-labelledby="settingsTab" hidden>
+        <form id="settingsForm" class="panel settings-panel">
+          <h3>معلومات المتجر وبيانات التواصل والدفع</h3>
+          <div class="form-grid">
+            <label>
+              اسم المتجر
+              <input name="storeName" required maxlength="80">
+            </label>
+            <label>
+              الجملة التعريفية (Tagline)
+              <input name="tagline" required maxlength="140">
+            </label>
+            <label>
+              رقم واتساب للطلبات
+              <input name="whatsapp" dir="ltr" type="tel" required placeholder="مثال: 01064806213 أو 201064806213">
+              <span class="field-hint">يمكنك إدخال الرقم بصيغته المحلية، وسيتم ضبط كود الدولة تلقائيًا.</span>
+            </label>
+            <label>
+              رقم فودافون كاش للدفع
+              <input name="paymentPhone" dir="ltr" type="tel" required pattern="01[0125][0-9]{8}" placeholder="010xxxxxxxx">
+            </label>
+            <label>
+              عنوان / حساب إنستاباي InstaPay (اختياري)
+              <input name="instapay" dir="ltr" placeholder="example@instapay أو رقم الهاتف">
+            </label>
+            <label>
+              مواعيد العمل والدعم
+              <input name="workingHours" maxlength="100" placeholder="مثال: متاحون يوميًا من 10 ص حتى 2 ص">
+            </label>
+            <div class="social-settings-block span-2">
+              <div class="social-input-row">
+                <label>
+                  رابط صفحة Instagram (اختياري)
+                  <input name="instagram" id="settingInstagram" dir="ltr" type="url" placeholder="https://www.instagram.com/yourpage">
+                </label>
+                <label class="checkbox-label social-toggle">
+                  <input type="checkbox" name="instagramEnabled" id="settingInstagramEnabled" checked>
+                  <span>تفعيل زر إنستغرام في الموقع</span>
+                </label>
+              </div>
+              <div class="social-input-row">
+                <label>
+                  رابط صفحة Facebook (اختياري)
+                  <input name="facebook" id="settingFacebook" dir="ltr" type="url" placeholder="https://www.facebook.com/yourpage">
+                </label>
+                <label class="checkbox-label social-toggle">
+                  <input type="checkbox" name="facebookEnabled" id="settingFacebookEnabled" checked>
+                  <span>تفعيل زر فيسبوك في الموقع</span>
+                </label>
+              </div>
+              <div class="social-input-row">
+                <label>
+                  رابط حساب TikTok (اختياري)
+                  <input name="tiktok" id="settingTiktok" dir="ltr" type="url" placeholder="https://www.tiktok.com/@yourpage">
+                </label>
+                <label class="checkbox-label social-toggle">
+                  <input type="checkbox" name="tiktokEnabled" id="settingTiktokEnabled" checked>
+                  <span>تفعيل زر تيك توك في الموقع</span>
+                </label>
+              </div>
+              <div class="social-input-row">
+                <label>
+                  رابط قناة Telegram (اختياري)
+                  <input name="telegram" id="settingTelegram" dir="ltr" type="url" placeholder="https://t.me/yourchannel">
+                </label>
+                <label class="checkbox-label social-toggle">
+                  <input type="checkbox" name="telegramEnabled" id="settingTelegramEnabled" checked>
+                  <span>تفعيل زر تيليجرام في الموقع</span>
+                </label>
+              </div>
+            </div>
+            <label class="span-2">
+              الشريط الإعلاني أعلى الموقع
+              <input name="announcement" maxlength="180" required>
+            </label>
+          </div>
+          <button type="submit" class="button button-red">
+            <i data-icon="save"></i>
+            <span>حفظ الإعدادات في المسودة</span>
+          </button>
+        </form>
+
+
+      </div>
+
+      <!-- Tab 4: Backup & Manual Publish -->
+      <div id="adminBackup" role="tabpanel" aria-labelledby="backupTab" hidden>
+        <div class="backup-grid">
+          <div class="panel">
+            <i data-icon="cloud-upload"></i>
+            <h3>نشر التغييرات على GitHub</h3>
+            <p>يتم تحديث ملف <code>assets/catalog.js</code> مباشرة في مستودعك. الاستضافة (مثل Cloudflare Pages) ستعيد النشر تلقائيًا.</p>
+            <button type="button" id="connectFromDraft" class="button button-dark">ربط GitHub</button>
+            <button type="button" id="reloadRemote" class="button button-outline" hidden>تحميل آخر نسخة من GitHub</button>
+          </div>
+          <div class="panel">
+            <i data-icon="download"></i>
+            <h3>نسخة احتياطية كاملة (JSON)</h3>
+            <p>نزّل نسخة كاملة لجميع الخدمات والباقات والأقسام والإعدادات، ويمكنك استعادتها في أي وقت بضغطة زر.</p>
+            <div class="button-row">
+              <button type="button" id="exportJson" class="button button-outline">تنزيل نسخة JSON</button>
+              <label class="button button-outline file-button">
+                استيراد نسخة
+                <input id="importJson" type="file" accept=".json,application/json">
+              </label>
+            </div>
+          </div>
+          <div class="panel">
+            <i data-icon="file-code-2"></i>
+            <h3>تنزيل catalog.js يدويًا</h3>
+            <p>حمّل ملف catalog.js المحدث مباشرة واستبدل الملف داخل مجلد assets في المستودع يدوياً.</p>
+            <button type="button" id="exportCatalog" class="button button-outline">تنزيل catalog.js</button>
+          </div>
+          <div class="panel">
+            <i data-icon="rotate-ccw"></i>
+            <h3>إدارة المسودة المحلية</h3>
+            <p>المسودة محفوظة بأمان في متصفحك. يمكنك التراجع عن التعديلات والعودة للنسخة الأساسية.</p>
+            <button type="button" id="discardDraft" class="button button-outline danger-text">إلغاء تغييرات المسودة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Orders & Receipts Management -->
+      <div id="adminOrders" role="tabpanel" aria-labelledby="ordersTab" hidden>
+        <div class="admin-toolbar">
+          <div>
+            <h3>سجل الطلبات وإيصالات التحويل</h3>
+            <p class="field-hint">استعرض إيصالات الدفع والتحويل المرفوعة من العملاء، وافحص تفاصيل كل طلب أو حمّل صورة الإيصال مباشرة.</p>
+          </div>
+          <div class="button-row" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <input type="search" id="ordersSearch" class="search-input" placeholder="بحث برقم الطلب أو الهاتف..." style="max-width:200px;font-size:0.85rem;padding:6px 12px;">
+            <select id="ordersStatusFilter" class="button button-outline small" aria-label="تصفية الطلبات حسب الحالة">
+              <option value="all">كل الحالات</option>
+              <option value="pending">قيد الانتظار</option>
+              <option value="paid">تم التحويل (مدفوع)</option>
+              <option value="processing">جاري التنفيذ</option>
+              <option value="delivered">تم التسليم</option>
+              <option value="cancelled">ملغي</option>
+            </select>
+            <button type="button" class="button button-outline danger-text small" id="clearOrdersHistoryBtn">
+              <i data-icon="trash-2"></i>
+              <span>مسح سجل الطلبات</span>
+            </button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>رقم الطلب والتاريخ</th>
+                <th>العميل والتواصل</th>
+                <th>الخدمات المطلوبة</th>
+                <th>المبلغ</th>
+                <th>طريقة الدفع</th>
+                <th>الحالة</th>
+                <th>إيصال التحويل</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersTableBody"></tbody>
+          </table>
+          <div class="empty-state" id="adminOrdersEmptyState" style="padding: 40px 20px; text-align: center;">
+            <i data-icon="shopping-bag" style="width:40px;height:40px;color:var(--muted);stroke-width:1.5;"></i>
+            <h4 style="margin-top:12px; font-weight: 700;">لا توجد طلبات مسجلة حتى الآن</h4>
+            <p style="color:var(--muted);font-size:0.85rem; max-width: 400px; margin: 6px auto 0;">عند إتمام أي عميل لطلب أو رفع إيصال تحويل بنكي ستظهر بياناته وصورته الكاملة هنا فورًا.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Featured Hero Card Management -->
+      <div id="adminFeatured" role="tabpanel" aria-labelledby="featuredTab" hidden>
+        <div class="admin-toolbar">
+          <div>
+            <h3>إدارة البطاقة المميزة في الواجهة (Hero Featured Card)</h3>
+            <p class="field-hint">تحكّم في العرض البارز أعلى الصفحة الرئيسية: العنوان، الباقة، الألوان، الأيقونة والسعر مع معاينة فورية.</p>
+          </div>
+          <div class="button-row">
+            <button type="button" class="button button-red small" id="saveFeaturedBtn">
+              <i data-icon="save"></i>
+              <span>حفظ في المسودة</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="featured-editor-grid">
+          <!-- Form controls -->
+          <form id="featuredForm" class="panel">
+            <div class="form-grid">
+              <div class="checkbox-group span-2">
+                <label class="checkbox-label" style="font-size: 0.95rem; font-weight: 800;">
+                  <input type="checkbox" id="fcEnabledInput" checked>
+                  <span>تفعيل وعرض البطاقة في الصفحة الرئيسية للزوار</span>
+                </label>
+              </div>
+
+              <!-- Theme Color Selector -->
+              <div class="span-2">
+                <label class="field-caption">نمط ولون البطاقة (Color Theme):</label>
+                <div class="theme-selector-chips" id="fcThemeSelector">
+                  <label class="theme-chip selected" data-theme="red">
+                    <input type="radio" name="fcTheme" value="red" checked hidden>
+                    <span class="theme-dot" style="background:#e11d48;"></span>
+                    <span>أحمر كينو</span>
+                  </label>
+                  <label class="theme-chip" data-theme="purple">
+                    <input type="radio" name="fcTheme" value="purple" hidden>
+                    <span class="theme-dot" style="background:#a855f7;"></span>
+                    <span>أرجواني غيمينغ</span>
+                  </label>
+                  <label class="theme-chip" data-theme="blue">
+                    <input type="radio" name="fcTheme" value="blue" hidden>
+                    <span class="theme-dot" style="background:#3b82f6;"></span>
+                    <span>أزرق سايبر</span>
+                  </label>
+                  <label class="theme-chip" data-theme="emerald">
+                    <input type="radio" name="fcTheme" value="emerald" hidden>
+                    <span class="theme-dot" style="background:#10b981;"></span>
+                    <span>زمردي نيون</span>
+                  </label>
+                  <label class="theme-chip" data-theme="amber">
+                    <input type="radio" name="fcTheme" value="amber" hidden>
+                    <span class="theme-dot" style="background:#f59e0b;"></span>
+                    <span>ذهبي بريميوم</span>
+                  </label>
+                  <label class="theme-chip" data-theme="dark">
+                    <input type="radio" name="fcTheme" value="dark" hidden>
+                    <span class="theme-dot" style="background:#334155;"></span>
+                    <span>أسود فاخر</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Link with Catalog Service -->
+              <label>
+                ربط بخدمة من الكتالوج (لتعبئة سريعة)
+                <select id="fcServiceSelect">
+                  <option value="">-- اختيار خدمة من المتجر --</option>
+                </select>
+              </label>
+
+              <label>
+                الباقة المرتبطة
+                <select id="fcPlanSelect">
+                  <option value="">-- اختيار الباقة --</option>
+                </select>
+              </label>
+
+              <label>
+                نص الشارة العلوية (Badge)
+                <input id="fcBadgeInput" maxlength="40" placeholder="مثال: الأكثر طلبًا أو عرض خاص">
+              </label>
+
+              <label>
+                الأيقونة الممثلة
+                <select id="fcIconSelect"></select>
+              </label>
+
+              <label>
+                السطر الأول للعنوان الرئيسي
+                <input id="fcTitle1Input" maxlength="50" placeholder="مثال: PLAY MORE" dir="ltr">
+              </label>
+
+              <label>
+                السطر الثاني للعنوان الرئيسي
+                <input id="fcTitle2Input" maxlength="50" placeholder="مثال: WITH KENO." dir="ltr">
+              </label>
+
+              <label class="span-2">
+                الوصف التعريفي للعرض
+                <textarea id="fcDescInput" rows="2" maxlength="200" placeholder="مثال: شحن ببجي العالمية — شحن فوري وآمن بالـ ID"></textarea>
+              </label>
+
+              <label>
+                كمية أو مسمى العرض (يسار)
+                <input id="fcQuantityInput" maxlength="50" placeholder="مثال: 325 شدة">
+              </label>
+
+              <label>
+                السعر المعروض (يمين)
+                <input id="fcPriceInput" maxlength="50" placeholder="مثال: 270 جنيه">
+              </label>
+
+              <label>
+                نص زر الطلب
+                <input id="fcButtonTextInput" maxlength="50" placeholder="مثال: شوف كل باقات ببجي">
+              </label>
+
+              <label>
+                العلامة الرأسية الجانبية (Tagline)
+                <input id="fcTaglineInput" maxlength="40" placeholder="مثال: KENO / FEATURED" dir="ltr">
+              </label>
+            </div>
+          </form>
+
+          <!-- Live Preview Side -->
+          <div class="featured-preview-column">
+            <div class="preview-sticky-wrap">
+              <div class="preview-header">
+                <h4><i data-icon="eye"></i> معاينة حية وفورية للبطاقة</h4>
+                <span class="preview-badge">تحديث مباشر</span>
+              </div>
+              <div class="preview-container">
+                <div class="hero-feature hero-theme-red" id="adminHeroPreview">
+                  <div class="feature-top">
+                    <span class="pill pill-light" id="previewBadge">الأكثر طلبًا</span>
+                    <i data-icon="gamepad-2" id="previewIcon"></i>
+                  </div>
+                  <div class="feature-word" dir="ltr" id="previewTitle">
+                    <span id="previewTitleLine1">PLAY MORE</span>
+                    <span id="previewTitleLine2">WITH KENO.</span>
+                  </div>
+                  <p id="previewDescription">شحن ببجي العالمية — شحن فوري وآمن بالـ ID</p>
+                  <div class="feature-offer">
+                    <strong id="previewQuantity">325 <small>شدة</small></strong>
+                    <span class="feature-divider" aria-hidden="true"></span>
+                    <strong id="previewPrice">270 <small>جنيه</small></strong>
+                  </div>
+                  <button type="button" class="button feature-button" id="previewButton" tabindex="-1">
+                    <span id="previewButtonText">شوف كل باقات ببجي</span>
+                    <i data-icon="arrow-left"></i>
+                  </button>
+                  <span class="feature-index" id="previewTagline" aria-hidden="true">KENO / FEATURED</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <div>
+        <a href="#home" class="brand" aria-label="كينو ستور">
+          <img src="./assets/logo.png" width="525" height="147" alt="Keno Store" loading="lazy" decoding="async">
+        </a>
+        <p id="footerTagline">كل خدماتك الرقمية في مكان واحد.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#catalog">تصفّح الخدمات</a>
+        <button type="button" class="contact-trigger">تواصل معنا</button>
+        <button type="button" class="copy-vodafone-quick">نسخ رقم فودافون كاش</button>
+        <button type="button" class="copy-instapay-quick" id="footerInstaBtn" hidden>نسخ إنستاباي</button>
+        <div class="footer-social-links" id="footerSocialLinks">
+          <a id="instagramLink" class="footer-social-btn instagram-btn" hidden target="_blank" rel="noopener noreferrer" aria-label="حساب كينو ستور على إنستغرام">
+            <i data-icon="instagram"></i>
+            <span>Instagram</span>
+          </a>
+          <a id="facebookLink" class="footer-social-btn facebook-btn" hidden target="_blank" rel="noopener noreferrer" aria-label="صفحة كينو ستور على فيسبوك">
+            <i data-icon="facebook"></i>
+            <span>Facebook</span>
+          </a>
+          <a id="tiktokLink" class="footer-social-btn tiktok-btn" hidden target="_blank" rel="noopener noreferrer" aria-label="حساب كينو ستور على تيك توك">
+            <i data-icon="tiktok"></i>
+            <span>TikTok</span>
+          </a>
+          <a id="telegramLink" class="footer-social-btn telegram-btn" hidden target="_blank" rel="noopener noreferrer" aria-label="قناة كينو ستور على تيليجرام">
+            <i data-icon="telegram"></i>
+            <span>Telegram</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="currentYear">2026</span> <span id="footerStoreName">Keno Store</span> — جميع الحقوق محفوظة.</span>
+      <span>أسماء المنصات والألعاب علامات تجارية لأصحابها؛ كينو متجر مستقل لتقديم الخدمات.</span>
+    </div>
+  </footer>
+
+  <!-- Floating Help & Contact Button -->
+  <aside aria-label="مساعدة سريعة">
+    <button type="button" class="floating-contact contact-trigger" aria-label="تواصل مع كينو على واتساب">
+      <i data-icon="message-circle"></i>
+      <span>محتاج مساعدة؟</span>
+    </button>
+  </aside>
+
+  <!-- Draft Preview Sticky Banner -->
+  <div class="draft-preview-bar" id="draftPreviewBar" hidden role="region" aria-label="شريط معاينة المسودة">
+    <span>أنت الآن في وضع «معاينة المسودة» — التعديلات لم تُنشر بعد للزوار.</span>
+    <button type="button" class="button button-yellow small" id="returnFromPreview">العودة للوحة الإدارة</button>
+  </div>
+
+  <!-- Service Details & Order Dialog -->
+  <dialog id="serviceDialog" class="service-dialog modern-service-checkout" aria-labelledby="serviceDialogTitle">
+    <!-- 1. Header -->
+    <div class="dialog-header service-checkout-header">
+      <div class="dialog-header-info">
+        <span class="dialog-category-badge" id="dialogCategory"></span>
+        <h2 id="serviceDialogTitle" class="dialog-service-title"></h2>
+        <p id="dialogDescription" class="dialog-service-desc"></p>
+      </div>
+      <div class="dialog-header-actions">
+        <button type="button" class="icon-btn" id="shareServiceBtn" title="مشاركة رابط الخدمة" aria-label="مشاركة رابط الخدمة">
+          <i data-icon="share-2"></i>
+        </button>
+        <button type="button" class="icon-btn" data-close-dialog="serviceDialog" aria-label="إغلاق تفاصيل الخدمة">
+          <i data-icon="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Scrollable Body -->
+    <div class="dialog-scroll checkout-scroll-body">
+      <!-- Service Important Notes Card -->
+      <div id="serviceNotes" class="service-notes-card" hidden></div>
+
+      <!-- Step 1: Plan Selection Section -->
+      <section class="checkout-step-section" id="planSelectionSection">
+        <div class="checkout-step-header">
+          <span class="step-number-badge">1</span>
+          <div>
+            <h3 class="step-title">اختر الباقة أو العرض المناسب</h3>
+            <p class="step-desc">حدد الباقة المطلوبة لمعرفة السعر الفوري ومميزات التنفيذ.</p>
+          </div>
+        </div>
+
+        <!-- Plan Selection Grid Container -->
+        <div id="planGroups" class="service-plans-container"></div>
+
+        <!-- Quote Fields for On-Demand Services -->
+        <div id="quoteFields" class="quote-fields-card" hidden>
+          <label>
+            تفاصيل ومواصفات طلبك
+            <textarea id="quoteDetails" rows="3" maxlength="800" placeholder="اكتب اسم اللعبة أو التطبيق، الرابط، المدة أو الكمية المطلوبة بدقة..."></textarea>
+          </label>
+        </div>
+      </section>
+
+      <!-- Step 2: Customer / Account Info Section -->
+      <section class="checkout-step-section" id="accountInfoSection">
+        <div class="checkout-step-header">
+          <span class="step-number-badge">2</span>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <h3 class="step-title">بيانات الحساب / الشحن</h3>
+              <span class="account-badge-pill" id="accountFieldBadge">مطلوب للتنفيذ</span>
+            </div>
+            <p class="step-desc" id="accountFieldDesc">اكتب معرف اللاعب (Player ID) أو إيميل الحساب لتنفيذ طلبك مباشرة وبدقة.</p>
+          </div>
+        </div>
+
+        <div class="account-input-card">
+          <div class="account-input-wrapper">
+            <label for="customerAccount" class="visually-hidden">بيانات الحساب أو المعرف</label>
+            <div class="input-with-icon">
+              <i data-icon="user-check"></i>
+              <input id="customerAccount" maxlength="200" placeholder="مثال: PUBG Player ID أو إيميل الحساب أو المعرّف" autocomplete="off">
+            </div>
+          </div>
+
+          <!-- Collapsible / Neat Order Note -->
+          <div class="order-note-wrap">
+            <label for="orderNote" class="order-note-sublabel">
+              <i data-icon="file-text"></i>
+              <span>ملاحظة أو تعليمات إضافية (اختياري)</span>
+            </label>
+            <textarea id="orderNote" rows="2" maxlength="500" placeholder="أي تفاصيل خاصة ترغب في إبلاغها لفريق كينو مع الطلب..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Payment Methods Section -->
+      <section class="checkout-step-section" id="paymentSelectionSection">
+        <div class="checkout-step-header">
+          <span class="step-number-badge">3</span>
+          <div>
+            <h3 class="step-title">طريقة الدفع المفضلة</h3>
+            <p class="step-desc">اختر وسيلة الدفع؛ يتم تأكيد التحويل بأمان مع خدمة عملاء كينو.</p>
+          </div>
+        </div>
+
+        <!-- Dynamic Payment Methods Selection Block -->
+        <div class="payment-methods-section">
+          <div id="dialogPaymentMethods" class="payment-methods-selector"></div>
+        </div>
+
+        <!-- Compact Optional Payment Proof & Transfer Number -->
+        <details class="payment-proof-accordion" id="paymentProofAccordion">
+          <summary class="payment-proof-summary">
+            <div class="summary-left">
+              <i data-icon="upload-cloud"></i>
+              <span>هل قمت بالتحويل مسبقًا؟ إرفاق إيصال أو رقم المحفظة (اختياري)</span>
+            </div>
+            <i data-icon="chevron-down" class="accordion-arrow"></i>
+          </summary>
+          <div class="payment-proof-drawer">
+            <div class="receipt-upload-box">
+              <div class="receipt-dropzone small-dropzone" id="dialogReceiptDropzone">
+                <input type="file" id="dialogReceiptFile" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
+                <div class="dropzone-inner" id="dialogDropzonePrompt">
+                  <div class="dropzone-icon" style="font-size: 1.2rem;"><i data-icon="upload"></i></div>
+                  <h4 style="font-size: 0.85rem; margin: 4px 0;">إرفاق إيصال التحويل (اختياري)</h4>
+                  <p style="font-size: 0.75rem;">اضغط لاختيار صورة إثبات التحويل إذا قمت بالتحويل مسبقًا.</p>
+                </div>
+                <div class="dropzone-loading" id="dialogDropzoneLoading" hidden>
+                  <div class="spinner"></div>
+                  <span>جاري ضغط الإيصال...</span>
+                </div>
+              </div>
+
+              <div class="receipt-preview-card" id="dialogReceiptPreviewCard" hidden>
+                <div class="receipt-preview-thumb">
+                  <img id="dialogReceiptPreviewImg" alt="معاينة الإيصال" src="">
+                </div>
+                <div class="receipt-preview-details">
+                  <div class="receipt-file-name" id="dialogReceiptFileName">receipt.jpg</div>
+                  <div class="receipt-file-size" id="dialogReceiptFileSize">0 KB</div>
+                  <div class="receipt-actions">
+                    <button type="button" class="button button-outline danger-outline small" id="dialogRemoveReceiptBtn">
+                      <i data-icon="trash-2"></i>
+                      <span>حذف</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="transferDetailsBlock" style="margin-top: 12px;">
+              <label>
+                رقم المحفظة أو الحساب المحول منه (اختياري)
+                <input id="transferNumber" maxlength="50" placeholder="01xxxxxxxxx أو رقم حسابك" dir="ltr">
+              </label>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- Step 4: Order Summary Card -->
+      <section class="checkout-summary-section">
+        <div class="order-summary-card" id="orderSummaryCard">
+          <div class="summary-card-header">
+            <div class="summary-title-wrap">
+              <i data-icon="receipt"></i>
+              <h4>ملخص الطلب</h4>
+            </div>
+            <span class="summary-trust-badge">
+              <i data-icon="shield-check"></i>
+              <span>تنفيذ فوري وآمن</span>
+            </span>
+          </div>
+
+          <div class="summary-rows-wrap">
+            <div class="summary-row">
+              <span class="summary-row-label">الخدمة:</span>
+              <strong class="summary-row-val" id="summaryServiceName">-</strong>
+            </div>
+            <div class="summary-row">
+              <span class="summary-row-label">الباقة المختارة:</span>
+              <span class="summary-row-val" id="summaryPlanLabel">-</span>
+            </div>
+            <div class="summary-row summary-total-row">
+              <span class="summary-row-label">الإجمالي المطلوب:</span>
+              <div class="summary-price-box">
+                <strong class="summary-price-amount" id="selectedPrice">0 جنيه</strong>
+                <del id="selectedOriginalPrice" class="summary-price-original" hidden></del>
+                <span id="summarySavingsBadge" class="summary-savings-tag" hidden></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 3. Dialog Order Footer & Action Buttons -->
+    <div class="dialog-order-footer modern-checkout-footer">
+      <div class="footer-price-info">
+        <span class="footer-plan-subtitle" id="selectedPlanLabel">اختار الباقة المناسبة</span>
+        <div class="price-display-wrapper">
+          <strong id="footerDisplayPrice" class="footer-big-price"></strong>
+        </div>
+      </div>
+      <div class="footer-actions-group">
+        <!-- Secondary: Add to Cart -->
+        <button type="button" class="button button-outline footer-cart-btn" id="addToCartBtn">
+          <i data-icon="shopping-cart"></i>
+          <span>أضف للسلة</span>
+        </button>
+        <!-- Primary: Instant WhatsApp Order -->
+        <button type="button" class="button button-red footer-order-btn" id="orderButton">
+          <i data-icon="message-circle"></i>
+          <span>اطلب فورًا على واتساب</span>
+        </button>
+      </div>
+      <div class="dialog-footer-sub">
+        <button type="button" class="text-button small" id="copyOrderButton">
+          <i data-icon="copy"></i>
+          <span>نسخ تفاصيل الطلب للحافظة</span>
+        </button>
+        <p class="footer-note-text">يتم تجهيز رسالة طلبك مع كود مرجعي مباشر. السعر والإتاحة والتنفيذ يتأكدوا معك فوراً عبر واتساب.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Service Editor Dialog -->
+  <dialog id="editorDialog" class="editor-dialog" aria-labelledby="editorTitle">
+    <form id="serviceForm">
+      <div class="dialog-header">
+        <h2 id="editorTitle">تعديل الخدمة</h2>
+        <button type="button" class="icon-btn" data-close-dialog="editorDialog" aria-label="إغلاق محرر الخدمة">
+          <i data-icon="x"></i>
+        </button>
+      </div>
+      <div class="dialog-scroll">
+        <div class="form-grid">
+          <label>
+            اسم الخدمة
+            <input name="name" required maxlength="100">
+          </label>
+          <label>
+            القسم
+            <select name="category" id="editorCategory"></select>
+          </label>
+          <label class="span-2">
+            وصف مختصر للخدمة
+            <textarea name="description" required maxlength="500" rows="2"></textarea>
+          </label>
+          <label>
+            رمز / اسم مختصر على البطاقة (Mark)
+            <input name="mark" required maxlength="20" dir="auto" placeholder="مثال: PUBG, NETFLIX">
+          </label>
+          <label>
+            لون خلفية البطاقة
+            <select name="color" id="editorColor">
+              <option value="red">أحمر كينو</option>
+              <option value="gold">ذهبي / أصفر</option>
+              <option value="blue">أزرق</option>
+              <option value="green">أخضر</option>
+              <option value="orange">برتقالي</option>
+              <option value="dark">داكن</option>
+            </select>
+          </label>
+          <label>
+            الأيقونة الممثلة
+            <select name="icon" id="editorIcon"></select>
+          </label>
+          <label>
+            شارة ترويجية مميزة (Badge)
+            <select name="badge" id="editorBadge">
+              <option value="">بدون شارة</option>
+              <option value="🔥 الأكثر مبيعًا">🔥 الأكثر مبيعًا</option>
+              <option value="⚡ عرض خاص">⚡ عرض خاص</option>
+              <option value="🚀 شحن فوري">🚀 شحن فوري</option>
+              <option value="👑 حصري لكينو">👑 حصري لكينو</option>
+              <option value="🛡️ ضمان كامل">🛡️ ضمان كامل</option>
+            </select>
+          </label>
+          <label class="span-2">
+            كلمات البحث الإضافية والمرادفات (Aliases)
+            <input name="aliases" id="editorAliases" maxlength="400" placeholder="مثال: بوبجي، شدات، uc، العاب، شحن">
+            <span class="field-hint">تساعد الزوار في الوصول للخدمة عند البحث بأسماء أو أخطاء شائعة.</span>
+          </label>
+          <label class="span-2">
+            رابط صورة خارجية للخدمة (اختياري)
+            <input name="image" id="editorImage" type="url" placeholder="https://example.com/logo.png">
+          </label>
+          <div class="span-2">
+            <label>
+              أو رفع صورة من الجهاز (يتم ضغطها وتصغيرها تلقائيًا)
+              <input id="editorImageFile" type="file" accept="image/png,image/jpeg,image/webp">
+            </label>
+            <div id="imagePreview" class="upload-preview" hidden></div>
+          </div>
+          <div class="checkbox-group span-2">
+            <label class="checkbox-label">
+              <input type="checkbox" name="visible">
+              <span>تظهر في المتجر للزوار</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="featured">
+              <span>ضمن مختارات كينو المميزة (Featured)</span>
+            </label>
+          </div>
+          <label class="span-2">
+            شروط وملاحظات الخدمة (كل شرط في سطر منفصل)
+            <textarea name="notes" rows="3" maxlength="3000" placeholder="مثال: شحن بالـ Player ID فقط دون الحاجة لكلمة السر"></textarea>
+          </label>
+        </div>
+
+        <!-- Plans Manager in Editor -->
+        <div class="editor-plans-title">
+          <h3>الباقات والأسعار بالجنيه المصري</h3>
+          <button type="button" id="addPlanButton" class="button button-outline small">
+            <i data-icon="plus"></i>
+            <span>باقة جديدة</span>
+          </button>
+        </div>
+        <p class="field-hint">يمكنك إضافة سعر أصلي اختياري قبل الخصم لإظهار نسبة التوفير للعميل.</p>
+        <div id="editorPlans" class="editor-plans"></div>
+        <p id="editorError" class="form-error" role="alert" hidden></p>
+      </div>
+      <div class="editor-footer">
+        <div class="button-row">
+          <button type="submit" class="button button-red">
+            <i data-icon="save"></i>
+            <span>حفظ الخدمة في المسودة</span>
+          </button>
+          <button type="button" id="cloneServiceButton" class="button button-outline small" hidden>
+            <i data-icon="copy"></i>
+            <span>نسخ كخدمة جديدة</span>
+          </button>
+        </div>
+        <button type="button" id="deleteServiceButton" class="text-button danger-text">
+          <i data-icon="trash-2"></i>
+          <span>حذف الخدمة</span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Category Editor Dialog -->
+  <dialog id="categoryDialog" class="editor-dialog" aria-labelledby="categoryDialogTitle">
+    <form id="categoryForm">
+      <div class="dialog-header">
+        <h2 id="categoryDialogTitle">إضافة قسم جديد</h2>
+        <button type="button" class="icon-btn" data-close-dialog="categoryDialog" aria-label="إغلاق نافذة القسم">
+          <i data-icon="x"></i>
+        </button>
+      </div>
+      <div class="dialog-scroll">
+        <div class="form-grid">
+          <label>
+            اسم القسم بالعربية
+            <input name="catName" id="catNameInput" required maxlength="80" placeholder="مثال: بطاقات الهدايا والشحن">
+          </label>
+          <label>
+            معرّف القسم الإنجليزي (ID)
+            <input name="catId" id="catIdInput" required maxlength="50" pattern="[a-z0-9-]+" placeholder="مثال: gift-cards" dir="ltr">
+            <span class="field-hint">أحرف إنجليزية صغيرة وأرقام وشرطات فقط.</span>
+          </label>
+          <label class="span-2">
+            أيقونة القسم
+            <select name="catIcon" id="catIconSelect"></select>
+          </label>
+        </div>
+        <p id="categoryError" class="form-error" role="alert" hidden></p>
+      </div>
+      <div class="editor-footer">
+        <button type="submit" class="button button-red">
+          <i data-icon="save"></i>
+          <span>حفظ القسم</span>
+        </button>
+        <button type="button" class="button button-outline" data-close-dialog="categoryDialog">إلغاء</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Payment Method Editor Dialog -->
+  <dialog id="paymentDialog" class="editor-dialog" aria-labelledby="paymentDialogTitle">
+    <form id="paymentForm">
+      <div class="dialog-header">
+        <h2 id="paymentDialogTitle">إضافة وسيلة دفع جديدة</h2>
+        <button type="button" class="icon-btn" data-close-dialog="paymentDialog" aria-label="إغلاق نافذة وسيلة الدفع">
+          <i data-icon="x"></i>
+        </button>
+      </div>
+      <div class="dialog-scroll">
+        <!-- Quick template selector -->
+        <div class="preset-row" id="paymentPresetContainer">
+          <label>
+            اختر من النماذج الجاهزة لتعبئة سريعة (اختياري):
+            <select id="paymentTemplateSelect" class="button button-outline small">
+              <option value="">-- اختيار وسيلة شائعة --</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            اسم وسيلة الدفع بالعربية
+            <input name="pmName" id="pmNameInput" required maxlength="80" placeholder="مثال: فودافون كاش أو إنستاباي">
+          </label>
+          <label>
+            المعرّف الإنجليزي (ID)
+            <input name="pmId" id="pmIdInput" required maxlength="50" pattern="[a-z0-9-]+" placeholder="مثال: vodafone-cash" dir="ltr">
+            <span class="field-hint">أحرف إنجليزية صغيرة وأرقام وشرطات فقط.</span>
+          </label>
+          <label>
+            رقم الهاتف أو المعرّف / المحفظة
+            <input name="pmNumber" id="pmNumberInput" required maxlength="80" placeholder="مثال: 01064806213 أو name@instapay" dir="ltr">
+          </label>
+          <label>
+            اسم صاحب الحساب الظاهر للعميل
+            <input name="pmAccountName" id="pmAccountNameInput" maxlength="80" placeholder="مثال: Keno Store أو اسمك">
+            <span class="field-hint">يظهر للعميل ليتأكد من صحة التحويل قبل إتمام الدفع.</span>
+          </label>
+          <label class="span-2">
+            رابط الدفع المباشر (اختياري)
+            <input name="pmLink" id="pmLinkInput" type="url" maxlength="500" placeholder="مثال: https://telda.me/pay/kenostore" dir="ltr">
+            <span class="field-hint">إذا وفّرت رابطًا، سيظهر للعميل زر لنسخ الرابط وزر الانتقال المباشر للدفع.</span>
+          </label>
+          <label>
+            الأيقونة الممثلة
+            <select name="pmIcon" id="pmIconSelect"></select>
+          </label>
+          <div class="checkbox-group" style="align-self: center;">
+            <label class="checkbox-label">
+              <input type="checkbox" name="pmEnabled" id="pmEnabledInput" checked>
+              <span>مفعّلة وتظهر للعملاء في شاشة الطلب</span>
+            </label>
+          </div>
+          <label class="span-2">
+            وصف وإرشادات التحويل للعميل (اختياري)
+            <textarea name="pmDescription" id="pmDescriptionInput" rows="2" maxlength="300" placeholder="مثال: تحويل كاش إلى المحفظة مباشرة من أي محفظة إلكترونية."></textarea>
+          </label>
+        </div>
+        <p id="paymentError" class="form-error" role="alert" hidden></p>
+      </div>
+      <div class="editor-footer">
+        <button type="submit" class="button button-red">
+          <i data-icon="save"></i>
+          <span>حفظ وسيلة الدفع</span>
+        </button>
+        <button type="button" class="button button-outline" data-close-dialog="paymentDialog">إلغاء</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Generic Confirm Dialog -->
+  <dialog id="confirmDialog" class="confirm-dialog" aria-labelledby="confirmTitle">
+    <h2 id="confirmTitle"></h2>
+    <p id="confirmText"></p>
+    <div class="button-row">
+      <button type="button" id="confirmAccept" class="button button-red">تأكيد</button>
+      <button type="button" id="confirmCancel" class="button button-outline">رجوع</button>
+    </div>
+  </dialog>
+
+  <!-- Order Details Inspection & Management Dialog -->
+  <dialog id="orderDetailsDialog" class="order-details-dialog editor-dialog" aria-labelledby="orderModalTitle">
+    <div class="dialog-header">
+      <div>
+        <span class="eyebrow" id="orderModalCode">#KENO-0000</span>
+        <h2 id="orderModalTitle">تفاصيل وحالة الطلب</h2>
+      </div>
+      <button type="button" class="icon-btn" data-close-dialog="orderDetailsDialog" aria-label="إغلاق تفاصيل الطلب">
+        <i data-icon="x"></i>
+      </button>
+    </div>
+    <div class="dialog-scroll">
+      <!-- Order Summary Grid -->
+      <div class="order-modal-grid">
+        <div class="panel order-modal-panel">
+          <div class="order-modal-section-title">
+            <i data-icon="user"></i>
+            <strong>بيانات العميل والتواصل</strong>
+          </div>
+          <div class="order-info-rows">
+            <div class="info-row">
+              <span class="info-label">اسم العميل:</span>
+              <strong class="info-val" id="orderModalCustomerName">—</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-label">رقم الهاتف / واتساب:</span>
+              <strong class="info-val" id="orderModalCustomerPhone" dir="ltr">—</strong>
+            </div>
+            <div class="info-row" id="orderModalEmailRow" hidden>
+              <span class="info-label">البريد الإلكتروني:</span>
+              <span class="info-val" id="orderModalCustomerEmail" dir="ltr">—</span>
+            </div>
+            <div class="info-row" id="orderModalAccountRow" hidden>
+              <span class="info-label">بيانات الحساب / ID:</span>
+              <strong class="info-val" id="orderModalCustomerAccount" dir="ltr">—</strong>
+            </div>
+            <div class="info-row" id="orderModalNotesRow" hidden>
+              <span class="info-label">ملاحظات العميل:</span>
+              <span class="info-val" id="orderModalCustomerNotes">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">تاريخ ووقت الطلب:</span>
+              <span class="info-val" id="orderModalDate">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel order-modal-panel">
+          <div class="order-modal-section-title">
+            <i data-icon="credit-card"></i>
+            <strong>معلومات الدفع وتحديث الحالة</strong>
+          </div>
+          <div class="order-info-rows">
+            <div class="info-row">
+              <span class="info-label">وسيلة الدفع:</span>
+              <strong class="info-val" id="orderModalPaymentMethod">—</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-label">إجمالي المبلغ:</span>
+              <strong class="info-val total-amount" id="orderModalTotalAmount">0 ج.م</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-label">حالة الطلب:</span>
+              <span id="orderModalStatusBadge" class="status-pill">قيد الانتظار</span>
+            </div>
+            <div class="status-changer-box" style="margin-top:12px;">
+              <label for="orderModalStatusSelect" class="field-caption" style="font-weight:700;display:block;margin-bottom:4px;">تحديث حالة الطلب السحابية:</label>
+              <select id="orderModalStatusSelect" class="button button-outline" style="width:100%;">
+                <option value="pending">قيد الانتظار (Pending)</option>
+                <option value="paid">تم التحويل / مدفوع (Paid)</option>
+                <option value="processing">جاري التنفيذ (Processing)</option>
+                <option value="delivered">تم التسليم بنجاح (Delivered)</option>
+                <option value="cancelled">ملغي (Cancelled)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items Table -->
+      <div class="panel" style="margin-top:16px;">
+        <div class="order-modal-section-title">
+          <i data-icon="shopping-bag"></i>
+          <strong>الخدمات والباقات المطلوبة</strong>
+        </div>
+        <div class="table-container" style="margin-top:10px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>الخدمة</th>
+                <th>الباقة المحددة</th>
+                <th>الكمية</th>
+                <th>السعر</th>
+              </tr>
+            </thead>
+            <tbody id="orderModalItemsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Receipt Preview Block -->
+      <div class="panel" id="orderModalReceiptPanel" style="margin-top:16px;" hidden>
+        <div class="order-modal-section-title">
+          <i data-icon="receipt"></i>
+          <strong>إيصال التحويل المرفق مع الطلب</strong>
+        </div>
+        <div style="margin-top:10px;text-align:center;">
+          <img id="orderModalReceiptImg" alt="إيصال التحويل" style="max-width:100%;max-height:260px;border-radius:10px;cursor:pointer;border:1px solid var(--border);">
+          <div style="margin-top:8px;">
+            <button type="button" class="button button-outline small" id="orderModalViewReceiptFullBtn">
+              <i data-icon="maximize"></i>
+              <span>عرض بالحجم الكامل</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-footer" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <button type="button" class="button button-outline" data-close-dialog="orderDetailsDialog">إغلاق</button>
+      <div class="button-row" style="display:flex;gap:8px;">
+        <a id="orderModalWhatsAppCustomerBtn" target="_blank" rel="noopener noreferrer" class="button button-outline small">
+          <i data-icon="message-circle"></i>
+          <span>مراسلة العميل عبر واتساب</span>
+        </a>
+        <button type="button" id="orderModalDeleteBtn" class="button button-outline danger-text small">
+          <i data-icon="trash-2"></i>
+          <span>حذف الطلب</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Receipt Fullscreen Inspection Dialog -->
+  <dialog id="receiptViewerDialog" class="receipt-dialog" aria-labelledby="receiptViewerTitle">
+    <div class="dialog-header">
+      <div>
+        <span class="eyebrow" id="receiptViewerOrderCode">#KENO-0000</span>
+        <h2 id="receiptViewerTitle">إيصال التحويل البنكي</h2>
+      </div>
+      <button type="button" class="icon-btn" data-close-dialog="receiptViewerDialog" aria-label="إغلاق معاينة الإيصال">
+        <i data-icon="x"></i>
+      </button>
+    </div>
+    <div class="dialog-scroll receipt-view-scroll">
+      <div class="receipt-image-wrapper">
+        <img id="receiptViewerImg" alt="صورة إيصال التحويل الكاملة" src="">
+      </div>
+      <div class="receipt-viewer-meta" id="receiptViewerMeta"></div>
+    </div>
+    <div class="dialog-order-footer">
+      <div class="button-row">
+        <button type="button" class="button button-outline" data-close-dialog="receiptViewerDialog">إغلاق</button>
+        <button type="button" class="button button-red" id="downloadReceiptBtn">
+          <i data-icon="download"></i>
+          <span>تحميل صورة الإيصال</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Fallback for JavaScript Disabled -->
+  <noscript>
+    <div class="noscript">
+      يتطلب موقع كينو تفعيل JavaScript لعرض الخدمات والأسعار وحساب الباقات. للتواصل المباشر عبر الهاتف أو واتساب: 01064806213.
+    </div>
+  </noscript>
+</body>
+</html>
