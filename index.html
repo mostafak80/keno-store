@@ -765,44 +765,103 @@
         </button>
       </div>
 
-      <!-- Tab 1: Services Management -->
+      <!-- Tab 1: Services & Pricing Management -->
       <div id="adminServices" role="tabpanel" aria-labelledby="servicesTab">
-        <div class="admin-toolbar">
-          <label class="search-field">
-            <i data-icon="search"></i>
-            <input type="search" id="adminSearch" placeholder="ابحث عن خدمة لتعديلها..." aria-label="بحث في خدمات الإدارة">
-          </label>
-          <div class="button-row">
-            <select id="adminCategoryFilter" class="button button-outline small" aria-label="تصفية حسب القسم">
-              <option value="all">كل الأقسام</option>
-            </select>
-            <select id="adminStatusFilter" class="button button-outline small" aria-label="تصفية حسب الحالة">
-              <option value="all">كل الحالات</option>
-              <option value="visible">الظاهرة للزوار</option>
-              <option value="hidden">المخفية</option>
-              <option value="featured">المميزة فقط</option>
-            </select>
-            <button type="button" id="addServiceButton" class="button button-red">
-              <i data-icon="plus"></i>
-              <span>إضافة خدمة جديدة</span>
-            </button>
+        <!-- View Switcher -->
+        <div class="admin-view-toggle">
+          <button type="button" class="view-toggle-btn active" id="viewServicesBtn">
+            <i data-icon="layout-grid"></i>
+            <span>عرض بطاقات الخدمات</span>
+          </button>
+          <button type="button" class="view-toggle-btn" id="viewAllPlansBtn">
+            <i data-icon="tags"></i>
+            <span>جدول كل الباقات والأسعار</span>
+          </button>
+        </div>
+
+        <!-- 1A: Services Management View -->
+        <div id="servicesGridView">
+          <div class="admin-toolbar">
+            <label class="search-field">
+              <i data-icon="search"></i>
+              <input type="search" id="adminSearch" placeholder="ابحث عن خدمة لتعديلها..." aria-label="بحث في خدمات الإدارة">
+            </label>
+            <div class="button-row">
+              <select id="adminCategoryFilter" class="button button-outline small" aria-label="تصفية حسب القسم">
+                <option value="all">كل الأقسام</option>
+              </select>
+              <select id="adminStatusFilter" class="button button-outline small" aria-label="تصفية حسب الحالة">
+                <option value="all">كل الحالات</option>
+                <option value="visible">الظاهرة للزوار</option>
+                <option value="hidden">المخفية</option>
+                <option value="featured">المميزة فقط</option>
+              </select>
+              <button type="button" id="addServiceButton" class="button button-red">
+                <i data-icon="plus"></i>
+                <span>إضافة خدمة جديدة</span>
+              </button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>الخدمة</th>
+                  <th>القسم</th>
+                  <th>عدد الباقات</th>
+                  <th>تبدأ من</th>
+                  <th>الحالة</th>
+                  <th>ترتيب</th>
+                  <th>إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody"></tbody>
+            </table>
           </div>
         </div>
-        <div class="table-container">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>الخدمة</th>
-                <th>القسم</th>
-                <th>عدد الباقات</th>
-                <th>تبدأ من</th>
-                <th>الحالة</th>
-                <th>ترتيب</th>
-                <th>إجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody"></tbody>
-          </table>
+
+        <!-- 1B: Master Pricing Table View (Storewide Packages) -->
+        <div id="allPlansMasterView" hidden>
+          <div class="admin-toolbar">
+            <label class="search-field">
+              <i data-icon="search"></i>
+              <input type="search" id="masterPlanSearch" placeholder="ابحث عن أي باقة في المتجر..." aria-label="بحث في كل الباقات">
+            </label>
+            <div class="button-row">
+              <select id="masterPlanCategoryFilter" class="button button-outline small" aria-label="تصفية حسب القسم">
+                <option value="all">كل الأقسام</option>
+              </select>
+              <select id="masterPlanServiceFilter" class="button button-outline small" aria-label="تصفية حسب الخدمة">
+                <option value="all">كل الخدمات</option>
+              </select>
+              <select id="masterPlanStatusFilter" class="button button-outline small" aria-label="تصفية حسب التوفر">
+                <option value="all">كل الحالات</option>
+                <option value="active">متاحة للطلب</option>
+                <option value="inactive">غير متاحة</option>
+              </select>
+            </div>
+          </div>
+          <div class="plans-table-wrapper">
+            <table class="plans-compact-table" id="masterPlansTable">
+              <thead>
+                <tr>
+                  <th scope="col" style="width:20%;">اسم الباقة</th>
+                  <th scope="col" style="width:16%;">الخدمة</th>
+                  <th scope="col" style="width:14%;">القسم</th>
+                  <th scope="col" style="width:14%;">السعر الحالي</th>
+                  <th scope="col" style="width:14%;">قبل الخصم</th>
+                  <th scope="col" style="width:10%;">المجموعة</th>
+                  <th scope="col" style="width:8%;">الحالة</th>
+                  <th scope="col" style="width:10%; text-align:center;">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="masterPlansTableBody"></tbody>
+            </table>
+            <div id="masterPlansEmptyNotice" class="plans-empty-notice" hidden>
+              <i data-icon="inbox"></i>
+              <p>لا توجد باقات مطابقة للتصفية أو البحث المحدد.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1270,6 +1329,11 @@
       </div>
     </div>
 
+    <!-- Optional Hero Banner for Services with Images -->
+    <div id="serviceDialogBanner" class="dialog-service-banner" hidden>
+      <img id="serviceDialogBannerImg" src="" alt="Service Banner" loading="lazy" decoding="async">
+    </div>
+
     <!-- 2. Scrollable Body -->
     <div class="dialog-scroll checkout-scroll-body">
       <!-- Service Important Notes Card -->
@@ -1520,16 +1584,30 @@
             <input name="aliases" id="editorAliases" maxlength="400" placeholder="مثال: بوبجي، شدات، uc، العاب، شحن">
             <span class="field-hint">تساعد الزوار في الوصول للخدمة عند البحث بأسماء أو أخطاء شائعة.</span>
           </label>
+          <!-- Image Guidelines & Live Preview -->
+          <div id="imageGuidelinesBox" class="span-2 image-guidelines-box">
+            <div class="guideline-badge">
+              <i data-icon="image"></i>
+              <span>إرشادات صورة الخدمة (بانر البطاقة)</span>
+            </div>
+            <p class="guideline-text">
+              <strong>الحجم الموصى به:</strong> 1200 × 600 بكسل (النسبة 2:1).<br>
+              ستملأ الصورة بطاقة الخدمة بالكامل كبانر احترافي بدون أي هوامش فارغة. عند رفع صورة من جهازك، يتم قصها وتوسيطها وضغطها تلقائيًا للنسبة 2:1.
+            </p>
+          </div>
           <label class="span-2">
             رابط صورة خارجية للخدمة (اختياري)
-            <input name="image" id="editorImage" type="url" placeholder="https://example.com/logo.png">
+            <input name="image" id="editorImage" type="url" placeholder="https://example.com/banner.png">
           </label>
           <div class="span-2">
-            <label>
-              أو رفع صورة من الجهاز (يتم ضغطها وتصغيرها تلقائيًا)
-              <input id="editorImageFile" type="file" accept="image/png,image/jpeg,image/webp">
+            <label style="display:inline-block;cursor:pointer;">
+              <span class="button button-outline small">
+                <i data-icon="upload-cloud"></i>
+                <span>رفع صورة من الجهاز (قص وضغط تلقائي 2:1)</span>
+              </span>
+              <input id="editorImageFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none;">
             </label>
-            <div id="imagePreview" class="upload-preview" hidden></div>
+            <div id="imagePreview" class="admin-image-preview-card" hidden></div>
           </div>
           <div class="checkbox-group span-2">
             <label class="checkbox-label">
@@ -1547,33 +1625,142 @@
           </label>
         </div>
 
-        <!-- Plans Manager in Editor -->
-        <div class="editor-plans-title">
-          <h3>الباقات والأسعار بالجنيه المصري</h3>
-          <button type="button" id="addPlanButton" class="button button-outline small">
-            <i data-icon="plus"></i>
-            <span>باقة جديدة</span>
-          </button>
+        <!-- Professional Package & Price Manager in Editor -->
+        <div class="plans-manager-section">
+          <div class="plans-manager-header">
+            <div>
+              <h3 class="plans-manager-title">
+                <i data-icon="tags"></i>
+                <span>إدارة الباقات والأسعار بالجنيه المصري</span>
+                <span id="editorPlanCountBadge" class="status-pill active-pill">0 باقة</span>
+              </h3>
+              <p class="field-hint" style="margin:2px 0 0;">تحكّم في الأسعار، التخفيضات، والشروط لكل باقة. تظهر التعديلات فورًا في الجدول أدناه.</p>
+            </div>
+            <button type="button" id="addPlanButton" class="button button-red small">
+              <i data-icon="plus"></i>
+              <span>إضافة باقة جديدة</span>
+            </button>
+          </div>
+
+          <!-- Search & Filter Toolbar -->
+          <div class="plans-filter-toolbar">
+            <div class="search-field small-search">
+              <i data-icon="search"></i>
+              <input type="search" id="editorPlanSearch" placeholder="بحث في باقات هذه الخدمة..." aria-label="بحث في باقات الخدمة">
+            </div>
+            <div class="filter-controls">
+              <select id="editorPlanGroupFilter" class="button button-outline small" aria-label="تصفية حسب المجموعة">
+                <option value="all">كل المجموعات</option>
+              </select>
+              <select id="editorPlanStatusFilter" class="button button-outline small" aria-label="تصفية حسب التوفر">
+                <option value="all">كل الحالات</option>
+                <option value="active">متاحة فقط</option>
+                <option value="inactive">غير متاحة</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Compact Plans Table -->
+          <div class="plans-table-wrapper">
+            <table class="plans-compact-table" id="editorPlansTable">
+              <thead>
+                <tr>
+                  <th scope="col" style="width:28%;">اسم الباقة</th>
+                  <th scope="col" style="width:16%;">السعر الحالي</th>
+                  <th scope="col" style="width:18%;">قبل الخصم</th>
+                  <th scope="col" style="width:15%;">المجموعة</th>
+                  <th scope="col" style="width:11%;">الحالة</th>
+                  <th scope="col" style="width:12%; text-align:center;">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="editorPlansTableBody"></tbody>
+            </table>
+            <div id="editorPlansEmptyState" class="plans-empty-notice" hidden>
+              <i data-icon="inbox"></i>
+              <p>لا توجد باقات مطابقة للبحث أو التصفية.</p>
+            </div>
+          </div>
+          <p id="editorError" class="form-error" role="alert" hidden></p>
         </div>
-        <p class="field-hint">يمكنك إضافة سعر أصلي اختياري قبل الخصم لإظهار نسبة التوفير للعميل.</p>
-        <div id="editorPlans" class="editor-plans"></div>
-        <p id="editorError" class="form-error" role="alert" hidden></p>
       </div>
-      <div class="editor-footer">
-        <div class="button-row">
-          <button type="submit" class="button button-red">
+
+      <!-- Sticky Action Save Bar -->
+      <div id="editorStickyBar" class="editor-sticky-save-bar">
+        <div class="sticky-bar-info">
+          <span class="change-indicator-dot" id="stickyChangeDot"></span>
+          <span id="stickyChangeText" class="sticky-change-text">لا توجد تعديلات معلقة</span>
+        </div>
+        <div class="sticky-bar-actions">
+          <button type="button" id="previewServiceBtn" class="button button-outline small">
+            <i data-icon="eye"></i>
+            <span>معاينة التغييرات</span>
+          </button>
+          <button type="submit" id="saveServiceBtn" class="button button-red small">
             <i data-icon="save"></i>
-            <span>حفظ الخدمة في المسودة</span>
+            <span>حفظ جميع التغييرات</span>
           </button>
           <button type="button" id="cloneServiceButton" class="button button-outline small" hidden>
             <i data-icon="copy"></i>
             <span>نسخ كخدمة جديدة</span>
           </button>
+          <button type="button" id="deleteServiceButton" class="button button-outline small danger-text" hidden>
+            <i data-icon="trash-2"></i>
+            <span>حذف الخدمة</span>
+          </button>
         </div>
-        <button type="button" id="deleteServiceButton" class="text-button danger-text">
-          <i data-icon="trash-2"></i>
-          <span>حذف الخدمة</span>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Package (Plan) Add / Edit Modal -->
+  <dialog id="planDialog" class="editor-dialog plan-modal" aria-labelledby="planDialogTitle">
+    <form id="planForm">
+      <div class="dialog-header">
+        <h2 id="planDialogTitle">تعديل باقة</h2>
+        <button type="button" class="icon-btn" id="cancelPlanBtnTop" aria-label="إغلاق">
+          <i data-icon="x"></i>
         </button>
+      </div>
+      <div class="dialog-scroll">
+        <div class="form-grid">
+          <label class="span-2">
+            اسم الباقة / الكمية
+            <input id="planLabelInput" required maxlength="150" placeholder="مثال: 60 شدة، اشتراك شهر كامل">
+          </label>
+          <label>
+            السعر الحالي بالجنيه (EGP)
+            <input id="planPriceInput" type="number" required min="0.01" max="10000000" step="0.01" dir="ltr" placeholder="0.00">
+          </label>
+          <label>
+            السعر قبل الخصم (اختياري)
+            <input id="planOriginalPriceInput" type="number" min="0.01" max="10000000" step="0.01" dir="ltr" placeholder="اتركه فارغًا إن لم يتوفر تخفيض">
+            <span class="field-hint">سيظهر كشطب مع نسبة التوفير المحسوبة للعميل.</span>
+          </label>
+          <label>
+            مجموعة الباقة
+            <input id="planGroupInput" required maxlength="80" placeholder="مثال: الشحن، الاشتراكات" list="planGroupDatalist">
+            <datalist id="planGroupDatalist"></datalist>
+          </label>
+          <label class="checkbox-label" style="align-self:center;margin-top:16px;">
+            <input id="planAvailableInput" type="checkbox" checked>
+            <span>الباقة متاحة للطلب الفوري</span>
+          </label>
+          <label class="span-2">
+            شرط أو ملاحظة خاصة بالباقة (اختياري)
+            <input id="planNoteInput" maxlength="500" placeholder="مثال: حساب مشترك، جهاز واحد، شحن بالـ ID">
+          </label>
+        </div>
+      </div>
+      <div class="editor-footer">
+        <div class="button-row">
+          <button type="submit" id="savePlanBtn" class="button button-red">
+            <i data-icon="check"></i>
+            <span>حفظ التغييرات</span>
+          </button>
+          <button type="button" id="cancelPlanBtn" class="button button-outline">
+            <span>إلغاء</span>
+          </button>
+        </div>
       </div>
     </form>
   </dialog>

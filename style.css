@@ -1058,14 +1058,57 @@ svg.icon {
   stroke-width: 1.6;
 }
 
+/* Service Card Full-Bleed 2:1 Image Banner */
+.card-visual.has-image {
+  margin: 0;
+  padding: 0;
+  min-height: unset;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: #0f172a;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+.card-visual.has-image .service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.service-card:hover .card-visual.has-image .service-image {
+  transform: scale(1.05);
+}
+
+.card-visual.has-image .card-mark {
+  display: none;
+}
+
+.card-visual.has-image .fallback-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1e293b;
+  color: #94a3b8;
+}
+
 .service-image {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  background: #fff;
-  padding: 6px;
-  box-shadow: var(--shadow-sm);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .card-mark {
@@ -5343,6 +5386,534 @@ label input:focus, label select:focus, label textarea:focus {
 
 
 
+/* ==========================================================================
+   TASK 1: Professional Service Image Management & Banner Enhancements
+   ========================================================================== */
+
+.image-guidelines-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-inline-start: 4px solid var(--red);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.image-guidelines-box .guideline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 0.825rem;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.image-guidelines-box .guideline-text {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #475569;
+  margin: 0;
+}
+
+.admin-image-preview-card {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 440px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #0f172a;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.admin-image-preview-banner {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  position: relative;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.admin-image-preview-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.admin-image-preview-banner .preview-badge-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.admin-image-preview-meta {
+  background: #fff;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-image-preview-meta .preview-helper-text {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Customer Checkout Modal Service Banner */
+.dialog-service-banner {
+  width: 100%;
+  aspect-ratio: 2.2 / 1;
+  max-height: 200px;
+  overflow: hidden;
+  position: relative;
+  background: #0f172a;
+  border-bottom: 1px solid var(--line);
+}
+
+.dialog-service-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ==========================================================================
+   TASK 2: Redesign Package & Price Management UI
+   ========================================================================== */
+
+/* Plans Manager Section in Editor */
+.plans-manager-section {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-top: 20px;
+}
+
+.plans-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.plans-manager-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Search & Filter Toolbar */
+.plans-filter-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.plans-filter-toolbar .small-search {
+  flex: 1;
+  min-width: 180px;
+}
+
+.plans-filter-toolbar .filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Compact Plans Table */
+.plans-table-wrapper {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.plans-compact-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+  font-size: 0.875rem;
+}
+
+.plans-compact-table thead {
+  background: #f1f5f9;
+  border-bottom: 1px solid var(--line);
+}
+
+.plans-compact-table th {
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 0.775rem;
+  color: #475569;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+}
+
+.plans-compact-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.plans-compact-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.plans-compact-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Table Column Details */
+.plan-col-label {
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan-col-note {
+  font-size: 0.725rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.plan-price-num {
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.plan-currency {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+  margin-inline-start: 2px;
+}
+
+.plan-old-price-del {
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-saving {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  margin-inline-start: 4px;
+}
+
+.group-tag-pill {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #e2e8f0;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.plan-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  user-select: none;
+  transition: var(--transition);
+}
+
+.plan-status-badge.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.plan-status-badge.inactive {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* Action Icon Buttons */
+.plan-actions-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.table-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: var(--transition);
+}
+
+.table-action-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.table-action-btn.edit-btn:hover {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+.table-action-btn.duplicate-btn:hover {
+  background: #fefce8;
+  color: #ca8a04;
+  border-color: #fef08a;
+}
+
+.table-action-btn.delete-btn:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.table-action-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.plans-empty-notice {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.plans-empty-notice .icon {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 8px;
+  opacity: 0.6;
+}
+
+.plans-empty-notice p {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Sticky Action Save Bar */
+.editor-sticky-save-bar {
+  position: sticky;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  z-index: 50;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.sticky-bar-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.change-indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #94a3b8;
+  display: inline-block;
+  transition: background 0.25s;
+}
+
+.change-indicator-dot.dirty {
+  background: #ea580c;
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.5); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+}
+
+.sticky-change-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.sticky-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Plan Edit Modal */
+.plan-modal {
+  max-width: 540px !important;
+}
+
+/* Admin Workspace View Switcher (Services View vs. Master Pricing View) */
+.admin-view-toggle {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  margin-bottom: 16px;
+  gap: 4px;
+  border: 1px solid var(--line);
+}
+
+.view-toggle-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.view-toggle-btn.active {
+  background: #fff;
+  color: var(--red);
+  box-shadow: var(--shadow-sm);
+}
+
+.view-toggle-btn:hover:not(.active) {
+  color: #0f172a;
+}
+
+/* Mobile Responsive Transformation for Plans Table */
+@media (max-width: 768px) {
+  .plans-compact-table,
+  .plans-compact-table thead,
+  .plans-compact-table tbody,
+  .plans-compact-table tr,
+  .plans-compact-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .plans-compact-table thead {
+    display: none;
+  }
+
+  .plans-compact-table tbody tr {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .plans-compact-table td {
+    padding: 4px 0;
+    border-bottom: none;
+  }
+
+  .plans-compact-table td::before {
+    content: attr(data-label);
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .plans-compact-table td.actions-cell {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .plans-compact-table td.actions-cell::before {
+    display: none;
+  }
+
+  .table-action-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .editor-sticky-save-bar {
+    padding: 10px 14px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sticky-bar-actions {
+    justify-content: stretch;
+  }
+
+  .sticky-bar-actions button {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -5351,4 +5922,5 @@ label input:focus, label select:focus, label textarea:focus {
     scroll-behavior: auto !important;
   }
 }
+
 

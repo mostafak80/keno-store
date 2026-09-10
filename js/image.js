@@ -44,16 +44,23 @@
     },
 
     /**
-     * Compresses and resizes an image file to fit within TARGET_WIDTH x TARGET_HEIGHT.
-     * Generates an optimized WebP or JPEG Data URL (< 35 KB).
+     * Compresses, crops, and resizes a service image to automatically fit a 2:1 banner ratio.
+     * Center-crops any aspect ratio (square, portrait, 16:9, etc.) to 2:1 so that it fills
+     * the service card container 100% without letterboxing or distortion.
+     * Produces an optimized WebP (< 50 KB) or JPEG data URL.
      * @param {File} file
-     * @returns {Promise<string>} Data URL of compressed image
+     * @param {Object} options - { targetWidth: 800, quality: 0.82 }
+     * @returns {Promise<string>} Data URL of optimized 2:1 banner image
      */
-    async compressAndResize(file) {
+    async compressAndResize(file, options = {}) {
       const validation = this.validateFile(file);
       if (!validation.valid) {
         throw new Error(validation.error);
       }
+
+      const targetWidth = options.targetWidth || 800; // 800x400 (2:1) is sharp on retina while keeping payload < 40KB
+      const targetRatio = 2.0; // 2:1 ratio as specified
+      const quality = options.quality || COMPRESSION_QUALITY;
 
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -63,39 +70,56 @@
           img.onerror = () => reject(new Error('الملف ليس صورة صالحة أو تالف.'));
           img.onload = () => {
             try {
-              let width = img.naturalWidth || img.width;
-              let height = img.naturalHeight || img.height;
+              const naturalW = img.naturalWidth || img.width;
+              const naturalH = img.naturalHeight || img.height;
 
-              // Calculate bounding box preserving aspect ratio
-              if (width > TARGET_WIDTH || height > TARGET_HEIGHT) {
-                const ratio = Math.min(TARGET_WIDTH / width, TARGET_HEIGHT / height);
-                width = Math.round(width * ratio);
-                height = Math.round(height * ratio);
+              if (!naturalW || !naturalH) {
+                throw new Error('أبعاد الصورة غير صالحة.');
               }
 
+              // Calculate 2:1 center-crop rectangle from source
+              let sx = 0;
+              let sy = 0;
+              let sWidth = naturalW;
+              let sHeight = naturalH;
+              const currentRatio = naturalW / naturalH;
+
+              if (currentRatio > targetRatio) {
+                // Image is wider than 2:1 -> crop excess left and right
+                sWidth = Math.round(naturalH * targetRatio);
+                sx = Math.round((naturalW - sWidth) / 2);
+              } else if (currentRatio < targetRatio) {
+                // Image is taller than 2:1 -> crop excess top and bottom
+                sHeight = Math.round(naturalW / targetRatio);
+                sy = Math.round((naturalH - sHeight) / 2);
+              }
+
+              // Destination dimensions: downscale if source crop is larger than targetWidth
+              const destWidth = Math.min(targetWidth, sWidth);
+              const destHeight = Math.round(destWidth / targetRatio);
+
               const canvas = document.createElement('canvas');
-              canvas.width = width;
-              canvas.height = height;
+              canvas.width = destWidth;
+              canvas.height = destHeight;
               const ctx = canvas.getContext('2d');
               if (!ctx) {
                 throw new Error('تعذّر تهيئة بيئة معالجة الصور في المتصفح.');
               }
 
-              // Smooth downscaling
+              // High-quality smooth scaling
               ctx.imageSmoothingEnabled = true;
               ctx.imageSmoothingQuality = 'high';
-              ctx.drawImage(img, 0, 0, width, height);
+              ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, destWidth, destHeight);
 
-              // Try WebP first, fallback to JPEG
-              let dataUrl = canvas.toDataURL('image/webp', COMPRESSION_QUALITY);
+              // Output WebP first, fallback to JPEG
+              let dataUrl = canvas.toDataURL('image/webp', quality);
               if (!dataUrl.startsWith('data:image/webp')) {
-                dataUrl = canvas.toDataURL('image/jpeg', COMPRESSION_QUALITY);
+                dataUrl = canvas.toDataURL('image/jpeg', quality);
               }
 
-              // Safety check: ensure compressed data URL is compact (< 60 KB)
-              if (dataUrl.length > 80000) {
-                // Secondary pass with higher compression if still large
-                dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+              // Safety check: ensure compressed data URL is compact (< 70 KB)
+              if (dataUrl.length > 90000) {
+                dataUrl = canvas.toDataURL('image/jpeg', 0.68);
               }
 
               resolve(dataUrl);

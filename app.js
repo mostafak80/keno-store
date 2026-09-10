@@ -79,6 +79,11 @@
   let paymentDirty = false;
   let publishing = false;
   let toastTimer = null;
+  let activeServicesView = 'services'; // 'services' or 'master-plans'
+  let masterPlanSearchQuery = '';
+  let masterPlanCatFilter = 'all';
+  let masterPlanSrvFilter = 'all';
+  let masterPlanStatusFilter = 'all';
 
   const viewData = () => (preview && draft ? draft : live);
 
@@ -597,14 +602,18 @@
       const cat = data.categories.find(c => c.id === s.category);
       const toneClass = `tone-${s.color || 'red'}`;
 
+      const hasImage = Boolean(s.image);
       let visualHtml = '';
-      if (s.image) {
+      if (hasImage) {
         visualHtml = `
-          <img class="service-image" src="${esc(s.image)}" alt="${esc(s.name)}" width="86" height="86" loading="lazy" decoding="async" ${ImageUtils.getFallbackAttr?.() || ''}>
+          <img class="service-image" src="${esc(s.image)}" alt="${esc(s.name)}" loading="lazy" decoding="async" ${ImageUtils.getFallbackAttr?.() || ''}>
           <span class="fallback-icon" style="display:none;">${icon(s.icon)}</span>
         `;
       } else {
-        visualHtml = icon(s.icon);
+        visualHtml = `
+          ${icon(s.icon)}
+          <span class="card-mark" dir="auto">${esc(s.mark || 'KENO')}</span>
+        `;
       }
 
       // Check for lowest price plan with discount
@@ -631,10 +640,9 @@
 
       return `
         <article class="service-card" data-open-service="${esc(s.id)}" role="button" tabindex="0" aria-label="${esc('عرض وتفاصيل خدمة ' + s.name)}">
-          <div class="card-visual ${toneClass}">
+          <div class="card-visual ${hasImage ? 'has-image' : toneClass}">
             ${badgeHtml}
             ${visualHtml}
-            <span class="card-mark" dir="auto">${esc(s.mark || 'KENO')}</span>
           </div>
           <div class="card-body">
             <div class="card-category">
@@ -698,16 +706,21 @@
   $('resetFilters')?.addEventListener('click', resetFilters);
 
   // --- Order Dialog & Workflow ---
-  function openService(id, planId) {
+  function openService(idOrService, planId) {
     const data = viewData();
-    const service = data.services.find(s => s.id === id && s.visible);
+    let service;
+    if (typeof idOrService === 'object' && idOrService !== null) {
+      service = idOrService;
+    } else {
+      service = data.services.find(s => s.id === idOrService && (adminOpen || s.visible));
+    }
     if (!service) {
       toast('الخدمة غير متاحة حاليًا.');
       return;
     }
 
-    selectedService = id;
-    selectedPlan = service.plans.some(p => p.id === planId && p.available) ? planId : (service.plans.find(p => p.available)?.id || null);
+    selectedService = service.id;
+    selectedPlan = (service.plans || []).some(p => p.id === planId && p.available) ? planId : ((service.plans || []).find(p => p.available)?.id || null);
 
     const categoryObj = data.categories.find(c => c.id === service.category);
     const categoryName = categoryObj?.name || 'خدمات كينو';
@@ -716,6 +729,20 @@
     if ($('summaryServiceName')) $('summaryServiceName').textContent = service.name;
     if ($('dialogCategory')) $('dialogCategory').textContent = categoryName;
     if ($('dialogDescription')) $('dialogDescription').textContent = service.description || '';
+
+    // Hero Banner for Services with Images
+    const bannerContainer = $('serviceDialogBanner');
+    const bannerImg = $('serviceDialogBannerImg');
+    if (bannerContainer && bannerImg) {
+      if (service.image) {
+        bannerImg.src = service.image;
+        bannerImg.alt = service.name;
+        bannerContainer.hidden = false;
+      } else {
+        bannerContainer.hidden = true;
+        bannerImg.src = '';
+      }
+    }
 
     // Smart contextual prompt for customer account based on category
     const catId = service.category || '';
@@ -1898,6 +1925,9 @@
     renderAdminPayments();
     renderAdminOrders();
     updateOrdersBadgeCount();
+    if (activeServicesView === 'master-plans') {
+      renderMasterPlansTable();
+    }
 
     // Populate Settings Form
     if (!settingsDirty && $('settingsForm')) {
@@ -2916,40 +2946,211 @@
     return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
   }
 
-  function planEditorRow(plan) {
-    const row = document.createElement('div');
-    row.className = 'editor-plan-row';
-    row.dataset.planId = plan.id;
-    row.innerHTML = `
-      <label>
-        اسم الباقة / الكمية
-        <input data-field="label" required maxlength="150" value="${esc(plan.label)}">
-      </label>
-      <label>
-        السعر بالجنيه (EGP)
-        <input data-field="price" type="number" required min="0.01" max="10000000" step="0.01" dir="ltr" value="${plan.price || ''}">
-      </label>
-      <label>
-        السعر قبل الخصم (اختياري)
-        <input data-field="originalPrice" type="number" min="0.01" max="10000000" step="0.01" dir="ltr" value="${plan.originalPrice || ''}" placeholder="قبل التخفيض">
-      </label>
-      <label>
-        مجموعة الباقة
-        <input data-field="group" required maxlength="80" value="${esc(plan.group || 'الباقات')}">
-      </label>
-      <button type="button" class="icon-btn remove-plan danger-text" aria-label="حذف الباقة">
-        ${icon('trash-2')}
-      </button>
-      <label class="plan-note-field">
-        شرط الباقة (اختياري)
-        <input data-field="note" maxlength="500" value="${esc(plan.note || '')}" placeholder="مثال: حساب مشترك، جهاز واحد">
-      </label>
-      <label class="checkbox-label">
-        <input data-field="available" type="checkbox" ${plan.available ? 'checked' : ''}>
-        <span>متاحة للطلب</span>
-      </label>
-    `;
-    return row;
+  // --- Service Editor & Professional Package Management ---
+  let currentEditorPlans = [];
+  let currentPlanFilterGroup = 'all';
+  let currentPlanFilterStatus = 'all';
+  let currentPlanSearchQuery = '';
+  let editingPlanModalId = null;
+  let masterPlanEditingRef = null; // { serviceId, planId } when editing from master table
+  let editorInitialSnapshot = '';
+
+  function updateStickyBar() {
+    const dot = $('stickyChangeDot');
+    const text = $('stickyChangeText');
+    if (!dot || !text) return;
+
+    const form = $('serviceForm');
+    let unsavedCount = 0;
+
+    let initObj = null;
+    try { initObj = JSON.parse(editorInitialSnapshot || '{}'); } catch (_) {}
+
+    if (initObj) {
+      if ((form?.elements.name?.value || '') !== (initObj.name || '')) unsavedCount++;
+      if ((form?.elements.category?.value || '') !== (initObj.category || '')) unsavedCount++;
+      if ((form?.elements.image?.value || '') !== (initObj.image || '')) unsavedCount++;
+      if (Boolean(form?.elements.visible?.checked) !== Boolean(initObj.visible)) unsavedCount++;
+      if (Boolean(form?.elements.featured?.checked) !== Boolean(initObj.featured)) unsavedCount++;
+
+      const initPlans = initObj.plans || [];
+      if (initPlans.length !== currentEditorPlans.length) {
+        unsavedCount += Math.abs(currentEditorPlans.length - initPlans.length);
+      } else {
+        const diffPlans = currentEditorPlans.filter((p, i) => {
+          const orig = initPlans[i];
+          if (!orig) return true;
+          return orig.label !== p.label || orig.price !== p.price || orig.originalPrice !== p.originalPrice || orig.available !== p.available || orig.group !== p.group;
+        });
+        unsavedCount += diffPlans.length;
+      }
+    }
+
+    if (editorDirty && unsavedCount === 0) unsavedCount = 1;
+
+    if (unsavedCount > 0) {
+      dot.classList.add('dirty');
+      let countStr = `${unsavedCount} تعديل غير محفوظ`;
+      if (unsavedCount === 1) countStr = 'تعديل واحد غير محفوظ';
+      else if (unsavedCount === 2) countStr = 'تعديلان غير محفوظين';
+      else if (unsavedCount >= 3 && unsavedCount <= 10) countStr = `${unsavedCount} تعديلات غير محفوظة`;
+      text.textContent = countStr;
+    } else {
+      dot.classList.remove('dirty');
+      text.textContent = 'لا توجد تعديلات غير محفوظة';
+    }
+  }
+
+  function updateImagePreview() {
+    const form = $('serviceForm');
+    const previewContainer = $('imagePreview');
+    if (!form || !previewContainer) return;
+
+    const imgVal = form.elements.image?.value?.trim() || '';
+    const badgeVal = form.elements.badge?.value?.trim() || '';
+
+    if (imgVal) {
+      previewContainer.hidden = false;
+      previewContainer.innerHTML = `
+        <div class="admin-image-preview-banner">
+          <img src="${esc(imgVal)}" alt="معاينة البانر" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'50\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%231e293b\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%2394a3b8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-size=\\'10\\'>صورة غير صالحة</text></svg>'">
+          ${badgeVal ? `<span class="preview-badge-overlay">${esc(badgeVal)}</span>` : ''}
+        </div>
+        <div class="admin-image-preview-meta">
+          <span class="preview-helper-text">
+            <i data-icon="check-circle" style="color:#16a34a;width:14px;height:14px;"></i>
+            معاينة حية: نسبة 2:1 مطابقة للبطاقة
+          </span>
+          <button type="button" id="removeImageBtn" class="button button-outline small danger-text">حذف الصورة</button>
+        </div>
+      `;
+      hydrateIcons(previewContainer);
+      $('removeImageBtn')?.addEventListener('click', () => {
+        form.elements.image.value = '';
+        previewContainer.hidden = true;
+        previewContainer.innerHTML = '';
+        editorDirty = true;
+        updateStickyBar();
+      });
+    } else {
+      previewContainer.hidden = true;
+      previewContainer.innerHTML = '';
+    }
+  }
+
+  function renderEditorPlansTable() {
+    const tbody = $('editorPlansTableBody');
+    const emptyNotice = $('editorPlansEmptyState');
+    const countBadge = $('editorPlanCountBadge');
+    if (!tbody) return;
+
+    if (countBadge) {
+      countBadge.textContent = `${currentEditorPlans.length} باقة`;
+    }
+
+    // Extract unique groups for filter dropdown and datalist
+    const groups = [...new Set(currentEditorPlans.map(p => p.group || 'الباقات'))].filter(Boolean);
+    const groupFilter = $('editorPlanGroupFilter');
+    if (groupFilter) {
+      const currentSelected = groupFilter.value;
+      groupFilter.innerHTML = '<option value="all">كل المجموعات</option>' +
+        groups.map(g => `<option value="${esc(g)}" ${g === currentSelected ? 'selected' : ''}>${esc(g)}</option>`).join('');
+    }
+
+    const datalist = $('planGroupDatalist');
+    if (datalist) {
+      datalist.innerHTML = groups.map(g => `<option value="${esc(g)}">`).join('');
+    }
+
+    // Filter plans
+    const q = (currentPlanSearchQuery || '').toLowerCase().trim();
+    const filtered = currentEditorPlans.filter(p => {
+      if (currentPlanFilterGroup !== 'all' && (p.group || 'الباقات') !== currentPlanFilterGroup) return false;
+      if (currentPlanFilterStatus === 'active' && !p.available) return false;
+      if (currentPlanFilterStatus === 'inactive' && p.available) return false;
+      if (q) {
+        const matchLabel = (p.label || '').toLowerCase().includes(q);
+        const matchNote = (p.note || '').toLowerCase().includes(q);
+        const matchGroup = (p.group || '').toLowerCase().includes(q);
+        const matchPrice = String(p.price || '').includes(q);
+        if (!matchLabel && !matchNote && !matchGroup && !matchPrice) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      if (emptyNotice) emptyNotice.hidden = false;
+      return;
+    }
+
+    if (emptyNotice) emptyNotice.hidden = true;
+
+    tbody.innerHTML = filtered.map(p => {
+      const hasDiscount = p.originalPrice && p.originalPrice > p.price;
+      const savings = hasDiscount ? Math.round(p.originalPrice - p.price) : 0;
+      const discountPct = hasDiscount ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
+
+      return `
+        <tr data-plan-id="${esc(p.id)}">
+          <td data-label="اسم الباقة">
+            <div class="plan-col-label">
+              <span>${esc(p.label)}</span>
+              ${p.note ? `<span class="plan-col-note">${esc(p.note)}</span>` : ''}
+            </div>
+          </td>
+          <td data-label="السعر الحالي">
+            <span class="plan-price-num">${money(p.price)}</span>
+            <span class="plan-currency">ج.م</span>
+          </td>
+          <td data-label="قبل الخصم">
+            ${hasDiscount ? `
+              <span class="plan-old-price-del">${money(p.originalPrice)} ج.م</span>
+              <span class="badge-saving">وفر ${savings} (${discountPct}%)</span>
+            ` : '<span style="color:#94a3b8;">—</span>'}
+          </td>
+          <td data-label="المجموعة">
+            <span class="group-tag-pill">${esc(p.group || 'الباقات')}</span>
+          </td>
+          <td data-label="الحالة">
+            <span class="plan-status-badge ${p.available ? 'active' : 'inactive'}" data-toggle-plan="${esc(p.id)}" title="اضغط لتبديل حالة التوفر">
+              ${p.available ? '✓ متاحة' : '✗ غير متاحة'}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <div class="plan-actions-group">
+              <button type="button" class="table-action-btn edit-btn" data-edit-plan="${esc(p.id)}" title="تعديل الباقة" aria-label="تعديل الباقة">
+                ${icon('edit-3')}
+              </button>
+              <button type="button" class="table-action-btn duplicate-btn" data-duplicate-plan="${esc(p.id)}" title="تكرار الباقة" aria-label="تكرار الباقة">
+                ${icon('copy')}
+              </button>
+              <button type="button" class="table-action-btn delete-btn" data-delete-plan="${esc(p.id)}" title="حذف الباقة" aria-label="حذف الباقة">
+                ${icon('trash-2')}
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    hydrateIcons(tbody);
+  }
+
+  function openPlanModal(plan, masterRef = null) {
+    editingPlanModalId = plan ? plan.id : null;
+    masterPlanEditingRef = masterRef; // when editing from master pricing table
+
+    $('planDialogTitle').textContent = plan ? `تعديل باقة: ${plan.label}` : 'إضافة باقة جديدة';
+    $('planLabelInput').value = plan?.label || '';
+    $('planPriceInput').value = plan?.price !== undefined ? plan.price : '';
+    $('planOriginalPriceInput').value = (plan?.originalPrice && plan.originalPrice > 0) ? plan.originalPrice : '';
+    $('planGroupInput').value = plan?.group || (currentEditorPlans[0]?.group || 'الباقات');
+    $('planNoteInput').value = plan?.note || '';
+    $('planAvailableInput').checked = plan ? Boolean(plan.available) : true;
+
+    $('planDialog').showModal();
+    $('planLabelInput').focus();
   }
 
   function openEditor(id) {
@@ -3004,174 +3205,253 @@
     }
     form.elements.notes.value = (service.notes || []).join('\n');
 
-    // Render image preview
-    const previewContainer = $('imagePreview');
-    if (service.image) {
-      previewContainer.hidden = false;
-      previewContainer.innerHTML = `
-        <div class="preview-item">
-          <img src="${esc(service.image)}" alt="Preview">
-          <button type="button" id="removeImageBtn" class="button button-outline small danger-text">حذف الصورة</button>
-        </div>
-      `;
-      $('removeImageBtn')?.addEventListener('click', () => {
-        form.elements.image.value = '';
-        previewContainer.hidden = true;
-        previewContainer.innerHTML = '';
-        editorDirty = true;
-      });
-    } else {
-      previewContainer.hidden = true;
-      previewContainer.innerHTML = '';
-    }
+    // Initialize plans state
+    currentEditorPlans = (service.plans || []).map(p => ({ ...p }));
+    currentPlanFilterGroup = 'all';
+    currentPlanFilterStatus = 'all';
+    currentPlanSearchQuery = '';
+    if ($('editorPlanSearch')) $('editorPlanSearch').value = '';
+    if ($('editorPlanGroupFilter')) $('editorPlanGroupFilter').value = 'all';
+    if ($('editorPlanStatusFilter')) $('editorPlanStatusFilter').value = 'all';
 
-    // Render plans
-    $('editorPlans').replaceChildren(...(service.plans || []).map(planEditorRow));
+    // Render 2:1 live image preview
+    updateImagePreview();
+
+    // Render compact plans table
+    renderEditorPlansTable();
+
     if ($('editorError')) $('editorError').hidden = true;
     if ($('deleteServiceButton')) $('deleteServiceButton').hidden = !existing;
     if ($('cloneServiceButton')) $('cloneServiceButton').hidden = !existing;
 
     editorDirty = false;
+    editorInitialSnapshot = JSON.stringify({
+      name: service.name,
+      category: service.category,
+      image: service.image,
+      visible: service.visible,
+      featured: service.featured,
+      plans: currentEditorPlans
+    });
+    updateStickyBar();
+
     $('editorDialog').showModal();
   }
 
   $('addServiceButton')?.addEventListener('click', () => openEditor(null));
 
-  // Admin Services Table Action Delegation (Toggles, Reordering, Edit, Delete)
-  $('adminTableBody')?.addEventListener('click', async event => {
-    const editBtn = event.target.closest('[data-edit-service]');
+  // Package Management Event Delegation inside Editor Dialog
+  $('editorPlansTableBody')?.addEventListener('click', async event => {
+    const toggleBtn = event.target.closest('[data-toggle-plan]');
+    if (toggleBtn) {
+      const id = toggleBtn.dataset.togglePlan;
+      const plan = currentEditorPlans.find(p => p.id === id);
+      if (plan) {
+        plan.available = !plan.available;
+        editorDirty = true;
+        renderEditorPlansTable();
+        updateStickyBar();
+        toast(`تم تحويل باقة "${plan.label}" إلى ${plan.available ? 'متاحة' : 'غير متاحة'}.`);
+      }
+      return;
+    }
+
+    const editBtn = event.target.closest('[data-edit-plan]');
     if (editBtn) {
-      openEditor(editBtn.dataset.editService);
+      const id = editBtn.dataset.editPlan;
+      const plan = currentEditorPlans.find(p => p.id === id);
+      if (plan) openPlanModal(plan);
       return;
     }
 
-    const toggleVisBtn = event.target.closest('[data-toggle-visible]');
-    if (toggleVisBtn) {
-      const sId = toggleVisBtn.dataset.toggleVisible;
-      const srv = draft.services.find(s => s.id === sId);
-      if (srv) {
-        srv.visible = !srv.visible;
-        saveDraft();
-        renderAdmin();
-        toast(`تم ${srv.visible ? 'إظهار' : 'إخفاء'} خدمة "${srv.name}".`);
+    const dupBtn = event.target.closest('[data-duplicate-plan]');
+    if (dupBtn) {
+      const id = dupBtn.dataset.duplicatePlan;
+      const plan = currentEditorPlans.find(p => p.id === id);
+      if (plan) {
+        const clone = {
+          ...JSON.parse(JSON.stringify(plan)),
+          id: newId('plan'),
+          label: `${plan.label} (نسخة)`
+        };
+        currentEditorPlans.push(clone);
+        editorDirty = true;
+        renderEditorPlansTable();
+        updateStickyBar();
+        toast(`تم تكرار باقة "${clone.label}".`);
       }
       return;
     }
 
-    const toggleFeatBtn = event.target.closest('[data-toggle-featured]');
-    if (toggleFeatBtn) {
-      const sId = toggleFeatBtn.dataset.toggleFeatured;
-      const srv = draft.services.find(s => s.id === sId);
-      if (srv) {
-        srv.featured = !srv.featured;
-        saveDraft();
-        renderAdmin();
-        toast(`تم ${srv.featured ? 'تمييز' : 'إلغاء تمييز'} خدمة "${srv.name}".`);
-      }
-      return;
-    }
-
-    const moveBtn = event.target.closest('[data-move-service]');
-    if (moveBtn) {
-      const sId = moveBtn.dataset.moveService;
-      const dir = moveBtn.dataset.dir;
-      const idx = draft.services.findIndex(s => s.id === sId);
-      if (idx !== -1) {
-        if (dir === 'up' && idx > 0) {
-          const temp = draft.services[idx];
-          draft.services[idx] = draft.services[idx - 1];
-          draft.services[idx - 1] = temp;
-          saveDraft();
-          renderAdmin();
-          toast('تم تقديم ترتيب الخدمة للأعلى.');
-        } else if (dir === 'down' && idx < draft.services.length - 1) {
-          const temp = draft.services[idx];
-          draft.services[idx] = draft.services[idx + 1];
-          draft.services[idx + 1] = temp;
-          saveDraft();
-          renderAdmin();
-          toast('تم تأخير ترتيب الخدمة للأسفل.');
+    const delBtn = event.target.closest('[data-delete-plan]');
+    if (delBtn) {
+      const id = delBtn.dataset.deletePlan;
+      const plan = currentEditorPlans.find(p => p.id === id);
+      if (plan) {
+        if (await confirmAction('حذف الباقة؟', `هل أنت متأكد من حذف باقة "${plan.label}" نهائيًا؟`, 'حذف الباقة')) {
+          currentEditorPlans = currentEditorPlans.filter(p => p.id !== id);
+          editorDirty = true;
+          renderEditorPlansTable();
+          updateStickyBar();
+          toast(`تم حذف باقة "${plan.label}".`);
         }
       }
       return;
     }
+  });
 
-    const deleteBtn = event.target.closest('[data-delete-service]');
-    if (deleteBtn) {
-      const sId = deleteBtn.dataset.deleteService;
-      const srv = draft.services.find(s => s.id === sId);
-      if (!srv) return;
-      if (await confirmAction('حذف الخدمة بالكامل؟', `هل أنت متأكد من حذف خدمة "${srv.name}" من مسودة المتجر؟`, 'حذف الخدمة')) {
-        draft.services = draft.services.filter(s => s.id !== sId);
-        saveDraft();
-        renderAdmin();
-        toast(`تم حذف خدمة "${srv.name}" بنجاح.`);
-      }
+  // Add Plan Button
+  $('addPlanButton')?.addEventListener('click', () => openPlanModal(null));
+
+  // Search & Filter listeners for Service Editor Plans
+  $('editorPlanSearch')?.addEventListener('input', event => {
+    currentPlanSearchQuery = event.target.value;
+    renderEditorPlansTable();
+  });
+  $('editorPlanGroupFilter')?.addEventListener('change', event => {
+    currentPlanFilterGroup = event.target.value;
+    renderEditorPlansTable();
+  });
+  $('editorPlanStatusFilter')?.addEventListener('change', event => {
+    currentPlanFilterStatus = event.target.value;
+    renderEditorPlansTable();
+  });
+
+  // Package Modal (planDialog) Form Submission
+  $('planForm')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const label = $('planLabelInput').value.trim();
+    const price = Number($('planPriceInput').value);
+    const origVal = $('planOriginalPriceInput').value.trim();
+    const originalPrice = origVal ? Number(origVal) : null;
+    const group = $('planGroupInput').value.trim() || 'الباقات';
+    const note = $('planNoteInput').value.trim();
+    const available = $('planAvailableInput').checked;
+
+    if (!label) {
+      toast('يرجى كتابة اسم الباقة.');
       return;
     }
-  });
-
-  $('addPlanButton')?.addEventListener('click', () => {
-    const row = planEditorRow({
-      id: newId('plan'),
-      label: '',
-      price: '',
-      originalPrice: null,
-      group: 'الباقات',
-      note: '',
-      available: true
-    });
-    $('editorPlans').append(row);
-    row.querySelector('input')?.focus();
-    editorDirty = true;
-  });
-
-  $('editorPlans')?.addEventListener('click', async event => {
-    const btn = event.target.closest('.remove-plan');
-    if (!btn) return;
-    const row = btn.closest('.editor-plan-row');
-    if (await confirmAction('حذف هذه الباقة؟', 'سيتم حذف الباقة من مسودة الخدمة فقط.', 'حذف الباقة')) {
-      row.remove();
-      editorDirty = true;
+    if (isNaN(price) || price <= 0) {
+      toast('يرجى كتابة سعر صحيح أكبر من صفر.');
+      return;
     }
+    if (originalPrice !== null && (isNaN(originalPrice) || originalPrice <= 0)) {
+      toast('السعر قبل الخصم يجب أن يكون رقمًا موجبًا.');
+      return;
+    }
+
+    // If editing from Master Pricing Table
+    if (masterPlanEditingRef) {
+      const { serviceId, planId } = masterPlanEditingRef;
+      const srv = draft.services.find(s => s.id === serviceId);
+      if (srv) {
+        const pIdx = srv.plans.findIndex(p => p.id === planId);
+        if (pIdx !== -1) {
+          srv.plans[pIdx] = { ...srv.plans[pIdx], label, price, originalPrice, group, note, available };
+          saveDraft();
+          renderMasterPlansTable();
+          renderAdmin();
+          toast(`تم تعديل باقة "${label}" بنجاح.`);
+        }
+      }
+      masterPlanEditingRef = null;
+      closeDialog('planDialog');
+      return;
+    }
+
+    // Editing inside Service Editor
+    if (editingPlanModalId) {
+      const idx = currentEditorPlans.findIndex(p => p.id === editingPlanModalId);
+      if (idx !== -1) {
+        currentEditorPlans[idx] = {
+          ...currentEditorPlans[idx],
+          label,
+          price,
+          originalPrice,
+          group,
+          note,
+          available
+        };
+      }
+      toast(`تم تعديل باقة "${label}" بنجاح.`);
+    } else {
+      const newPlan = {
+        id: newId('plan'),
+        label,
+        price,
+        originalPrice,
+        group,
+        note,
+        available
+      };
+      currentEditorPlans.push(newPlan);
+      toast(`تمت إضافة باقة "${label}" بنجاح.`);
+    }
+
+    editorDirty = true;
+    closeDialog('planDialog');
+    renderEditorPlansTable();
+    updateStickyBar();
   });
 
-  $('serviceForm')?.addEventListener('input', () => { editorDirty = true; });
-  $('serviceForm')?.addEventListener('change', () => { editorDirty = true; });
+  $('cancelPlanBtn')?.addEventListener('click', () => closeDialog('planDialog'));
+  $('cancelPlanBtnTop')?.addEventListener('click', () => closeDialog('planDialog'));
 
-  // Phase 4: Image Auto-Compression on file upload
+  // Service Form Change & Input Listeners
+  $('serviceForm')?.addEventListener('input', () => {
+    editorDirty = true;
+    updateStickyBar();
+    updateImagePreview();
+  });
+  $('serviceForm')?.addEventListener('change', () => {
+    editorDirty = true;
+    updateStickyBar();
+    updateImagePreview();
+  });
+
+  // Image Auto-Compression on file upload with 2:1 ratio
   $('editorImageFile')?.addEventListener('change', async event => {
     const file = event.target.files?.[0];
     event.target.value = '';
     if (!file) return;
 
     try {
-      toast('جارٍ ضغط وتحسين الصورة تلقائيًا...');
-      const compressedDataUrl = await ImageUtils.compressAndResize(file);
+      toast('جارٍ قص وتوسيط وضغط الصورة للنسبة 2:1 تلقائيًا...');
+      const compressedDataUrl = await ImageUtils.compressAndResize(file, { targetWidth: 800 });
       $('editorImage').value = compressedDataUrl;
-
-      const previewContainer = $('imagePreview');
-      previewContainer.hidden = false;
-      previewContainer.innerHTML = `
-        <div class="preview-item">
-          <img src="${compressedDataUrl}" alt="Preview">
-          <span class="field-hint" style="margin:0;">تم الضغط بنجاح (&lt; 25KB WebP)</span>
-          <button type="button" id="removeImageBtn" class="button button-outline small danger-text">حذف الصورة</button>
-        </div>
-      `;
-      $('removeImageBtn')?.addEventListener('click', () => {
-        $('editorImage').value = '';
-        previewContainer.hidden = true;
-        previewContainer.innerHTML = '';
-        editorDirty = true;
-      });
+      updateImagePreview();
       editorDirty = true;
-      toast('تم ضغط الصورة وإدراجها بنجاح.');
+      updateStickyBar();
+      toast('تم ضغط الصورة وتحويلها لبانر 2:1 بنجاح.');
     } catch (err) {
       toast('خطأ في معالجة الصورة: ' + err.message);
     }
   });
 
+  // Preview Service / Changes Button in Sticky Save Bar
+  $('previewServiceBtn')?.addEventListener('click', () => {
+    const form = $('serviceForm');
+    const tempService = {
+      id: editingServiceId || 'preview-temp-service',
+      name: form?.elements.name?.value.trim() || 'معاينة الخدمة',
+      category: form?.elements.category?.value || 'games',
+      description: form?.elements.description?.value.trim() || '',
+      mark: form?.elements.mark?.value.trim() || 'KENO',
+      badge: form?.elements.badge?.value.trim() || '',
+      icon: form?.elements.icon?.value || 'globe',
+      color: form?.elements.color?.value || 'red',
+      image: form?.elements.image?.value.trim() || '',
+      visible: true,
+      featured: Boolean(form?.elements.featured?.checked),
+      plans: currentEditorPlans.length > 0 ? currentEditorPlans : [
+        { id: 'temp-1', label: 'باقة تجريبية للمعاينة', price: 99, group: 'الباقات', available: true }
+      ]
+    };
+    openService(tempService);
+  });
+
+  // Service Form Submission (Save All Changes)
   $('serviceForm')?.addEventListener('submit', event => {
     event.preventDefault();
     if (!adminOpen || !draft || publishing) return;
@@ -3190,20 +3470,7 @@
       }
 
       service.notes = form.elements.notes.value.split('\n').map(n => n.trim()).filter(Boolean);
-
-      service.plans = [...$('editorPlans').querySelectorAll('.editor-plan-row')].map(row => {
-        const origVal = row.querySelector('[data-field="originalPrice"]')?.value;
-        const origNum = origVal ? Number(origVal) : null;
-        return {
-          id: row.dataset.planId,
-          label: row.querySelector('[data-field="label"]').value.trim(),
-          price: Number(row.querySelector('[data-field="price"]').value),
-          originalPrice: (origNum && Number.isFinite(origNum) && origNum > 0) ? origNum : null,
-          group: row.querySelector('[data-field="group"]').value.trim() || 'الباقات',
-          note: row.querySelector('[data-field="note"]').value.trim(),
-          available: row.querySelector('[data-field="available"]').checked
-        };
-      });
+      service.plans = JSON.parse(JSON.stringify(currentEditorPlans));
 
       const next = JSON.parse(JSON.stringify(draft));
       const index = next.services.findIndex(s => s.id === editingServiceId);
@@ -3217,8 +3484,9 @@
       editorDirty = false;
       saveDraft();
       renderAdmin();
+      renderStore();
       closeDialog('editorDialog');
-      toast('تم حفظ الخدمة في المسودة بنجاح.');
+      toast('تم حفظ الخدمة والباقات في المسودة بنجاح.');
     } catch (error) {
       if ($('editorError')) {
         $('editorError').textContent = error.message;
@@ -3244,22 +3512,13 @@
         color: form.elements.color.value,
         image: form.elements.image.value.trim(),
         aliases: form.elements.aliases?.value.trim() || '',
-        visible: false, // cloned services start hidden by default
+        visible: false,
         featured: false,
         notes: form.elements.notes.value.split('\n').map(n => n.trim()).filter(Boolean),
-        plans: [...$('editorPlans').querySelectorAll('.editor-plan-row')].map(row => {
-          const origVal = row.querySelector('[data-field="originalPrice"]')?.value;
-          const origNum = origVal ? Number(origVal) : null;
-          return {
-            id: newId('plan'),
-            label: row.querySelector('[data-field="label"]').value.trim(),
-            price: Number(row.querySelector('[data-field="price"]').value),
-            originalPrice: (origNum && Number.isFinite(origNum) && origNum > 0) ? origNum : null,
-            group: row.querySelector('[data-field="group"]').value.trim() || 'الباقات',
-            note: row.querySelector('[data-field="note"]').value.trim(),
-            available: row.querySelector('[data-field="available"]').checked
-          };
-        })
+        plans: currentEditorPlans.map(p => ({
+          ...JSON.parse(JSON.stringify(p)),
+          id: newId('plan')
+        }))
       };
 
       const next = JSON.parse(JSON.stringify(draft));
@@ -3270,6 +3529,244 @@
       renderAdmin();
       closeDialog('editorDialog');
       toast('تم نسخ الخدمة بنجاح كمسودة جديدة.');
+    }
+  });
+
+  // Delete Service Button
+  $('deleteServiceButton')?.addEventListener('click', async () => {
+    if (!editingServiceId || publishing) return;
+    if (await confirmAction('حذف الخدمة بالكامل؟', 'ستُحذف الخدمة وجميع باقاتها من المسودة. يمكنك إخفاؤها بدلاً من حذفها بإلغاء «تظهر في المتجر».', 'حذف الخدمة')) {
+      draft.services = draft.services.filter(s => s.id !== editingServiceId);
+      editorDirty = false;
+      saveDraft();
+      renderAdmin();
+      closeDialog('editorDialog');
+      toast('تم حذف الخدمة من المسودة.');
+    }
+  });
+
+  // --- Master Pricing View (Storewide All Packages & Prices) ---
+
+  function renderMasterPlansTable() {
+    const tbody = $('masterPlansTableBody');
+    const emptyNotice = $('masterPlansEmptyNotice');
+    if (!tbody || !draft) return;
+
+    // Populate Category Filter dropdown
+    const catSelect = $('masterPlanCategoryFilter');
+    if (catSelect) {
+      const currVal = catSelect.value;
+      catSelect.innerHTML = '<option value="all">كل الأقسام</option>' +
+        (draft.categories || []).map(c => `<option value="${esc(c.id)}" ${c.id === currVal ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+    }
+
+    // Populate Service Filter dropdown
+    const srvSelect = $('masterPlanServiceFilter');
+    if (srvSelect) {
+      const srvs = masterPlanCatFilter === 'all'
+        ? draft.services
+        : draft.services.filter(s => s.category === masterPlanCatFilter);
+      const currVal = srvSelect.value;
+      srvSelect.innerHTML = '<option value="all">كل الخدمات</option>' +
+        srvs.map(s => `<option value="${esc(s.id)}" ${s.id === currVal ? 'selected' : ''}>${esc(s.name)}</option>`).join('');
+    }
+
+    // Collect all plans with parent service reference
+    const allItems = [];
+    (draft.services || []).forEach(srv => {
+      const cat = (draft.categories || []).find(c => c.id === srv.category)?.name || srv.category;
+      (srv.plans || []).forEach(plan => {
+        allItems.push({ plan, service: srv, categoryName: cat });
+      });
+    });
+
+    const q = (masterPlanSearchQuery || '').toLowerCase().trim();
+    const filtered = allItems.filter(item => {
+      if (masterPlanCatFilter !== 'all' && item.service.category !== masterPlanCatFilter) return false;
+      if (masterPlanSrvFilter !== 'all' && item.service.id !== masterPlanSrvFilter) return false;
+      if (masterPlanStatusFilter === 'active' && !item.plan.available) return false;
+      if (masterPlanStatusFilter === 'inactive' && item.plan.available) return false;
+      if (q) {
+        const matchLabel = (item.plan.label || '').toLowerCase().includes(q);
+        const matchSrv = (item.service.name || '').toLowerCase().includes(q);
+        const matchGroup = (item.plan.group || '').toLowerCase().includes(q);
+        const matchCat = (item.categoryName || '').toLowerCase().includes(q);
+        if (!matchLabel && !matchSrv && !matchGroup && !matchCat) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      if (emptyNotice) emptyNotice.hidden = false;
+      return;
+    }
+
+    if (emptyNotice) emptyNotice.hidden = true;
+
+    tbody.innerHTML = filtered.map(item => {
+      const p = item.plan;
+      const s = item.service;
+      const hasDiscount = p.originalPrice && p.originalPrice > p.price;
+      const savings = hasDiscount ? Math.round(p.originalPrice - p.price) : 0;
+      const discountPct = hasDiscount ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
+
+      return `
+        <tr data-service-id="${esc(s.id)}" data-plan-id="${esc(p.id)}">
+          <td data-label="اسم الباقة">
+            <div class="plan-col-label">
+              <span>${esc(p.label)}</span>
+              ${p.note ? `<span class="plan-col-note">${esc(p.note)}</span>` : ''}
+            </div>
+          </td>
+          <td data-label="الخدمة">
+            <button type="button" class="text-button" data-master-opensrv="${esc(s.id)}" style="font-weight:700;color:var(--ink);text-decoration:underline;">
+              ${esc(s.name)}
+            </button>
+          </td>
+          <td data-label="القسم">
+            <span class="group-tag-pill">${esc(item.categoryName)}</span>
+          </td>
+          <td data-label="السعر الحالي">
+            <span class="plan-price-num">${money(p.price)}</span>
+            <span class="plan-currency">ج.م</span>
+          </td>
+          <td data-label="قبل الخصم">
+            ${hasDiscount ? `
+              <span class="plan-old-price-del">${money(p.originalPrice)} ج.م</span>
+              <span class="badge-saving">وفر ${savings} (${discountPct}%)</span>
+            ` : '<span style="color:#94a3b8;">—</span>'}
+          </td>
+          <td data-label="المجموعة">
+            <span class="group-tag-pill">${esc(p.group || 'الباقات')}</span>
+          </td>
+          <td data-label="الحالة">
+            <span class="plan-status-badge ${p.available ? 'active' : 'inactive'}" data-master-toggle="${esc(s.id)}:${esc(p.id)}" title="اضغط لتبديل التوفر">
+              ${p.available ? '✓ متاحة' : '✗ غير متاحة'}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <div class="plan-actions-group">
+              <button type="button" class="table-action-btn edit-btn" data-master-edit="${esc(s.id)}:${esc(p.id)}" title="تعديل الباقة">
+                ${icon('edit-3')}
+              </button>
+              <button type="button" class="table-action-btn duplicate-btn" data-master-dup="${esc(s.id)}:${esc(p.id)}" title="تكرار الباقة">
+                ${icon('copy')}
+              </button>
+              <button type="button" class="table-action-btn delete-btn" data-master-del="${esc(s.id)}:${esc(p.id)}" title="حذف الباقة">
+                ${icon('trash-2')}
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    hydrateIcons(tbody);
+  }
+
+  // View Switcher Buttons (Services Grid vs Master Pricing Table)
+  $('viewServicesBtn')?.addEventListener('click', () => {
+    activeServicesView = 'services';
+    $('viewServicesBtn')?.classList.add('active');
+    $('viewAllPlansBtn')?.classList.remove('active');
+    if ($('servicesGridView')) $('servicesGridView').hidden = false;
+    if ($('allPlansMasterView')) $('allPlansMasterView').hidden = true;
+  });
+
+  $('viewAllPlansBtn')?.addEventListener('click', () => {
+    activeServicesView = 'master-plans';
+    $('viewAllPlansBtn')?.classList.add('active');
+    $('viewServicesBtn')?.classList.remove('active');
+    if ($('servicesGridView')) $('servicesGridView').hidden = true;
+    if ($('allPlansMasterView')) $('allPlansMasterView').hidden = false;
+    renderMasterPlansTable();
+  });
+
+  // Master Pricing Table Filter Listeners
+  $('masterPlanSearch')?.addEventListener('input', event => {
+    masterPlanSearchQuery = event.target.value;
+    renderMasterPlansTable();
+  });
+  $('masterPlanCategoryFilter')?.addEventListener('change', event => {
+    masterPlanCatFilter = event.target.value;
+    renderMasterPlansTable();
+  });
+  $('masterPlanServiceFilter')?.addEventListener('change', event => {
+    masterPlanSrvFilter = event.target.value;
+    renderMasterPlansTable();
+  });
+  $('masterPlanStatusFilter')?.addEventListener('change', event => {
+    masterPlanStatusFilter = event.target.value;
+    renderMasterPlansTable();
+  });
+
+  // Master Pricing Table Action Delegation
+  $('masterPlansTableBody')?.addEventListener('click', async event => {
+    const openSrvBtn = event.target.closest('[data-master-opensrv]');
+    if (openSrvBtn) {
+      openEditor(openSrvBtn.dataset.masterOpensrv);
+      return;
+    }
+
+    const toggleBtn = event.target.closest('[data-master-toggle]');
+    if (toggleBtn) {
+      const [srvId, planId] = toggleBtn.dataset.masterToggle.split(':');
+      const srv = draft.services.find(s => s.id === srvId);
+      const plan = srv?.plans.find(p => p.id === planId);
+      if (plan) {
+        plan.available = !plan.available;
+        saveDraft();
+        renderMasterPlansTable();
+        toast(`تم تحويل باقة "${plan.label}" إلى ${plan.available ? 'متاحة' : 'غير متاحة'}.`);
+      }
+      return;
+    }
+
+    const editBtn = event.target.closest('[data-master-edit]');
+    if (editBtn) {
+      const [srvId, planId] = editBtn.dataset.masterEdit.split(':');
+      const srv = draft.services.find(s => s.id === srvId);
+      const plan = srv?.plans.find(p => p.id === planId);
+      if (plan) {
+        openPlanModal(plan, { serviceId: srvId, planId });
+      }
+      return;
+    }
+
+    const dupBtn = event.target.closest('[data-master-dup]');
+    if (dupBtn) {
+      const [srvId, planId] = dupBtn.dataset.masterDup.split(':');
+      const srv = draft.services.find(s => s.id === srvId);
+      const plan = srv?.plans.find(p => p.id === planId);
+      if (srv && plan) {
+        const clone = {
+          ...JSON.parse(JSON.stringify(plan)),
+          id: newId('plan'),
+          label: `${plan.label} (نسخة)`
+        };
+        srv.plans.push(clone);
+        saveDraft();
+        renderMasterPlansTable();
+        toast(`تم تكرار باقة "${clone.label}" بنجاح.`);
+      }
+      return;
+    }
+
+    const delBtn = event.target.closest('[data-master-del]');
+    if (delBtn) {
+      const [srvId, planId] = delBtn.dataset.masterDel.split(':');
+      const srv = draft.services.find(s => s.id === srvId);
+      const plan = srv?.plans.find(p => p.id === planId);
+      if (srv && plan) {
+        if (await confirmAction('حذف الباقة؟', `هل أنت متأكد من حذف باقة "${plan.label}" نهائيًا من خدمة "${srv.name}"؟`, 'حذف الباقة')) {
+          srv.plans = srv.plans.filter(p => p.id !== planId);
+          saveDraft();
+          renderMasterPlansTable();
+          toast(`تم حذف باقة "${plan.label}".`);
+        }
+      }
+      return;
     }
   });
 
