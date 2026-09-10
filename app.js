@@ -645,7 +645,7 @@
       }
 
       return `
-        <article class="service-card ${isUnavailable ? 'is-unavailable' : ''}" data-open-service="${esc(s.id)}" role="button" tabindex="0" aria-label="${esc('عرض وتفاصيل خدمة ' + s.name)}">
+        <article class="service-card ${isUnavailable ? 'is-unavailable' : ''} ${s.featured ? 'is-featured' : ''}" data-open-service="${esc(s.id)}" role="button" tabindex="0" aria-label="${esc('عرض وتفاصيل خدمة ' + s.name)}">
           <div class="card-visual ${hasImage ? 'has-image' : toneClass}">
             ${badgeHtml}
             ${visualHtml}
@@ -653,19 +653,19 @@
           <div class="card-body">
             <div class="card-category">
               <span>${esc(cat?.name || '')}</span>
+              ${s.plans?.length ? `<span class="plans-count-tag">${s.plans.length} باقات</span>` : ''}
               ${s.featured ? '<span class="featured-tag">مختارات كينو</span>' : ''}
             </div>
             <h3 dir="auto">${esc(s.name)}</h3>
-            <p class="card-description">${esc(s.description)}</p>
             <div class="card-footer">
               <div class="card-price">
                 <span>${minPrice === null ? 'السعر' : 'تبدأ من'}</span>
                 ${priceDisplayHtml}
               </div>
-              <button type="button" class="card-open" data-open-service="${esc(s.id)}" aria-label="${esc('عرض تفاصيل ' + s.name)}">
-                <span>${s.plans?.length ? 'الباقات' : 'طلب السعر'}</span>
+              <span class="card-action-indicator" aria-hidden="true">
+                <span>${s.plans?.length ? 'تصفح الأسعار' : 'طلب السعر'}</span>
                 ${icon('arrow-left')}
-              </button>
+              </span>
             </div>
           </div>
         </article>
@@ -909,9 +909,12 @@
     if ($('orderButton')) {
       $('orderButton').disabled = isDisabled;
       if (isUnavailable) {
-        $('orderButton').textContent = 'الخدمة غير متاحة حالياً';
+        $('orderButton').innerHTML = `<span>الخدمة غير متاحة حالياً</span>`;
       } else {
-        $('orderButton').textContent = 'اطلب الآن عبر واتساب';
+        $('orderButton').innerHTML = `<i data-icon="message-circle"></i><span>اطلب عبر واتساب الآن</span>`;
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+          lucide.createIcons();
+        }
       }
     }
     if ($('addToCartBtn')) {

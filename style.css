@@ -13,61 +13,54 @@
 }
 
 :root {
-  --bg: #060913;
-  --bg-mesh: radial-gradient(circle at 50% -10%, rgba(56, 189, 248, 0.12) 0%, rgba(99, 102, 241, 0.06) 35%, transparent 70%);
-  --paper: #0b1120;
-  --paper-hover: #101a30;
-  --paper-elevated: #15223c;
-  --paper-glass: rgba(11, 17, 32, 0.82);
-  --paper-glass-hover: rgba(16, 26, 48, 0.92);
+  --bg: #0a0e17;
+  --paper: #121726;
+  --paper-hover: #182033;
+  --paper-elevated: #1e273d;
+  --paper-glass: #121726;
+  --paper-glass-hover: #182033;
   
-  --ink: #f1f5f9;
+  --ink: #f8fafc;
   --ink-heading: #ffffff;
   --muted: #94a3b8;
   --muted-light: #cbd5e1;
   --muted-dark: #64748b;
   
-  --line: rgba(56, 189, 248, 0.14);
-  --line-light: rgba(255, 255, 255, 0.07);
-  --line-hover: rgba(56, 189, 248, 0.35);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-light: rgba(255, 255, 255, 0.04);
+  --line-hover: rgba(255, 255, 255, 0.2);
   
-  --neon-blue: #38bdf8;
-  --neon-cyan: #06b6d4;
-  --neon-indigo: #818cf8;
-  --neon-glow: 0 0 20px rgba(56, 189, 248, 0.35);
-  --neon-glow-lg: 0 0 35px rgba(56, 189, 248, 0.25);
+  --red: #e11d48;
+  --red-hover: #be123c;
+  --red-soft: rgba(225, 29, 72, 0.12);
+  --red-border: rgba(225, 29, 72, 0.35);
   
-  --red: #f43f5e;
-  --red-hover: #e11d48;
-  --red-soft: rgba(244, 63, 94, 0.14);
-  --red-border: rgba(244, 63, 94, 0.35);
+  --green: #16a34a;
+  --green-hover: #15803d;
+  --green-soft: rgba(22, 163, 74, 0.12);
+  --green-border: rgba(22, 163, 74, 0.3);
   
-  --yellow: #fbbf24;
-  --yellow-hover: #f59e0b;
-  --yellow-soft: rgba(251, 191, 36, 0.14);
-  --yellow-border: rgba(251, 191, 36, 0.32);
+  --yellow: #f59e0b;
+  --yellow-hover: #d97706;
+  --yellow-soft: rgba(245, 158, 11, 0.12);
+  --yellow-border: rgba(245, 158, 11, 0.3);
   
-  --green: #10b981;
-  --green-hover: #059669;
-  --green-soft: rgba(16, 185, 129, 0.14);
-  --green-border: rgba(16, 185, 129, 0.32);
-  
-  --dark: #04060a;
-  --dark-surface: #0a0f1d;
-  --dark-border: rgba(56, 189, 248, 0.18);
+  --dark: #060911;
+  --dark-surface: #0e1320;
+  --dark-border: rgba(255, 255, 255, 0.08);
   
   --radius-sm: 8px;
   --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-lg: 18px;
   --radius-full: 9999px;
   
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.1);
-  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.75), 0 0 25px rgba(56, 189, 248, 0.12);
-  --shadow-xl: 0 24px 60px -12px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-xl: 0 20px 48px -8px rgba(0, 0, 0, 0.7);
   
   --font: Cairo, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Tahoma, sans-serif;
-  --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Base Reset & Typography */
@@ -5947,19 +5940,18 @@ label input:focus, label select:focus, label textarea:focus {
 }
 
 /* ==========================================================================
-   KENO STORE — DARK FUTURISTIC THEME & GLASSMORPHISM OVERHAUL (PHASE 4)
-   High-performance cyber aesthetic, neon blue/cyan glows, responsive mobile-first polish
+   KENO STORE — DESIGN SYSTEM NORMALIZATION
+   Authentic, high-trust Arabic digital commerce design system
+   Clean matte dark palette, Keno Crimson (#e11d48), WhatsApp Green (#16a34a), Amber badges (#f59e0b)
    ========================================================================== */
 
-/* Body & Background Ambient Glow */
+/* Body & Background — Solid Matte Charcoal */
 body {
   background: var(--bg) !important;
-  background-image: var(--bg-mesh) !important;
-  background-attachment: fixed !important;
   color: var(--ink) !important;
 }
 
-/* Base Headings & High Contrast Text */
+/* Headings & Text Hierarchy */
 h1, h2, h3, h4, h5, h6 {
   color: var(--ink-heading) !important;
 }
@@ -5968,36 +5960,35 @@ p {
   color: var(--muted);
 }
 
-/* Custom Cyber Scrollbars */
+/* Natural Slate Scrollbars */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(6, 9, 19, 0.8);
+  background: #0a0e17;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.25);
+  background: #1e273d;
   border-radius: 9999px;
-  border: 1px solid rgba(56, 189, 248, 0.15);
+  border: 2px solid #0a0e17;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  background: #334155;
 }
 
 /* Selection Highlight */
 ::selection {
-  background: rgba(56, 189, 248, 0.25);
+  background: rgba(225, 29, 72, 0.25);
   color: #ffffff;
 }
 
-/* Form Controls — Dark Frosted Inputs */
+/* Form Controls — Tactile Dark Inputs */
 input, textarea, select {
-  background: rgba(11, 17, 32, 0.85) !important;
+  background: #0e1320 !important;
   border: 1px solid var(--line) !important;
   color: var(--ink) !important;
   border-radius: var(--radius-sm);
@@ -6005,8 +5996,8 @@ input, textarea, select {
 }
 
 input:focus, textarea:focus, select:focus {
-  border-color: var(--neon-blue) !important;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), 0 0 16px rgba(56, 189, 248, 0.2) !important;
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2) !important;
   outline: none !important;
 }
 
@@ -6014,85 +6005,90 @@ input::placeholder, textarea::placeholder {
   color: var(--muted-dark) !important;
 }
 
-/* Primary & Action Buttons Overhaul */
+/* Button System — High Contrast & Purposeful Accents */
 .button-red {
-  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  background: var(--red) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35) !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.25) !important;
 }
 
 .button-red:hover:not(:disabled) {
-  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
-  box-shadow: 0 6px 22px rgba(244, 63, 94, 0.55), 0 0 15px rgba(244, 63, 94, 0.35) !important;
-  transform: translateY(-2px);
+  background: var(--red-hover) !important;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+.button-whatsapp {
+  background: var(--green) !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 2px 10px rgba(22, 163, 74, 0.25) !important;
+}
+
+.button-whatsapp:hover:not(:disabled) {
+  background: var(--green-hover) !important;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.4) !important;
+  transform: translateY(-1px);
 }
 
 .button-dark {
-  background: rgba(14, 21, 38, 0.9) !important;
+  background: #182033 !important;
   color: #ffffff !important;
   border: 1px solid var(--line) !important;
 }
 
 .button-dark:hover:not(:disabled) {
-  background: rgba(22, 34, 60, 0.95) !important;
-  border-color: var(--neon-blue) !important;
-  box-shadow: var(--neon-glow) !important;
+  background: #1e273d !important;
+  border-color: var(--line-hover) !important;
 }
 
 .button-outline {
-  background: rgba(11, 17, 32, 0.7) !important;
+  background: transparent !important;
   border: 1px solid var(--line) !important;
   color: var(--ink) !important;
 }
 
 .button-outline:hover:not(:disabled) {
-  border-color: var(--neon-blue) !important;
-  background: rgba(16, 26, 48, 0.9) !important;
+  border-color: var(--line-hover) !important;
+  background: #182033 !important;
   color: #ffffff !important;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2) !important;
 }
 
-/* Site Header & Navigation Polish */
+/* Header & Navigation Bar */
 .site-header {
-  background: rgba(6, 9, 19, 0.88) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  background: #0a0e17 !important;
   border-bottom: 1px solid var(--line) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .desktop-nav a {
-  color: #cbd5e1 !important;
-  transition: color 0.2s ease;
+  color: #94a3b8 !important;
 }
 
 .desktop-nav a:hover {
-  color: var(--neon-blue) !important;
+  color: #ffffff !important;
 }
 
 .desktop-nav a::after {
-  background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan)) !important;
-  box-shadow: 0 0 8px var(--neon-blue) !important;
+  background: var(--red) !important;
 }
 
 .header-search:hover {
-  background: rgba(56, 189, 248, 0.12) !important;
-  color: var(--neon-blue) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
 }
 
-/* Search Field & Sort Label */
+/* Search Toolbar & Sort Selector */
 .search-field {
-  background: var(--paper-glass) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   box-shadow: var(--shadow-sm) !important;
 }
 
 .search-field:focus-within {
-  border-color: var(--neon-blue) !important;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), 0 0 20px rgba(56, 189, 248, 0.2) !important;
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2) !important;
 }
 
 .search-field input {
@@ -6100,9 +6096,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .sort-label {
-  background: var(--paper-glass) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
 }
 
@@ -6115,15 +6109,13 @@ input::placeholder, textarea::placeholder {
 }
 
 .sort-label select option {
-  background: var(--dark-surface);
+  background: #0e1320;
   color: var(--ink);
 }
 
 /* Category Filter Tabs */
 .category-tabs button {
-  background: var(--paper-glass) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   color: var(--muted) !important;
   box-shadow: var(--shadow-sm) !important;
@@ -6132,153 +6124,209 @@ input::placeholder, textarea::placeholder {
 .category-tabs button:hover {
   border-color: var(--line-hover) !important;
   color: #ffffff !important;
-  background: var(--paper-hover) !important;
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.15) !important;
-  transform: translateY(-2px);
+  background: #182033 !important;
 }
 
 .category-tabs button[aria-pressed="true"] {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.35) 0%, rgba(56, 189, 248, 0.2) 100%) !important;
+  background: #1e273d !important;
   color: #ffffff !important;
-  border-color: var(--neon-blue) !important;
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), inset 0 0 12px rgba(56, 189, 248, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
 .category-count {
   background: rgba(255, 255, 255, 0.08) !important;
-  color: var(--muted) !important;
+  color: var(--muted-light) !important;
 }
 
 .category-tabs button[aria-pressed="true"] .category-count {
-  background: rgba(56, 189, 248, 0.25) !important;
-  color: #e0f2fe !important;
+  background: rgba(225, 29, 72, 0.2) !important;
+  color: #fda4af !important;
 }
 
-/* Service Grid & Cards Redesign */
+/* Storefront Service Cards (Normalized & Simplified) */
 .service-card {
-  background: var(--paper-glass) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-md) !important;
+  box-shadow: var(--shadow-sm) !important;
   position: relative;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease !important;
 }
 
 .service-card:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(56, 189, 248, 0.22) !important;
-  border-color: rgba(56, 189, 248, 0.5) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-color: var(--line-hover) !important;
+  background: #151c2e !important;
+}
+
+.service-card.is-featured {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+.service-card.is-featured:hover {
+  border-color: rgba(245, 158, 11, 0.6) !important;
 }
 
 .card-visual.has-image {
-  background: #080d1a !important;
+  background: #0a0e17 !important;
 }
 
 .card-visual.has-image::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 60%, rgba(11, 17, 32, 0.85) 100%);
+  background: linear-gradient(to bottom, transparent 65%, rgba(18, 23, 38, 0.9) 100%);
   pointer-events: none;
 }
 
-/* Card Visual Color Tones (Dark Ambient) */
-.tone-red { background: rgba(244, 63, 94, 0.12) !important; color: #fb7185 !important; border: 1px solid rgba(244, 63, 94, 0.2) !important; }
-.tone-gold { background: rgba(245, 158, 11, 0.12) !important; color: #fbbf24 !important; border: 1px solid rgba(245, 158, 11, 0.2) !important; }
-.tone-blue { background: rgba(56, 189, 248, 0.12) !important; color: #38bdf8 !important; border: 1px solid rgba(56, 189, 248, 0.2) !important; }
-.tone-green { background: rgba(16, 185, 129, 0.12) !important; color: #34d399 !important; border: 1px solid rgba(16, 185, 129, 0.2) !important; }
-.tone-orange { background: rgba(249, 115, 22, 0.12) !important; color: #fb923c !important; border: 1px solid rgba(249, 115, 22, 0.2) !important; }
-.tone-dark { background: rgba(255, 255, 255, 0.05) !important; color: #e2e8f0 !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; }
+/* Card Visual Color Tones (Crisp Matte) */
+.tone-red { background: rgba(225, 29, 72, 0.1) !important; color: #fb7185 !important; border: 1px solid rgba(225, 29, 72, 0.2) !important; }
+.tone-gold { background: rgba(245, 158, 11, 0.1) !important; color: #fbbf24 !important; border: 1px solid rgba(245, 158, 11, 0.2) !important; }
+.tone-blue { background: rgba(59, 130, 246, 0.1) !important; color: #60a5fa !important; border: 1px solid rgba(59, 130, 246, 0.2) !important; }
+.tone-green { background: rgba(22, 163, 74, 0.1) !important; color: #4ade80 !important; border: 1px solid rgba(22, 163, 74, 0.2) !important; }
+.tone-orange { background: rgba(234, 88, 12, 0.1) !important; color: #fb923c !important; border: 1px solid rgba(234, 88, 12, 0.2) !important; }
+.tone-dark { background: rgba(255, 255, 255, 0.05) !important; color: #cbd5e1 !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; }
 
-.card-category .featured-tag {
-  background: rgba(244, 63, 94, 0.18) !important;
-  color: #fb7185 !important;
-  border: 1px solid rgba(244, 63, 94, 0.35) !important;
-  box-shadow: 0 0 10px rgba(244, 63, 94, 0.2) !important;
+/* Category Tag & Plans Count Badge */
+.card-category {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.card-category > span:first-child {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.plans-count-tag {
+  font-size: 0.72rem;
+  font-weight: 750;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
 }
 
 .service-card h3 {
+  font-size: 1.12rem;
+  font-weight: 850;
   color: #ffffff !important;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: auto;
+}
+
+.card-price > span {
+  font-size: 0.72rem;
+  color: var(--muted);
+  display: block;
 }
 
 .card-price strong {
+  font-size: 1.25rem;
+  font-weight: 900;
   color: #ffffff !important;
+  font-variant-numeric: tabular-nums;
 }
 
-.card-open {
-  background: rgba(244, 63, 94, 0.14) !important;
-  color: #fb7185 !important;
-  border: 1px solid rgba(244, 63, 94, 0.25) !important;
+.card-price strong small {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
 }
 
-.card-open:hover {
-  background: var(--red) !important;
-  color: #ffffff !important;
-  box-shadow: 0 0 14px rgba(244, 63, 94, 0.4) !important;
+.card-action-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.825rem;
+  font-weight: 800;
+  color: var(--red);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--red-soft);
+  transition: var(--transition);
 }
 
-/* Service Unavailable Badge & Card State */
+.service-card:hover .card-action-indicator {
+  background: var(--red);
+  color: #ffffff;
+  transform: translateX(-3px);
+}
+
+.card-action-indicator svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.2;
+}
+
+/* Service Unavailable Badge */
 .unavailable-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   padding: 3px 9px;
   border-radius: var(--radius-sm);
-  background: rgba(245, 158, 11, 0.18) !important;
+  background: rgba(245, 158, 11, 0.15) !important;
   border: 1px solid rgba(245, 158, 11, 0.35) !important;
   color: #fbbf24 !important;
   font-size: 0.7rem;
   font-weight: 800;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.18);
 }
 
-.service-card.unavailable-card {
+.service-card.is-unavailable {
   border-color: rgba(245, 158, 11, 0.25) !important;
 }
 
-.service-card.unavailable-card .card-visual .service-image {
-  filter: grayscale(35%) contrast(90%);
-  opacity: 0.85;
+.service-card.is-unavailable .card-visual .service-image {
+  filter: grayscale(40%) contrast(90%);
+  opacity: 0.8;
 }
 
-.service-card.unavailable-card .card-open {
-  background: rgba(245, 158, 11, 0.14) !important;
-  color: #fbbf24 !important;
-  border-color: rgba(245, 158, 11, 0.3) !important;
-}
-
-.service-card.unavailable-card .card-open:hover {
-  background: #f59e0b !important;
-  color: #0c0e14 !important;
+.service-card.is-unavailable .card-action-indicator {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
 }
 
 /* How It Works & Trust Sections */
 .how-section {
-  background: var(--paper) !important;
+  background: #0d121f !important;
   border-block: 1px solid var(--line) !important;
 }
 
 .step-number {
-  color: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.04) !important;
 }
 
 /* Empty State & Custom Banner */
 .empty-state {
-  background: var(--paper-glass) !important;
-  border-color: var(--line) !important;
+  background: #121726 !important;
+  border: 1px dashed var(--line-hover) !important;
 }
 
 .custom-banner {
-  background: linear-gradient(105deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.04) 100%) !important;
+  background: #151b2c !important;
   border: 1px solid rgba(245, 158, 11, 0.25) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .custom-icon {
-  background: rgba(245, 158, 11, 0.15) !important;
-  border-color: rgba(245, 158, 11, 0.35) !important;
+  background: rgba(245, 158, 11, 0.12) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
   color: #fbbf24 !important;
 }
 
@@ -6291,29 +6339,29 @@ input::placeholder, textarea::placeholder {
 }
 
 /* ==========================================================================
-   MODALS & DIALOGS (DARK GLASSMORPHISM)
+   MODALS & DIALOGS (SOLID, HIGH-CONTRAST DARK COMMERCE)
    ========================================================================== */
 dialog {
-  background: var(--dark-surface) !important;
+  background: #0e1320 !important;
   color: var(--ink) !important;
-  border: 1px solid var(--dark-border) !important;
+  border: 1px solid var(--line-hover) !important;
   box-shadow: var(--shadow-xl) !important;
 }
 
 dialog::backdrop {
-  background: rgba(3, 5, 10, 0.85) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
+  background: rgba(4, 6, 12, 0.82) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
 }
 
 .service-dialog {
-  background: var(--dark-surface) !important;
-  border: 1px solid rgba(56, 189, 248, 0.2) !important;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(56, 189, 248, 0.15) !important;
+  background: #0e1320 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: var(--shadow-xl) !important;
 }
 
 .service-checkout-header {
-  background: rgba(14, 21, 38, 0.92) !important;
+  background: #13192a !important;
   border-bottom: 1px solid var(--line) !important;
 }
 
@@ -6326,9 +6374,9 @@ dialog::backdrop {
 }
 
 .step-number-badge {
-  background: linear-gradient(135deg, var(--neon-blue) 0%, #2563eb 100%) !important;
+  background: #1e273d !important;
   color: #ffffff !important;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4) !important;
+  border: 1px solid var(--line) !important;
 }
 
 .step-title {
@@ -6337,23 +6385,22 @@ dialog::backdrop {
 
 /* Plan Selection Cards */
 .plan-card {
-  background: rgba(14, 21, 38, 0.7) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   color: var(--ink) !important;
   transition: var(--transition);
 }
 
 .plan-card:hover {
-  background: rgba(20, 31, 56, 0.85) !important;
-  border-color: rgba(56, 189, 248, 0.35) !important;
-  transform: translateY(-2px);
+  background: #182033 !important;
+  border-color: var(--line-hover) !important;
 }
 
 .plan-card:has(input[type="radio"]:checked),
 .plan-card.selected {
-  background: rgba(56, 189, 248, 0.12) !important;
-  border-color: var(--neon-blue) !important;
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.25), inset 0 0 12px rgba(56, 189, 248, 0.1) !important;
+  background: rgba(225, 29, 72, 0.08) !important;
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 1px var(--red) !important;
 }
 
 .plan-card .plan-title {
@@ -6361,28 +6408,28 @@ dialog::backdrop {
 }
 
 .plan-card .plan-price {
-  color: var(--neon-blue) !important;
+  color: #ffffff !important;
   font-weight: 900;
 }
 
 /* Payment Selector Cards */
 .payment-method-card {
-  background: rgba(14, 21, 38, 0.7) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   color: var(--ink) !important;
   transition: var(--transition);
 }
 
 .payment-method-card:hover {
-  border-color: rgba(56, 189, 248, 0.35) !important;
-  background: rgba(20, 31, 56, 0.85) !important;
+  border-color: var(--line-hover) !important;
+  background: #182033 !important;
 }
 
 .payment-method-card:has(input[type="radio"]:checked),
 .payment-method-card.selected {
-  border-color: var(--neon-blue) !important;
-  background: rgba(56, 189, 248, 0.12) !important;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.25) !important;
+  border-color: var(--green) !important;
+  background: rgba(22, 163, 74, 0.08) !important;
+  box-shadow: 0 0 0 1px var(--green) !important;
 }
 
 /* Service Order Proof Notice (Customer WhatsApp flow) */
@@ -6393,8 +6440,8 @@ dialog::backdrop {
   gap: 12px;
   padding: 14px 18px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%) !important;
-  border: 1px solid rgba(34, 197, 94, 0.28) !important;
+  background: rgba(22, 163, 74, 0.08) !important;
+  border: 1px solid rgba(22, 163, 74, 0.25) !important;
   margin-top: 14px;
 }
 
@@ -6402,10 +6449,9 @@ dialog::backdrop {
 .order-whatsapp-notice .notice-icon {
   width: 22px;
   height: 22px;
-  color: #22c55e;
+  color: var(--green);
   flex-shrink: 0;
   margin-top: 2px;
-  filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.4));
 }
 
 .service-order-proof-notice .notice-content,
@@ -6430,37 +6476,42 @@ dialog::backdrop {
   margin: 0;
 }
 
-/* WhatsApp Order Button */
-.button-whatsapp {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 4px 18px rgba(34, 197, 94, 0.4) !important;
+/* Dialog Checkout Actions (Dominant WhatsApp CTA + Secondary Cart) */
+.checkout-actions-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
-.button-whatsapp:hover:not(:disabled) {
-  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%) !important;
-  box-shadow: 0 6px 25px rgba(34, 197, 94, 0.6), 0 0 20px rgba(34, 197, 94, 0.4) !important;
-  transform: translateY(-2px);
+.dialog-primary-whatsapp {
+  flex: 1;
+  min-height: 48px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.dialog-secondary-cart {
+  flex-shrink: 0;
+  min-height: 48px;
+  padding-inline: 18px;
 }
 
 /* ==========================================================================
-   CART DRAWER (DARK FUTURISTIC PANEL & 4-STEP CHECKOUT)
+   CART DRAWER (TACTILE DARK COMMERCE PANEL)
    ========================================================================== */
 .cart-drawer-backdrop {
-  background: rgba(4, 6, 11, 0.8) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  background: rgba(4, 6, 12, 0.8) !important;
 }
 
 .cart-drawer {
-  background: var(--dark-surface) !important;
-  border-inline-end: 1px solid var(--dark-border) !important;
-  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.95), 0 0 30px rgba(56, 189, 248, 0.12) !important;
+  background: #0e1320 !important;
+  border-inline-end: 1px solid var(--line) !important;
+  box-shadow: var(--shadow-xl) !important;
 }
 
 .cart-header {
-  background: rgba(14, 21, 38, 0.9) !important;
+  background: #13192a !important;
   border-bottom: 1px solid var(--line) !important;
 }
 
@@ -6469,19 +6520,19 @@ dialog::backdrop {
 }
 
 .cart-item-card {
-  background: var(--paper-glass) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   color: var(--ink) !important;
   transition: var(--transition);
 }
 
 .cart-item-card:hover {
-  border-color: rgba(56, 189, 248, 0.35) !important;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.15) !important;
+  border-color: var(--line-hover) !important;
+  background: #161c2e !important;
 }
 
 .cart-footer {
-  background: rgba(14, 21, 38, 0.95) !important;
+  background: #13192a !important;
   border-top: 1px solid var(--line) !important;
 }
 
@@ -6492,8 +6543,7 @@ dialog::backdrop {
   justify-content: space-between;
   padding: 14px 20px;
   border-bottom: 1px solid var(--line);
-  background: rgba(11, 17, 32, 0.7);
-  position: relative;
+  background: #0e1320;
 }
 
 .step-indicator {
@@ -6511,7 +6561,7 @@ dialog::backdrop {
   height: 28px;
   border-radius: 50%;
   border: 2px solid var(--line);
-  background: var(--dark-surface);
+  background: #121726;
   color: var(--muted);
   display: grid;
   place-items: center;
@@ -6521,10 +6571,9 @@ dialog::backdrop {
 }
 
 .step-indicator.active .step-bubble {
-  border-color: var(--neon-blue);
-  background: rgba(56, 189, 248, 0.18);
+  border-color: var(--red);
+  background: rgba(225, 29, 72, 0.15);
   color: #ffffff;
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
 }
 
 .step-indicator.completed .step-bubble {
@@ -6544,12 +6593,10 @@ dialog::backdrop {
 }
 
 /* ==========================================================================
-   ADMIN DASHBOARD & EDITOR ENHANCEMENTS (PHASE 2)
+   ADMIN DASHBOARD & EDITOR
    ========================================================================== */
 .admin-portal-card {
-  background: var(--paper-glass) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   box-shadow: var(--shadow-xl) !important;
 }
@@ -6559,13 +6606,13 @@ dialog::backdrop {
 }
 
 .admin-table-wrapper {
-  background: var(--paper-glass) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
   box-shadow: var(--shadow-md) !important;
 }
 
 .admin-table th {
-  background: rgba(14, 21, 38, 0.95) !important;
+  background: #161c2e !important;
   color: #cbd5e1 !important;
   border-bottom: 1px solid var(--line) !important;
 }
@@ -6576,7 +6623,7 @@ dialog::backdrop {
 }
 
 .admin-table tbody tr:hover {
-  background: rgba(56, 189, 248, 0.05) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
 }
 
 /* Status Pills in Admin */
@@ -6600,30 +6647,27 @@ dialog::backdrop {
 }
 
 .status-pill.active-pill {
-  background: rgba(16, 185, 129, 0.15) !important;
-  color: #34d399 !important;
-  border: 1px solid rgba(16, 185, 129, 0.35) !important;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  background: rgba(22, 163, 74, 0.15) !important;
+  color: #4ade80 !important;
+  border: 1px solid rgba(22, 163, 74, 0.3) !important;
 }
 
 .status-pill.warning-status {
   background: rgba(245, 158, 11, 0.15) !important;
   color: #fbbf24 !important;
-  border: 1px solid rgba(245, 158, 11, 0.35) !important;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
 }
 
 .status-pill.hidden-status {
-  background: rgba(148, 163, 184, 0.15) !important;
+  background: rgba(148, 163, 184, 0.12) !important;
   color: #94a3b8 !important;
   border: 1px solid rgba(148, 163, 184, 0.25) !important;
 }
 
 .status-pill.featured-status {
-  background: rgba(244, 63, 94, 0.18) !important;
+  background: rgba(225, 29, 72, 0.15) !important;
   color: #fb7185 !important;
-  border: 1px solid rgba(244, 63, 94, 0.35) !important;
-  box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+  border: 1px solid rgba(225, 29, 72, 0.3) !important;
 }
 
 .status-pill.dimmed-status {
@@ -6635,16 +6679,16 @@ dialog::backdrop {
 /* Service Editor Dialog Styling */
 .editor-dialog {
   max-width: 900px !important;
-  background: var(--dark-surface) !important;
-  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+  background: #0e1320 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 /* Image Upload Dropzone (2:1 Banner Upload) */
 .editor-image-dropzone,
 .service-image-dropzone {
-  border: 2px dashed rgba(56, 189, 248, 0.35);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-md);
-  background: rgba(11, 17, 32, 0.65);
+  background: #0e1320;
   padding: 24px 20px;
   text-align: center;
   cursor: pointer;
@@ -6658,9 +6702,8 @@ dialog::backdrop {
 .editor-image-dropzone.dragover,
 .service-image-dropzone:hover,
 .service-image-dropzone.dragover {
-  border-color: var(--neon-blue);
-  background: rgba(56, 189, 248, 0.08);
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.22);
+  border-color: var(--red);
+  background: rgba(225, 29, 72, 0.05);
 }
 
 .dropzone-content,
@@ -6674,8 +6717,7 @@ dialog::backdrop {
 .dropzone-icon {
   width: 44px;
   height: 44px;
-  color: var(--neon-blue);
-  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+  color: #cbd5e1;
 }
 
 .dropzone-title,
@@ -6699,9 +6741,9 @@ dialog::backdrop {
   gap: 6px;
   padding: 3px 12px;
   border-radius: var(--radius-full);
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  color: var(--neon-blue);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  color: #cbd5e1;
   font-size: 0.725rem;
   font-weight: 750;
   margin-top: 4px;
@@ -6730,15 +6772,15 @@ dialog::backdrop {
   padding: 14px;
   border-radius: var(--radius-md);
   border: 1px solid var(--line);
-  background: rgba(14, 21, 38, 0.6);
+  background: #121726;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .status-radio-card:hover,
 .status-option:hover {
-  border-color: rgba(56, 189, 248, 0.4);
-  background: rgba(20, 31, 56, 0.8);
+  border-color: var(--line-hover);
+  background: #182033;
 }
 
 .status-radio-card input[type="radio"],
@@ -6751,22 +6793,19 @@ dialog::backdrop {
 .status-radio-card:has(input[value="visible"]:checked),
 .status-option:has(input[value="visible"]:checked) {
   border-color: var(--green);
-  background: rgba(16, 185, 129, 0.12);
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+  background: rgba(22, 163, 74, 0.1);
 }
 
 .status-radio-card:has(input[value="unavailable"]:checked),
 .status-option:has(input[value="unavailable"]:checked) {
   border-color: var(--yellow);
-  background: rgba(245, 158, 11, 0.12);
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.1);
 }
 
 .status-radio-card:has(input[value="hidden"]:checked),
 .status-option:has(input[value="hidden"]:checked) {
   border-color: var(--muted);
-  background: rgba(148, 163, 184, 0.1);
-  box-shadow: 0 0 14px rgba(148, 163, 184, 0.15);
+  background: rgba(148, 163, 184, 0.08);
 }
 
 .status-option-content {
@@ -6793,9 +6832,9 @@ dialog::backdrop {
 }
 
 .status-dot.dot-visible,
-.active-option .status-dot { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.active-option .status-dot { background: var(--green); }
 .status-dot.dot-unavailable,
-.unavailable-option .status-dot { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+.unavailable-option .status-dot { background: var(--yellow); }
 .status-dot.dot-hidden,
 .hidden-option .status-dot { background: var(--muted); }
 
@@ -6808,17 +6847,17 @@ dialog::backdrop {
 
 /* Plans Manager Section in Editor */
 .plans-manager-section {
-  background: rgba(11, 17, 32, 0.65) !important;
+  background: #0e1320 !important;
   border: 1px solid var(--line) !important;
 }
 
 .plans-table-wrapper {
-  background: rgba(14, 21, 38, 0.7) !important;
+  background: #121726 !important;
   border: 1px solid var(--line) !important;
 }
 
 .plans-compact-table thead {
-  background: rgba(14, 21, 38, 0.95) !important;
+  background: #161c2e !important;
   border-bottom: 1px solid var(--line) !important;
 }
 
@@ -6831,7 +6870,7 @@ dialog::backdrop {
 }
 
 .plans-compact-table tbody tr:hover {
-  background: rgba(56, 189, 248, 0.05) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
 }
 
 .plan-col-label {
@@ -6844,18 +6883,16 @@ dialog::backdrop {
 
 /* Editor Sticky Save Bar */
 .editor-sticky-save-bar {
-  background: rgba(10, 15, 29, 0.96) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  background: #0a0e17 !important;
   border-top: 1px solid var(--line) !important;
-  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: var(--shadow-xl) !important;
 }
 
 .sticky-change-text {
   color: #ffffff !important;
 }
 
-/* Mobile Responsive Polish */
+/* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
   .status-radio-group {
     grid-template-columns: 1fr;
@@ -6869,7 +6906,17 @@ dialog::backdrop {
   .service-order-proof-notice {
     padding: 12px 14px;
   }
+
+  .checkout-actions-container {
+    flex-direction: column;
+  }
+
+  .dialog-primary-whatsapp,
+  .dialog-secondary-cart {
+    width: 100%;
+  }
 }
+
 
 
 
