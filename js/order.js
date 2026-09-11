@@ -53,47 +53,34 @@
       const serviceName = service?.name || 'خدمة رقمية';
       const planName = plan ? plan.label : (options.quoteDetails && options.quoteDetails.trim() ? options.quoteDetails.trim() : 'خدمة حسب الطلب');
       const totalNum = plan ? Number(plan.price) : 0;
-      const totalFormatted = plan ? `${totalNum.toLocaleString('en-US')} ج.م` : 'حسب المواصفات';
-
-      const products = `• ${serviceName} — ${planName}`;
+      const totalFormatted = plan ? `${totalNum.toLocaleString('en-US')} جنيه` : 'حسب المواصفات';
 
       let customerAccount = (options.customerAccount && options.customerAccount.trim())
         ? options.customerAccount.trim()
-        : 'غير محدد (سيتم تزويده في المحادثة)';
+        : 'سيتم تزويدها في المحادثة';
       if (options.orderNote && options.orderNote.trim()) {
-        customerAccount += `\nملاحظة: ${options.orderNote.trim()}`;
+        customerAccount += `\n📝 ملاحظات إضافية: ${options.orderNote.trim()}`;
       }
 
       const pm = options.paymentMethod;
       const paymentInfo = pm ? `${pm.name}${pm.number ? ` (${pm.number})` : ''}` : 'فودافون كاش / إنستاباي';
 
-      let accountLabel = 'بيانات الحساب / ID:';
-      if (service?.category === 'games') accountLabel = 'معرف اللاعب (Player ID):';
-      else if (service?.category === 'entertainment') accountLabel = 'بريد تفعيل الاشتراك:';
-      else if (service?.category === 'ai') accountLabel = 'بريد حساب الذكاء الاصطناعي:';
-      else if (service?.category === 'payments') accountLabel = 'رقم المحفظة / الحساب المستلم:';
-      else if (service?.category === 'social') accountLabel = 'رابط الحساب / الصفحة:';
-
       const lines = [
-        `مرحبًا ${storeName}`,
+        `مرحبًا ${storeName} 👋`,
+        'أرغب في تأكيد طلب جديد عبر الموقع:',
         '',
-        'طلب جديد',
+        `📌 الخدمة: ${serviceName}`,
+        `📦 الباقة: ${planName}`,
+        `💰 الإجمالي: ${totalFormatted}`,
         '',
-        `رقم الطلب: ${orderCode}`,
-        '',
-        'الخدمة المطلوبة:',
-        products,
-        '',
-        `إجمالي الطلب: ${totalFormatted}`,
-        '',
-        `طريقة الدفع: ${paymentInfo}`,
-        '',
-        accountLabel,
+        '👤 بيانات العميل والشحن:',
         customerAccount,
         '',
-        'ملاحظة: سيتم إرسال صورة إثبات التحويل هنا في المحادثة.',
+        `💳 طريقة الدفع: ${paymentInfo}`,
+        `🔖 كود الطلب: ${orderCode}`,
         '',
-        'برجاء تأكيد الطلب والبدء في التنفيذ.'
+        '----------------------------',
+        '⚡ سيتم إرسال صورة إيصال التحويل في المحادثة لتأكيد وتنفيذ الطلب فورًا.'
       ];
 
       return lines.join('\n').normalize('NFC');

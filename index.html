@@ -1254,33 +1254,51 @@
 
   <!-- Service Details & Order Dialog -->
   <dialog id="serviceDialog" class="service-dialog modern-service-checkout" aria-labelledby="serviceDialogTitle">
-    <!-- 1. Header -->
-    <div class="dialog-header service-checkout-header">
-      <div class="dialog-header-info">
-        <span class="dialog-category-badge" id="dialogCategory"></span>
-        <h2 id="serviceDialogTitle" class="dialog-service-title"></h2>
-        <p id="dialogDescription" class="dialog-service-desc"></p>
+    <!-- Top Floating Controls / Header Bar -->
+    <div class="service-dialog-topbar">
+      <div class="dialog-topbar-start">
+        <span class="service-trust-pill">
+          <i data-icon="shield-check"></i>
+          <span>طلب فوري ومضمون 100%</span>
+        </span>
       </div>
-      <div class="dialog-header-actions">
-        <button type="button" class="icon-btn" id="shareServiceBtn" title="مشاركة رابط الخدمة" aria-label="مشاركة رابط الخدمة">
+      <div class="dialog-topbar-actions">
+        <button type="button" class="dialog-action-icon-btn" id="shareServiceBtn" title="مشاركة رابط الخدمة" aria-label="مشاركة رابط الخدمة">
           <i data-icon="share-2"></i>
         </button>
-        <button type="button" class="icon-btn" data-close-dialog="serviceDialog" aria-label="إغلاق تفاصيل الخدمة">
+        <button type="button" class="dialog-action-icon-btn dialog-close-btn" data-close-dialog="serviceDialog" aria-label="إغلاق تفاصيل الخدمة">
           <i data-icon="x"></i>
         </button>
       </div>
     </div>
-    <!-- 2. Scrollable Body -->
+
+    <!-- Scrollable Body -->
     <div class="dialog-scroll checkout-scroll-body">
-      <!-- Service Visual Hero Banner / Branded Fallback -->
-      <div id="serviceDialogBanner" class="dialog-service-banner" hidden>
-        <img id="serviceDialogBannerImg" src="" alt="Service Banner" loading="eager" decoding="async">
-      </div>
+      
+      <!-- 1. Premium Service Header Unit -->
+      <header class="service-checkout-hero" id="serviceCheckoutHero">
+        <!-- Service Media / Large Image or Branded Fallback -->
+        <div id="serviceDialogBanner" class="service-hero-media">
+          <img id="serviceDialogBannerImg" src="" alt="Service Banner" loading="eager" decoding="async">
+        </div>
+
+        <div class="service-hero-details">
+          <div class="service-hero-tags">
+            <span class="hero-premium-badge" id="servicePremiumBadge">
+              <i data-icon="sparkles"></i>
+              <span>مختارات كينو المميزة</span>
+            </span>
+            <span class="hero-category-tag" id="dialogCategory">الألعاب والشحن</span>
+          </div>
+          <h2 id="serviceDialogTitle" class="service-hero-name">اسم الخدمة</h2>
+          <p id="dialogDescription" class="service-hero-desc">وصف الخدمة الفوري...</p>
+        </div>
+      </header>
 
       <!-- Service Important Notes Card -->
       <div id="serviceNotes" class="service-notes-card" hidden></div>
 
-      <!-- Step 1: Plan Selection Section -->
+      <!-- Step 1: Package Selection Section -->
       <section class="checkout-step-section" id="planSelectionSection">
         <div class="checkout-step-header">
           <span class="step-number-badge">1</span>
@@ -1302,36 +1320,105 @@
         </div>
       </section>
 
-      <!-- Step 2: Customer / Account Info Section -->
+      <!-- Step 2: Customer / Account Info Section (Clean Dynamic Fields) -->
       <section class="checkout-step-section" id="accountInfoSection">
         <div class="checkout-step-header">
           <span class="step-number-badge">2</span>
           <div>
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <h3 class="step-title">بيانات الحساب / الشحن</h3>
+            <div class="step-title-flex">
+              <h3 class="step-title" id="accountStepTitle">بيانات الحساب / الشحن</h3>
               <span class="account-badge-pill" id="accountFieldBadge">مطلوب للتنفيذ</span>
             </div>
-            <p class="step-desc" id="accountFieldDesc">اكتب معرف اللاعب (Player ID) أو إيميل الحساب لتنفيذ طلبك مباشرة وبدقة.</p>
+            <p class="step-desc" id="accountFieldDesc">أدخل البيانات المطلوبة لتنفيذ طلبك بدقة وفورية.</p>
           </div>
         </div>
 
-        <div class="account-input-card">
-          <div class="account-input-wrapper">
-            <label for="customerAccount" class="visually-hidden">بيانات الحساب أو المعرف</label>
-            <div class="input-with-icon">
-              <i data-icon="user-check"></i>
-              <input id="customerAccount" maxlength="200" placeholder="مثال: PUBG Player ID أو إيميل الحساب أو المعرّف" autocomplete="off">
+        <!-- Dynamic Customer Fields Container -->
+        <div class="customer-dynamic-card">
+          
+          <!-- Mode A: PUBG Global (Player ID Only) -->
+          <div class="customer-mode-panel" id="panelPubgId" hidden>
+            <label for="pubgPlayerIdInput" class="cust-field-label">
+              <span>معرف اللاعب (Player ID)</span>
+              <span class="required-indicator">مطلوب للشحن الفوري</span>
+            </label>
+            <div class="cust-input-box">
+              <div class="cust-input-icon"><i data-icon="gamepad-2"></i></div>
+              <input type="text" id="pubgPlayerIdInput" class="cust-text-input" placeholder="مثال: 5123456789" maxlength="35" autocomplete="off" inputmode="numeric">
+            </div>
+            <div class="cust-field-note">
+              <i data-icon="shield-check"></i>
+              <span>يتم إرسال الشدات مباشرة إلى حسابك عبر الـ ID الرسمي دون الحاجة لأي كلمة سر.</span>
             </div>
           </div>
 
-          <!-- Collapsible / Neat Order Note -->
-          <div class="order-note-wrap">
-            <label for="orderNote" class="order-note-sublabel">
-              <i data-icon="file-text"></i>
-              <span>ملاحظة أو تعليمات إضافية (اختياري)</span>
-            </label>
-            <textarea id="orderNote" rows="2" maxlength="500" placeholder="أي تفاصيل خاصة ترغب في إبلاغها لفريق كينو مع الطلب..."></textarea>
+          <!-- Mode B: Account-based games (Username/Email + Password) -->
+          <div class="customer-mode-panel" id="panelAccountGame" hidden>
+            <div class="account-fields-grid">
+              <div class="account-field-item">
+                <label for="gameAccountUserInput" class="cust-field-label">
+                  <span>اسم المستخدم أو البريد الإلكتروني</span>
+                  <span class="required-indicator">مطلوب</span>
+                </label>
+                <div class="cust-input-box">
+                  <div class="cust-input-icon"><i data-icon="user"></i></div>
+                  <input type="text" id="gameAccountUserInput" class="cust-text-input" placeholder="بريد الحساب أو المعرف..." maxlength="120" autocomplete="off">
+                </div>
+              </div>
+
+              <div class="account-field-item">
+                <label for="gameAccountPassInput" class="cust-field-label">
+                  <span>كلمة مرور الحساب</span>
+                  <span class="required-indicator">مطلوب</span>
+                </label>
+                <div class="cust-input-box">
+                  <div class="cust-input-icon"><i data-icon="lock"></i></div>
+                  <input type="password" id="gameAccountPassInput" class="cust-text-input" placeholder="اكتب كلمة المرور..." maxlength="100" autocomplete="new-password">
+                  <button type="button" class="pass-toggle-action" id="togglePassBtn" aria-label="إظهار أو إخفاء كلمة المرور">
+                    <i data-icon="eye" id="passToggleIcon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="cust-field-note security-notice">
+              <i data-icon="lock"></i>
+              <span>بيانات حسابك مشفرة ومحمية بالكامل؛ تُستخدم فقط لإتمام عملية الشحن الداخلي ثم تُحذف فوراً.</span>
+            </div>
           </div>
+
+          <!-- Mode C: Other Services (Custom Field) -->
+          <div class="customer-mode-panel" id="panelOtherCustom" hidden>
+            <label for="serviceCustomAccountInput" class="cust-field-label">
+              <span id="customAccountLabelText">البريد الإلكتروني أو الحساب للتفعيل</span>
+              <span class="required-indicator" id="customAccountRequiredTag">مطلوب</span>
+            </label>
+            <div class="cust-input-box">
+              <div class="cust-input-icon" id="customAccountIconWrap"><i data-icon="mail"></i></div>
+              <input type="text" id="serviceCustomAccountInput" class="cust-text-input" placeholder="أدخل البيانات المطلوبة هنا..." maxlength="200" autocomplete="off">
+            </div>
+            <div class="cust-field-note" id="customAccountHintBox" hidden>
+              <i data-icon="info"></i>
+              <span id="customAccountHintText"></span>
+            </div>
+          </div>
+
+          <!-- Legacy hidden input for backward compatibility -->
+          <input type="hidden" id="customerAccount" value="">
+
+          <!-- Subtle Order Note (Optional) -->
+          <div class="order-notes-accordion-wrap">
+            <details class="order-note-details">
+              <summary class="order-note-summary">
+                <i data-icon="file-text"></i>
+                <span>ملاحظة أو تعليمات إضافية مع طلبك (اختياري)</span>
+                <i data-icon="chevron-down" class="chevron-icon"></i>
+              </summary>
+              <div class="order-note-content">
+                <textarea id="orderNote" rows="2" maxlength="500" placeholder="اكتب أي تعليمات ترغب في توضيحها لفريق كينو..."></textarea>
+              </div>
+            </details>
+          </div>
+
         </div>
       </section>
 
@@ -1396,32 +1483,34 @@
       </section>
     </div>
 
-    <!-- 3. Dialog Order Footer & Action Buttons -->
-    <div class="dialog-order-footer modern-checkout-footer">
-      <div class="footer-price-info">
-        <span class="footer-plan-subtitle" id="selectedPlanLabel">اختار الباقة المناسبة</span>
-        <div class="price-display-wrapper">
-          <strong id="footerDisplayPrice" class="footer-big-price"></strong>
+    <!-- 3. Conversion-Focused Order Confirmation Footer -->
+    <div class="dialog-order-footer modern-checkout-footer" id="dialogOrderFooter">
+      <div class="checkout-footer-single-action">
+        <!-- One Clear Primary Confirmation Button -->
+        <button type="button" class="keno-confirm-whatsapp-btn" id="orderButton">
+          <div class="btn-icon-bubble">
+            <i data-icon="message-circle"></i>
+          </div>
+          <div class="btn-caption-group">
+            <span class="btn-main-label">تأكيد الطلب عبر واتساب</span>
+            <span class="btn-sub-label">تواصل مباشر لتنفيذ طلبك فوراً</span>
+          </div>
+          <div class="btn-price-display">
+            <span id="footerDisplayPrice" class="footer-btn-price">0 جنيه</span>
+          </div>
+        </button>
+
+        <!-- Secondary Actions (Add to cart & copy details) -->
+        <div class="checkout-footer-secondary-row">
+          <button type="button" class="secondary-cart-link" id="addToCartBtn">
+            <i data-icon="shopping-cart"></i>
+            <span>أو أضف الباقة لسلة الطلبات</span>
+          </button>
+          <button type="button" class="secondary-copy-link" id="copyOrderButton">
+            <i data-icon="copy"></i>
+            <span>نسخ التفاصيل</span>
+          </button>
         </div>
-      </div>
-      <div class="checkout-actions-container">
-        <!-- Primary: Instant WhatsApp Order -->
-        <button type="button" class="button button-whatsapp dialog-primary-whatsapp footer-order-btn" id="orderButton">
-          <i data-icon="message-circle"></i>
-          <span>اطلب عبر واتساب الآن</span>
-        </button>
-        <!-- Secondary: Add to Cart -->
-        <button type="button" class="button button-outline dialog-secondary-cart footer-cart-btn" id="addToCartBtn">
-          <i data-icon="shopping-cart"></i>
-          <span>+ أضف للسلة</span>
-        </button>
-      </div>
-      <div class="dialog-footer-sub">
-        <button type="button" class="text-button small" id="copyOrderButton">
-          <i data-icon="copy"></i>
-          <span>نسخ تفاصيل الطلب للحافظة</span>
-        </button>
-        <p class="footer-note-text">يتم تجهيز رسالة طلبك مع كود مرجعي مباشر. السعر والإتاحة والتنفيذ يتأكدوا معك فوراً عبر واتساب.</p>
       </div>
     </div>
   </dialog>

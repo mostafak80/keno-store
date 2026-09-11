@@ -737,6 +737,11 @@
     if ($('dialogCategory')) $('dialogCategory').textContent = categoryName;
     if ($('dialogDescription')) $('dialogDescription').textContent = service.description || '';
 
+    const premBadge = $('servicePremiumBadge');
+    if (premBadge) {
+      premBadge.textContent = service.badge || (service.featured ? '⭐ مختارات كينو الحصرية' : '🔥 الأكثر طلباً وشعبية');
+    }
+
     // Hero Banner for Services with Images or Prominent Visual Fallback
     const bannerContainer = $('serviceDialogBanner');
     if (bannerContainer) {
@@ -762,7 +767,7 @@
       `;
 
       if (imageUrl) {
-        bannerContainer.className = 'dialog-service-banner has-image';
+        bannerContainer.className = 'service-hero-media has-image';
         bannerContainer.innerHTML = `
           <img id="serviceDialogBannerImg"
                src="${esc(imageUrl)}"
@@ -776,52 +781,87 @@
           </div>
         `;
       } else {
-        bannerContainer.className = `dialog-service-banner is-fallback ${toneClass}`;
+        bannerContainer.className = `service-hero-media is-fallback ${toneClass}`;
         bannerContainer.innerHTML = fallbackHtml;
       }
     }
 
-    // Smart contextual prompt for customer account based on category & per-service custom field
-    const catId = service.category || '';
-    const badgeEl = $('accountFieldBadge');
-    const descEl = $('accountFieldDesc');
-    const accountInput = $('customerAccount');
-    if (service.accountFieldLabel || service.accountFieldPlaceholder) {
-      if (badgeEl) { badgeEl.textContent = 'مطلوب للتنفيذ'; badgeEl.className = 'account-badge-pill required-pill'; }
-      if (descEl) descEl.textContent = service.accountFieldDesc || `يرجى إدخال ${service.accountFieldLabel || 'البيانات المطلوبة'}`;
-      if (accountInput) accountInput.placeholder = service.accountFieldPlaceholder || 'أدخل البيانات المطلوبة هنا...';
-    } else if (catId === 'games') {
-      if (badgeEl) { badgeEl.textContent = 'مطلوب للشحن الفوري'; badgeEl.className = 'account-badge-pill required-pill'; }
-      if (descEl) descEl.textContent = 'أدخل معرف اللاعب (Player ID) الخاص بك للشحن التلقائي فوراً.';
-      if (accountInput) accountInput.placeholder = 'مثال: PUBG ID أو Free Fire Player ID أو معرف اللعبة';
-    } else if (catId === 'entertainment') {
-      if (badgeEl) { badgeEl.textContent = 'مطلوب لتفعيل الاشتراك'; badgeEl.className = 'account-badge-pill required-pill'; }
-      if (descEl) descEl.textContent = 'أدخل البريد الإلكتروني أو الحساب المطلوب تفعيل الباقة عليه.';
-      if (accountInput) accountInput.placeholder = 'example@gmail.com أو اسم الحساب';
-    } else if (catId === 'ai') {
-      if (badgeEl) { badgeEl.textContent = 'مطلوب لتفعيل الحساب'; badgeEl.className = 'account-badge-pill required-pill'; }
-      if (descEl) descEl.textContent = 'أدخل البريد الإلكتروني لتفعيل اشتراك الذكاء الاصطناعي (ChatGPT / Claude / إلخ).';
-      if (accountInput) accountInput.placeholder = 'your-email@gmail.com';
-    } else if (catId === 'apps') {
-      if (badgeEl) { badgeEl.textContent = 'مطلوب للتفعيل'; badgeEl.className = 'account-badge-pill required-pill'; }
-      if (descEl) descEl.textContent = 'أدخل البريد الإلكتروني أو بيانات الحساب المراد تفعيل التطبيق عليه.';
-      if (accountInput) accountInput.placeholder = 'البريد الإلكتروني أو رقم الهاتف المسجل';
-    } else if (catId === 'payments') {
-      if (badgeEl) { badgeEl.textContent = 'بيانات التحويل'; badgeEl.className = 'account-badge-pill required-pill'; }
-      if (descEl) descEl.textContent = 'أدخل رقم المحفظة أو الحساب البنكي أو عنوان InstaPay المراد التحويل له.';
-      if (accountInput) accountInput.placeholder = '01xxxxxxxxx أو عنوان إنستاباي';
-    } else if (catId === 'marketing') {
-      if (badgeEl) { badgeEl.textContent = 'تفاصيل الطلب'; badgeEl.className = 'account-badge-pill'; }
-      if (descEl) descEl.textContent = 'أدخل رابط الصفحة أو تفاصيل الحملة الإعلانية أو التصميم المطلوب بدقة.';
-      if (accountInput) accountInput.placeholder = 'رابط الصفحة أو المنشور أو وصف الطلب';
-    } else if (catId === 'social') {
-      if (badgeEl) { badgeEl.textContent = 'رابط الحساب / الصفحة'; badgeEl.className = 'account-badge-pill required-pill'; }
-      if (descEl) descEl.textContent = 'أدخل رابط الحساب أو القناة أو المنشور المراد تزويده.';
-      if (accountInput) accountInput.placeholder = 'https://instagram.com/username أو رابط الحساب';
-    } else {
-      if (badgeEl) { badgeEl.textContent = 'مطلوب للتنفيذ'; badgeEl.className = 'account-badge-pill'; }
-      if (descEl) descEl.textContent = 'اكتب رقم الهاتف أو المعرف المراد شحنه أو تقديم الخدمة له.';
-      if (accountInput) accountInput.placeholder = 'معرف الحساب أو رقم الهاتف أو الرابط';
+    // Dynamic Customer Fields Configuration
+    const serviceNameLower = (service.name || '').toLowerCase();
+    const serviceMarkLower = (service.mark || '').toLowerCase();
+    const serviceIdLower = (service.id || '').toLowerCase();
+    const isPubg = serviceIdLower.includes('pubg') || 
+                   serviceNameLower.includes('ببجي') || 
+                   serviceNameLower.includes('pubg') || 
+                   serviceMarkLower.includes('pubg');
+    const isGame = service.category === 'games';
+    const isAccountGame = isGame && !isPubg;
+
+    const panelPubg = $('panelPubgId');
+    const panelAccount = $('panelAccountGame');
+    const panelOther = $('panelOtherCustom');
+
+    // Reset input fields
+    if ($('pubgPlayerIdInput')) $('pubgPlayerIdInput').value = '';
+    if ($('gameAccountUserInput')) $('gameAccountUserInput').value = '';
+    if ($('gameAccountPassInput')) $('gameAccountPassInput').value = '';
+    if ($('serviceCustomAccountInput')) $('serviceCustomAccountInput').value = '';
+    if ($('customerAccount')) $('customerAccount').value = '';
+
+    if (panelPubg) panelPubg.hidden = !isPubg;
+    if (panelAccount) panelAccount.hidden = !isAccountGame;
+    if (panelOther) panelOther.hidden = (isPubg || isAccountGame);
+
+    if (!isPubg && !isAccountGame && panelOther) {
+      const catId = service.category || '';
+      const customTitle = $('customAccountLabelText') || $('customFieldLabel');
+      const customBadge = $('customAccountRequiredTag') || $('customFieldBadge');
+      const customDesc = $('customAccountHintText') || $('customFieldDesc');
+      const customInput = $('serviceCustomAccountInput');
+      const customHintBox = $('customAccountHintBox');
+      if (customHintBox) customHintBox.hidden = false;
+
+      if (service.accountFieldLabel || service.accountFieldPlaceholder) {
+        if (customTitle) customTitle.textContent = service.accountFieldLabel || 'البيانات المطلوبة';
+        if (customBadge) customBadge.textContent = 'مطلوب للتنفيذ';
+        if (customDesc) customDesc.textContent = service.accountFieldDesc || `يرجى إدخال ${service.accountFieldLabel || 'البيانات المطلوبة'} للتنفيذ.`;
+        if (customInput) customInput.placeholder = service.accountFieldPlaceholder || 'أدخل البيانات المطلوبة هنا...';
+      } else if (catId === 'entertainment') {
+        if (customTitle) customTitle.textContent = 'البريد الإلكتروني للتفعيل';
+        if (customBadge) customBadge.textContent = 'تفعيل فوري';
+        if (customDesc) customDesc.textContent = 'أدخل البريد الإلكتروني أو الحساب المطلوب تفعيل الباقة عليه.';
+        if (customInput) customInput.placeholder = 'name@example.com أو اسم المستخدم';
+      } else if (catId === 'ai') {
+        if (customTitle) customTitle.textContent = 'بريد تفعيل الذكاء الاصطناعي';
+        if (customBadge) customBadge.textContent = 'اشتراك رسمي';
+        if (customDesc) customDesc.textContent = 'أدخل البريد الإلكتروني لتفعيل اشتراك (ChatGPT / Claude / Midjourney).';
+        if (customInput) customInput.placeholder = 'your-email@gmail.com';
+      } else if (catId === 'apps') {
+        if (customTitle) customTitle.textContent = 'بيانات الحساب / الإيميل';
+        if (customBadge) customBadge.textContent = 'مطلوب للتفعيل';
+        if (customDesc) customDesc.textContent = 'أدخل البريد الإلكتروني أو رقم الهاتف المسجل بالتطبيق المراد تفعيله.';
+        if (customInput) customInput.placeholder = 'رقم الهاتف أو البريد الإلكتروني';
+      } else if (catId === 'payments') {
+        if (customTitle) customTitle.textContent = 'بيانات التحويل والاستلام';
+        if (customBadge) customBadge.textContent = 'تحويل لحظي';
+        if (customDesc) customDesc.textContent = 'أدخل رقم المحفظة أو الحساب البنكي أو عنوان InstaPay المراد استلام المبلغ عليه.';
+        if (customInput) customInput.placeholder = '01xxxxxxxxx أو عنوان إنستاباي';
+      } else if (catId === 'marketing') {
+        if (customTitle) customTitle.textContent = 'رابط الحملة / الصفحة';
+        if (customBadge) customBadge.textContent = 'تفاصيل الطلب';
+        if (customDesc) customDesc.textContent = 'أدخل رابط الصفحة أو تفاصيل الحملة الإعلانية أو التصميم المطلوب بدقة.';
+        if (customInput) customInput.placeholder = 'رابط الصفحة أو المنشور أو وصف الطلب';
+      } else if (catId === 'social') {
+        if (customTitle) customTitle.textContent = 'رابط الحساب / القناة';
+        if (customBadge) customBadge.textContent = 'تنفيذ فوري';
+        if (customDesc) customDesc.textContent = 'أدخل رابط الحساب أو القناة أو المنشور المراد تزويده.';
+        if (customInput) customInput.placeholder = 'https://instagram.com/username أو رابط القناة';
+      } else {
+        if (customTitle) customTitle.textContent = 'بيانات الحساب / المعرف';
+        if (customBadge) customBadge.textContent = 'مطلوب للتنفيذ';
+        if (customDesc) customDesc.textContent = 'اكتب رقم الهاتف أو المعرف المراد شحنه أو تقديم الخدمة له.';
+        if (customInput) customInput.placeholder = 'معرف الحساب أو رقم الهاتف أو الرابط';
+      }
     }
 
     // Service terms/notes
@@ -850,16 +890,21 @@
                 return `
                 <label class="plan-option ${isSelected ? 'selected' : ''} ${hasDiscount ? 'has-discount' : ''}" data-plan-id="${esc(p.id)}">
                   <input type="radio" name="customer-plan" value="${esc(p.id)}" ${isSelected ? 'checked' : ''} ${!p.available ? 'disabled' : ''}>
-                  <div class="plan-card-top">
-                    <span class="plan-label">${esc(p.label)}</span>
-                    ${hasDiscount ? `<span class="plan-discount-tag">وفر ${savings} ج.م (${discountPct}%)</span>` : ''}
+                  <div class="plan-selection-indicator">
+                    <span class="plan-check-icon">${icon('check')}</span>
                   </div>
-                  <div class="plan-price-row">
-                    <span class="plan-price"><bdi>${money(p.price)}</bdi> <small>جنيه</small></span>
-                    ${hasDiscount ? `<del class="plan-old-price"><bdi>${money(p.originalPrice)}</bdi></del>` : ''}
+                  <div class="plan-card-body">
+                    <div class="plan-card-top">
+                      <span class="plan-label">${esc(p.label)}</span>
+                      ${hasDiscount ? `<span class="plan-discount-tag">وفر ${savings} ج.م (${discountPct}%)</span>` : ''}
+                    </div>
+                    <div class="plan-price-row">
+                      <span class="plan-price"><bdi>${money(p.price)}</bdi> <small>جنيه</small></span>
+                      ${hasDiscount ? `<del class="plan-old-price"><bdi>${money(p.originalPrice)}</bdi></del>` : ''}
+                    </div>
+                    ${p.note ? `<span class="plan-note">${esc(p.note)}</span>` : ''}
+                    ${!p.available ? '<span class="plan-note out-of-stock">غير متاحة حاليًا</span>' : ''}
                   </div>
-                  ${p.note ? `<span class="plan-note">${esc(p.note)}</span>` : ''}
-                  ${!p.available ? '<span class="plan-note out-of-stock">غير متاحة حاليًا</span>' : ''}
                 </label>
               `;
               }).join('')}
@@ -931,15 +976,17 @@
     // Disable buttons if service is marked unavailable or service has plans but no available plan is selected
     const isUnavailable = service.available === false || service.status === 'unavailable';
     const isDisabled = isUnavailable || (service.plans.length > 0 && !plan);
-    if ($('orderButton')) {
-      $('orderButton').disabled = isDisabled;
+    const orderBtn = $('orderButton');
+    if (orderBtn) {
+      orderBtn.disabled = isDisabled;
+      const headingEl = orderBtn.querySelector('.btn-action-heading');
       if (isUnavailable) {
-        $('orderButton').innerHTML = `<span>الخدمة غير متاحة حالياً</span>`;
+        if (headingEl) headingEl.textContent = 'الخدمة غير متاحة حالياً';
       } else {
-        $('orderButton').innerHTML = `<i data-icon="message-circle"></i><span>اطلب عبر واتساب الآن</span>`;
-        if (typeof lucide !== 'undefined' && lucide.createIcons) {
-          lucide.createIcons();
-        }
+        if (headingEl) headingEl.textContent = 'تأكيد الطلب عبر واتساب';
+      }
+      if ($('footerDisplayPrice')) {
+        $('footerDisplayPrice').textContent = priceText;
       }
     }
     if ($('addToCartBtn')) {
@@ -959,19 +1006,54 @@
     }
   });
 
-  // Realtime visual feedback for Customer Account field
-  $('customerAccount')?.addEventListener('input', () => {
-    const val = $('customerAccount').value.trim();
-    const badge = $('accountFieldBadge');
-    if (!badge) return;
-    if (val.length > 2) {
-      badge.textContent = 'تم الإدخال ✓';
-      badge.className = 'account-badge-pill completed-pill';
+  // Dynamic Customer Fields Sync Helper
+  function syncCustomerAccount() {
+    const service = viewData().services.find(s => s.id === selectedService);
+    if (!service) return;
+    const serviceNameLower = (service.name || '').toLowerCase();
+    const serviceMarkLower = (service.mark || '').toLowerCase();
+    const serviceIdLower = (service.id || '').toLowerCase();
+    const isPubg = serviceIdLower.includes('pubg') || 
+                   serviceNameLower.includes('ببجي') || 
+                   serviceNameLower.includes('pubg') || 
+                   serviceMarkLower.includes('pubg');
+    const isGame = service.category === 'games';
+    const isAccountGame = isGame && !isPubg;
+
+    const hiddenAcc = $('customerAccount');
+    if (!hiddenAcc) return;
+
+    if (isPubg) {
+      const pid = $('pubgPlayerIdInput')?.value.trim() || '';
+      hiddenAcc.value = pid ? `Player ID: ${pid}` : '';
+    } else if (isAccountGame) {
+      const user = $('gameAccountUserInput')?.value.trim() || '';
+      const pass = $('gameAccountPassInput')?.value.trim() || '';
+      if (user || pass) {
+        hiddenAcc.value = `الحساب: ${user} | كلمة السر: ${pass}`;
+      } else {
+        hiddenAcc.value = '';
+      }
     } else {
-      const service = viewData().services.find(s => s.id === selectedService);
-      const catId = service?.category || '';
-      badge.textContent = (catId === 'games' ? 'مطلوب للشحن الفوري' : (catId === 'subscriptions' ? 'مطلوب لتفعيل الاشتراك' : 'مطلوب للتنفيذ'));
-      badge.className = 'account-badge-pill required-pill';
+      const val = $('serviceCustomAccountInput')?.value.trim() || '';
+      hiddenAcc.value = val;
+    }
+  }
+
+  $('pubgPlayerIdInput')?.addEventListener('input', syncCustomerAccount);
+  $('gameAccountUserInput')?.addEventListener('input', syncCustomerAccount);
+  $('gameAccountPassInput')?.addEventListener('input', syncCustomerAccount);
+  $('serviceCustomAccountInput')?.addEventListener('input', syncCustomerAccount);
+
+  $('togglePassBtn')?.addEventListener('click', () => {
+    const passInput = $('gameAccountPassInput');
+    const btn = $('togglePassBtn');
+    if (!passInput || !btn) return;
+    const isPass = passInput.type === 'password';
+    passInput.type = isPass ? 'text' : 'password';
+    btn.innerHTML = isPass ? icon('eye-off') : icon('eye');
+    if (window.Icons && typeof window.Icons.hydrate === 'function') {
+      window.Icons.hydrate();
     }
   });
 
@@ -1065,6 +1147,7 @@
   }
 
   function getOrderOptionsFromDialog() {
+    syncCustomerAccount();
     const data = viewData();
     const pm = (data.paymentMethods || []).find(m => m.id === dialogSelectedPaymentId && m.enabled) || null;
     return {
@@ -1085,6 +1168,49 @@
       const data = viewData();
       const service = data.services.find(s => s.id === selectedService);
       const plan = service?.plans.find(p => p.id === selectedPlan) || null;
+
+      syncCustomerAccount();
+
+      // Dynamic validation based on customer info requirement
+      const serviceNameLower = (service?.name || '').toLowerCase();
+      const serviceMarkLower = (service?.mark || '').toLowerCase();
+      const serviceIdLower = (service?.id || '').toLowerCase();
+      const isPubg = serviceIdLower.includes('pubg') || 
+                     serviceNameLower.includes('ببجي') || 
+                     serviceNameLower.includes('pubg') || 
+                     serviceMarkLower.includes('pubg');
+      const isGame = service?.category === 'games';
+      const isAccountGame = isGame && !isPubg;
+
+      if (isPubg) {
+        const pid = $('pubgPlayerIdInput')?.value.trim() || '';
+        if (!pid) {
+          toast('يرجى إدخال Player ID الخاص بك لشحن ببجي.');
+          $('pubgPlayerIdInput')?.focus();
+          return;
+        }
+      } else if (isAccountGame) {
+        const user = $('gameAccountUserInput')?.value.trim() || '';
+        const pass = $('gameAccountPassInput')?.value.trim() || '';
+        if (!user) {
+          toast('يرجى إدخال اسم المستخدم أو البريد الإلكتروني للحساب.');
+          $('gameAccountUserInput')?.focus();
+          return;
+        }
+        if (!pass) {
+          toast('يرجى إدخال كلمة المرور للتنفيذ.');
+          $('gameAccountPassInput')?.focus();
+          return;
+        }
+      } else {
+        const custVal = $('serviceCustomAccountInput')?.value.trim() || '';
+        if (!custVal && service?.plans?.length > 0) {
+          toast('يرجى إدخال البيانات المطلوبة لتنفيذ طلبك.');
+          $('serviceCustomAccountInput')?.focus();
+          return;
+        }
+      }
+
       const options = getOrderOptionsFromDialog();
       const orderCode = OrderUtils.generateOrderCode();
       options.orderCode = orderCode;
