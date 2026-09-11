@@ -740,20 +740,44 @@
     // Hero Banner for Services with Images or Prominent Visual Fallback
     const bannerContainer = $('serviceDialogBanner');
     if (bannerContainer) {
-      if (service.image) {
-        bannerContainer.hidden = false;
+      bannerContainer.hidden = false;
+      const imageUrl = (service.image || '').trim();
+      const toneClass = `tone-${service.color || 'red'}`;
+      const serviceIconName = service.icon || categoryObj?.icon || 'sparkles';
+      const serviceMark = service.mark || service.name || 'KENO';
+
+      const fallbackHtml = `
+        <div class="dialog-banner-fallback ${toneClass}">
+          <div class="banner-fallback-ambient"></div>
+          <div class="banner-fallback-content">
+            <div class="banner-fallback-icon-wrap">
+              ${icon(serviceIconName)}
+            </div>
+            <div class="banner-fallback-meta">
+              <span class="banner-fallback-mark" dir="auto">${esc(serviceMark)}</span>
+              <span class="banner-fallback-cat">${esc(categoryName)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      if (imageUrl) {
         bannerContainer.className = 'dialog-service-banner has-image';
-        bannerContainer.innerHTML = `<img id="serviceDialogBannerImg" src="${esc(service.image)}" alt="${esc(service.name)}" loading="lazy" decoding="async">`;
-      } else {
-        bannerContainer.hidden = false;
-        const toneClass = `tone-${service.color || 'blue'}`;
-        bannerContainer.className = `dialog-service-banner is-fallback ${toneClass}`;
         bannerContainer.innerHTML = `
-          <div class="dialog-banner-inner">
-            <div class="banner-fallback-icon">${icon(service.icon || 'sparkles')}</div>
-            <div class="banner-fallback-mark">${esc(service.mark || 'KENO')}</div>
+          <img id="serviceDialogBannerImg"
+               src="${esc(imageUrl)}"
+               alt="${esc(service.name)}"
+               loading="eager"
+               decoding="async"
+               onload="this.classList.add('is-loaded');"
+               onerror="this.style.display='none'; const fb = this.nextElementSibling; if (fb) fb.style.display='flex'; this.parentElement.classList.remove('has-image'); this.parentElement.classList.add('is-fallback');">
+          <div class="fallback-wrapper" style="display:none; width:100%; height:100%;">
+            ${fallbackHtml}
           </div>
         `;
+      } else {
+        bannerContainer.className = `dialog-service-banner is-fallback ${toneClass}`;
+        bannerContainer.innerHTML = fallbackHtml;
       }
     }
 

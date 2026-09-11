@@ -1698,12 +1698,15 @@ dialog::backdrop {
   -webkit-backdrop-filter: blur(8px);
 }
 
+#serviceDialog.service-dialog,
 .service-dialog {
-  width: 680px;
+  width: 700px;
   max-width: calc(100% - 24px);
   border-radius: var(--radius-lg);
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.25);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--paper);
+  color: var(--ink);
   overflow: hidden;
 }
 
@@ -1733,8 +1736,8 @@ dialog::backdrop {
   justify-content: space-between;
   gap: 16px;
   border-bottom: 1px solid var(--line);
-  padding: 20px 24px;
-  background: #ffffff;
+  padding: 18px 24px;
+  background: #0d121f;
 }
 
 .dialog-header-info {
@@ -1751,22 +1754,22 @@ dialog::backdrop {
   font-size: 0.72rem;
   font-weight: 800;
   background: var(--red-soft);
-  color: var(--red);
+  color: #f43f5e;
   border: 1px solid var(--red-border);
   margin-bottom: 6px;
 }
 
 .dialog-service-title {
-  font-size: 1.38rem;
+  font-size: 1.35rem;
   font-weight: 900;
-  color: var(--ink);
+  color: #ffffff;
   margin: 0 0 4px;
   line-height: 1.3;
 }
 
 .dialog-service-desc {
-  font-size: 0.84rem;
-  color: var(--muted);
+  font-size: 0.85rem;
+  color: #9ab0cc;
   margin: 0;
   line-height: 1.5;
 }
@@ -1781,41 +1784,182 @@ dialog::backdrop {
 /* Scrollable Body & Step Sections */
 .checkout-scroll-body {
   padding: 20px 24px;
-  max-height: 62dvh;
+  max-height: 64dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
+  background: var(--paper);
 }
 
-.service-notes-card {
-  padding: 12px 16px;
-  border: 1px solid #fed7aa;
-  background: #fff7ed;
+/* Service Dialog Hero Banner & Branded Fallback */
+.dialog-service-banner {
+  width: 100%;
+  height: 160px;
   border-radius: var(--radius-md);
-  font-size: 0.825rem;
-  color: #9a3412;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #090d16;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.dialog-service-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.dialog-service-banner img.is-loaded {
+  opacity: 1;
+}
+
+.dialog-service-banner.has-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 14, 23, 0.05) 0%, rgba(10, 14, 23, 0.6) 100%);
+  pointer-events: none;
+}
+
+/* Fallback Banner */
+.dialog-banner-fallback {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #151a2d 0%, #0a0e17 100%);
+  border-radius: inherit;
+}
+
+.dialog-banner-fallback .banner-fallback-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 85% 30%, rgba(225, 29, 72, 0.28) 0%, transparent 65%);
+  opacity: 0.9;
+}
+
+.dialog-banner-fallback.tone-blue .banner-fallback-ambient {
+  background: radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 65%);
+}
+
+.dialog-banner-fallback.tone-green .banner-fallback-ambient {
+  background: radial-gradient(circle at 85% 30%, rgba(34, 197, 94, 0.3) 0%, transparent 65%);
+}
+
+.dialog-banner-fallback.tone-yellow .banner-fallback-ambient {
+  background: radial-gradient(circle at 85% 30%, rgba(245, 158, 11, 0.3) 0%, transparent 65%);
+}
+
+.dialog-banner-fallback.tone-purple .banner-fallback-ambient {
+  background: radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.3) 0%, transparent 65%);
+}
+
+.dialog-banner-fallback .banner-fallback-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 24px;
+  gap: 16px;
+}
+
+.banner-fallback-icon-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  color: #ffffff;
+}
+
+.banner-fallback-icon-wrap svg,
+.banner-fallback-icon-wrap i {
+  width: 28px;
+  height: 28px;
+  color: #f43f5e;
+}
+
+.dialog-banner-fallback.tone-blue .banner-fallback-icon-wrap svg { color: #60a5fa; }
+.dialog-banner-fallback.tone-green .banner-fallback-icon-wrap svg { color: #4ade80; }
+.dialog-banner-fallback.tone-yellow .banner-fallback-icon-wrap svg { color: #fbbf24; }
+.dialog-banner-fallback.tone-purple .banner-fallback-icon-wrap svg { color: #c084fc; }
+
+.banner-fallback-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: end;
+  gap: 6px;
+}
+
+.banner-fallback-mark {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.banner-fallback-cat {
+  font-size: 0.76rem;
+  font-weight: 750;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+/* Service Notes Card */
+.service-notes-card {
+  padding: 14px 16px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  color: #fef3c7;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .service-notes-header {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-weight: 800;
-  margin-bottom: 6px;
-  color: #c2410c;
+  margin-bottom: 8px;
+  color: #f59e0b;
+  font-size: 0.875rem;
 }
 
 .service-notes-header i {
   width: 16px;
   height: 16px;
+  color: #f59e0b;
 }
 
 .service-notes-card ul {
   margin: 0;
-  padding-inline-start: 18px;
-  color: #7c2d12;
+  padding-inline-start: 20px;
+  color: #fde68a;
+  line-height: 1.6;
 }
 
 .service-notes-card li + li {
@@ -1838,7 +1982,7 @@ dialog::backdrop {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--dark);
+  background: var(--red);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -1850,15 +1994,15 @@ dialog::backdrop {
 }
 
 .step-title {
-  font-size: 0.96rem;
+  font-size: 0.98rem;
   font-weight: 850;
-  color: var(--ink);
+  color: #ffffff;
   margin: 0;
 }
 
 .step-desc {
-  font-size: 0.78rem;
-  color: var(--muted);
+  font-size: 0.82rem;
+  color: #9ab0cc;
   margin: 2px 0 0;
   line-height: 1.4;
 }
@@ -2059,12 +2203,15 @@ dialog::backdrop {
 
 .input-with-icon input {
   width: 100%;
-  padding: 12px 14px 12px 42px !important;
+  padding-block: 12px !important;
+  padding-inline-start: 44px !important;
+  padding-inline-end: 14px !important;
+  text-align: right !important;
   font-size: 16px !important;
   border-radius: var(--radius-sm) !important;
   border: 1px solid var(--line) !important;
   background: #0e1320 !important;
-  color: var(--ink) !important;
+  color: #ffffff !important;
   transition: var(--transition);
 }
 
@@ -2155,24 +2302,25 @@ dialog::backdrop {
 
 .payment-proof-drawer {
   padding: 14px 16px;
-  background: #ffffff;
+  background: #0e1320;
   border-top: 1px solid var(--line);
+  color: #e2e8f0;
 }
 
 /* Order Summary Card */
 .order-summary-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  border: 1.5px solid #e2e8f0;
+  background: #0e1320;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   padding: 16px 18px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 .summary-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 10px;
   margin-bottom: 12px;
 }
@@ -2181,9 +2329,9 @@ dialog::backdrop {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 850;
-  color: var(--ink);
+  color: #ffffff;
 }
 
 .summary-title-wrap i {
@@ -2194,7 +2342,8 @@ dialog::backdrop {
 
 .summary-title-wrap h4 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
+  color: #ffffff;
 }
 
 .summary-trust-badge {
@@ -2203,11 +2352,11 @@ dialog::backdrop {
   gap: 5px;
   font-size: 0.72rem;
   font-weight: 800;
-  color: #059669;
-  background: #ecfdf5;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
   padding: 3px 9px;
   border-radius: 999px;
-  border: 1px solid #a7f3d0;
+  border: 1px solid rgba(16, 185, 129, 0.28);
 }
 
 .summary-trust-badge i {
@@ -2225,23 +2374,23 @@ dialog::backdrop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
 }
 
 .summary-row-label {
-  color: var(--muted);
+  color: #9ab0cc;
   font-weight: 600;
 }
 
 .summary-row-val {
-  color: var(--ink);
+  color: #ffffff;
   font-weight: 800;
 }
 
 .summary-total-row {
   margin-top: 6px;
   padding-top: 10px;
-  border-top: 1px dashed #e2e8f0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.14);
   font-size: 0.92rem;
   font-weight: 850;
 }
@@ -2255,27 +2404,164 @@ dialog::backdrop {
 .summary-price-amount {
   font-size: 1.42rem;
   font-weight: 950;
-  color: var(--red);
+  color: #f43f5e;
 }
 
 .summary-price-original {
   font-size: 0.84rem;
-  color: #94a3b8;
+  color: #64748b;
   text-decoration: line-through;
 }
 
 .summary-savings-tag {
   font-size: 0.72rem;
   font-weight: 850;
-  color: #b45309;
-  background: #fef3c7;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
   padding: 2px 7px;
   border-radius: 4px;
 }
 
+/* Service Dialog Payment Methods Harmonization & WhatsApp Notice */
+.service-dialog .payment-card {
+  background: #0e1320;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.service-dialog .payment-card:hover {
+  background: #141b2b;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.service-dialog .payment-card.selected {
+  background: rgba(225, 29, 72, 0.07);
+  border-color: var(--red);
+  box-shadow: 0 0 0 1px var(--red), 0 4px 14px rgba(225, 29, 72, 0.15);
+}
+
+.service-dialog .custom-radio {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: #090d16;
+}
+
+.service-dialog .payment-icon-wrap {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.service-dialog .payment-info-title strong {
+  color: #ffffff;
+}
+
+.service-dialog .payment-sub {
+  color: #9ab0cc;
+}
+
+.service-dialog .payment-quick-tag {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+
+.service-dialog .payment-details-drawer {
+  background: #090d16;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.service-dialog .drawer-field {
+  background: #0e1320;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.service-dialog .drawer-label {
+  color: #9ab0cc;
+  font-size: 0.76rem;
+}
+
+.service-dialog .drawer-val {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.service-dialog .drawer-copy-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.service-dialog .drawer-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.service-dialog .drawer-desc {
+  color: #cbd5e1;
+  font-size: 0.78rem;
+}
+
+.service-dialog .order-whatsapp-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.25);
+  border-radius: var(--radius-md);
+  margin-top: 14px;
+}
+
+.service-dialog .order-whatsapp-notice .notice-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(37, 211, 102, 0.15);
+  color: #25d366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.service-dialog .order-whatsapp-notice .notice-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.service-dialog .order-whatsapp-notice .notice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.service-dialog .order-whatsapp-notice .notice-text strong {
+  color: #4ade80;
+  font-weight: 800;
+  font-size: 0.86rem;
+}
+
+.service-dialog .order-whatsapp-notice .notice-text span {
+  color: #d1fae5;
+}
+
+.quote-fields-card textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: #0e1320;
+  color: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
 /* Modern Checkout Footer */
 .modern-checkout-footer {
-  background: #ffffff;
+  background: #0d121f;
   border-top: 1px solid var(--line);
   padding: 16px 24px;
   display: flex;
@@ -2283,7 +2569,7 @@ dialog::backdrop {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .footer-price-info {
@@ -2293,18 +2579,19 @@ dialog::backdrop {
 
 .footer-plan-subtitle {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: #9ab0cc;
   font-weight: 600;
 }
 
 .footer-big-price {
   font-size: 1.55rem;
   font-weight: 950;
-  color: var(--ink);
+  color: #ffffff;
   line-height: 1.2;
 }
 
-.footer-actions-group {
+.footer-actions-group,
+.checkout-actions-container {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2315,13 +2602,13 @@ dialog::backdrop {
   padding: 12px 24px !important;
   font-size: 0.94rem !important;
   font-weight: 850 !important;
-  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3) !important;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35) !important;
   border-radius: var(--radius-md) !important;
 }
 
 .footer-order-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.4) !important;
+  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.45) !important;
 }
 
 .footer-cart-btn {
@@ -2343,42 +2630,88 @@ dialog::backdrop {
 
 .footer-note-text {
   font-size: 0.74rem;
-  color: var(--muted);
+  color: #64748b;
   margin: 0;
   line-height: 1.4;
 }
 
 @media (max-width: 640px) {
+  #serviceDialog.service-dialog,
   .service-dialog {
     width: 100%;
     max-width: 100%;
     margin-bottom: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    max-height: 92dvh;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
   }
   .service-checkout-header {
-    padding: 16px;
+    padding: 14px 16px;
+  }
+  .dialog-service-title {
+    font-size: 1.18rem;
+  }
+  .dialog-service-desc {
+    font-size: 0.8rem;
   }
   .checkout-scroll-body {
-    padding: 16px;
-    max-height: 56dvh;
+    padding: 14px 16px;
+    max-height: calc(92dvh - 140px);
+    gap: 16px;
+  }
+  .dialog-service-banner {
+    height: 135px;
+  }
+  .dialog-banner-fallback .banner-fallback-content {
+    padding: 12px 16px;
+  }
+  .banner-fallback-icon-wrap {
+    width: 48px;
+    height: 48px;
+  }
+  .banner-fallback-mark {
+    font-size: 1.1rem;
   }
   .plan-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .plan-option {
+    min-height: 72px;
+    padding: 10px 12px;
+  }
+  .account-input-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .order-summary-card {
+    padding: 12px 14px;
   }
   .modern-checkout-footer {
     position: sticky;
     bottom: 0;
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
     z-index: 10;
   }
+  .checkout-actions-container,
   .footer-actions-group {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1.6fr;
+    gap: 8px;
   }
   .footer-price-info {
     display: none; /* Already shown clearly in Order Summary right above footer on mobile */
+  }
+  .dialog-footer-sub {
+    margin-top: 4px;
+  }
+  .footer-note-text {
+    font-size: 0.68rem;
+    display: none; /* Keep mobile footer clean and compact */
   }
 }
 
