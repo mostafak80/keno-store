@@ -59,28 +59,27 @@
         ? options.customerAccount.trim()
         : 'سيتم تزويدها في المحادثة';
       if (options.orderNote && options.orderNote.trim()) {
-        customerAccount += `\n📝 ملاحظات إضافية: ${options.orderNote.trim()}`;
+        customerAccount += `\nملاحظات إضافية: ${options.orderNote.trim()}`;
       }
 
       const pm = options.paymentMethod;
       const paymentInfo = pm ? `${pm.name}${pm.number ? ` (${pm.number})` : ''}` : 'فودافون كاش / إنستاباي';
 
       const lines = [
-        `مرحبًا ${storeName} 👋`,
+        `مرحبًا ${storeName}،`,
         'أرغب في تأكيد طلب جديد عبر الموقع:',
         '',
-        `📌 الخدمة: ${serviceName}`,
-        `📦 الباقة: ${planName}`,
-        `💰 الإجمالي: ${totalFormatted}`,
+        `الخدمة: ${serviceName}`,
+        `الباقة: ${planName}`,
+        `الإجمالي: ${totalFormatted}`,
         '',
-        '👤 بيانات العميل والشحن:',
+        'بيانات العميل والشحن:',
         customerAccount,
         '',
-        `💳 طريقة الدفع: ${paymentInfo}`,
-        `🔖 كود الطلب: ${orderCode}`,
+        `طريقة الدفع: ${paymentInfo}`,
+        `كود الطلب: ${orderCode}`,
         '',
-        '----------------------------',
-        '⚡ سيتم إرسال صورة إيصال التحويل في المحادثة لتأكيد وتنفيذ الطلب فورًا.'
+        'سيتم إرسال صورة إيصال التحويل في المحادثة لتأكيد وتنفيذ الطلب فورًا.'
       ];
 
       return lines.join('\n').normalize('NFC');
