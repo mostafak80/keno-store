@@ -107,6 +107,11 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  -webkit-font-synthesis: none;
+  font-feature-settings: "liga" 1, "calt" 1, "ccmp" 1, "locl" 1, "kern" 1;
+  font-variant-ligatures: common-ligatures contextual;
+  font-optical-sizing: auto;
 }
 
 body {
@@ -118,6 +123,11 @@ body {
   line-height: var(--leading-normal);
   overflow-x: hidden;
   letter-spacing: 0;
+  font-synthesis: none;
+  -webkit-font-synthesis: none;
+  font-style: normal;
+  hyphens: manual;
+  -webkit-hyphens: manual;
 }
 
 /* Strict Zero Tracking for Arabic across all levels */
@@ -125,6 +135,8 @@ body {
 html[lang="ar"],
 body {
   letter-spacing: 0;
+  font-synthesis: none;
+  -webkit-font-synthesis: none;
 }
 
 h1, h2, h3, h4, h5, h6, p, a, button, input, textarea, select, span, label {
@@ -3203,17 +3215,17 @@ label input:focus, label select:focus, label textarea:focus {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 64px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  height: 66px;
+  background: rgba(14, 19, 32, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--line);
   display: none;
   align-items: center;
   justify-content: space-around;
   z-index: 990;
   padding-bottom: env(safe-area-inset-bottom);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.6);
 }
 
 .mobile-nav-item {
@@ -3222,26 +3234,28 @@ label input:focus, label select:focus, label textarea:focus {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 4px;
   height: 100%;
-  color: #64748b;
+  color: var(--muted-light);
   text-decoration: none;
-  font-size: 0.6875rem;
-  font-weight: 750;
+  font-size: 0.78125rem;
+  font-weight: var(--weight-bold);
   background: none;
   border: 0;
   cursor: pointer;
+  letter-spacing: 0 !important;
   transition: var(--transition);
 }
 
 .mobile-nav-item svg {
   width: 20px;
   height: 20px;
+  stroke-width: 2.2px;
 }
 
 .mobile-nav-item:hover,
 .mobile-nav-item.active {
-  color: var(--red);
+  color: #ffffff;
 }
 
 .mobile-nav-cart-wrapper {
@@ -4866,7 +4880,7 @@ label input:focus, label select:focus, label textarea:focus {
   display: inline-block;
   font-size: 0.725rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
   color: #fb7185;
   background: rgba(225, 29, 72, 0.12);
   border: 1px solid rgba(225, 29, 72, 0.25);
@@ -5376,7 +5390,7 @@ label input:focus, label select:focus, label textarea:focus {
   display: inline-block;
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   padding: 3px 10px;
   border-radius: var(--radius-full);
   background: var(--red-soft);
@@ -7141,16 +7155,16 @@ p, .hero-copy > p, .section-heading > p, .faq-list p, .dialog-service-desc {
 }
 
 .service-card .card-description {
-  font-size: 0.8125rem !important;
-  color: var(--muted) !important;
-  line-height: 1.55 !important;
+  font-size: 0.875rem !important;
+  color: var(--muted-light) !important;
+  line-height: 1.62 !important;
   margin: 0 0 14px 0 !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  min-height: 3.1em !important;
+  min-height: 3.25em !important;
   letter-spacing: 0 !important;
 }
 
@@ -7170,9 +7184,9 @@ p, .hero-copy > p, .section-heading > p, .faq-list p, .dialog-service-desc {
 
 .card-price strong small {
   font-size: var(--text-xs) !important;
-  font-weight: var(--weight-semibold) !important;
-  color: var(--muted) !important;
-  margin-inline-start: 3px;
+  font-weight: var(--weight-bold) !important;
+  color: var(--muted-light) !important;
+  margin-inline-start: 4px;
 }
 
 .card-action-indicator {
@@ -7189,9 +7203,9 @@ p, .hero-copy > p, .section-heading > p, .faq-list p, .dialog-service-desc {
 }
 
 .step-desc {
-  font-size: 0.84rem !important;
-  line-height: 1.55 !important;
-  color: var(--muted) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  color: var(--muted-light) !important;
 }
 
 /* Form Controls & Labels */
@@ -7261,15 +7275,326 @@ input, textarea, select {
   letter-spacing: 0.05em !important;
 }
 
-/* Mobile Text Overflow & Wrap Protection */
+/* ==========================================================================
+   ARABIC RTL TYPOGRAPHY & SMALL-SCREEN READABILITY ENGINE
+   ========================================================================== */
+
+/* 1. Global Arabic Font Rendering & Faux-Font Synthesis Prevention */
+html[lang="ar"],
+[dir="rtl"],
+body,
 h1, h2, h3, h4, h5, h6,
+p, span, a, button, input, textarea, select, label {
+  font-synthesis: none !important;
+  -webkit-font-synthesis: none !important;
+  font-feature-settings: "liga" 1, "calt" 1, "ccmp" 1, "locl" 1, "kern" 1 !important;
+  font-variant-ligatures: common-ligatures contextual !important;
+  font-optical-sizing: auto !important;
+  letter-spacing: 0 !important;
+}
+
+/* 2. Arabic Balanced Headings & Anti-Orphan Text Wrap */
+h1, h2, h3, h4, h5, h6,
+.hero-copy h1,
+.section-heading h2,
 .service-card h3,
 .dialog-service-title,
-.hero-copy h1,
 .step-title,
+.modal-title,
+.section-title,
+.faq-question,
+.trust-card h3,
+.testimonial-author strong,
 .invoice-header h4 {
+  text-wrap: balance !important;
   overflow-wrap: break-word !important;
   word-break: break-word !important;
+}
+
+p,
+.hero-copy > p,
+.section-heading > p,
+.service-card .card-description,
+.step-desc,
+.dialog-service-desc,
+.dialog-desc,
+.faq-answer,
+.info-note,
+.empty-state p,
+.testimonial-quote {
+  text-wrap: pretty !important;
+  overflow-wrap: break-word !important;
+}
+
+/* 3. Bidirectional (BiDi) Isolation & Egyptian Phone/Reference Code Layout */
+bdi,
+[dir="ltr"],
+.bidi-isolate,
+.order-code,
+.mono-code,
+.phone-number,
+.whatsapp-number,
+.payment-quick-tag,
+.drawer-val,
+.cart-item-code,
+.account-number,
+[data-phone],
+#announcementPhone,
+#announcementInsta,
+.feature-word {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  display: inline-block;
+  text-align: left;
+}
+
+.card-price,
+.dialog-summary-price,
+.cart-total-price,
+.plan-price,
+.plan-col-price,
+.footer-big-price {
+  unicode-bidi: isolate;
+}
+
+/* 4. Enhanced Small-Screen Arabic Readability System (<= 640px) */
+@media (max-width: 640px) {
+  body {
+    font-size: 0.9375rem !important; /* 15px */
+    line-height: 1.72 !important;
+  }
+
+  .hero-copy h1 {
+    font-size: 1.95rem !important;
+    line-height: 1.38 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-copy > p {
+    font-size: 0.9375rem !important;
+    line-height: 1.72 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .section-heading h2 {
+    font-size: 1.6rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .section-heading > p {
+    font-size: 0.90625rem !important;
+    line-height: 1.68 !important;
+  }
+
+  /* Service Cards on Small Screens */
+  .service-card {
+    padding: 16px !important;
+  }
+
+  .service-card h3 {
+    font-size: 1.0625rem !important; /* 17px */
+    font-weight: var(--weight-extrabold) !important;
+    line-height: 1.42 !important;
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .service-card .card-description {
+    font-size: 0.875rem !important; /* 14px */
+    color: #cbd5e1 !important; /* High contrast */
+    line-height: 1.65 !important; /* Diacritic-safe leading */
+    min-height: 3.3em !important;
+    margin-bottom: 14px !important;
+  }
+
+  .service-card .card-category > span:first-child {
+    font-size: 0.78125rem !important;
+    color: var(--muted-light) !important;
+  }
+
+  .card-price strong {
+    font-size: 1.25rem !important;
+  }
+
+  .card-action-indicator {
+    font-size: 0.875rem !important;
+    font-weight: var(--weight-extrabold) !important;
+    padding: 8px 14px !important;
+  }
+
+  /* Service Dialog & Bottom Sheet on Small Screens */
+  .service-dialog, .editor-dialog {
+    padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .dialog-service-title {
+    font-size: 1.35rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .dialog-service-desc {
+    font-size: 0.90625rem !important;
+    line-height: 1.68 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .step-title {
+    font-size: 0.9375rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .step-desc {
+    font-size: 0.84375rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Plan Options & Selector Cards */
+  .plan-card, .payment-card {
+    padding: 12px 14px !important;
+  }
+
+  .plan-card-name {
+    font-size: 0.9375rem !important;
+    font-weight: var(--weight-bold) !important;
+    line-height: 1.45 !important;
+  }
+
+  .plan-card-desc {
+    font-size: 0.8125rem !important;
+    line-height: 1.55 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .plan-col-price strong {
+    font-size: 1.15rem !important;
+  }
+
+  /* Form Inputs on Mobile (16px prevents iOS zoom, high contrast) */
+  input, textarea, select {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    padding: 12px 14px !important;
+  }
+
+  label, .field-caption {
+    font-size: 0.875rem !important;
+    font-weight: var(--weight-bold) !important;
+    margin-bottom: 6px !important;
+  }
+
+  .field-hint {
+    font-size: 0.8125rem !important;
+    line-height: 1.6 !important;
+    color: var(--muted-light) !important;
+  }
+
+  /* Buttons on Small Screens */
+  .button, button.button {
+    font-size: 0.9375rem !important;
+    min-height: 46px !important;
+    padding-inline: 18px !important;
+  }
+
+  .dialog-primary-whatsapp {
+    font-size: 0.95rem !important;
+    min-height: 48px !important;
+  }
+
+  .dialog-secondary-cart {
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+  }
+
+  /* Category Filter Pills on Small Screens */
+  .category-tabs {
+    padding-block: 12px 8px !important;
+    gap: 6px !important;
+  }
+
+  .category-tabs button {
+    font-size: 0.84375rem !important;
+    padding: 8px 14px !important;
+    min-height: 40px !important;
+  }
+
+  .category-count {
+    font-size: 0.75rem !important;
+    padding: 2px 7px !important;
+  }
+
+  /* FAQ Accordion Readability */
+  .faq-question {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    padding: 16px !important;
+  }
+
+  .faq-answer {
+    font-size: 0.875rem !important;
+    line-height: 1.72 !important;
+    color: var(--muted-light) !important;
+    padding: 0 16px 16px !important;
+  }
+
+  /* Testimonials on Mobile */
+  .testimonial-quote {
+    font-size: 0.875rem !important;
+    line-height: 1.7 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .testimonial-author strong {
+    font-size: 0.90625rem !important;
+  }
+
+  /* Cart Drawer Typography on Small Screens */
+  .cart-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .cart-item-info h4 {
+    font-size: 0.9375rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .cart-item-plan {
+    font-size: 0.8125rem !important;
+    line-height: 1.5 !important;
+  }
+}
+
+/* 5. Ultra-Small Screen Adjustments (<= 380px) */
+@media (max-width: 380px) {
+  .hero-copy h1 {
+    font-size: 1.7rem !important;
+  }
+
+  .hero-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .hero-actions .button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .service-card h3 {
+    font-size: 1rem !important;
+  }
+
+  .service-card .card-description {
+    font-size: 0.84375rem !important;
+  }
+
+  .card-action-indicator span {
+    font-size: 0.8125rem !important;
+  }
+
+  .dialog-service-title {
+    font-size: 1.2rem !important;
+  }
 }
 
 
