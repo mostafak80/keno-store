@@ -7161,6 +7161,7 @@ p, .hero-copy > p, .section-heading > p, .faq-list p, .dialog-service-desc {
   margin: 0 0 14px 0 !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
