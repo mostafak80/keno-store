@@ -657,6 +657,7 @@
               ${s.featured ? '<span class="featured-tag">مختارات كينو</span>' : ''}
             </div>
             <h3 dir="auto">${esc(s.name)}</h3>
+            <p class="card-description" dir="auto">${esc(s.description || 'خدمة رقمية فورية مع باقات متعددة وضمان كامل.')}</p>
             <div class="card-footer">
               <div class="card-price">
                 <span>${minPrice === null ? 'السعر' : 'تبدأ من'}</span>
