@@ -245,34 +245,43 @@
             <div class="payment-drawer-content">
               ${pm.number ? `
                 <div class="drawer-field">
-                  <span class="drawer-label">رقم التحويل / المحفظة:</span>
-                  <div class="drawer-val-group">
+                  <div class="drawer-field-info">
+                    <span class="drawer-label">
+                      ${icon('credit-card')}
+                      <span>رقم التحويل / المحفظة:</span>
+                    </span>
                     <code class="drawer-val" dir="ltr">${esc(pm.number)}</code>
-                    <button type="button" class="drawer-copy-btn" data-copy-type="number" data-value="${esc(pm.number)}" title="نسخ رقم التحويل">
-                      ${icon('copy')}
-                      <span>نسخ الرقم</span>
-                    </button>
                   </div>
+                  <button type="button" class="drawer-copy-btn" data-copy-type="number" data-value="${esc(pm.number)}" title="نسخ رقم التحويل">
+                    ${icon('copy')}
+                    <span>نسخ الرقم</span>
+                  </button>
                 </div>
               ` : ''}
 
               ${pm.accountName ? `
                 <div class="drawer-field">
-                  <span class="drawer-label">اسم صاحب الحساب / المعرف:</span>
-                  <div class="drawer-val-group">
-                    <code class="drawer-val">${esc(pm.accountName)}</code>
-                    <button type="button" class="drawer-copy-btn" data-copy-type="account" data-value="${esc(pm.accountName)}" title="نسخ اسم الحساب">
-                      ${icon('copy')}
-                      <span>نسخ الاسم</span>
-                    </button>
+                  <div class="drawer-field-info">
+                    <span class="drawer-label">
+                      ${icon('user')}
+                      <span>اسم صاحب الحساب:</span>
+                    </span>
+                    <strong class="drawer-val-text">${esc(pm.accountName)}</strong>
                   </div>
+                  <button type="button" class="drawer-copy-btn" data-copy-type="account" data-value="${esc(pm.accountName)}" title="نسخ اسم الحساب">
+                    ${icon('copy')}
+                    <span>نسخ الاسم</span>
+                  </button>
                 </div>
               ` : ''}
 
               ${pm.link ? `
-                <div class="drawer-field">
-                  <span class="drawer-label">رابط الدفع المباشر:</span>
-                  <div class="drawer-val-group">
+                <div class="drawer-field has-link">
+                  <span class="drawer-label">
+                    ${icon('external-link')}
+                    <span>رابط الدفع المباشر:</span>
+                  </span>
+                  <div class="drawer-actions-row">
                     <button type="button" class="drawer-copy-btn" data-copy-type="link" data-value="${esc(pm.link)}" title="نسخ رابط الدفع">
                       ${icon('copy')}
                       <span>نسخ الرابط</span>
@@ -286,7 +295,10 @@
               ` : ''}
 
               ${pm.description ? `
-                <div class="drawer-desc">${esc(pm.description)}</div>
+                <div class="drawer-desc">
+                  ${icon('info')}
+                  <span>${esc(pm.description)}</span>
+                </div>
               ` : ''}
             </div>
           </div>
@@ -323,14 +335,26 @@
       const card = event.target.closest('.payment-card');
       if (card) {
         const pmId = card.dataset.pmId;
-        containerEl.querySelectorAll('.payment-card').forEach(c => {
-          const isThis = c.dataset.pmId === pmId;
-          c.classList.toggle('selected', isThis);
-          const radioSpan = c.querySelector('.custom-radio');
-          if (radioSpan) radioSpan.classList.toggle('checked', isThis);
-          const drawer = c.querySelector('.payment-details-drawer');
-          if (drawer) drawer.classList.toggle('open', isThis);
-        });
+        const currentDrawer = card.querySelector('.payment-details-drawer');
+        const isCurrentlyOpen = currentDrawer && currentDrawer.classList.contains('open');
+
+        if (isCurrentlyOpen) {
+          // Collapse the open method on re-click
+          card.classList.remove('drawer-expanded');
+          if (currentDrawer) currentDrawer.classList.remove('open');
+        } else {
+          // Open clicked method and automatically collapse all other methods
+          containerEl.querySelectorAll('.payment-card').forEach(c => {
+            const isThis = c.dataset.pmId === pmId;
+            c.classList.toggle('selected', isThis);
+            c.classList.toggle('drawer-expanded', isThis);
+            const radioSpan = c.querySelector('.custom-radio');
+            if (radioSpan) radioSpan.classList.toggle('checked', isThis);
+            const drawer = c.querySelector('.payment-details-drawer');
+            if (drawer) drawer.classList.toggle('open', isThis);
+          });
+        }
+
         if (typeof onSelectionChange === 'function') {
           onSelectionChange(pmId);
         }
@@ -894,12 +918,12 @@
                     <span class="plan-check-icon">${icon('check')}</span>
                   </div>
                   <div class="plan-card-body">
-                    <div class="plan-card-top">
+                    <div class="plan-card-header plan-card-top">
                       <span class="plan-label">${esc(p.label)}</span>
-                      ${hasDiscount ? `<span class="plan-discount-tag">وفر ${savings} ج.م (${discountPct}%)</span>` : ''}
+                      ${hasDiscount ? `<span class="plan-discount-tag">وفر ${savings} ج.م</span>` : ''}
                     </div>
                     <div class="plan-price-row">
-                      <span class="plan-price"><bdi>${money(p.price)}</bdi> <small>جنيه</small></span>
+                      <span class="plan-price"><bdi>${money(p.price)}</bdi> <small>ج.م</small></span>
                       ${hasDiscount ? `<del class="plan-old-price"><bdi>${money(p.originalPrice)}</bdi></del>` : ''}
                     </div>
                     ${p.note ? `<span class="plan-note">${esc(p.note)}</span>` : ''}

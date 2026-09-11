@@ -1749,7 +1749,8 @@ dialog::backdrop {
 }
 
 /* --- Top Bar --- */
-.service-checkout-top-bar {
+.service-checkout-top-bar,
+.service-dialog-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1780,7 +1781,8 @@ dialog::backdrop {
   display: inline-block;
 }
 
-.dialog-top-actions {
+.dialog-top-actions,
+.dialog-topbar-actions {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -2105,7 +2107,7 @@ dialog::backdrop {
 
 .plan-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
 }
 
@@ -2118,10 +2120,9 @@ dialog::backdrop {
   border: 1.5px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   cursor: pointer;
-  background: rgba(14, 19, 32, 0.7);
-  min-height: 84px;
+  background: rgba(14, 19, 32, 0.75);
+  min-height: auto;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
   backdrop-filter: blur(8px);
 }
 
@@ -2139,7 +2140,7 @@ dialog::backdrop {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2px;
+  margin-top: 3px;
   flex-shrink: 0;
   transition: all 0.2s ease;
   background: rgba(255, 255, 255, 0.04);
@@ -2163,24 +2164,25 @@ dialog::backdrop {
 .plan-card-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 5px;
   width: 100%;
-  min-height: 100%;
+  min-height: auto;
 }
 
+.plan-card-header,
 .plan-card-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 6px;
-  margin-bottom: 6px;
+  flex-wrap: wrap;
 }
 
 .plan-option .plan-label {
   font-size: 0.88rem;
   font-weight: 850;
   color: #f8fafc;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .plan-discount-tag {
@@ -2198,21 +2200,25 @@ dialog::backdrop {
 .plan-price-row {
   display: flex;
   align-items: baseline;
-  gap: 8px;
-  margin-top: auto;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
 }
 
 .plan-option .plan-price {
   font-size: 1.25rem;
   font-weight: 950;
   color: #ffffff;
+  line-height: 1.2;
   font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
 }
 
 .plan-option .plan-price small {
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.74rem;
+  font-weight: 700;
   color: #94a3b8;
+  margin-inline-start: 2px;
 }
 
 .plan-old-price {
@@ -2225,7 +2231,7 @@ dialog::backdrop {
 .plan-option .plan-note {
   font-size: 0.72rem;
   color: #94a3b8;
-  margin-top: 3px;
+  margin-top: 1px;
 }
 
 .plan-option .plan-note.out-of-stock {
@@ -2589,51 +2595,94 @@ dialog::backdrop {
   box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);
 }
 
-/* --- Payment Method Cards (Neon Emerald Green Glow) --- */
-.payment-methods-grid {
-  display: flex;
-  flex-direction: column;
+/* --- Payment Method Cards: Small Premium Compact Cards (Neon Emerald) --- */
+#serviceDialog .payment-methods-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
-.service-dialog .payment-card {
-  background: rgba(14, 19, 32, 0.7);
+@media (max-width: 640px) {
+  #serviceDialog .payment-methods-selector {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
+#serviceDialog .payment-card {
+  background: rgba(14, 19, 32, 0.75);
   border: 1.5px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  border-radius: 14px;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(8px);
 }
 
-.service-dialog .payment-card:hover {
+#serviceDialog .payment-card:hover {
   background: rgba(20, 28, 46, 0.85);
   border-color: rgba(16, 185, 129, 0.35);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-/* Payment Selected State - NEON EMERALD GLOW */
-.service-dialog .payment-card.selected {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.06) 100%);
+#serviceDialog .payment-card.selected {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(14, 19, 32, 0.95) 100%);
   border-color: #10b981;
-  box-shadow: 0 0 0 1px #10b981, 0 0 22px rgba(16, 185, 129, 0.3), inset 0 0 10px rgba(16, 185, 129, 0.06);
+  box-shadow: 0 0 0 1px #10b981, 0 0 20px rgba(16, 185, 129, 0.28);
 }
 
-.payment-card-header {
-  padding: 12px 16px;
+/* Expanded Card Spanning */
+#serviceDialog .payment-card:has(.payment-details-drawer.open),
+#serviceDialog .payment-card.drawer-expanded {
+  grid-column: 1 / -1;
+}
+
+#serviceDialog .payment-card-header {
+  padding: 12px 10px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  position: relative;
+  min-height: 96px;
+  transition: all 0.2s ease;
+}
+
+#serviceDialog .payment-card:has(.payment-details-drawer.open) .payment-card-header,
+#serviceDialog .payment-card.drawer-expanded .payment-card-header {
+  flex-direction: row;
   justify-content: space-between;
+  padding: 10px 14px;
+  min-height: auto;
 }
 
-.payment-card-main {
+#serviceDialog .payment-card-main {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
+  width: 100%;
 }
 
-.service-dialog .custom-radio {
-  width: 18px;
-  height: 18px;
+#serviceDialog .payment-card:has(.payment-details-drawer.open) .payment-card-main,
+#serviceDialog .payment-card.drawer-expanded .payment-card-main {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+}
+
+#serviceDialog .custom-radio {
+  position: absolute;
+  top: 8px;
+  inset-inline-start: 8px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.25);
   background: #060911;
@@ -2642,154 +2691,223 @@ dialog::backdrop {
   transition: all 0.2s ease;
 }
 
-.service-dialog .custom-radio.checked,
-.service-dialog .payment-card.selected .custom-radio {
-  border-color: #10b981;
-  background: #10b981;
-  box-shadow: 0 0 10px #10b981;
+#serviceDialog .payment-card:has(.payment-details-drawer.open) .custom-radio,
+#serviceDialog .payment-card.drawer-expanded .custom-radio {
+  position: static;
 }
 
-.service-dialog .payment-icon-wrap {
+#serviceDialog .custom-radio.checked,
+#serviceDialog .payment-card.selected .custom-radio {
+  border-color: #10b981;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+#serviceDialog .payment-icon-wrap {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: #38bdf8;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
-.service-dialog .payment-icon-wrap svg,
-.service-dialog .payment-icon-wrap i {
+#serviceDialog .payment-icon-wrap svg,
+#serviceDialog .payment-icon-wrap i {
   width: 20px;
   height: 20px;
 }
 
-.service-dialog .payment-card.selected .payment-icon-wrap {
+#serviceDialog .payment-card.selected .payment-icon-wrap {
   background: rgba(16, 185, 129, 0.2);
   border-color: #10b981;
   color: #34d399;
   box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
 }
 
-.payment-info-title {
+#serviceDialog .payment-info-title {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
+  text-align: center;
 }
 
-.service-dialog .payment-info-title strong {
-  font-size: 0.92rem;
+#serviceDialog .payment-card:has(.payment-details-drawer.open) .payment-info-title,
+#serviceDialog .payment-card.drawer-expanded .payment-info-title {
+  align-items: flex-start;
+  text-align: start;
+}
+
+#serviceDialog .payment-info-title strong {
+  font-size: 0.86rem;
   font-weight: 850;
   color: #ffffff;
+  line-height: 1.3;
 }
 
-.service-dialog .payment-sub {
-  font-size: 0.74rem;
+#serviceDialog .payment-sub {
+  font-size: 0.68rem;
   color: #94a3b8;
+  line-height: 1.25;
 }
 
-.service-dialog .payment-quick-tag {
-  font-size: 0.75rem;
+#serviceDialog .payment-quick-tag {
+  display: none;
+}
+
+#serviceDialog .payment-card:has(.payment-details-drawer.open) .payment-quick-tag,
+#serviceDialog .payment-card.drawer-expanded .payment-quick-tag {
+  display: inline-block;
+  font-size: 0.74rem;
   font-weight: 750;
-  padding: 3px 10px;
-  border-radius: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.06);
   color: #e2e8f0;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Payment Drawer Content */
+/* Payment Details Panel: Compact, Clean, and High-Contrast */
 .payment-details-drawer {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  background: #070a12;
+  transition: max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  background: #060912;
   border-top: 1px solid transparent;
+  opacity: 0;
 }
 
 .payment-details-drawer.open {
-  max-height: 300px;
-  border-top-color: rgba(16, 185, 129, 0.2);
+  max-height: 380px;
+  border-top-color: rgba(16, 185, 129, 0.25);
+  opacity: 1;
 }
 
 .payment-drawer-content {
-  padding: 12px 16px;
+  padding: 10px 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
-.service-dialog .drawer-field {
+#serviceDialog .drawer-field {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  background: #0d121f;
+  gap: 10px;
+  background: #0b101c;
   padding: 8px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  flex-wrap: wrap;
 }
 
-.service-dialog .drawer-label {
-  font-size: 0.76rem;
-  color: #94a3b8;
-  font-weight: 700;
-}
-
-.drawer-val-group {
+.drawer-field-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.service-dialog .drawer-val {
-  font-size: 0.85rem;
+#serviceDialog .drawer-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: #94a3b8;
+  font-weight: 750;
+}
+
+#serviceDialog .drawer-label svg,
+#serviceDialog .drawer-label i {
+  width: 14px;
+  height: 14px;
+  color: #10b981;
+}
+
+#serviceDialog .drawer-val {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #38bdf8;
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  padding: 3px 9px;
+  border-radius: 7px;
+  letter-spacing: 0.5px;
+}
+
+#serviceDialog .drawer-val-text {
+  font-size: 0.86rem;
   font-weight: 850;
-  color: #ffffff;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
 }
 
-.service-dialog .drawer-copy-btn,
-.service-dialog .drawer-link-btn {
+.drawer-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#serviceDialog .drawer-copy-btn,
+#serviceDialog .drawer-link-btn {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 10px;
+  padding: 5px 11px;
   border-radius: 8px;
   font-size: 0.74rem;
-  font-weight: 750;
-  background: rgba(16, 185, 129, 0.15);
+  font-weight: 800;
+  background: rgba(16, 185, 129, 0.16);
   border: 1px solid rgba(16, 185, 129, 0.35);
   color: #34d399;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
+  font-family: var(--font);
 }
 
-.service-dialog .drawer-copy-btn:hover,
-.service-dialog .drawer-link-btn:hover {
-  background: rgba(16, 185, 129, 0.28);
+#serviceDialog .drawer-copy-btn:hover,
+#serviceDialog .drawer-link-btn:hover {
+  background: #10b981;
   border-color: #10b981;
-  color: #ffffff;
+  color: #020617;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px);
 }
 
-.service-dialog .drawer-copy-btn svg,
-.service-dialog .drawer-link-btn svg {
+#serviceDialog .drawer-copy-btn svg,
+#serviceDialog .drawer-link-btn svg {
   width: 13px;
   height: 13px;
 }
 
-.service-dialog .drawer-desc {
-  font-size: 0.76rem;
+#serviceDialog .drawer-desc {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.74rem;
   color: #94a3b8;
   line-height: 1.45;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border-inline-start: 3px solid #10b981;
+}
+
+#serviceDialog .drawer-desc svg,
+#serviceDialog .drawer-desc i {
+  width: 14px;
+  height: 14px;
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* --- Order Summary Card --- */
@@ -2910,20 +3028,23 @@ dialog::backdrop {
   border-radius: 4px;
 }
 
-/* --- Modern Checkout Footer: One Clear WhatsApp Button --- */
+/* --- Modern Checkout Footer: Sticky Bottom Bar with Prominent Price and WhatsApp CTA --- */
 .modern-checkout-footer {
-  background: #0a0e1a;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 16px 20px;
+  position: sticky;
+  bottom: 0;
+  z-index: 25;
+  background: #090d18;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .keno-confirm-whatsapp-btn {
   width: 100%;
-  min-height: 58px;
+  min-height: 56px;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   border: 1px solid #34d399;
   border-radius: 16px;
@@ -2931,7 +3052,7 @@ dialog::backdrop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 18px;
+  padding: 8px 16px;
   cursor: pointer;
   font-family: var(--font);
   box-shadow: 0 8px 24px rgba(16, 185, 129, 0.38), 0 0 20px rgba(16, 185, 129, 0.18);
@@ -3004,23 +3125,25 @@ dialog::backdrop {
 
 .btn-action-price-pill,
 .btn-price-display {
-  background: rgba(0, 0, 0, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.38);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
   border-radius: 12px;
   padding: 6px 14px;
-  font-weight: 900;
-  font-size: 0.98rem;
+  font-weight: 950;
+  font-size: 1.05rem;
   color: #ffffff;
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .footer-btn-price {
-  font-weight: 900;
-  font-size: 0.98rem;
+  font-weight: 950;
+  font-size: 1.05rem;
   color: #ffffff;
+  letter-spacing: 0.3px;
 }
 
 .footer-secondary-actions,
@@ -3029,6 +3152,7 @@ dialog::backdrop {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-top: 2px;
 }
 
 .footer-cart-btn-link,
@@ -3037,15 +3161,15 @@ dialog::backdrop {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #94a3b8;
   font-size: 0.8rem;
   font-weight: 750;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  padding: 6px 12px;
+  border-radius: 9px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
@@ -3123,13 +3247,29 @@ dialog::backdrop {
   }
 
   .plan-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
 
   .plan-option {
-    min-height: 68px;
-    padding: 10px 12px;
+    min-height: auto;
+    padding: 10px 10px;
+    gap: 8px;
+    border-radius: 12px;
+  }
+
+  .plan-option .plan-price {
+    font-size: 1.1rem;
+  }
+
+  .plan-option .plan-label {
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 350px) {
+    .plan-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .account-game-grid {
