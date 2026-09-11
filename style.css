@@ -252,6 +252,8 @@ svg.icon {
 .container {
   width: min(1280px, calc(100% - 48px));
   margin-inline: auto;
+  padding-inline-start: env(safe-area-inset-left, 0px);
+  padding-inline-end: env(safe-area-inset-right, 0px);
 }
 
 .sr-only {
@@ -2609,10 +2611,11 @@ label input:focus, label select:focus, label textarea:focus {
 }
 
 .table-container {
-  background: #fff;
+  background: var(--paper, #121726);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  overflow: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: var(--shadow-sm);
 }
 
@@ -3110,31 +3113,38 @@ label input:focus, label select:focus, label textarea:focus {
 }
 
 .cart-qty-btn {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: #f8fafc;
+  background: var(--paper-elevated, #1e273d);
   cursor: pointer;
   font-weight: 800;
   font-size: 0.95rem;
   color: var(--ink);
   transition: var(--transition);
   touch-action: manipulation;
+  position: relative;
+}
+
+.cart-qty-btn::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
 }
 
 .cart-qty-btn:hover {
-  background: #e2e8f0;
-  border-color: #cbd5e1;
+  background: #283452;
+  border-color: var(--line-hover);
 }
 
 .cart-qty-val {
-  min-width: 24px;
+  min-width: 26px;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--ink);
 }
@@ -3142,8 +3152,8 @@ label input:focus, label select:focus, label textarea:focus {
 .cart-item-remove {
   background: none;
   border: 0;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   padding: 6px;
   color: #94a3b8;
   cursor: pointer;
@@ -3153,6 +3163,13 @@ label input:focus, label select:focus, label textarea:focus {
   align-items: center;
   justify-content: center;
   touch-action: manipulation;
+  position: relative;
+}
+
+.cart-item-remove::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
 }
 
 .cart-item-remove:hover {
@@ -3512,6 +3529,15 @@ label input:focus, label select:focus, label textarea:focus {
   .desktop-nav {
     display: none;
   }
+  .mobile-nav {
+    display: flex;
+  }
+  body {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+  .floating-contact {
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+  }
   .service-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
@@ -3534,18 +3560,6 @@ label input:focus, label select:focus, label textarea:focus {
   }
   .testimonials-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .mobile-nav {
-    display: flex;
-  }
-  body {
-    padding-bottom: 68px;
-  }
-  .floating-contact {
-    bottom: 80px !important;
   }
 }
 
@@ -7595,6 +7609,241 @@ bdi,
 
   .dialog-service-title {
     font-size: 1.2rem !important;
+  }
+}
+
+/* ==========================================================================
+   CROSS-PLATFORM & MULTI-DEVICE ADAPTIVE ENGINE (/adapt)
+   Seamless experience across touch, pointer, mobile landscape,
+   notches/safe areas, ultra-wide displays, and print/export contexts
+   ========================================================================== */
+
+/* 1. Touch vs. Pointer Interaction Strategy */
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--line-hover) !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+
+  .button:hover {
+    filter: brightness(1.08);
+  }
+
+  .plan-card:hover,
+  .payment-card:hover {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-1px);
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .service-card:hover,
+  .plan-card:hover,
+  .payment-card:hover,
+  .category-tabs button:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .button:active,
+  .service-card:active,
+  .plan-card:active,
+  .payment-card:active,
+  .category-tabs button:active,
+  .mobile-nav-item:active {
+    transform: scale(0.97) !important;
+    transition: transform 0.08s ease-out !important;
+  }
+
+  .button,
+  .category-tabs button,
+  .mobile-nav-item,
+  .card-action-indicator,
+  .plan-card,
+  .payment-card {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+/* 2. Mobile Landscape Adaptation (Height-Constrained Devices) */
+@media (max-height: 520px) and (orientation: landscape) {
+  .site-header {
+    position: relative !important;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .header-inner {
+    min-height: 52px !important;
+  }
+
+  .brand {
+    width: 120px !important;
+  }
+
+  .hero {
+    padding-top: 16px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .service-dialog, .editor-dialog {
+    max-height: 98dvh !important;
+    margin: auto 0 0 !important;
+    border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+  }
+
+  .dialog-header {
+    padding: 12px 18px !important;
+  }
+
+  .dialog-body {
+    padding: 14px 18px !important;
+    max-height: 60vh !important;
+  }
+
+  .dialog-order-footer {
+    padding: 10px 18px max(10px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .mobile-nav {
+    height: 50px !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+
+  .mobile-nav-item svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  body {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .floating-contact {
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* 3. Ultra-Wide & Large Desktop Displays (>= 1440px) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1320px !important;
+  }
+
+  .service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+  }
+}
+
+/* 4. High Contrast & Accessibility Modes */
+@media (forced-colors: active) {
+  .button,
+  .service-card,
+  .plan-card,
+  .payment-card,
+  .cart-drawer,
+  .service-dialog {
+    border: 2px solid CanvasText !important;
+  }
+
+  .card-action-indicator,
+  .pill,
+  .badge {
+    border: 1px solid CanvasText !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --line: rgba(255, 255, 255, 0.22) !important;
+    --muted: #cbd5e1 !important;
+    --muted-light: #ffffff !important;
+  }
+
+  .service-card,
+  .plan-card,
+  .payment-card,
+  input, textarea, select {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+}
+
+/* 5. Clean Print Engine (@media print) */
+@media print {
+  *, *::before, *::after {
+    background: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .site-header,
+  .announcement,
+  .mobile-nav,
+  .floating-contact,
+  .skip-link,
+  .catalog-toolbar,
+  .header-actions,
+  .cart-drawer-backdrop,
+  .cart-drawer,
+  .admin-sticky-save-bar,
+  .dialog-close,
+  .hero-actions,
+  .card-action-indicator,
+  .button:not(.print-keep),
+  #toastContainer,
+  .footer-big-actions {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10mm 15mm !important;
+  }
+
+  .service-grid {
+    display: block !important;
+  }
+
+  .service-card {
+    border: 1px solid #cbd5e1 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 14pt !important;
+    padding: 14pt !important;
+  }
+
+  .dialog-summary-box,
+  .order-invoice {
+    border: 1px solid #94a3b8 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    padding: 12pt !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+    color: #000000 !important;
+  }
+
+  a[href]::after {
+    content: "" !important;
   }
 }
 
