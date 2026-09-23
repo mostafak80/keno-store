@@ -1799,7 +1799,10 @@
       const existing = document.getElementById('keno-admin-script');
       if (existing) {
         existing.addEventListener('load', () => resolve(window.KenoAdmin));
-        existing.addEventListener('error', reject);
+        existing.addEventListener('error', err => {
+          adminScriptPromise = null;
+          reject(err);
+        });
         return;
       }
       const script = document.createElement('script');
@@ -1810,6 +1813,7 @@
       script.onerror = err => {
         console.error('Failed to load admin module:', err);
         toast('تعذّر تحميل وحدة الإدارة.');
+        adminScriptPromise = null;
         reject(err);
       };
       document.body.appendChild(script);
@@ -4477,18 +4481,49 @@
         if (adminBtn) adminBtn.hidden = false;
         if (navAdminLink) navAdminLink.hidden = false;
 
+        const timeoutMs = (Config?.SESSION_TIMEOUT_MINUTES || 60) * 60 * 1000;
+        const sessionPayload = {
+          role,
+          repo: '',
+          branch: 'main',
+          token: '',
+          email: user.email,
+          name: user.displayName || user.email,
+          photo: user.photoURL || '',
+          authTime: Date.now(),
+          expiresAt: Date.now() + timeoutMs
+        };
+        try {
+          sessionStorage.setItem('keno_admin_session_v3', JSON.stringify(sessionPayload));
+        } catch (_) {}
+
         if (window.KenoAdminAuth && typeof window.KenoAdminAuth.setSession === 'function') {
-          window.KenoAdminAuth.setSession(role, {
-            email: user.email,
-            name: user.displayName || user.email,
-            photo: user.photoURL || ''
-          });
+          window.KenoAdminAuth.setSession(role, sessionPayload);
         }
+
+        // Preload admin script in background so clicking is instantaneous!
+        loadAdminScript().catch(() => {});
       } else {
         if (adminBtn) adminBtn.hidden = true;
         if (navAdminLink) navAdminLink.hidden = true;
         try { sessionStorage.removeItem('keno_admin_session_v3'); } catch (_) {}
       }
+    }
+
+    const handleAdminClick = (e) => {
+      e.preventDefault();
+      if (location.hash !== '#admin') {
+        location.hash = '#admin';
+      }
+      route();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+
+    if (adminBtn) {
+      adminBtn.addEventListener('click', handleAdminClick);
+    }
+    if (navAdminLink) {
+      navAdminLink.addEventListener('click', handleAdminClick);
     }
 
     if (loginBtn) {

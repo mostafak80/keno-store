@@ -77,25 +77,25 @@
     timerInterval: null,
     initialized: false,
 
-    init() {
-      if (this.initialized) return;
-      this.initialized = true;
-
-      this.bindLoginGate();
-      this.bindStatusControls();
-      this.bindFeaturedEditor();
-      this.startSessionTimer();
-      let lastTouch = 0;
-      const touch = () => {
-        if ($('adminView')?.hidden || Date.now() - lastTouch < 15000) return;
-        const active = KenoAdminAuth.getSession();
-        if (!active) return;
-        lastTouch = Date.now();
-        active.expiresAt = lastTouch + (root.KenoConfig?.SESSION_TIMEOUT_MINUTES || 60) * 60000;
-        try { sessionStorage.setItem(KenoAdminAuth.SESSION_KEY, JSON.stringify(active)); } catch (_) {}
-      };
-      document.addEventListener('pointerdown', touch, { passive:true });
-      document.addEventListener('keydown', touch);
+    async init() {
+      if (!this.initialized) {
+        this.initialized = true;
+        this.bindLoginGate();
+        this.bindStatusControls();
+        this.bindFeaturedEditor();
+        this.startSessionTimer();
+        let lastTouch = 0;
+        const touch = () => {
+          if ($('adminView')?.hidden || Date.now() - lastTouch < 15000) return;
+          const active = KenoAdminAuth.getSession();
+          if (!active) return;
+          lastTouch = Date.now();
+          active.expiresAt = lastTouch + (root.KenoConfig?.SESSION_TIMEOUT_MINUTES || 60) * 60000;
+          try { sessionStorage.setItem(KenoAdminAuth.SESSION_KEY, JSON.stringify(active)); } catch (_) {}
+        };
+        document.addEventListener('pointerdown', touch, { passive:true });
+        document.addEventListener('keydown', touch);
+      }
 
       let session = KenoAdminAuth.getSession();
       const currentFbUser = root.KenoFirebase?.getCurrentUser?.();
@@ -115,16 +115,13 @@
 
       if (session) {
         if (typeof root.ensureAdminWorkspace === 'function') {
-          root.ensureAdminWorkspace(session).then(() => {
-            this.unlockWorkspace(session);
-          }).catch(() => {
-            this.unlockWorkspace(session);
-          });
-        } else {
-          this.unlockWorkspace(session);
+          try {
+            await root.ensureAdminWorkspace(session);
+          } catch (_) {}
         }
+        this.unlockWorkspace(session);
       } else {
-        this.showLoginGate();
+        await this.showLoginGate();
       }
     },
 
@@ -148,6 +145,8 @@
     },
 
     async showLoginGate() {
+      if ($('storefront')) $('storefront').hidden = true;
+      if ($('adminView')) $('adminView').hidden = false;
       if ($('adminHeading')) $('adminHeading').hidden = true;
       if ($('adminLogin')) $('adminLogin').hidden = false;
       if ($('adminWorkspace')) $('adminWorkspace').hidden = true;
@@ -167,6 +166,8 @@
     },
 
     unlockWorkspace(session) {
+      if ($('storefront')) $('storefront').hidden = true;
+      if ($('adminView')) $('adminView').hidden = false;
       if ($('adminHeading')) $('adminHeading').hidden = false;
       if ($('adminLogin')) $('adminLogin').hidden = true;
       if ($('adminWorkspace')) $('adminWorkspace').hidden = false;
