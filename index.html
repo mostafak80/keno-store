@@ -85,7 +85,7 @@
   </script>
 </head>
 <body class="keno-motion">
-  <a href="#catalog" class="skip-link">انتقل إلى الخدمات والأسعار</a>
+  <a href="#catalog" class="skip-link" data-content="skip-link">انتقل إلى الخدمات والأسعار</a>
 
   <!-- Top Announcement Bar -->
   <aside class="announcement" aria-label="شريط الإعلانات">
@@ -376,7 +376,7 @@
     <div class="cart-header">
       <div class="cart-header-title">
         <i data-icon="shopping-cart"></i>
-        <h2 id="cartDrawerTitle">سلة الطلبات وإتمام الشراء</h2>
+        <h2 id="cartDrawerTitle" data-content="cart-title">سلة الطلبات وإتمام الشراء</h2>
         <span class="cart-item-count" id="cartItemsCount">0</span>
       </div>
       <button type="button" class="icon-btn" id="closeCartBtn" aria-label="إغلاق السلة">
@@ -392,27 +392,27 @@
       <div class="stepper-steps">
         <button type="button" class="step-indicator active" data-step="1" id="stepIndicator1" title="مراجعة السلة">
           <span class="step-num">1</span>
-          <span class="step-text">السلة</span>
+          <span class="step-text" data-content="cart-step1">السلة</span>
         </button>
         <button type="button" class="step-indicator" data-step="2" id="stepIndicator2" title="بيانات الحساب">
           <span class="step-num">2</span>
-          <span class="step-text">البيانات</span>
+          <span class="step-text" data-content="cart-step2">البيانات</span>
         </button>
         <button type="button" class="step-indicator" data-step="3" id="stepIndicator3" title="طريقة الدفع">
           <span class="step-num">3</span>
-          <span class="step-text">راجع وافتح واتساب</span>
+          <span class="step-text" data-content="cart-step3">راجع وافتح واتساب</span>
         </button>
 
       </div>
     </div>
     
-    <button type="button" id="cartListen" class="button button-outline small">🔊 اسمع الخطوة</button><div class="cart-body" id="cartBody">
+    <button type="button" id="cartListen" class="button button-outline small" data-content="cart-listen">🔊 اسمع الخطوة</button><div class="cart-body" id="cartBody">
       <!-- Empty Cart State -->
       <div class="cart-empty" id="cartEmptyState">
         <i data-icon="shopping-bag"></i>
-        <h3>سلة الطلبات فارغة</h3>
-        <p>تصفّح باقات الألعاب والاشتراكات الرقمية وأضف ما ترغب في طلبه دفعة واحدة وبضغطة واحدة.</p>
-        <button type="button" class="button button-red small" id="cartBrowseBtn">تصفّح الخدمات الآن</button>
+        <h3 data-content="cart-empty-title">سلة الطلبات فارغة</h3>
+        <p data-content="cart-empty-desc">تصفّح باقات الألعاب والاشتراكات الرقمية وأضف ما ترغب في طلبه دفعة واحدة وبضغطة واحدة.</p>
+        <button type="button" class="button button-red small" id="cartBrowseBtn" data-content="cart-empty-btn">تصفّح الخدمات الآن</button>
       </div>
 
       <!-- Step 1: Review Order Items -->
@@ -423,20 +423,20 @@
       <!-- Step 2: Customer Account Information -->
       <div class="checkout-step-panel" id="checkoutStep2" hidden>
         <div class="step-intro">
-          <div class="step-badge"><i data-icon="sparkles"></i> بيانات الشحن والتنفيذ</div>
-          <h3>أدخل بيانات الحساب المطلوب</h3>
-          <p>اكتب المعرّف (ID) أو البريد حسب متطلبات كل خدمة لضمان التنفيذ الفوري السريع.</p>
+          <div class="step-badge" data-content="cart-s2-badge"><i data-icon="sparkles"></i> بيانات الشحن والتنفيذ</div>
+          <h3 data-content="cart-s2-title">أدخل بيانات الحساب المطلوب</h3>
+          <p data-content="cart-s2-desc">اكتب المعرّف (ID) أو البريد حسب متطلبات كل خدمة لضمان التنفيذ الفوري السريع.</p>
         </div>
 
         <div class="form-grid checkout-fields">
 <div id="cartFulfillmentFields" class="span-2"></div>
 
-          <label>
+          <label data-content="cart-phone-label">
             رقم الهاتف للتواصل أو المتابعة (اختياري)
             <input id="cartCustomerPhone" type="tel" dir="ltr" placeholder="01xxxxxxxxx" maxlength="25">
           </label>
 
-          <label>
+          <label data-content="cart-note-label">
             ملاحظات إضافية على الطلب (اختياري)
             <textarea id="cartOrderNote" rows="2" maxlength="400" placeholder="أي تفاصيل خاصة ترغب في توضيحها لفريق كينو..."></textarea>
           </label>
@@ -446,25 +446,25 @@
       <!-- Step 3: Payment Method Selector -->
       <div class="checkout-step-panel" id="checkoutStep3" hidden>
         <div class="step-intro">
-          <div class="step-badge"><i data-icon="wallet-cards"></i> وسيلة الدفع والتحويل</div>
-          <h3>اختر طريقة الدفع المناسبة لك</h3>
-          <p>اضغط على وسيلة الدفع لعرض بيانات التحويل ونسخ الرقم أو المعرف مباشرة.</p>
+          <div class="step-badge" data-content="cart-s3-badge"><i data-icon="wallet-cards"></i> وسيلة الدفع والتحويل</div>
+          <h3 data-content="cart-s3-title">اختر طريقة الدفع المناسبة لك</h3>
+          <p data-content="cart-s3-desc">اضغط على وسيلة الدفع لعرض بيانات التحويل ونسخ الرقم أو المعرف مباشرة.</p>
         </div>
 
         <div class="payment-methods-section">
           <div id="cartPaymentMethods" class="payment-methods-selector"></div>
         </div>
       <div id="checkoutStep4">
-        <p>راجع بيانات كل عنصر؛ لم نتحقق من صحة الحساب.</p><label><input type="checkbox" id="cartReviewConfirmed"> راجعت بيانات كل عنصر والباقة والسعر</label><div class="step-intro">
-          <div class="step-badge"><i data-icon="badge-check"></i> الخطوة الأخيرة</div>
-          <h3>مراجعة تفاصيل الطلب</h3>
-          <p>راجع طلبك قبل الإرسال؛ سيتم فتح المحادثة مباشرة مع المتجر على واتساب لتأكيد التنفيذ فوراً.</p>
+        <p data-content="cart-s4-warn">راجع بيانات كل عنصر؛ لم نتحقق من صحة الحساب.</p><label data-content="cart-s4-confirm"><input type="checkbox" id="cartReviewConfirmed"> راجعت بيانات كل عنصر والباقة والسعر</label><div class="step-intro">
+          <div class="step-badge" data-content="cart-s4-badge"><i data-icon="badge-check"></i> الخطوة الأخيرة</div>
+          <h3 data-content="cart-s4-title">مراجعة تفاصيل الطلب</h3>
+          <p data-content="cart-s4-desc">راجع طلبك قبل الإرسال؛ سيتم فتح المحادثة مباشرة مع المتجر على واتساب لتأكيد التنفيذ فوراً.</p>
         </div>
 
         <div class="order-invoice-card" id="cartOrderInvoice">
           <div class="invoice-header">
             <div>
-              <span class="invoice-tag">طلب كينو ستور</span>
+              <span class="invoice-tag" data-content="cart-inv-tag">طلب كينو ستور</span>
               <h4 id="invoiceOrderCode">#KENO-0000</h4>
             </div>
             <div class="invoice-date" id="invoiceDate">الآن</div>
@@ -474,19 +474,19 @@
           <div class="invoice-divider"></div>
           <div class="invoice-rows">
             <div class="invoice-row">
-              <span>وسيلة الدفع:</span>
+              <span data-content="cart-inv-pay">وسيلة الدفع:</span>
               <strong id="invoicePaymentName">فودافون كاش</strong>
             </div>
             <div class="invoice-row" id="invoiceAccountRow" hidden>
-              <span>بيانات الحساب:</span>
+              <span data-content="cart-inv-acc">بيانات الحساب:</span>
               <strong id="invoiceAccountVal">-</strong>
             </div>
             <div class="invoice-row">
-              <span>إثبات التحويل:</span>
-              <span id="invoiceReceiptStatus" class="status-pill active-pill">يُرسل في شات واتساب 💬</span>
+              <span data-content="cart-inv-rcpt">إثبات التحويل:</span>
+              <span id="invoiceReceiptStatus" class="status-pill active-pill" data-content="cart-inv-rcpt-status">يُرسل في شات واتساب 💬</span>
             </div>
             <div class="invoice-row total-row">
-              <span>المبلغ المطلوب سداده:</span>
+              <span data-content="cart-inv-total">المبلغ المطلوب سداده:</span>
               <strong class="total-amount" id="invoiceTotalAmount">0 ج.م</strong>
             </div>
           </div>
@@ -498,7 +498,7 @@
     <!-- Stepper Navigation Footer -->
     <div class="cart-footer" id="cartFooter" hidden>
       <div class="cart-summary-bar">
-        <span>الإجمالي:</span>
+        <span data-content="cart-total-label">الإجمالي:</span>
         <strong id="cartGrandTotal">0 ج.م</strong>
       </div>
 
@@ -506,29 +506,29 @@
       <div class="stepper-nav-actions">
         <button type="button" class="button button-outline" id="cartPrevStepBtn" hidden>
           <i data-icon="arrow-right"></i>
-          <span>السابق</span>
+          <span data-content="cart-prev-btn">السابق</span>
         </button>
         <button type="button" class="button button-red flex-1" id="cartNextStepBtn">
-          <span>متابعة للبيانات</span>
+          <span data-content="cart-next-btn">متابعة للبيانات</span>
           <i data-icon="arrow-left"></i>
         </button>
         <button type="button" class="button button-whatsapp flex-1" id="cartSubmitOrderBtn" hidden>
           <i data-icon="message-circle"></i>
-          <span>إرسال الطلب عبر واتساب</span>
+          <span data-content="cart-submit-btn">إرسال الطلب عبر واتساب</span>
         </button>
       </div>
 
       <div class="cart-sub-actions" id="cartSubActions">
         <button type="button" class="text-button small" id="cartCopySummaryBtn">
           <i data-icon="copy"></i>
-          <span>نسخ تفاصيل الطلب</span>
+          <span data-content="cart-copy-btn">نسخ تفاصيل الطلب</span>
         </button>
         <button type="button" class="text-button danger-text small" id="clearCartBtn">
           <i data-icon="trash-2"></i>
-          <span>تفريغ السلة</span>
+          <span data-content="cart-clear-btn">تفريغ السلة</span>
         </button>
       </div>
-      <button type="button" class="button button-outline small contact-trigger">🎙 ابعتلنا فويس بطلبك</button>
+      <button type="button" class="button button-outline small contact-trigger" data-content="cart-voice-btn">🎙 ابعتلنا فويس بطلبك</button>
     </div>
   </aside>
 
@@ -536,22 +536,22 @@
   <nav class="mobile-nav" id="mobileNav" aria-label="التنقل السريع على الموبايل">
     <a href="#home" class="mobile-nav-item" aria-label="الرئيسية">
       <i data-icon="store"></i>
-      <span>الرئيسية</span>
+      <span data-content="nav-home">الرئيسية</span>
     </a>
     <a href="#catalog" class="mobile-nav-item" aria-label="الخدمات">
       <i data-icon="layout-grid"></i>
-      <span>الخدمات</span>
+      <span data-content="nav-services">الخدمات</span>
     </a>
     <button type="button" class="mobile-nav-item" id="mobileCartBtn" aria-label="سلة الطلبات">
       <div class="mobile-nav-cart-wrapper">
         <i data-icon="shopping-cart"></i>
         <span class="mobile-cart-badge" id="mobileCartBadge" hidden>0</span>
       </div>
-      <span>السلة</span>
+      <span data-content="nav-cart">السلة</span>
     </button>
     <button type="button" class="mobile-nav-item contact-trigger" aria-label="واتساب">
       <i data-icon="message-circle"></i>
-      <span>واتساب</span>
+      <span data-content="nav-whatsapp">واتساب</span>
     </button>
   </nav>
 
@@ -1259,13 +1259,13 @@
 
   <!-- Floating Help & Contact Button -->
   <aside aria-label="مساعدة سريعة">
-    <button type="button" class="floating-contact contact-trigger" aria-label="ابعتلنا فويس بطلبك">🎙 <span>ابعتلنا فويس بطلبك</span></button>
+    <button type="button" class="floating-contact contact-trigger" aria-label="ابعتلنا فويس بطلبك">🎙 <span data-content="float-voice">ابعتلنا فويس بطلبك</span></button>
   </aside>
 
   <!-- Draft Preview Sticky Banner -->
   <div class="draft-preview-bar" id="draftPreviewBar" hidden role="region" aria-label="شريط معاينة المسودة">
-    <span>أنت الآن في وضع «معاينة المسودة» — التعديلات لم تُنشر بعد للزوار.</span>
-    <button type="button" class="button button-yellow small" id="returnFromPreview">العودة للوحة الإدارة</button>
+    <span data-content="preview-msg">أنت الآن في وضع «معاينة المسودة» — التعديلات لم تُنشر بعد للزوار.</span>
+    <button type="button" class="button button-yellow small" id="returnFromPreview" data-content="preview-back">العودة للوحة الإدارة</button>
   </div>
 
   <!-- Service Details & Order Dialog -->
@@ -1273,7 +1273,7 @@
     <!-- Top Floating Controls / Header Bar -->
     <div class="service-dialog-topbar">
       <div class="dialog-topbar-start">
-        <div class="journey-progress"><strong id="serviceStepLabel" tabindex="-1" aria-live="polite"></strong><button type="button" id="serviceListen" class="button button-outline small">🔊 اسمع الخطوة</button></div>
+        <div class="journey-progress"><strong id="serviceStepLabel" tabindex="-1" aria-live="polite"></strong><button type="button" id="serviceListen" class="button button-outline small" data-content="dlg-listen">🔊 اسمع الخطوة</button></div>
       </div>
       <div class="dialog-topbar-actions">
         <button type="button" class="dialog-action-icon-btn" id="shareServiceBtn" title="مشاركة رابط الخدمة" aria-label="مشاركة رابط الخدمة">
@@ -1299,7 +1299,7 @@
           <div class="service-hero-tags">
             <span class="hero-premium-badge" id="servicePremiumBadge">
               <i data-icon="sparkles"></i>
-              <span>مختارات كينو المميزة</span>
+              <span data-content="dlg-premium">مختارات كينو المميزة</span>
             </span>
             <span class="hero-category-tag" id="dialogCategory">الألعاب والشحن</span>
           </div>
@@ -1316,17 +1316,17 @@
         <div class="checkout-step-header">
           <span class="step-number-badge">1</span>
           <div>
-            <h3 class="step-title">اختر الباقة أو العرض المناسب</h3>
-            <p class="step-desc">حدد الباقة المطلوبة لمعرفة السعر الفوري ومميزات التنفيذ.</p>
+            <h3 class="step-title" data-content="dlg-s1-title">اختر الباقة أو العرض المناسب</h3>
+            <p class="step-desc" data-content="dlg-s1-desc">حدد الباقة المطلوبة لمعرفة السعر الفوري ومميزات التنفيذ.</p>
           </div>
         </div>
 
         <!-- Plan Selection Grid Container -->
-        <div class="plan-tools"><label>💰 معايا ميزانية كام؟<input id="planBudget" type="number" min="0" step="0.01" placeholder="الميزانية بالجنيه"></label><button type="button" id="allPlans" class="button button-outline small">كل الباقات</button></div><p id="planFilterStatus" role="status"></p><p id="budgetSelectionNotice" role="status"></p><div id="planGroups" class="service-plans-container"></div>
+        <div class="plan-tools"><label data-content="dlg-budget-label">💰 معايا ميزانية كام؟<input id="planBudget" type="number" min="0" step="0.01" placeholder="الميزانية بالجنيه"></label><button type="button" id="allPlans" class="button button-outline small" data-content="dlg-all-plans">كل الباقات</button></div><p id="planFilterStatus" role="status"></p><p id="budgetSelectionNotice" role="status"></p><div id="planGroups" class="service-plans-container"></div>
 
         <!-- Quote Fields for On-Demand Services -->
         <div id="quoteFields" class="quote-fields-card" hidden>
-          <label>
+          <label data-content="dlg-quote-label">
             تفاصيل ومواصفات طلبك
             <textarea id="quoteDetails" rows="3" maxlength="800" placeholder="اكتب اسم اللعبة أو التطبيق، الرابط، المدة أو الكمية المطلوبة بدقة..."></textarea>
           </label>
@@ -1339,10 +1339,10 @@
           <span class="step-number-badge">2</span>
           <div>
             <div class="step-title-flex">
-              <h3 class="step-title" id="accountStepTitle">بيانات الحساب / الشحن</h3>
-              <span class="account-badge-pill" id="accountFieldBadge">مطلوب للتنفيذ</span>
+              <h3 class="step-title" id="accountStepTitle" data-content="dlg-s2-title">بيانات الحساب / الشحن</h3>
+              <span class="account-badge-pill" id="accountFieldBadge" data-content="dlg-s2-badge">مطلوب للتنفيذ</span>
             </div>
-            <p class="step-desc" id="accountFieldDesc">أدخل البيانات المطلوبة لتنفيذ طلبك بدقة وفورية.</p>
+            <p class="step-desc" id="accountFieldDesc" data-content="dlg-s2-desc">أدخل البيانات المطلوبة لتنفيذ طلبك بدقة وفورية.</p>
           </div>
         </div>
 
@@ -1352,7 +1352,7 @@
             <details class="order-note-details">
               <summary class="order-note-summary">
                 <i data-icon="file-text"></i>
-                <span>ملاحظة للطلب (اختياري)</span>
+                <span data-content="dlg-note-label">ملاحظة للطلب (اختياري)</span>
                 <i data-icon="chevron-down" class="chevron-icon"></i>
               </summary>
               <div class="order-note-content">
@@ -1369,8 +1369,8 @@
         <div class="checkout-step-header">
           <span class="step-number-badge">3</span>
           <div>
-            <h3 class="step-title">طريقة الدفع المفضلة</h3>
-            <p class="step-desc">اختر وسيلة الدفع؛ يتم تأكيد التحويل بأمان مع خدمة عملاء كينو.</p>
+            <h3 class="step-title" data-content="dlg-s3-title">طريقة الدفع المفضلة</h3>
+            <p class="step-desc" data-content="dlg-s3-desc">اختر وسيلة الدفع؛ يتم تأكيد التحويل بأمان مع خدمة عملاء كينو.</p>
           </div>
         </div>
 
@@ -1383,37 +1383,37 @@
         <div class="order-whatsapp-notice">
           <div class="notice-icon"><i data-icon="message-circle"></i></div>
           <div class="notice-text">
-            <strong>تأكيد الطلب الفوري عبر واتساب</strong>
-            <span>سيتم فتح المحادثة مباشرة مع تفاصيل طلبك. يمكنك إرسال صورة إيصال التحويل في الشات لتأكيد وتنفيذ طلبك في دقائق معدودة.</span>
+            <strong data-content="dlg-wa-title">تأكيد الطلب الفوري عبر واتساب</strong>
+            <span data-content="dlg-wa-desc">سيتم فتح المحادثة مباشرة مع تفاصيل طلبك. يمكنك إرسال صورة إيصال التحويل في الشات لتأكيد وتنفيذ طلبك في دقائق معدودة.</span>
           </div>
         </div>
       </section>
 
       <!-- Step 4: Order Summary Card -->
       <section class="checkout-summary-section">
-        <div class="review-account-card"><h3>راجع بياناتك قبل الإرسال</h3><pre id="serviceReview" dir="auto"></pre><p>راجع الرقم أو البريد بنفسك؛ لم نتحقق من ملكية الحساب أو صحة رقمه.</p><label><input type="checkbox" id="reviewConfirmed"> راجعت البيانات والباقة والسعر</label></div><div class="order-summary-card" id="orderSummaryCard">
+        <div class="review-account-card"><h3 data-content="dlg-rev-title">راجع بياناتك قبل الإرسال</h3><pre id="serviceReview" dir="auto"></pre><p data-content="dlg-rev-desc">راجع الرقم أو البريد بنفسك؛ لم نتحقق من ملكية الحساب أو صحة رقمه.</p><label data-content="dlg-rev-confirm"><input type="checkbox" id="reviewConfirmed"> راجعت البيانات والباقة والسعر</label></div><div class="order-summary-card" id="orderSummaryCard">
           <div class="summary-card-header">
             <div class="summary-title-wrap">
               <i data-icon="receipt"></i>
-              <h4>ملخص الطلب</h4>
+              <h4 data-content="dlg-summary-title">ملخص الطلب</h4>
             </div>
             <span class="summary-trust-badge">
               <i data-icon="shield-check"></i>
-              <span>تنفيذ فوري وآمن</span>
+              <span data-content="dlg-trust-badge">تنفيذ فوري وآمن</span>
             </span>
           </div>
 
           <div class="summary-rows-wrap">
             <div class="summary-row">
-              <span class="summary-row-label">الخدمة:</span>
+              <span class="summary-row-label" data-content="dlg-lbl-service">الخدمة:</span>
               <strong class="summary-row-val" id="summaryServiceName">-</strong>
             </div>
             <div class="summary-row">
-              <span class="summary-row-label">الباقة المختارة:</span>
+              <span class="summary-row-label" data-content="dlg-lbl-plan">الباقة المختارة:</span>
               <span class="summary-row-val" id="summaryPlanLabel">-</span>
             </div>
             <div class="summary-row summary-total-row">
-              <span class="summary-row-label">الإجمالي المطلوب:</span>
+              <span class="summary-row-label" data-content="dlg-lbl-total">الإجمالي المطلوب:</span>
               <div class="summary-price-box">
                 <strong class="summary-price-amount" id="selectedPrice">0 جنيه</strong>
                 <del id="selectedOriginalPrice" class="summary-price-original" hidden></del>
@@ -1427,15 +1427,15 @@
 
     <!-- 3. Conversion-Focused Order Confirmation Footer -->
     <div class="dialog-order-footer modern-checkout-footer" id="dialogOrderFooter">
-      <div class="journey-navigation"><button id="servicePrev" type="button" class="button button-outline">رجوع</button><button id="serviceNext" type="button" class="button button-red">التالي ←</button></div><div class="checkout-footer-single-action">
+      <div class="journey-navigation"><button id="servicePrev" type="button" class="button button-outline" data-content="dlg-prev-btn">رجوع</button><button id="serviceNext" type="button" class="button button-red" data-content="dlg-next-btn">التالي ←</button></div><div class="checkout-footer-single-action">
         <!-- One Clear Primary Confirmation Button -->
         <button type="button" class="keno-confirm-whatsapp-btn" id="orderButton">
           <div class="btn-icon-bubble">
             <i data-icon="message-circle"></i>
           </div>
           <div class="btn-caption-group">
-            <span class="btn-main-label">تأكيد الطلب عبر واتساب</span>
-            <span class="btn-sub-label">تواصل مباشر لتنفيذ طلبك فوراً</span>
+            <span class="btn-main-label" data-content="dlg-wa-btn">تأكيد الطلب عبر واتساب</span>
+            <span class="btn-sub-label" data-content="dlg-wa-sub">تواصل مباشر لتنفيذ طلبك فوراً</span>
           </div>
           <div class="btn-price-display">
             <span id="footerDisplayPrice" class="footer-btn-price">0 جنيه</span>
@@ -1446,14 +1446,14 @@
         <div class="checkout-footer-secondary-row">
           <button type="button" class="secondary-cart-link" id="addToCartBtn">
             <i data-icon="shopping-cart"></i>
-            <span>أو أضف الباقة لسلة الطلبات</span>
+            <span data-content="dlg-add-cart">أو أضف الباقة لسلة الطلبات</span>
           </button>
           <button type="button" class="secondary-copy-link" id="copyOrderButton">
             <i data-icon="copy"></i>
-            <span>نسخ التفاصيل</span>
+            <span data-content="dlg-copy-details">نسخ التفاصيل</span>
           </button>
         </div>
-        <button type="button" class="button button-outline small contact-trigger journey-voice-help">🎙 ابعتلنا فويس بطلبك</button>
+        <button type="button" class="button button-outline small contact-trigger journey-voice-help" data-content="dlg-voice-btn">🎙 ابعتلنا فويس بطلبك</button>
       </div>
     </div>
   </dialog>
