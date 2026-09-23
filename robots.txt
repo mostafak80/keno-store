@@ -1,0 +1,5 @@
+# Keno Store robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://kenostore.com/sitemap.xml

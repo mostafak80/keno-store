@@ -1,0 +1,245 @@
+/* Compact service cards. Loaded after theme.css; colors inherit both themes. */
+@media screen {
+  body.keno-motion .service-grid {
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:14px !important;
+    align-items:stretch;
+  }
+  body.keno-motion .service-card { min-width:0; border-radius:16px !important; }
+  body.keno-motion .service-card .card-visual {
+    height:52px; min-height:52px; width:auto; aspect-ratio:auto;
+    margin:10px 12px 0; padding:10px 12px; border-radius:10px;
+  }
+  body.keno-motion .service-card .card-visual:has(.card-badge) { padding-top:26px; height:68px; min-height:68px; }
+  body.keno-motion .service-card .card-visual > .icon { width:30px; height:30px; }
+  body.keno-motion .service-card .card-mark { font-size:22px; letter-spacing:0; }
+  body.keno-motion .service-card .card-badge { font-size:11px; line-height:1.4; padding:2px 7px; inset-block-start:3px; inset-inline-end:5px; }
+  body.keno-motion .service-card .card-visual.has-image .service-image { object-fit:contain; border-radius:6px; }
+  body.keno-motion .service-card .card-body { padding:10px 14px 12px; min-width:0; gap:0; }
+  body.keno-motion .service-card .card-category { justify-content:flex-start; flex-wrap:wrap; gap:4px 8px; margin:0 0 5px; line-height:1.5; }
+  body.keno-motion .service-card .card-category > span:first-child { font-size:12px !important; }
+  body.keno-motion .service-card .plans-count-tag { font-size:11px; padding:1px 5px; }
+  body.keno-motion .service-card .featured-tag { display:none; }
+  body.keno-motion .service-card h3 { font-size:20px !important; line-height:1.5 !important; margin:0 0 4px !important; font-weight:850; }
+  body.keno-motion .service-card .card-description {
+    font-size:14px !important; line-height:1.65 !important; min-height:0 !important;
+    margin:0 0 8px !important; flex:none; display:-webkit-box;
+    -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+  }
+  body.keno-motion .service-card .card-footer {
+    display:grid; grid-template-columns:minmax(0,1fr) auto; margin-top:auto; padding:8px 0 0; gap:6px 10px;
+    flex-direction:row; align-items:center; flex-wrap:wrap;
+  }
+  body.keno-motion .service-card .card-price { min-width:0; }
+  body.keno-motion .service-card .card-price > span { font-size:13px; line-height:1.5; overflow-wrap:anywhere; }
+  body.keno-motion .service-card .card-price strong { font-size:25px !important; line-height:1.4; }
+  body.keno-motion .service-card .card-price small { font-size:13px !important; }
+  body.keno-motion .service-card .card-price .quote-price { font-size:19px !important; }
+  body.keno-motion .service-card .original-price { font-size:12px; }
+  body.keno-motion .service-card .saving-badge { font-size:11px; }
+  body.keno-motion .service-card .card-action-indicator {
+    width:auto; min-height:40px; padding:8px 10px; gap:6px;
+    justify-content:center; font-weight:850; flex-shrink:0;
+  }
+  body.keno-motion .service-card .card-action-indicator span { font-size:14px !important; }
+  body.keno-motion .service-card .card-action-indicator .icon { width:17px; height:17px; }
+}
+@media screen and (max-width:1100px) {
+  body.keno-motion .service-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+}
+@media screen and (max-width:850px) {
+  body.keno-motion .service-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+}
+@media screen and (max-width:560px) {
+  body.keno-motion .service-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px !important; }
+  body.keno-motion .service-card { border-radius:12px !important; padding:0 !important; }
+  body.keno-motion .service-card .card-visual,
+  body.keno-motion .service-card .card-visual:has(.card-badge) { margin:8px 8px 0; height:34px; min-height:34px; padding:4px 7px; gap:4px; }
+  body.keno-motion .service-card .card-visual > .icon { width:20px; height:20px; }
+  body.keno-motion .service-card .card-mark { font-size:14px; }
+  body.keno-motion .service-card .card-badge,
+  body.keno-motion .service-card .card-category,
+  body.keno-motion .service-card .card-description { display:none !important; }
+  body.keno-motion .service-card .card-body { padding:7px 8px 8px; }
+  body.keno-motion .service-card h3 { font-size:16px !important; line-height:1.45 !important; margin:0 0 5px !important; }
+  body.keno-motion .service-card .card-footer { grid-template-columns:minmax(0,1fr); gap:4px; padding-top:5px; }
+  body.keno-motion .service-card .card-price > span { font-size:12px; line-height:1.4; }
+  body.keno-motion .service-card .card-price strong { font-size:22px !important; }
+  body.keno-motion .service-card .card-price small { font-size:12px !important; }
+  body.keno-motion .service-card .card-price .quote-price { font-size:16px !important; }
+  body.keno-motion .service-card .original-price,
+  body.keno-motion .service-card .saving-badge { display:none; }
+  body.keno-motion .service-card .card-action-indicator { min-height:32px; padding:4px 6px !important; width:100%; justify-content:space-between; }
+  body.keno-motion .service-card .card-action-indicator span { font-size:13px !important; }
+  body.keno-motion .service-card.is-unavailable h3::after { content:" — غير متاحة"; font-size:12px; color:var(--muted); }
+}
+/* Small offer tiles and direct access to the next checkout section. */
+body.keno-motion .checkout-quick-nav { display:flex; flex-wrap:wrap; gap:4px; }
+body.keno-motion .checkout-quick-nav button { font:700 13px var(--font); background:var(--paper-hover); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:5px 9px; min-height:36px; cursor:pointer; }
+body.keno-motion #serviceDialog .plan-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; }
+body.keno-motion #serviceDialog .plan-option { min-width:0; min-height:64px; padding:9px; gap:6px; border-radius:10px; align-items:center; }
+body.keno-motion #serviceDialog .plan-card-body { min-width:0; gap:3px; }
+body.keno-motion #serviceDialog .plan-card-header { gap:2px 4px; }
+body.keno-motion #serviceDialog .plan-label { font-size:14px; line-height:1.4; overflow-wrap:anywhere; }
+body.keno-motion #serviceDialog .plan-price { font-size:19px; line-height:1.4; white-space:nowrap; }
+body.keno-motion #serviceDialog .plan-price small { font-size:11px; }
+body.keno-motion #serviceDialog .plan-price-row { flex-wrap:wrap; gap:2px 5px; }
+body.keno-motion #serviceDialog .plan-old-price { font-size:11px; }
+body.keno-motion #serviceDialog .plan-note { font-size:12px; line-height:1.4; }
+body.keno-motion #serviceDialog .plan-discount-tag { font-size:10px; padding:0 4px; white-space:normal; }
+body.keno-motion #serviceDialog .plan-selection-indicator { width:16px; height:16px; margin:0; }
+body.keno-motion #serviceDialog .plan-option:focus-within { outline:2px solid var(--accent-readable); outline-offset:2px; }
+body.keno-motion #serviceDialog .service-checkout-hero { display:grid; grid-template-columns:52px minmax(0,1fr); align-items:center; gap:10px; padding:0 0 10px; background:none; }
+body.keno-motion #serviceDialog .service-hero-media { width:52px; height:52px; border-radius:10px; box-shadow:none; }
+body.keno-motion #serviceDialog .service-hero-media img { object-fit:contain; }
+body.keno-motion #serviceDialog .banner-fallback-content { padding:0; justify-content:center; }
+body.keno-motion #serviceDialog .banner-fallback-meta { display:none; }
+body.keno-motion #serviceDialog .service-hero-tags { display:none; }
+body.keno-motion #serviceDialog .service-hero-name { font-size:19px !important; margin:0 0 3px; }
+body.keno-motion #serviceDialog .service-hero-desc { font-size:13px; line-height:1.5; }
+body.keno-motion #serviceDialog .checkout-scroll-body { gap:12px; }
+body.keno-motion #serviceDialog .checkout-step-header { gap:8px; margin-bottom:8px; }
+body.keno-motion #serviceDialog .step-desc { font-size:12px; line-height:1.5; }
+body.keno-motion #serviceDialog .service-notes-card { padding:8px 10px; font-size:12px; line-height:1.5; }
+body.keno-motion #serviceDialog .plan-group { margin-bottom:10px; }
+body.keno-motion #serviceDialog .plan-group legend { font-size:13px; margin-bottom:6px; }
+body.keno-motion #serviceDialog :is(#planSelectionSection,#accountInfoSection,#paymentSelectionSection) { scroll-margin-top:8px; }
+@media (max-width:560px) {
+  body.keno-motion #serviceDialog .service-dialog-topbar { padding:8px; gap:4px; }
+  body.keno-motion .checkout-quick-nav button { font-size:12px; padding:4px 6px; }
+  body.keno-motion #serviceDialog .dialog-topbar-actions { gap:4px; }
+  body.keno-motion #serviceDialog .dialog-action-icon-btn { width:32px; height:36px; }
+  body.keno-motion #serviceDialog .checkout-scroll-body { padding:10px; max-height:calc(94dvh - 158px); }
+  body.keno-motion #serviceDialog .plan-option { display:block; padding:7px; }
+  body.keno-motion #serviceDialog .plan-selection-indicator { position:absolute; inset-inline-end:5px; top:7px; width:13px; height:13px; }
+  body.keno-motion #serviceDialog .plan-card-header { padding-inline-end:15px; }
+  body.keno-motion #serviceDialog .plan-label { font-size:13px; }
+  body.keno-motion #serviceDialog .plan-price { font-size:18px; }
+  body.keno-motion #serviceDialog .modern-checkout-footer { padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px)); gap:5px; }
+  body.keno-motion #serviceDialog #orderButton { min-height:48px; padding:6px 9px; }
+}
+@media (max-width:379px) {
+  body.keno-motion #serviceDialog .plan-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+/* Keep shortcuts and order actions visible while only the middle pane scrolls. */
+body.keno-motion #serviceDialog[open] { display:flex; flex-direction:column; max-height:94dvh; padding:0 !important; }
+body.keno-motion #serviceDialog .service-dialog-topbar,
+body.keno-motion #serviceDialog .modern-checkout-footer { flex-shrink:0; position:relative; }
+body.keno-motion #serviceDialog .checkout-scroll-body { flex:1 1 auto; min-height:0; max-height:none; overflow-y:auto; }
+/* Compact service identity and account entry: content determines the height. */
+body.keno-motion #serviceDialog .service-checkout-hero {
+  grid-template-columns:40px minmax(0,1fr); gap:8px; padding:0 0 7px;
+  min-height:48px; margin:0; border-color:var(--line);
+}
+body.keno-motion #serviceDialog .service-hero-media {
+  width:40px; height:40px; min-height:0; border-radius:9px;
+}
+body.keno-motion #serviceDialog .banner-fallback-icon-wrap {
+  width:32px; height:32px; border:0; border-radius:7px; box-shadow:none;
+}
+body.keno-motion #serviceDialog .banner-fallback-icon-wrap .icon { width:21px; height:21px; }
+body.keno-motion #serviceDialog .service-hero-name { font-size:18px !important; line-height:1.4 !important; margin:0 0 2px !important; }
+body.keno-motion #serviceDialog .service-hero-desc { font-size:13px !important; line-height:1.45 !important; margin:0 !important; }
+body.keno-motion #accountInfoSection .checkout-step-header { align-items:center; margin-bottom:6px; gap:6px; }
+body.keno-motion #accountInfoSection .step-title-flex { display:flex; align-items:center; gap:6px; }
+body.keno-motion #accountInfoSection .step-title { font-size:15px !important; line-height:1.5; margin:0; }
+body.keno-motion #accountInfoSection :is(#accountFieldBadge,#accountFieldDesc) { display:none; }
+body.keno-motion #accountInfoSection .step-number-badge { width:22px; height:22px; margin:0; font-size:12px; }
+body.keno-motion #accountInfoSection .customer-dynamic-card {
+  padding:8px 10px; gap:6px; border:1px solid var(--line); border-radius:10px;
+  background:var(--paper); box-shadow:none; backdrop-filter:none;
+}
+body.keno-motion #accountInfoSection .customer-mode-panel { gap:5px; }
+body.keno-motion #accountInfoSection .cust-field-label {
+  flex-direction:row; align-items:baseline; justify-content:flex-start;
+  flex-wrap:wrap; gap:2px 6px; margin:0; font-size:14px; line-height:1.5;
+}
+body.keno-motion #accountInfoSection .required-indicator {
+  padding:0; font-size:11px; line-height:1.4; border:0; background:transparent !important;
+}
+body.keno-motion #accountInfoSection .cust-text-input {
+  height:40px; min-height:40px; font-size:16px !important; line-height:1.4;
+  padding:7px 34px !important; border-radius:8px;
+}
+body.keno-motion #gameAccountPassInput { padding-inline-end:40px !important; }
+body.keno-motion #accountInfoSection .cust-input-icon { inset-inline-start:10px; }
+body.keno-motion #accountInfoSection .cust-input-icon .icon { width:16px; height:16px; }
+body.keno-motion #accountInfoSection .pass-toggle-action { width:36px; height:36px; padding:8px; inset-inline-end:2px; }
+body.keno-motion #accountInfoSection .cust-field-note {
+  margin:0; padding:0; gap:5px; font-size:12px; line-height:1.5;
+  align-items:flex-start; color:var(--muted); background:none; border:0;
+}
+body.keno-motion #accountInfoSection .cust-field-note .icon { width:13px; height:13px; margin-top:2px; }
+body.keno-motion #accountInfoSection .account-fields-grid { gap:8px; }
+body.keno-motion #accountInfoSection .account-field-item { min-width:0; gap:5px; }
+body.keno-motion #accountInfoSection .order-notes-accordion-wrap { margin:0; padding:0; border:0; }
+body.keno-motion #accountInfoSection .order-note-details { border:0; border-top:1px solid var(--line); border-radius:0; }
+body.keno-motion #accountInfoSection .order-note-summary {
+  min-height:32px; padding:4px 0; gap:6px; font-size:13px; line-height:1.5;
+}
+body.keno-motion #accountInfoSection .order-note-summary .icon { width:14px; height:14px; flex-shrink:0; }
+body.keno-motion #accountInfoSection .order-note-content { padding:4px 0 0; }
+body.keno-motion #accountInfoSection #orderNote { min-height:58px; padding:7px 9px; font-size:16px; }
+@media (max-width:560px) {
+  body.keno-motion #accountInfoSection .account-fields-grid { grid-template-columns:minmax(0,1fr); }
+}
+/* Payment methods start collapsed; only the chosen drawer expands. */
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card { min-width:0; padding:0 !important; border-radius:9px; box-shadow:none; backdrop-filter:none; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card:has(.payment-details-drawer.open) { grid-column:1 / -1; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card-header { flex-direction:row; justify-content:flex-start; min-height:52px; padding:7px; gap:5px; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card-main { display:flex; flex-direction:row; width:100%; gap:5px; align-items:center; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-info-title { min-width:0; text-align:start; align-items:flex-start; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-info-title strong { font-size:14px; line-height:1.45; overflow-wrap:normal; word-break:normal; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-icon-wrap { width:22px; height:22px; border:0; border-radius:5px; box-shadow:none; background:transparent; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-icon-wrap .icon { width:18px; height:18px; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) :is(.payment-sub,.payment-quick-tag) { display:none !important; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .custom-radio { position:absolute; top:3px; inset-inline-start:auto; inset-inline-end:3px; width:6px; height:6px; border:0; box-shadow:none; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-details-drawer { padding:0; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-drawer-content { padding:6px 8px; gap:4px; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-field { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4px 6px; gap:4px 8px; border-radius:6px; min-width:0; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-field-info { gap:3px 8px; min-width:0; flex:1 1 150px; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-label { font-size:12px; line-height:1.4; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) :is(.drawer-val,.drawer-val-text) { font-size:14px; line-height:1.45; overflow-wrap:anywhere; padding:1px 4px; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) :is(.drawer-copy-btn,.drawer-link-btn) { min-height:32px; padding:4px 7px; font-size:12px; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-desc { padding:3px 5px; font-size:12px; line-height:1.45; }
+body.keno-motion #serviceDialog .order-whatsapp-notice { padding:8px 10px; gap:7px; margin-top:8px; border-radius:9px; }
+body.keno-motion #serviceDialog .order-whatsapp-notice strong { font-size:13px; }
+body.keno-motion #serviceDialog .order-whatsapp-notice .notice-text > span { font-size:12px; line-height:1.5; }
+body.keno-motion #serviceDialog .order-summary-card { padding:8px 10px; border-radius:9px; }
+body.keno-motion #serviceDialog .summary-card-header { margin-bottom:6px; padding-bottom:6px; }
+body.keno-motion #serviceDialog .summary-rows-wrap { gap:4px; }
+body.keno-motion #serviceDialog .summary-row { padding-block:3px; }
+body.keno-motion #serviceDialog .summary-total-row { margin-top:4px; padding-top:6px; }
+/* Tighter storefront rhythm without reducing reading or touch sizes. */
+body.keno-motion .hero { padding-block:24px; gap:24px; }
+body.keno-motion :is(.collections-section,.picks-section,.catalog-section,.trust-section,.how-section,.testimonials-section,.faq-section) { padding-block:18px; margin-block:0; }
+body.keno-motion .section-heading { margin-bottom:12px; }
+body.keno-motion .catalog-toolbar { margin-bottom:10px; gap:10px; }
+body.keno-motion .category-tabs { padding-bottom:8px; }
+body.keno-motion .payment-showcase { margin-block:12px 20px; padding:20px; gap:20px; }
+body.keno-motion .custom-banner { margin-top:14px; padding:16px; }
+body.keno-motion .trust-grid { padding-block:8px; }
+body.keno-motion .hero-stage { padding:12px; }
+body.keno-motion .hero-copy > p { margin-bottom:12px; }
+@media (max-width:560px) {
+  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-icon-wrap { display:none; }
+  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-info-title strong { font-size:13px; }
+  body.keno-motion .hero { padding-block:16px; gap:16px; }
+  body.keno-motion .feature-word { font-size:28px; }
+  body.keno-motion #heroFeature { padding:14px 16px 18px; }
+  body.keno-motion .feature-offer { margin-block:8px; }
+}
+
+/* Flex children retain their natural height inside the scrolling pane. */
+body.keno-motion #serviceDialog .checkout-scroll-body > * { flex-shrink:0; }
+
+@media (max-width:560px) {
+  body.keno-motion #serviceDialog .btn-main-label { font-size:16px; line-height:1.4; }
+  body.keno-motion #serviceDialog .btn-sub-label { display:none; }
+  body.keno-motion #serviceDialog .btn-icon-bubble { width:28px; height:28px; flex-shrink:0; }
+  body.keno-motion #serviceDialog .btn-price-display { padding:5px 7px; }
+  body.keno-motion #serviceDialog .footer-btn-price { font-size:16px; white-space:nowrap; }
+  body.keno-motion #serviceDialog .checkout-footer-secondary-row button { font-size:12px; }
+}

@@ -1,0 +1,155 @@
+/* Canonical theme tokens. data-theme on <html> is the only theme state. */
+html { color-scheme: dark; background: #101114; }
+html[data-theme="light"] { color-scheme: light; background: #f5f6f8; }
+html body.keno-motion {
+  --bg:#101114; --paper:#1a1d24; --paper-hover:#242833; --paper-elevated:#292e39;
+  --paper-glass:#1a1d24; --paper-glass-hover:#242833;
+  --ink:#f5f6fa; --ink-heading:#ffffff; --muted:#b8c0ce; --muted-light:#d5dce7; --muted-dark:#a7b1c2;
+  --line:#39404c; --line-light:#2c323c; --line-hover:#697384;
+  --dark:#101114; --dark-surface:#171a21; --dark-border:#39404c;
+  --accent-readable:#ffce50; --red:#e52d3f; --red-hover:#c51c30;
+  --red-soft:#e52d3f18; --yellow-soft:#ffce5014; --green-soft:#22c55e16;
+  --shadow-sm:0 2px 8px #0002; --shadow-md:0 8px 25px #0003;
+  --shadow-lg:0 15px 40px #0004; --shadow-xl:0 20px 50px #0005;
+  color:var(--ink); background:var(--bg);
+}
+html[data-theme="light"] body.keno-motion {
+  --bg:#f5f6f8; --paper:#ffffff; --paper-hover:#edf0f4; --paper-elevated:#e4e9f0;
+  --paper-glass:#ffffff; --paper-glass-hover:#edf0f4;
+  --ink:#202735; --ink-heading:#141c2b; --muted:#526074; --muted-light:#3c4b60; --muted-dark:#5a687c;
+  --line:#cbd2dd; --line-light:#e2e6ed; --line-hover:#8995a6;
+  --dark:#e8edf3; --dark-surface:#f0f3f7; --dark-border:#cbd2dd;
+  --accent-readable:#785100; --red:#c62034; --red-hover:#a41628;
+  --shadow-sm:0 2px 8px #172d4910; --shadow-md:0 8px 25px #172d4914;
+  --shadow-lg:0 15px 40px #172d491a; --shadow-xl:0 20px 50px #172d4920;
+}
+body.keno-motion :is(h1,h2,h3,h4,h5,h6) { text-shadow:none !important; }
+body.keno-motion .testimonials-section { background:var(--bg) !important; }
+body.keno-motion :is(.testimonial-card,.service-card,.pick-card,.collection-tile,.payment-tile,.panel,.admin-stats>div,.faq-list details,.cart-item-card) {
+  background:var(--paper) !important; color:var(--ink); border-color:var(--line) !important;
+}
+body.keno-motion :is(.testimonial-comment,.testimonial-author strong,.faq-list summary,.pick-content>b,.card-price strong,.payment-tile h3) { color:var(--ink) !important; }
+body.keno-motion :is(.testimonial-date,.testimonial-comment+p,.card-description,.card-category,.pick-plan,.pick-content>small,.payment-tile bdi,.payment-tile small,.collection-tile small,.hero-copy>p,.stage-caption,.mini-offer small,.section-heading>p,.trust-info p) { color:var(--muted) !important; }
+body.keno-motion .testimonial-stars { color:var(--accent-readable); }
+body.keno-motion .testimonial-stars .icon { color:inherit; fill:currentColor; }
+body.keno-motion .verified-tag { color:#4ed399; }
+html[data-theme="light"] .keno-motion .verified-tag { color:#146d44; }
+body.keno-motion .service-tag { background:var(--paper-hover); color:var(--ink); border-color:var(--line); }
+body.keno-motion :is(.site-header,.mobile-nav,.cart-drawer,.dialog-header,.dialog-order-footer,.cart-header,.cart-footer,.service-dialog-topbar,.modern-checkout-footer,.admin-sticky-save-bar) { background:var(--paper) !important; color:var(--ink); border-color:var(--line) !important; }
+body.keno-motion :is(.hero-stage,.how-section,.payment-showcase,.site-footer,.custom-banner,.empty-state) { background:var(--dark-surface) !important; color:var(--ink); border-color:var(--line) !important; }
+body.keno-motion :is(.hero-copy h1>span,.payment-intro h2 span,.step-number,.card-action-indicator,.section-link:hover,.store-nav .nav-primary,.collection-symbol,.custom-icon,.trust-icon,.hero-tags .icon) { color:var(--accent-readable) !important; }
+body.keno-motion .step-number { opacity:1; }
+body.keno-motion :is(.hero .eyebrow,.hero-tags,.hero-searches,.stage-label,.section-heading .eyebrow,.section-link,.store-nav a,.mobile-nav-item,.hero-searches button) { color:var(--muted); }
+body.keno-motion :is(.discovery-search,.search-field,.sort-label select,.mini-offer,.cart-btn,.hero-searches button,.category-tabs button,.payment-tile button) { background:var(--paper-hover) !important; color:var(--ink); border-color:var(--line) !important; }
+body.keno-motion :is(.mini-offer>.icon,.pick-price,.card-price>span,.card-price small,.pick-price small) { color:var(--ink); }
+body.keno-motion .category-tabs button[aria-pressed="true"] { background:#ffce50 !important; color:#241e10 !important; border-color:#d9a72c !important; }
+body.keno-motion .collection-tile[aria-pressed="true"] { border-color:var(--accent-readable) !important; background:var(--yellow-soft) !important; }
+body.keno-motion input:not([type="checkbox"]):not([type="radio"]), body.keno-motion textarea, body.keno-motion select {
+  background:var(--paper-hover) !important; color:var(--ink) !important; border-color:var(--line) !important;
+}
+body.keno-motion :is(input,textarea)::placeholder { color:var(--muted) !important; opacity:1; }
+body.keno-motion :is(.discovery-search,.search-field) input { background:transparent !important; border:0 !important; box-shadow:none !important; }
+body.keno-motion .button-outline { color:var(--ink) !important; border-color:var(--line) !important; }
+body.keno-motion :is(.button-red,.button-whatsapp,.button-success,.button-danger) { color:#fff !important; }
+body.keno-motion :is(.button-red,.button-whatsapp,.button-success,.button-danger)>span { color:inherit !important; }
+body.keno-motion .button-yellow, body.keno-motion .header-actions .contact-trigger { background:#ffce50 !important; color:#211b0f !important; }
+body.keno-motion :is(.button-yellow,.header-actions .contact-trigger)>span { color:inherit; }
+body.keno-motion :is(.header-actions .contact-trigger,.cart-btn,.theme-toggle) { flex-shrink:0; }
+body.keno-motion .theme-toggle { display:grid; place-items:center; width:44px; height:44px; min-width:44px; padding:10px; border:1px solid var(--line); border-radius:12px; background:var(--paper-hover); color:var(--ink); cursor:pointer; }
+body.keno-motion .theme-toggle svg { grid-area:1/1; width:22px; height:22px; }
+.theme-moon { display:none; }
+html[data-theme="light"] .theme-moon { display:block; }
+html[data-theme="light"] .theme-sun { display:none; }
+body.keno-motion .theme-toggle:hover { color:var(--accent-readable); border-color:var(--accent-readable); transform:translateY(-1px); }
+body.keno-motion :is(a,button,[role="button"]):focus-visible { outline-color:var(--accent-readable) !important; }
+/* Fixed brand artwork keeps its own foreground/background pair in both themes. */
+body.keno-motion #heroFeature :is(#heroDescription,.hero-offer-icon) { color:#fff4f1 !important; }
+body.keno-motion #heroFeature .feature-word span:first-child { color:#fff; }
+body.keno-motion #heroFeature .feature-word span:last-child { color:#ffdf87; }
+body.keno-motion #heroActionButton { color:#71182b !important; background:#fff3da !important; }
+body.keno-motion #heroActionButton span { color:inherit; }
+body.keno-motion .pick-art { color:#28251f; }
+body.keno-motion .pick-card:nth-child(2) .pick-art { color:#fff; }
+body.keno-motion .pick-card:nth-child(3) .pick-art { color:#1c4238; }
+body.keno-motion .pick-card:nth-child(4) .pick-art { color:#443713; }
+body.keno-motion .card-visual.tone-dark { color:#e1e4ec; background:#2a2d34; }
+body.keno-motion .card-badge { background:#171a21; color:#fff; }
+body.keno-motion .card-badge.unavailable-badge { background:#7d2832; color:#fff; }
+body.keno-motion .saving-badge { color:#8fdfac; }
+html[data-theme="light"] .keno-motion .saving-badge { color:#19663c; }
+body.keno-motion .featured-tag { color:var(--accent-readable); }
+body.keno-motion .payment-copy-status { color:var(--accent-readable); }
+/* No backdrop blur or perpetual animation; entry effects use transform/opacity only. */
+body.keno-motion .site-header { backdrop-filter:none; }
+body.keno-motion .service-card:hover { box-shadow:var(--shadow-md); }
+body.keno-motion .card-badge, body.keno-motion .status-dot { animation:none; }
+body.keno-motion .motion-arrive { animation-duration:.42s; }
+body.keno-motion.motion-background *,body.keno-motion.motion-background *::before,body.keno-motion.motion-background *::after { animation-play-state:paused !important; }
+@media (max-width:560px) {
+  .keno-motion .header-inner { gap:8px; }
+  .keno-motion .header-actions { gap:6px; }
+  .keno-motion .header-actions .contact-trigger span { display:none; }
+  .keno-motion .header-actions .contact-trigger { width:40px; padding:8px; }
+  .keno-motion .theme-toggle { width:40px; height:40px; min-width:40px; padding:9px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html, body.keno-motion *, body.keno-motion *::before, body.keno-motion *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}
+/* Checkout: one readable surface system instead of fixed dark gradients. */
+body.keno-motion :is(.service-dialog,.checkout-scroll-body,.plan-option,.customer-info-panel,.cust-info-panel,.order-summary-card,.order-note-details,.payment-card,.payment-details-drawer,.payment-drawer-content,.step-intro,.checkout-fields) {
+  background:var(--paper) !important; color:var(--ink) !important; border-color:var(--line) !important; box-shadow:none !important;
+}
+body.keno-motion .plan-option.selected { background:var(--red-soft) !important; border-color:var(--red) !important; box-shadow:0 0 0 1px var(--red) !important; }
+body.keno-motion :is(.plan-label,.plan-price,.plan-price small,.plan-price bdi,.payment-card h4,.payment-info-title h4,.summary-row-val,.summary-price-amount,.cust-panel-title,.step-title,.cust-field-label) { color:var(--ink) !important; text-shadow:none !important; }
+body.keno-motion :is(.plan-note,.plan-old-price,.payment-sub,.payment-quick-tag,.summary-row-label,.cust-panel-desc,.cust-field-note,.step-desc) { color:var(--muted) !important; }
+body.keno-motion :is(.plan-discount-tag,.plan-check-icon,.plan-selection-indicator) { color:var(--accent-readable) !important; box-shadow:none !important; }
+body.keno-motion :is(.service-notes-card,.service-notes-header) { color:#ffe29c !important; background:#a46a0814 !important; box-shadow:none !important; }
+body.keno-motion .service-notes-card :is(li,span) { color:inherit !important; }
+html[data-theme="light"] body.keno-motion :is(.service-notes-card,.service-notes-header) { color:#784b00 !important; }
+body.keno-motion #orderButton { background:#087847 !important; color:#fff !important; box-shadow:none !important; }
+body.keno-motion #orderButton :is(span,strong,b,small) { color:#fff !important; text-shadow:none !important; }
+body.keno-motion :is(.service-trust-pill,.service-premium-badge,.cust-panel-badge,.step-number-badge) { background:var(--yellow-soft) !important; color:var(--accent-readable) !important; box-shadow:none !important; border-color:var(--line) !important; }
+body.keno-motion .service-trust-pill * { color:inherit !important; }
+body.keno-motion dialog::backdrop { backdrop-filter:none !important; background:#0d121dcc; }
+body.keno-motion :is(.dialog-banner-fallback,.service-hero-media.is-fallback) { background:var(--paper-hover) !important; border-color:var(--line) !important; box-shadow:none !important; }
+body.keno-motion .banner-fallback-ambient { display:none; }
+body.keno-motion .banner-fallback-icon-wrap { color:var(--accent-readable); background:var(--yellow-soft); border-color:var(--line); box-shadow:none; }
+
+body.keno-motion :is(.hero-cat-tag,.plan-group legend svg,.required-indicator) { color:var(--accent-readable) !important; background:var(--yellow-soft); border-color:var(--line); }
+body.keno-motion .plan-option { backdrop-filter:none; }
+body.keno-motion .plan-selection-indicator { border-color:var(--line-hover); background:var(--paper-hover); }
+body.keno-motion .plan-option.selected .plan-selection-indicator { background:var(--red); border-color:var(--red); }
+body.keno-motion .plan-option.selected .plan-check-icon { color:#fff !important; }
+/* Payment accordions: only the open method reveals readable transfer details. */
+body.keno-motion .payment-details-drawer:not(.open) { display:none !important; }
+body.keno-motion .payment-details-drawer.open { display:flex; max-height:none; opacity:1; animation:none; transition:none; }
+body.keno-motion :is(.drawer-field,.drawer-val) { background:var(--paper-hover) !important; border-color:var(--line) !important; }
+body.keno-motion :is(.drawer-val,.drawer-val-text,.payment-info-title strong) { color:var(--ink) !important; }
+body.keno-motion :is(.drawer-label,.drawer-desc) { color:var(--muted) !important; }
+body.keno-motion :is(.drawer-copy-btn,.drawer-link-btn,.summary-savings-tag) { color:var(--accent-readable) !important; background:var(--yellow-soft) !important; border-color:var(--line) !important; box-shadow:none !important; }
+body.keno-motion :is(.order-whatsapp-notice strong,.summary-trust-badge,.order-whatsapp-notice .notice-icon) { color:#4ed399 !important; }
+html[data-theme="light"] body.keno-motion :is(.order-whatsapp-notice strong,.summary-trust-badge,.order-whatsapp-notice .notice-icon) { color:#146d44 !important; }
+body.keno-motion .modern-checkout-footer { box-shadow:0 -3px 12px #0000000a !important; }
+body.keno-motion .payment-card-header:focus-visible { outline:2px solid var(--accent-readable); outline-offset:-3px; }
+@media (max-width:560px) {
+  body.keno-motion .custom-banner { flex-wrap:wrap; gap:16px; }
+  body.keno-motion .custom-banner > div { min-width:0; flex:1 1 150px; }
+  body.keno-motion .custom-banner > .button { width:100%; margin:0; white-space:normal; }
+}
+/* Light-only text corrections; retain the existing dark palette. */
+html[data-theme="light"] body.keno-motion :is(.hero-category-tag,.hero-cat-tag,.account-badge-pill,.required-indicator,.step-badge,.plan-group legend,.custom-quote-notice) { color:#785100 !important; background:#fff7df; border-color:#dbc99b; }
+html[data-theme="light"] body.keno-motion :is(.cust-field-note,.drawer-label,.drawer-desc,.summary-row-label,.order-note-summary,.secondary-cart-link,.secondary-copy-link,.service-hero-desc,.payment-sub,.payment-quick-tag) { color:#46566b !important; }
+html[data-theme="light"] body.keno-motion :is(.payment-icon-wrap,.cust-input-icon,.summary-title-wrap > .icon,.drawer-label .icon) { color:#176b62 !important; }
+html[data-theme="light"] body.keno-motion :is(.plan-discount-tag,.plan-note.out-of-stock,.summary-savings-tag,.stage-caption,.featured-tag) { color:#735000 !important; }
+html[data-theme="light"] body.keno-motion :is(.order-whatsapp-notice,.custom-quote-notice,.customer-dynamic-card) { background:#f3f7f5; border-color:#b7c9c0; }
+html[data-theme="light"] body.keno-motion .collection-symbol { color:#785100 !important; }
+html[data-theme="light"] body.keno-motion .payment-symbol { color:#922a36; background:#fbe8eb; }
+html[data-theme="light"] body.keno-motion .button-whatsapp { background:#087847 !important; }
+html[data-theme="light"] body.keno-motion .testimonial-stars { color:#785100; }
+
+html[data-theme="light"] body.keno-motion :is(.cust-input-icon,.cust-field-note,.drawer-label) svg { color:inherit; }
+
+html[data-theme="light"] body.keno-motion :is(.announcement-btn,.announcement-inner .icon) { color:#785100; }
+html[data-theme="light"] body.keno-motion .payment-card.selected { border-color:#167b56 !important; background:#f0faf5 !important; }
+html[data-theme="light"] body.keno-motion .payment-card.selected .custom-radio { background:#167b56; box-shadow:none; }
+html[data-theme="light"] body.keno-motion #orderButton .icon { color:#fff; }

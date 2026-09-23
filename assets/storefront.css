@@ -1,0 +1,366 @@
+/* Keno / Motion storefront. Theme and layout live here; admin/checkout keep style.css.
+   Tweak the tokens below to change the storefront without editing application logic. */
+body.keno-motion {
+  --bg: #101114; --paper: #191b20; --paper-hover: #22252c;
+  --paper-elevated: #242730; --ink: #f7f6f2; --ink-heading: #faf9f5;
+  --muted: #b2b3bc; --muted-light: #dedfe5; --muted-dark: #989ba6;
+  --line: #ffffff16; --line-hover: #ffffff38; --red: #e52d3f; --red-hover: #c81930;
+  --yellow: #ffce50; --yellow-hover: #f3be37; --dark: #0c0d10;
+  --radius-md: 16px; --radius-lg: 22px; --surface-warm: #f5f1e8;
+  --motion-ease: cubic-bezier(.2,.7,.2,1);
+  background: var(--bg); overflow-x: clip;
+}
+.keno-motion [hidden] { display: none !important; }
+.keno-motion .container { width: min(1240px, calc(100% - 64px)); max-width: 1240px; }
+.keno-motion .announcement { background: var(--paper); color: #e4ce99; border-bottom: 1px solid #ffffff09; font-size: 12px; }
+.keno-motion .announcement-inner { min-height: 34px; padding-block: 6px; }
+.keno-motion .announcement-inner .icon { color: var(--yellow); }
+.keno-motion .announcement-actions { gap: 20px; }
+.keno-motion .announcement-btn { color: #e4ce99; }
+.keno-motion .site-header { position: sticky; top: 0; z-index: 40; background: #101114f7 !important; box-shadow: none !important;  }
+.keno-motion .header-inner { min-height: 86px; height: auto; display: flex; gap: 38px; padding-block: 15px; }
+.keno-motion .brand { flex-shrink: 0; }
+.keno-motion .brand img { width: 162px; max-height: none; height: auto; object-fit: contain; }
+.keno-motion .header-actions { gap: 12px; flex-shrink: 0; }
+.keno-motion .header-search { display: none; }
+.keno-motion .header-actions .contact-trigger { background: var(--yellow); border: 0; color: var(--ink); border-radius: 12px; min-height: 44px; }
+.keno-motion .cart-btn { min-height: 44px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; color: var(--ink); }
+.keno-motion .discovery-search { display: flex; flex: 1; align-items: center; gap: 14px; min-width: 0; max-width: 550px; background: var(--paper); border: 1px solid #ffffff14; border-radius: 12px; padding: 0 14px 0 6px; }
+.keno-motion .discovery-search > .icon { color: var(--muted); width: 20px; flex-shrink: 0; }
+.keno-motion .discovery-search input { border: 0 !important; box-shadow: none !important; background: transparent !important; min-width: 0; height: 48px; width: 100%; padding: 0; font-size: 14px; }
+.keno-motion .discovery-search:focus-within { border-color: var(--yellow); outline: 2px solid #ffce5022; }
+.keno-motion .discovery-search button { color: var(--ink); width: 38px; min-height: 38px; display: grid; place-items: center; border-radius: 9px; background: #ffffff09; border: 0; flex-shrink: 0; }
+.keno-motion .store-nav-shell { border-top: 1px solid #ffffff0c; }
+.keno-motion .store-nav { display: flex; align-items: center; gap: 28px; min-height: 49px; overflow-x: auto; scrollbar-width: none; }
+.keno-motion .store-nav a { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; min-height: 46px; color: var(--muted); font-size: 13px; font-weight: 650; text-decoration: none; }
+.keno-motion .store-nav a:hover { color: var(--yellow); }
+.keno-motion .store-nav .nav-primary { color: var(--yellow); padding-left: 26px; border-left: 1px solid var(--line); }
+.keno-motion .store-nav .icon { width: 18px; }
+.keno-motion #storefront section[id] { scroll-margin-top: 160px; }
+.keno-motion .hero { display: grid; grid-template-columns: 1.08fr 1fr; gap: 60px; align-items: center; padding: 58px 0 44px; margin-block: 0; min-height: 0; background: none; border: 0; border-radius: 0; overflow: visible; }
+.keno-motion .eyebrow { color: var(--muted); font-size: 12px; font-weight: 650; margin-bottom: 14px; letter-spacing: 0; }
+.keno-motion .hero .eyebrow { color: #ded2ad; }
+.keno-motion .eyebrow-line { background: var(--yellow); width: 24px; }
+.keno-motion .hero-copy { position: relative; z-index: 1; padding: 0; }
+.keno-motion .hero-copy h1 { font-size: clamp(36px, 4.3vw, 60px) !important; line-height: 1.42 !important; font-weight: 900 !important; letter-spacing: -1.8px; margin: 0 0 20px; max-width: none; }
+.keno-motion .hero-copy h1 > span { color: var(--yellow) !important; background: none; -webkit-text-fill-color: currentColor; }
+.keno-motion .hero-period { color: var(--red); }
+.keno-motion .hero-copy > p { color: var(--muted) !important; font-size: 15px !important; line-height: 1.95 !important; max-width: 435px; margin: 0 0 26px; }
+.keno-motion .hero-actions { gap: 12px; margin: 0 0 20px; }
+.keno-motion .button { border-radius: 11px; min-height: 46px; font-size: 14px; font-weight: 750; transition: transform .22s var(--motion-ease), background-color .22s, box-shadow .22s; }
+.keno-motion .hero-actions .button { padding: 12px 24px; }
+.keno-motion .hero-tags { border-top: 0; padding: 0; margin: 21px 0 0; gap: 20px; color: var(--muted); font-size: 11px; }
+.keno-motion .hero-tags .icon { color: #d0ba79; width: 16px; }
+.keno-motion .hero-searches { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; font-size: 11px; color: var(--muted); }
+.keno-motion .hero-searches button { border: 1px solid #ffffff16; background: #ffffff05; color: var(--muted); padding: 5px 12px; min-height: 32px; border-radius: 6px; font-size: 11px; }
+.keno-motion .hero-searches button:hover { border-color: var(--yellow); color: var(--yellow); }
+.keno-motion .hero-stage { position: relative; min-width: 0; padding: 24px; background: #ffffff03; border: 1px solid #ffffff0b; border-radius: 26px; }
+.keno-motion .stage-label { display: flex; justify-content: space-between; direction: ltr; font: 9px/1.5 var(--font-mono); letter-spacing: 1.7px; color: var(--muted); margin-bottom: 18px; }
+.keno-motion #heroFeature { position: relative; border: 1px solid #ff66725e; border-radius: 18px; padding: 24px 28px 38px; min-height: 0; background: linear-gradient(120deg,#a7162b,#e62e42 80%) !important; box-shadow: 0 20px 55px #00000035; overflow: hidden; isolation: isolate; transform: rotate(-2deg); animation: offer-drift 3.5s ease-in-out 1; }
+.keno-motion #heroFeature::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(120deg,transparent 0,transparent 38px,#ffffff06 39px,#ffffff06 40px); pointer-events: none; z-index: -1; border: none; width: auto; height: auto; transform: none; border-radius: 0; }
+.keno-motion #heroFeature::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg,transparent 25%,#fff2 48%,transparent 70%); transform: translateX(130%); animation: offer-shine 4s ease-in-out 1; pointer-events: none; border-radius: 0; width: auto; height: auto; }
+.keno-motion #heroFeature.hero-theme-purple { background: linear-gradient(120deg,#532b79,#714f9e) !important; }
+.keno-motion #heroFeature.hero-theme-blue { background: linear-gradient(120deg,#17446a,#207198) !important; }
+.keno-motion #heroFeature.hero-theme-emerald { background: linear-gradient(120deg,#155945,#25856b) !important; }
+.keno-motion #heroFeature.hero-theme-amber { background: linear-gradient(120deg,#733a12,#93530e) !important; }
+.keno-motion #heroFeature.hero-theme-dark { background: linear-gradient(120deg,#252830,#3d414d) !important; }
+.keno-motion .feature-top { margin-bottom: 16px; }
+.keno-motion .feature-top .pill { border: 1px solid #ffffff40; background: #2a00121a; color: #fff; padding: 4px 12px; font-size: 11px; }
+.keno-motion .feature-top > .icon { color: #fff; width: 31px; height: 31px; }
+.keno-motion .feature-word { position: relative; z-index: 1; font-family: Arial, sans-serif; font-size: clamp(30px,3.6vw,49px); font-weight: 900; line-height: .98; letter-spacing: -2px; margin: 0 0 12px; color: #fff; text-align: left; }
+.keno-motion .feature-word span { display: block; }
+.keno-motion .feature-word span:last-child { color: #ffd878; -webkit-text-stroke: 0; }
+.keno-motion #heroDescription { color: #fff0ed; font-size: 12px; margin: 16px 0; line-height: 1.8; }
+.keno-motion .feature-offer { gap: 24px; margin: 0 0 16px; padding: 14px 0; border-top: 1px solid #ffffff26; border-bottom: 1px solid #ffffff26; }
+.keno-motion .feature-offer strong { color: #fff; font-size: 30px; line-height: 1.2; }
+.keno-motion .feature-offer strong:last-child { color: #ffdf87; }
+.keno-motion .feature-offer small { color: inherit; font-size: 12px; }
+.keno-motion .feature-divider { background: #ffffff35; }
+.keno-motion #heroActionButton { width: 100%; background: #fff3da; color: #71182b; border: 0; border-radius: 9px; min-height: 42px; padding: 8px 14px; justify-content: space-between; font-size: 12px; }
+.keno-motion .feature-index { bottom: 11px; right: 28px; color: #ffe5dc99; font: 8px var(--font-mono); letter-spacing: 2px; }
+.keno-motion .stage-mini-offers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.keno-motion .mini-offer { display: flex; align-items: center; gap: 9px; min-width: 0; border: 1px solid #ffffff10; border-radius: 12px; background: var(--paper); color: var(--ink); padding: 12px; text-align: start; transition: transform .2s, border-color .2s; }
+.keno-motion .mini-offer:hover { transform: translateY(-3px); border-color: #ffce5070; }
+.keno-motion .mini-offer > .icon { color: #ffdb86; width: 24px; height: 24px; flex-shrink: 0; }
+.keno-motion .mini-offer span { min-width: 0; }
+.keno-motion .mini-offer b { font-size: 12px; display: block; overflow-wrap: anywhere; }
+.keno-motion .mini-offer small { display: block; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.keno-motion .stage-caption { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; margin-top: 16px; }
+.keno-motion .stage-caption > span:last-child { margin-inline-start: auto; color: var(--yellow); }
+.keno-motion .status-dot { background: #ffce50; width: 6px; height: 6px; border-radius: 50%; }
+.keno-motion .section-heading { align-items: end; margin-bottom: 24px; gap: 16px; }
+.keno-motion .section-heading h2 { font-size: clamp(24px,2.6vw,34px) !important; letter-spacing: -.6px; line-height: 1.5; margin: 0; }
+.keno-motion .section-heading .eyebrow { margin-bottom: 5px; font-size: 11px; color: var(--muted); }
+.keno-motion .section-heading > p { font-size: 12px !important; }
+.keno-motion .section-link { color: var(--muted); font-size: 12px; display: inline-flex; align-items: center; gap: 9px; min-height: 44px; white-space: nowrap; }
+.keno-motion .section-link:hover { color: var(--yellow); }
+.keno-motion .section-link .icon { width: 16px; }
+.keno-motion .collections-section { padding-block: 32px 40px; border-top: 1px solid var(--line); }
+.keno-motion .collection-grid { display: grid; grid-template-columns: repeat(8,minmax(0,1fr)); gap: 12px; }
+.keno-motion .collection-tile { position: relative; display: flex; flex-direction: column; align-items: center; padding: 20px 6px 15px; gap: 6px; border: 1px solid var(--line); background: var(--paper); border-radius: 14px; min-width: 0; color: var(--ink); transition: transform .25s, background .25s, border-color .25s; }
+.keno-motion .collection-tile:hover { transform: translateY(-5px); background: var(--paper); border-color: #ffce5070; }
+.keno-motion .collection-tile > .collection-symbol { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 13px; background: #ffce5010; color: #f1cb72; margin-bottom: 8px; }
+.keno-motion .collection-tile:nth-child(3n+2) > .collection-symbol { background: #ef536013; color: #f79097; }
+.keno-motion .collection-tile:nth-child(3n) > .collection-symbol { background: #adcaca10; color: var(--muted); }
+.keno-motion .collection-symbol .icon { width: 25px; height: 25px; }
+.keno-motion .collection-tile b { font-size: 11px; font-weight: 700; line-height: 1.7; }
+.keno-motion .collection-tile small { font-size: 10px; color: var(--muted); }
+.keno-motion .collection-tile[aria-pressed="true"] { border-color: var(--yellow); background: var(--paper); }
+.keno-motion .picks-section { padding-block: 18px 44px; }
+.keno-motion .picks-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; }
+.keno-motion .pick-card { position: relative; display: flex; flex-direction: column; align-items: stretch; text-align: start; min-width: 0; overflow: hidden; padding: 0; background: var(--paper); border: 1px solid #ffffff13; border-radius: 16px; color: var(--ink); transition: transform .25s, border-color .25s; }
+.keno-motion .pick-card:hover { transform: translateY(-5px); border-color: #ffce5066; }
+.keno-motion .pick-art { position: relative; isolation: isolate; display: flex; justify-content: space-between; align-items: center; min-height: 136px; gap: 10px; padding: 24px; background: #efe7d6; color: #28251f; overflow: hidden; }
+.keno-motion .pick-art::after { content: ''; position: absolute; inset-inline-start: -15%; bottom: -90px; width: 240px; height: 140px; border: 1px solid currentColor; opacity: .12; border-radius: 50%; transform: rotate(-24deg); z-index: -1; }
+.keno-motion .pick-card:nth-child(2) .pick-art { background: #e93d49; color: #fff; }
+.keno-motion .pick-card:nth-child(3) .pick-art { background: #c1d7c5; color: #1c4238; }
+.keno-motion .pick-card:nth-child(4) .pick-art { background: #efc75c; color: #443713; }
+.keno-motion .pick-art strong { font-family: Arial, var(--font); font-size: clamp(21px,2vw,31px); font-weight: 900; letter-spacing: -1px; overflow-wrap: anywhere; line-height: 1.2; }
+.keno-motion .pick-art > .icon { width: 45px; height: 45px; flex-shrink: 0; stroke-width: 1.2; opacity: .75; }
+.keno-motion .pick-art img { width: 100%; height: 120px; object-fit: contain; }
+.keno-motion .pick-content { display: flex; flex-direction: column; gap: 5px; padding: 16px 18px 20px; }
+.keno-motion .pick-content > small { color: var(--muted); font-size: 10px; }
+.keno-motion .pick-content > b { font-size: 16px; font-weight: 800; }
+.keno-motion .pick-plan { color: var(--muted); font-size: 12px; }
+.keno-motion .pick-bottom { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--line); }
+.keno-motion .pick-price { font-size: 24px; font-weight: 850; }
+.keno-motion .pick-price small { font-size: 11px; color: var(--muted); font-weight: 500; }
+.keno-motion .pick-arrow { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #ffce50; color: #29200d; }
+.keno-motion .pick-arrow .icon { width: 17px; }
+.keno-motion .trust-section { padding-block: 14px 38px; }
+.keno-motion .trust-grid { gap: 0; border-block: 1px solid var(--line); padding-block: 18px; }
+.keno-motion .trust-card { background: none; box-shadow: none; border: 0; border-inline-end: 1px solid var(--line); border-radius: 0; padding: 10px 20px; gap: 12px; }
+.keno-motion .trust-card:last-child { border: 0; }
+.keno-motion .trust-icon { background: none; color: #ccb878; width: 28px; height: 32px; }
+.keno-motion .trust-info h3 { font-size: 12px !important; }
+.keno-motion .trust-info p { font-size: 10px !important; color: var(--muted); }
+.keno-motion .catalog-section { padding-block: 24px 56px; }
+.keno-motion .catalog-toolbar { gap: 16px; margin-bottom: 20px; }
+.keno-motion .search-field { border-radius: 12px; background: var(--paper) !important; box-shadow: none !important; min-height: 52px; }
+.keno-motion .search-field input { background: transparent !important; border: 0 !important; font-size: 14px; }
+.keno-motion .sort-label select { min-height: 52px; background: var(--paper) !important; font-size: 12px; }
+.keno-motion .category-tabs { gap: 8px; padding-bottom: 14px; margin-bottom: 6px; }
+.keno-motion .category-tabs button { background: var(--paper); color: var(--muted); border: 1px solid var(--line); border-radius: 9px; min-height: 42px; padding: 8px 14px; font-size: 11px; }
+.keno-motion .category-tabs button[aria-pressed="true"] { background: #ffce50 !important; color: var(--ink) !important; border-color: #ffce50; }
+.keno-motion .category-tabs button[aria-pressed="true"] .icon { color: inherit; }
+.keno-motion .category-count { background: #ffffff12; font-size: 10px; }
+.keno-motion .category-tabs button[aria-pressed="true"] .category-count { background: #0001; color: var(--ink); }
+.keno-motion .results-meta { padding-block: 12px; color: var(--muted); font-size: 11px; }
+.keno-motion .results-meta h3 { font-size: 14px !important; }
+.keno-motion .service-grid { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; }
+.keno-motion .service-card { background: var(--paper); border: 1px solid #ffffff12; border-radius: 16px; box-shadow: none; overflow: hidden; transition: transform .25s var(--motion-ease), border-color .25s; }
+.keno-motion .service-card:hover { transform: translateY(-5px); border-color: #ffffff40; box-shadow: 0 14px 30px #0003; }
+.keno-motion .card-visual { min-height: 134px; height: 134px; padding: 20px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; overflow: hidden; background: var(--paper); }
+.keno-motion .card-visual.tone-gold { background: #423c24; color: #f9d476; }
+.keno-motion .card-visual.tone-red { background: #49232b; color: #ff9c9f; }
+.keno-motion .card-visual.tone-green { background: #203d34; color: #b3d9c4; }
+.keno-motion .card-visual.tone-blue { background: #253544; color: #a8c9e8; }
+.keno-motion .card-visual.tone-orange { background: #493022; color: #f4c8a0; }
+.keno-motion .card-visual.tone-dark { background: #2a2d34; color: #cdd0d9; }
+.keno-motion .card-visual > .icon { width: 46px; height: 46px; opacity: .8; stroke-width: 1.1; flex-shrink: 0; }
+.keno-motion .card-mark { position: static; font-family: Arial,var(--font); font-weight: 900; font-size: 27px; letter-spacing: -.7px; color: inherit; opacity: 1; overflow-wrap: anywhere; line-height: 1.2; text-align: end; }
+.keno-motion .card-badge { inset-block-start: 9px; inset-inline-end: 10px; background: #111a; color: var(--ink); font-size: 9px; padding: 3px 7px; border: 1px solid #ffffff1a; box-shadow: none; }
+.keno-motion .card-visual:has(.card-badge) { padding-top: 32px; }
+.keno-motion .card-visual.has-image { background: var(--paper); padding: 12px; }
+.keno-motion .card-visual.has-image .service-image { width: 100%; height: 100%; max-width: 100%; object-fit: contain; border-radius: 8px; }
+.keno-motion .card-visual.has-image::after { display: none; }
+.keno-motion .card-body { padding: 16px; }
+.keno-motion .card-category { font-size: 9px; gap: 6px; margin-bottom: 10px; }
+.keno-motion .plans-count-tag, .keno-motion .featured-tag { font-size: 8px; padding: 1px 5px; }
+.keno-motion .featured-tag { color: #e9c975; background: #ffce5010; }
+.keno-motion .service-card h3 { font-size: 16px !important; margin: 0 0 7px; line-height: 1.6; }
+.keno-motion .card-description { font-size: 11px !important; line-height: 1.9 !important; color: var(--muted); min-height: 42px; }
+.keno-motion .card-footer { gap: 8px; padding-top: 14px; margin-top: 14px; flex-wrap: wrap; }
+.keno-motion .card-price > span { color: var(--muted); font-size: 10px; }
+.keno-motion .card-price strong { font-size: 23px; font-weight: 850; color: var(--ink); }
+.keno-motion .card-price small { color: var(--muted); font-size: 10px; }
+.keno-motion .card-price .quote-price { font-size: 17px; }
+.keno-motion .original-price { color: var(--muted); font-size: 10px; }
+.keno-motion .saving-badge { font-size: 9px; color: #d0daba; background: #5269382b; }
+.keno-motion .card-action-indicator { color: #f1ca72; font-size: 10px; gap: 5px; }
+.keno-motion .card-action-indicator .icon { width: 15px; }
+.keno-motion .custom-banner { background: var(--paper); border: 1px solid #ffce5028; border-radius: 16px; padding: 28px; margin-top: 28px; }
+.keno-motion .custom-banner h3 { font-size: 17px !important; }
+.keno-motion .custom-banner p { font-size: 12px !important; color: var(--muted); }
+.keno-motion .custom-icon { background: #ffce5014; color: #ffd15c; }
+.keno-motion .payment-showcase { display: grid; grid-template-columns: .85fr 1.4fr; align-items: center; gap: 48px; padding: 36px; margin-block: 10px 64px; border: 1px solid #ffffff17; background: var(--paper); border-radius: 22px; }
+.keno-motion .payment-intro h2 { font-size: 32px !important; line-height: 1.55; margin: 0 0 12px; }
+.keno-motion .payment-intro h2 span { color: #ffce50; }
+.keno-motion .payment-intro p { font-size: 12px !important; line-height: 1.9; max-width: 290px; }
+.keno-motion .payment-showcase-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+.keno-motion .payment-tile { padding: 22px 14px 14px; background: var(--paper); border: 1px solid #ffffff12; border-radius: 14px; text-align: center; min-width: 0; }
+.keno-motion .payment-symbol { display: grid; place-items: center; height: 45px; width: 45px; margin: 0 auto 15px; border-radius: 13px; color: #ffadb4; background: #9e243333; }
+.keno-motion .payment-tile:nth-child(2) .payment-symbol { background: #a6832429; color: #f5d576; }
+.keno-motion .payment-tile:nth-child(3) .payment-symbol { background: #558b6729; color: #b9d69e; }
+.keno-motion .payment-tile h3 { font-size: 13px !important; margin-bottom: 8px; }
+.keno-motion .payment-tile bdi { display: block; overflow-wrap: anywhere; color: var(--muted); font-size: 11px; }
+.keno-motion .payment-tile small { font-size: 10px; color: var(--muted); }
+.keno-motion .payment-tile button { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 36px; margin-top: 14px; border: 1px solid #ffffff1f; background: transparent; color: var(--ink); border-radius: 7px; font-size: 10px; }
+.keno-motion .payment-tile button:hover { color: #ffce50; border-color: #ffce5066; }
+.keno-motion .payment-tile button .icon { width: 13px; }
+.keno-motion .payment-copy-status { min-height: 24px; margin: 10px 0 0; font-size: 11px; color: #daca8b; }
+.keno-motion .how-section { background: var(--paper); border-block: 1px solid #ffffff0c; padding-block: 50px; }
+.keno-motion .steps-grid article { background: transparent; border: 0; border-inline-end: 1px solid var(--line); border-radius: 0; padding: 22px 28px; }
+.keno-motion .steps-grid article:last-child { border: 0; }
+.keno-motion .step-number { color: #ffce50; background: none; font: 700 30px/1 Arial,sans-serif; opacity: 1; }
+.keno-motion .steps-grid h3 { font-size: 18px !important; }
+.keno-motion .steps-grid p { font-size: 12px !important; }
+.keno-motion .testimonials-section { padding-block: 55px 30px; }
+.keno-motion .testimonial-card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: none; }
+.keno-motion .faq-section { padding-block: 65px; }
+.keno-motion .faq-list details { background: var(--paper); border: 1px solid var(--line); border-radius: 11px; }
+.keno-motion .faq-list summary { font-size: 13px; padding: 19px; }
+.keno-motion .faq-list p { font-size: 12px !important; }
+.keno-motion .site-footer { background: var(--bg); border-top: 1px solid var(--line); }
+.keno-motion .footer-main { padding-block: 40px; }
+.keno-motion .footer-main p, .keno-motion .footer-links { font-size: 12px; }
+.keno-motion .footer-bottom { font-size: 10px; }
+.keno-motion .mobile-nav { background: #191b20f7;  border-color: var(--line); }
+.keno-motion .mobile-nav-item { color: var(--muted); }
+.keno-motion .mobile-nav-item:hover { color: #ffce50; }
+.keno-motion .floating-contact { background: var(--paper-elevated); border: 1px solid #a2d7ad30; box-shadow: 0 8px 30px #0004; }
+.keno-motion :is(a,button,[role="button"]):focus-visible { outline: 2px solid #ffce50 !important; outline-offset: 4px; }
+.keno-motion .service-card.is-unavailable { opacity: .66; }
+/* Enter once. Content starts visible and is never hidden when JS/observers fail. */
+.keno-motion .motion-arrive { animation: section-arrive .6s var(--motion-ease) both; }
+@keyframes section-arrive { from { opacity: .3; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes offer-drift { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(-1deg); } }
+@keyframes offer-shine { 0%,65% { transform: translateX(130%); } 90%,100% { transform: translateX(-130%); } }
+.keno-motion.motion-paused *, .keno-motion.motion-paused *::before, .keno-motion.motion-paused *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+html.motion-paused { scroll-behavior: auto !important; }
+@media (min-width: 1000px) { .keno-motion .hero-copy { animation: section-arrive .7s var(--motion-ease) both; } }
+@media (max-width: 1100px) {
+  .keno-motion .container { width: calc(100% - 48px); }
+  .keno-motion .header-inner { gap: 24px; }
+  .keno-motion .hero { gap: 30px; }
+  .keno-motion .hero-stage { padding: 18px; }
+  .keno-motion .collection-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .keno-motion .service-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .keno-motion .pick-art { padding: 18px; }
+  .keno-motion .pick-art > .icon { width: 32px; }
+  .keno-motion .payment-showcase { gap: 25px; padding: 26px; }
+}
+@media (max-width: 780px) {
+  .keno-motion .container { width: calc(100% - 32px); }
+  .keno-motion .announcement-actions { display: none; }
+  .keno-motion .announcement-inner { justify-content: center; }
+  .keno-motion .header-inner { flex-wrap: wrap; gap: 12px; padding-block: 12px; min-height: 0; }
+  .keno-motion .brand img { width: 133px; }
+  .keno-motion .header-actions { margin-inline-start: auto; gap: 8px; }
+  .keno-motion .header-actions .contact-trigger { padding: 10px; min-height: 40px; font-size: 11px; }
+  .keno-motion .cart-btn { min-height: 40px; padding: 8px 10px; }
+  .keno-motion .cart-label { display: none; }
+  .keno-motion .discovery-search { order: 3; flex-basis: 100%; max-width: none; }
+  .keno-motion .discovery-search input { height: 42px; font-size: 13px; }
+  .keno-motion .store-nav { min-height: 43px; gap: 22px; }
+  .keno-motion .store-nav a { min-height: 43px; font-size: 11px; }
+  .keno-motion .store-nav .nav-primary { padding-left: 18px; }
+  .keno-motion #storefront section[id] { scroll-margin-top: 180px; }
+  .keno-motion .hero { grid-template-columns: 1fr 1fr; gap: 20px; padding: 35px 0; }
+  .keno-motion .hero-copy h1 { font-size: 34px !important; letter-spacing: -1px; }
+  .keno-motion .hero-copy > p { font-size: 13px !important; }
+  .keno-motion .hero-actions { flex-wrap: wrap; }
+  .keno-motion .hero-actions .button { font-size: 12px; padding: 10px 15px; }
+  .keno-motion .hero-tags { display: none; }
+  .keno-motion .hero-stage { padding: 14px; }
+  .keno-motion .stage-label { font-size: 7px; letter-spacing: .8px; }
+  .keno-motion #heroFeature { padding: 18px 18px 32px; }
+  .keno-motion .feature-word { font-size: 30px; }
+  .keno-motion .feature-offer strong { font-size: 24px; }
+  .keno-motion .feature-offer { gap: 12px; }
+  .keno-motion .stage-mini-offers { grid-template-columns: 1fr; }
+  .keno-motion .mini-offer { padding: 8px 12px; }
+  .keno-motion .mini-offer span { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; }
+  .keno-motion .mini-offer b { font-size: 10px; }
+  .keno-motion .mini-offer small { font-size: 9px; }
+  .keno-motion .stage-caption { font-size: 8px; }
+  .keno-motion .picks-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+  .keno-motion .service-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+  .keno-motion .trust-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .keno-motion .trust-card { padding: 7px 12px; }
+  .keno-motion .payment-showcase { grid-template-columns: 1fr; padding: 24px; }
+  .keno-motion .payment-intro h2 br { display: none; }
+  .keno-motion .payment-intro h2 { font-size: 27px !important; }
+  .keno-motion .payment-intro p { max-width: 100%; }
+  .keno-motion .steps-grid article { padding: 16px; }
+  .keno-motion .steps-grid h3 { font-size: 16px !important; }
+  .keno-motion .custom-banner { padding: 22px; }
+}
+@media (max-width: 560px) {
+  .keno-motion .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 30px; }
+  .keno-motion .hero-copy h1 { font-size: clamp(36px,10vw,47px) !important; line-height: 1.4 !important; margin-bottom: 14px; }
+  .keno-motion .hero-copy > p { font-size: 13px !important; line-height: 1.95 !important; margin-bottom: 20px; }
+  .keno-motion .hero .eyebrow { font-size: 11px; }
+  .keno-motion .hero-actions { flex-wrap: nowrap; }
+  .keno-motion .hero-actions .button { flex: 1; min-height: 46px; }
+  .keno-motion .hero-stage { padding: 18px; margin: 0 4px; }
+  .keno-motion #heroFeature { padding: 20px 24px 32px; }
+  .keno-motion .feature-word { font-size: 42px; }
+  .keno-motion .feature-offer { margin-block: 10px 16px; }
+  .keno-motion .feature-offer strong { font-size: 30px; }
+  .keno-motion .stage-mini-offers { grid-template-columns: 1fr 1fr; }
+  .keno-motion .mini-offer { padding: 10px; gap: 8px; }
+  .keno-motion .mini-offer span { display: block; }
+  .keno-motion .mini-offer b { font-size: 11px; }
+  .keno-motion .mini-offer > .icon { width: 21px; }
+  .keno-motion .stage-caption { font-size: 10px; }
+  .keno-motion .collection-grid { gap: 8px; }
+  .keno-motion .collection-tile { padding: 15px 3px 12px; border-radius: 10px; }
+  .keno-motion .collection-tile > .collection-symbol { width: 37px; height: 37px; border-radius: 10px; }
+  .keno-motion .collection-tile b { font-size: 10px; }
+  .keno-motion .collection-tile small { font-size: 9px; }
+  .keno-motion .collections-section { padding-block: 26px; }
+  .keno-motion .section-heading { margin-bottom: 18px; }
+  .keno-motion .section-heading h2 { font-size: 25px !important; }
+  .keno-motion .section-link { font-size: 10px; gap: 5px; }
+  .keno-motion .section-heading > p { display: none; }
+  .keno-motion .section-heading .eyebrow { font-size: 10px; }
+  .keno-motion .pick-art { min-height: 112px; padding: 18px 12px; gap: 5px; }
+  .keno-motion .pick-art strong { font-size: 23px; }
+  .keno-motion .pick-art > .icon { width: 29px; height: 29px; }
+  .keno-motion .pick-content { padding: 12px; }
+  .keno-motion .pick-content > b { font-size: 13px; }
+  .keno-motion .pick-plan { font-size: 11px; }
+  .keno-motion .pick-price { font-size: 23px; }
+  .keno-motion .pick-price small { font-size: 9px; }
+  .keno-motion .trust-card { gap: 8px; }
+  .keno-motion .trust-info h3 { font-size: 11px !important; }
+  .keno-motion .trust-info p { font-size: 9px !important; }
+  .keno-motion .catalog-toolbar { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .keno-motion .catalog-toolbar .sort-label { justify-self: end; }
+  .keno-motion .sort-label select { min-height: 40px; width: auto; font-size: 11px; }
+  .keno-motion .service-grid { gap: 10px; }
+  .keno-motion .card-visual { height: 108px; min-height: 108px; padding: 14px; gap: 7px; }
+  .keno-motion .card-visual > .icon { width: 30px; height: 30px; }
+  .keno-motion .card-mark { font-size: 23px; }
+  .keno-motion .card-body { padding: 12px; }
+  .keno-motion .card-category { font-size: 9px; margin-bottom: 7px; }
+  .keno-motion .featured-tag { display: none; }
+  .keno-motion .service-card h3 { font-size: 13px !important; }
+  .keno-motion .card-description { font-size: 10px !important; }
+  .keno-motion .card-footer { display: flex; align-items: start; flex-direction: column; margin-top: 10px; padding-top: 12px; }
+  .keno-motion .card-action-indicator { width: 100%; justify-content: space-between; padding-top: 4px; min-height: 26px; }
+  .keno-motion .card-price strong { font-size: 23px; }
+  .keno-motion .payment-showcase { padding: 22px 16px; gap: 20px; margin-bottom: 40px; }
+  .keno-motion .payment-showcase-grid { gap: 8px; }
+  .keno-motion .payment-tile { padding: 16px 7px 10px; border-radius: 10px; }
+  .keno-motion .payment-tile h3 { font-size: 11px !important; }
+  .keno-motion .payment-tile bdi { font-size: 9px; }
+  .keno-motion .payment-tile small { font-size: 9px; }
+  .keno-motion .payment-tile button { font-size: 9px; min-height: 40px; }
+  .keno-motion .steps-grid { grid-template-columns: 1fr; }
+  .keno-motion .steps-grid article { border-inline-end: 0; border-bottom: 1px solid var(--line); padding: 20px 4px; }
+  .keno-motion .how-section { padding-block: 32px; }
+  .keno-motion .faq-section { padding-block: 40px; }
+  .keno-motion .footer-bottom { line-height: 2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .keno-motion *, .keno-motion *::before, .keno-motion *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media print {
+  .keno-motion .site-header, .keno-motion .hero, .keno-motion .collections-section, .keno-motion .picks-section, .keno-motion .payment-showcase { display: none !important; }
+}
+
+.keno-motion .hero-offer-icon { display: grid; place-items: center; width: 32px; height: 32px; color: #fff; }
+.keno-motion .hero-offer-icon .icon { width: 31px; height: 31px; }

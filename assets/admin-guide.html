@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>دليل تشغيل وإدارة منصة Keno Store المطورة 2026</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="guide-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">
+        <img src="./logo.png" width="525" height="147" alt="Keno Store">
+      </a>
+      <a class="button button-red small" href="../index.html#admin">فتح لوحة الإدارة</a>
+    </div>
+  </header>
+
+  <main class="container guide-content">
+    <span class="eyebrow">دليل صاحب المتجر والمديرين / الإصدار التجاري المطور 2026</span>
+    <h1>منصة التجارة الإلكترونية الرقمية المتكاملة لمتجر كينو ستور</h1>
+    <p class="guide-lead">تحويل كامل لمتجر كينو إلى منصة تجارة إلكترونية سحابية واحترافية: إدارة الطلبات لحظيًا، مصادقة Google Sign-In المعتمدة، نظام الصلاحيات (RBAC)، فحص إيصالات التحويل البنكي، التحكم في طرق الدفع والشبكات الاجتماعية، وبصفر تكلفة شهرية دائمًا.</p>
+
+    <!-- Section 1: Authentication & Roles -->
+    <section class="panel">
+      <h2>1. تسجيل الدخول الآمن ونظام الصلاحيات (RBAC & Google Sign-In)</h2>
+      <p>لوحة الإدارة محمية بطبقتي أمان متطورتين:</p>
+      <ul>
+        <li><b>الدخول بحساب Google المعتمد:</b> بنقرة واحدة يتم التحقق من بريدك الإلكتروني عبر القائمة البيضاء المعتمدة (Whitelist). إذا كان بريدك مسجلاً كمدير يُفتح النظام فورًا، وإن لم يكن معتمدًا يُمنع الدخول تمامًا.</li>
+        <li><b>صلاحية المالك (Owner):</b> تحكم شامل بكافة الوظائف، إدارة الأسعار والخدمات، تفعيل وتعطيل طرق الدفع، تعديل بيانات التواصل، فحص ومسح سجلات الطلبات، والنشر الفوري على GitHub.</li>
+        <li><b>صلاحية محرر المحتوى (Editor):</b> مخصصة لفريق إضافة وتعديل المنتجات؛ تتيح إضافة وتعديل الخدمات، الباقات، الأقسام، والبطاقة الترويجية دون صلاحية النشر المباشر أو العبث بالمدفوعات.</li>
+        <li><b>صلاحية المراجع (Viewer):</b> وضع القراءة وفحص الطلبات والإحصائيات وتتبع الإيصالات دون القدرة على تعديل أي بيانات.</li>
+        <li><b>المؤقت الذكي:</b> إغلاق وقفل جلسة الإدارة تلقائيًا بعد 60 دقيقة من الخمول لحماية متجرك من التطفل.</li>
+      </ul>
+    </section>
+
+    <!-- Section 2: Real-time Order Management -->
+    <section class="panel">
+      <h2>2. نظام إدارة ومتابعة الطلبات والإيصالات (Orders & Receipts Hub)</h2>
+      <p>كل عملية شراء من العميل يتم تسجيلها فورًا وإصدار معرّف فريد لها (مثال: <code>#KENO-9142</code>):</p>
+      <ul>
+        <li><b>لوحة الإحصائيات (KPIs):</b> عرض فوري لإجمالي الطلبات، الطلبات قيد الانتظار، الطلبات المسلمة، إجمالي حجم المبيعات بالجنيه المصري، واسم الخدمة الأكثر طلبًا.</li>
+        <li><b>دورة حياة وحالات الطلب (Order Statuses):</b>
+          <ul>
+            <li><span class="status-pill status-pending">قيد الانتظار</span> — طلب جديد بانتظار المراجعة والتحويل.</li>
+            <li><span class="status-pill status-paid">تم التحويل (مدفوع)</span> — تم استلام قيمة التحويل والتأكد من صحة الإيصال.</li>
+            <li><span class="status-pill status-processing">جاري التنفيذ</span> — جاري شحن الحساب أو تفعيل الاشتراك.</li>
+            <li><span class="status-pill status-delivered">تم التسليم بنجاح</span> — اكتمل الطلب وتم إرسال البيانات للعميل.</li>
+            <li><span class="status-pill status-cancelled">ملغي</span> — تم إلغاء الطلب بناءً على رغبة العميل أو لعدم استكمال التحويل.</li>
+          </ul>
+        </li>
+        <li><b>نافذة فحص تفاصيل الطلب:</b> اضغط على أيقونة العين 👁️ لفتح نافذة الفحص الشاملة للاطلاع على بيانات العميل، أرقام التواصل، تفاصيل الباقات، صورة الإيصال مع إمكانية تكبيرها، وزر مباشر لبدء محادثة واتساب مع العميل بخصوص طلبه.</li>
+        <li><b>تحميل إيصال التحويل:</b> إمكانية حفظ وتنزيل صورة الإيصال الأصلية المضغوطة على جهازك بنقرة واحدة.</li>
+      </ul>
+    </section>
+
+    <!-- Section 3: Payment Management -->
+    <section class="panel">
+      <h2>3. إدارة طرق ووسائل الدفع (Vodafone Cash, InstaPay, Telda)</h2>
+      <p>تحكّم كامل في المحافظ وطرق الدفع المعروضة للعملاء دون الحاجة لكتابة أي كود:</p>
+      <ul>
+        <li><b>إضافة وسيلة دفع جديدة:</b> حدد الاسم بالعربية (مثل: محفظة تيلدا أو فودافون كاش)، رقم الهاتف أو المعرف، اسم صاحب الحساب الظاهر للعميل، رابط الدفع المباشر، والأيقونة.</li>
+        <li><b>التفعيل والتعطيل اللحظي:</b> يمكنك إيقاف أي محفظة مؤقتًا عند وصولها للحد الأقصى للتحويلات بضغطة زر واحدة لتختفي فورًا من شاشة الدفع للعملاء.</li>
+        <li><b>نماذج جاهزة سريعة:</b> اختر من القائمة المسبقة (فودافون كاش، إنستاباي، تيلدا، اتصالات كاش، أورنج كاش) لتعبئة البيانات في ثانية واحدة.</li>
+      </ul>
+    </section>
+
+    <!-- Section 4: Firebase Free Tier Setup -->
+    <section class="panel">
+      <h2>4. خطوات تفعيل سحابة Firebase المجانية (Spark Plan — 100% Free)</h2>
+      <ol>
+        <li>افتح موقع <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase Console</a> وسجل دخول بحساب Google الخاص بك.</li>
+        <li>اضغط <b>Create a project</b> وسمّ المشروع باسم متجرك (مثال: <code>keno-store</code>).</li>
+        <li>من القائمة الجانبية: اذهب إلى <b>Build &rarr; Authentication</b> واضغط <b>Get Started</b> ثم فعّل طريقة <b>Google</b>.</li>
+        <li>من القائمة الجانبية: اذهب إلى <b>Build &rarr; Firestore Database</b> واضغط <b>Create Database</b>. انسخ محتويات ملف <code>firestore.rules</code> المرفق في المشروع والصقها في تبويب <b>Rules</b> ثم اضغط <b>Publish</b>.</li>
+        <li>من إعدادات المشروع (Project Settings ⚙️) &rarr; أضف تطبيق Web (الأيقونة <code>&lt;/&gt;</code>) وانسخ بيانات <code>firebaseConfig</code>.</li>
+        <li>في متجرك، افتح لوحة الإدارة &rarr; تبويب <b>إعدادات المتجر</b> &rarr; في قسم <b>ربط سحابة وقاعدة بيانات Firebase</b> ألصق المفاتيح واضغط <b>حفظ بيانات Firebase وتفعيل السحابة</b>.</li>
+      </ol>
+      <p class="notice">المتجر يدعم وضع التخزين المحلي الاحتياطي التلقائي (IndexedDB)، ويعمل بكفاءة وسلاسة تامة حتى لو لم تكن قاعدة البيانات السحابية مهيأة بعد!</p>
+    </section>
+
+    <!-- Section 5: Dynamic Homepage & Social Links -->
+    <section class="panel">
+      <h2>5. إدارة البطاقة المميزة والشبكات الاجتماعية</h2>
+      <ul>
+        <li><b>البطاقة البارزة في الواجهة (Hero Card):</b> تحكّم في عنوان العرض، الباقة المختارة، السعر، الألوان، ونص زر الطلب مع معاينة حية فورية في لوحة الإدارة قبل الحفظ.</li>
+        <li><b>منصات التواصل الاجتماعي:</b> تحكّم في روابط وظهور أيقونات <b>Facebook</b> و <b>Instagram</b> و <b>TikTok</b> و <b>Telegram</b> من شاشة إعدادات المتجر بمرونة كاملة.</li>
+      </ul>
+    </section>
+
+    <!-- Quick Navigation -->
+    <div class="button-row" style="margin-top: 30px;">
+      <a class="button button-red" href="../index.html#admin">الانتقال للوحة الإدارة</a>
+      <a class="button button-outline" href="../index.html">معاينة واجهة المتجر</a>
+    </div>
+  </main>
+</body>
+</html>
