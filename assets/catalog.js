@@ -297,7 +297,7 @@ window.KENO_CATALOG = {
         }
       ],
       "notes": [
-        "أكّد نسخة اللعبة والباقة المطلوبة مع فريق كينو قبل الدفع."
+        "أكّد نسخة اللعبة والعرض المطلوب مع فريق كينو قبل الدفع."
       ],
       "featured": true,
       "visible": true,
@@ -455,7 +455,7 @@ window.KENO_CATALOG = {
       "fulfillment": {
         "title": "بيانات الحساب / الشحن",
         "description": "راجع شروط الحساب المشترك الموضحة بالأعلى. نرسل تفاصيل الاستلام في محادثة واتساب.",
-        "securityNote": "هذه باقة حساب مشترك؛ لا نحتاج بيانات الدخول إلى حسابك الشخصي. تجنب الملفات والمحادثات الحساسة في الحساب المشترك.",
+        "securityNote": "هذا عرض حساب مشترك؛ لا نحتاج بيانات الدخول إلى حسابك الشخصي. تجنب الملفات والمحادثات الحساسة في الحساب المشترك.",
         "fields": [],
         "audio": [
           "",
@@ -970,7 +970,7 @@ window.KENO_CATALOG = {
       "id": "roblox",
       "name": "روبلوكس — شحن روبوكس",
       "category": "games",
-      "description": "Robux لباقات صغيرة أو كميات أكبر.",
+      "description": "Robux لعروض صغيرة أو كميات أكبر.",
       "mark": "ROBLOX",
       "icon": "blocks",
       "plans": [
@@ -978,7 +978,7 @@ window.KENO_CATALOG = {
           "id": "robux-1",
           "label": "40 Robux",
           "price": 40,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -986,7 +986,7 @@ window.KENO_CATALOG = {
           "id": "robux-2",
           "label": "80 Robux",
           "price": 70,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -994,7 +994,7 @@ window.KENO_CATALOG = {
           "id": "robux-3",
           "label": "120 Robux",
           "price": 110,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -1002,7 +1002,7 @@ window.KENO_CATALOG = {
           "id": "robux-4",
           "label": "160 Robux",
           "price": 140,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -1010,7 +1010,7 @@ window.KENO_CATALOG = {
           "id": "robux-5",
           "label": "200 Robux",
           "price": 180,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -1018,7 +1018,7 @@ window.KENO_CATALOG = {
           "id": "robux-6",
           "label": "240 Robux",
           "price": 210,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -1026,7 +1026,7 @@ window.KENO_CATALOG = {
           "id": "robux-7",
           "label": "280 Robux",
           "price": 250,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -1034,7 +1034,7 @@ window.KENO_CATALOG = {
           "id": "robux-8",
           "label": "320 Robux",
           "price": 280,
-          "group": "الباقات العادية",
+          "group": "العروض العادية",
           "note": "",
           "available": true
         },
@@ -1539,7 +1539,7 @@ window.KENO_CATALOG = {
       "id": "mobile-legends",
       "name": "موبايل ليجندز — شحن عملات",
       "category": "games",
-      "description": "شحن عملات موبايل ليجندز حسب الباقة.",
+      "description": "شحن عملات موبايل ليجندز حسب العرض.",
       "mark": "ML",
       "icon": "swords",
       "plans": [],
@@ -1795,9 +1795,9 @@ window.KENO_CATALOG = {
     },
     {
       "id": "iptv",
-      "name": "آي بي تي في — باقات مشاهدة",
+      "name": "آي بي تي في — عروض مشاهدة",
       "category": "entertainment",
-      "description": "اسأل عن الباقات والمحتوى والأجهزة المدعومة.",
+      "description": "اسأل عن العروض والمحتوى والأجهزة المدعومة.",
       "mark": "IPTV",
       "icon": "tv",
       "plans": [],
@@ -2708,7 +2708,7 @@ window.KENO_CATALOG = {
     "planId": "pubg-3",
     "offerQuantity": "325 شدة",
     "offerPrice": "270 جنيه",
-    "buttonText": "شوف كل باقات ببجي",
+    "buttonText": "شوف كل عروض ببجي",
     "theme": "red",
     "tagline": "KENO / FEATURED"
   }

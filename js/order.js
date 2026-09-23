@@ -72,7 +72,7 @@
         'أرغب في تأكيد طلب جديد عبر الموقع:',
         '',
         `الخدمة: ${serviceName}`,
-        `الباقة: ${planName}`,
+        `العرض: ${planName}`,
         `الإجمالي: ${totalFormatted}`,
         '',
         'بيانات العميل والشحن:',
@@ -101,7 +101,7 @@
         const itemTotal = itemPrice * qty;
         grandTotal += itemTotal;
         const srvName = item.service?.name || 'خدمة رقمية';
-        const plnLabel = item.plan?.label || 'باقة';
+        const plnLabel = item.plan?.label || 'عرض';
         const fields = item.service?.fulfillment?.fields || [];
         const fulfillment = fields.filter(f => f.type !== 'password' && item.fields?.[f.id])
           .map(f => `   ${f.label}: ${item.fields[f.id]}`).join('\n');
@@ -176,7 +176,7 @@
 
       const plan = service.plans?.find(p => p.id === planId && p.available) || null;
       if (service.plans?.length > 0 && !plan) {
-        throw new Error('يرجى اختيار باقة متاحة أولًا.');
+        throw new Error('يرجى اختيار عرض متاح أولًا.');
       }
 
       const orderText = this.buildOrderText(catalog, service, plan, options);

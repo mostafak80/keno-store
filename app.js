@@ -658,11 +658,11 @@
           <div class="card-body">
             <div class="card-category">
               <span>${esc(cat?.name || '')}</span>
-              ${s.plans?.length ? `<span class="plans-count-tag">${s.plans.length} باقات</span>` : ''}
+              ${s.plans?.length ? `<span class="plans-count-tag">${s.plans.length} عروض</span>` : ''}
               ${s.featured ? '<span class="featured-tag">مختارات كينو</span>' : ''}
             </div>
             <h3 dir="auto">${esc(s.name)}</h3>
-            <p class="card-description" dir="auto">${esc(s.description || 'خدمة رقمية فورية مع باقات متعددة وضمان كامل.')}</p>
+            <p class="card-description" dir="auto">${esc(s.description || 'خدمة رقمية فورية مع عروض متعددة وضمان كامل.')}</p>
             <div class="card-footer">
               <div class="card-price">
                 <span>${minPrice === null ? 'السعر' : esc(entryPlan?.label || 'تبدأ من')}</span>
@@ -802,12 +802,12 @@
     }
 
     // Plan selector groups
-    const groups = [...new Set((service.plans || []).map(p => p.group || 'الباقات المتاحة'))];
+    const groups = [...new Set((service.plans || []).map(p => p.group || 'العروض المتاحة'))];
     const planGroupsContainer = $('planGroups');
     if (planGroupsContainer) {
       if (service.plans.length > 0) {
         planGroupsContainer.innerHTML = groups.map(group => {
-          const groupPlans = service.plans.filter(p => (p.group || 'الباقات المتاحة') === group);
+          const groupPlans = service.plans.filter(p => (p.group || 'العروض المتاحة') === group);
           return `
           <fieldset class="plan-group">
             <legend><i data-icon="sparkles"></i> ${esc(group)}</legend>
@@ -889,7 +889,7 @@
     const plan = service.plans.find(p => p.id === selectedPlan && p.available);
     const planName = plan
       ? plan.label
-      : (service.plans.length ? 'اختار الباقة المناسبة' : 'سعر حسب مواصفات طلبك');
+      : (service.plans.length ? 'اختار العرض المناسب' : 'سعر حسب مواصفات طلبك');
     const priceText = plan ? `${money(plan.price)} جنيه` : (service.plans.length ? '0 جنيه' : 'حسب المواصفات');
 
     // Update Dialog footer labels
@@ -1216,7 +1216,7 @@
 
     const plan = service.plans.find(p => p.id === planId && p.available);
     if (!plan && service.plans.length > 0) {
-      toast('يرجى اختيار باقة متاحة أولًا.');
+      toast('يرجى اختيار عرض متاح أولًا.');
       return;
     }
 
@@ -1982,8 +1982,9 @@
     tbody.innerHTML = services.map((s, idx) => {
       const minPrice = SearchEngine.minPrice(s);
       const cat = draft.categories.find(c => c.id === s.category);
-      const isFirst = idx === 0;
-      const isLast = idx === services.length - 1;
+      const realIdx = draft.services.findIndex(serv => serv.id === s.id);
+      const isFirst = realIdx === 0;
+      const isLast = realIdx === draft.services.length - 1;
       const badgeHtml = s.badge ? `<span class="status-pill featured-status" style="font-size:0.68rem;padding:2px 7px;">${esc(s.badge)}</span>` : '';
 
       const isHidden = !s.visible || s.status === 'hidden';
@@ -2008,7 +2009,7 @@
             </div>
           </td>
           <td>${esc(cat?.name || s.category)}</td>
-          <td>${s.plans.length} باقة</td>
+          <td>${s.plans.length} عرض</td>
           <td>${minPrice !== null ? `${money(minPrice)} ج.م` : (s.plans.length ? 'غير متاحة' : 'حسب الطلب')}</td>
           <td>
             <div class="button-row" style="gap:4px;flex-wrap:wrap;">
@@ -2020,11 +2021,15 @@
           </td>
           <td>
             <div class="reorder-btn-group">
-              <button type="button" class="icon-btn tiny" data-move-service="${esc(s.id)}" data-dir="up" title="تقديم للأعلى" ${isFirst ? 'disabled' : ''}>
-                ${icon('arrow-up-left')}
+              <button type="button" class="icon-btn tiny" data-move-service="${esc(s.id)}" data-dir="top" title="نقل لأول المتجر (القمة)" ${isFirst ? 'disabled' : ''}>
+                🔝
               </button>
-              <button type="button" class="icon-btn tiny" data-move-service="${esc(s.id)}" data-dir="down" title="تأخير للأسفل" ${isLast ? 'disabled' : ''}>
-                ${icon('arrow-left')}
+              <button type="button" class="icon-btn tiny" data-move-service="${esc(s.id)}" data-dir="up" title="تقديم للأعلى خطوة" ${isFirst ? 'disabled' : ''}>
+                ▲
+              </button>
+              <input type="number" class="service-pos-input" min="1" max="${draft.services.length}" value="${realIdx + 1}" data-service-pos="${esc(s.id)}" title="أدخل رقم الترتيب المباشر واضغط Enter">
+              <button type="button" class="icon-btn tiny" data-move-service="${esc(s.id)}" data-dir="down" title="تأخير للأسفل خطوة" ${isLast ? 'disabled' : ''}>
+                ▼
               </button>
             </div>
           </td>
@@ -2110,15 +2115,39 @@
       const dir = moveBtn.dataset.dir;
       const idx = draft?.services.findIndex(s => s.id === srvId);
       if (idx === undefined || idx === -1) return;
-      const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
-      if (targetIdx >= 0 && targetIdx < draft.services.length) {
-        const temp = draft.services[idx];
-        draft.services[idx] = draft.services[targetIdx];
-        draft.services[targetIdx] = temp;
+      let targetIdx = idx;
+      if (dir === 'top') targetIdx = 0;
+      else if (dir === 'up') targetIdx = idx - 1;
+      else if (dir === 'down') targetIdx = idx + 1;
+
+      if (targetIdx >= 0 && targetIdx < draft.services.length && targetIdx !== idx) {
+        const [moved] = draft.services.splice(idx, 1);
+        draft.services.splice(targetIdx, 0, moved);
         saveDraft();
         renderAdminTable();
+        renderStore();
+        toast(`تم تغيير ترتيب «${moved.name}» إلى المركز #${targetIdx + 1}.`);
       }
       return;
+    }
+  });
+
+  // Direct Position Input Listener for Admin Services
+  $('adminTableBody')?.addEventListener('change', event => {
+    const input = event.target.closest('[data-service-pos]');
+    if (!input || !draft) return;
+    const srvId = input.dataset.servicePos;
+    const idx = draft.services.findIndex(s => s.id === srvId);
+    if (idx === -1) return;
+    const newPos = Math.max(1, Math.min(draft.services.length, parseInt(input.value, 10) || 1));
+    const targetIdx = newPos - 1;
+    if (targetIdx !== idx) {
+      const [moved] = draft.services.splice(idx, 1);
+      draft.services.splice(targetIdx, 0, moved);
+      saveDraft();
+      renderAdminTable();
+      renderStore();
+      toast(`تم نقل «${moved.name}» إلى الترتيب #${newPos}.`);
     }
   });
 
@@ -3157,11 +3186,11 @@
     if (!tbody) return;
 
     if (countBadge) {
-      countBadge.textContent = `${currentEditorPlans.length} باقة`;
+      countBadge.textContent = `${currentEditorPlans.length} عرض`;
     }
 
     // Extract unique groups for filter dropdown and datalist
-    const groups = [...new Set(currentEditorPlans.map(p => p.group || 'الباقات'))].filter(Boolean);
+    const groups = [...new Set(currentEditorPlans.map(p => p.group || 'العروض'))].filter(Boolean);
     const groupFilter = $('editorPlanGroupFilter');
     if (groupFilter) {
       const currentSelected = groupFilter.value;
@@ -3177,7 +3206,7 @@
     // Filter plans
     const q = (currentPlanSearchQuery || '').toLowerCase().trim();
     const filtered = currentEditorPlans.filter(p => {
-      if (currentPlanFilterGroup !== 'all' && (p.group || 'الباقات') !== currentPlanFilterGroup) return false;
+      if (currentPlanFilterGroup !== 'all' && (p.group || 'العروض') !== currentPlanFilterGroup) return false;
       if (currentPlanFilterStatus === 'active' && !p.available) return false;
       if (currentPlanFilterStatus === 'inactive' && p.available) return false;
       if (q) {
@@ -3205,7 +3234,7 @@
 
       return `
         <tr data-plan-id="${esc(p.id)}">
-          <td data-label="اسم الباقة">
+          <td data-label="اسم العرض">
             <div class="plan-col-label">
               <span>${esc(p.label)}</span>
               ${p.note ? `<span class="plan-col-note">${esc(p.note)}</span>` : ''}
@@ -3222,7 +3251,7 @@
             ` : '<span style="color:#94a3b8;">—</span>'}
           </td>
           <td data-label="المجموعة">
-            <span class="group-tag-pill">${esc(p.group || 'الباقات')}</span>
+            <span class="group-tag-pill">${esc(p.group || 'العروض')}</span>
           </td>
           <td data-label="الحالة">
             <span class="plan-status-badge ${p.available ? 'active' : 'inactive'}" data-toggle-plan="${esc(p.id)}" title="اضغط لتبديل حالة التوفر">
@@ -3231,13 +3260,13 @@
           </td>
           <td class="actions-cell">
             <div class="plan-actions-group">
-              <button type="button" class="table-action-btn edit-btn" data-edit-plan="${esc(p.id)}" title="تعديل الباقة" aria-label="تعديل الباقة">
+              <button type="button" class="table-action-btn edit-btn" data-edit-plan="${esc(p.id)}" title="تعديل العرض" aria-label="تعديل العرض">
                 ${icon('edit-3')}
               </button>
-              <button type="button" class="table-action-btn duplicate-btn" data-duplicate-plan="${esc(p.id)}" title="تكرار الباقة" aria-label="تكرار الباقة">
+              <button type="button" class="table-action-btn duplicate-btn" data-duplicate-plan="${esc(p.id)}" title="تكرار العرض" aria-label="تكرار العرض">
                 ${icon('copy')}
               </button>
-              <button type="button" class="table-action-btn delete-btn" data-delete-plan="${esc(p.id)}" title="حذف الباقة" aria-label="حذف الباقة">
+              <button type="button" class="table-action-btn delete-btn" data-delete-plan="${esc(p.id)}" title="حذف العرض" aria-label="حذف العرض">
                 ${icon('trash-2')}
               </button>
             </div>
@@ -3253,11 +3282,11 @@
     editingPlanModalId = plan ? plan.id : null;
     masterPlanEditingRef = masterRef; // when editing from master pricing table
 
-    $('planDialogTitle').textContent = plan ? `تعديل باقة: ${plan.label}` : 'إضافة باقة جديدة';
+    $('planDialogTitle').textContent = plan ? `تعديل عرض: ${plan.label}` : 'إضافة عرض جديد';
     $('planLabelInput').value = plan?.label || '';
     $('planPriceInput').value = plan?.price !== undefined ? plan.price : '';
     $('planOriginalPriceInput').value = (plan?.originalPrice && plan.originalPrice > 0) ? plan.originalPrice : '';
-    $('planGroupInput').value = plan?.group || (currentEditorPlans[0]?.group || 'الباقات');
+    $('planGroupInput').value = plan?.group || (currentEditorPlans[0]?.group || 'العروض');
     $('planNoteInput').value = plan?.note || '';
     $('planAvailableInput').checked = plan ? Boolean(plan.available) : true;
 
@@ -3374,7 +3403,7 @@
         editorDirty = true;
         renderEditorPlansTable();
         updateStickyBar();
-        toast(`تم تحويل باقة "${plan.label}" إلى ${plan.available ? 'متاحة' : 'غير متاحة'}.`);
+        toast(`تم تحويل عرض "${plan.label}" إلى ${plan.available ? 'متاح' : 'غير متاح'}.`);
       }
       return;
     }
@@ -3401,7 +3430,7 @@
         editorDirty = true;
         renderEditorPlansTable();
         updateStickyBar();
-        toast(`تم تكرار باقة "${clone.label}".`);
+        toast(`تم تكرار عرض "${clone.label}".`);
       }
       return;
     }
@@ -3411,12 +3440,12 @@
       const id = delBtn.dataset.deletePlan;
       const plan = currentEditorPlans.find(p => p.id === id);
       if (plan) {
-        if (await confirmAction('حذف الباقة؟', `هل أنت متأكد من حذف باقة "${plan.label}" نهائيًا؟`, 'حذف الباقة')) {
+        if (await confirmAction('حذف العرض؟', `هل أنت متأكد من حذف عرض "${plan.label}" نهائيًا؟`, 'حذف العرض')) {
           currentEditorPlans = currentEditorPlans.filter(p => p.id !== id);
           editorDirty = true;
           renderEditorPlansTable();
           updateStickyBar();
-          toast(`تم حذف باقة "${plan.label}".`);
+          toast(`تم حذف عرض "${plan.label}".`);
         }
       }
       return;
@@ -3447,12 +3476,12 @@
     const price = Number($('planPriceInput').value);
     const origVal = $('planOriginalPriceInput').value.trim();
     const originalPrice = origVal ? Number(origVal) : null;
-    const group = $('planGroupInput').value.trim() || 'الباقات';
+    const group = $('planGroupInput').value.trim() || 'العروض';
     const note = $('planNoteInput').value.trim();
     const available = $('planAvailableInput').checked;
 
     if (!label) {
-      toast('يرجى كتابة اسم الباقة.');
+      toast('يرجى كتابة اسم العرض.');
       return;
     }
     if (isNaN(price) || price <= 0) {
@@ -3475,7 +3504,7 @@
           saveDraft();
           renderMasterPlansTable();
           renderAdmin();
-          toast(`تم تعديل باقة "${label}" بنجاح.`);
+          toast(`تم تعديل عرض "${label}" بنجاح.`);
         }
       }
       masterPlanEditingRef = null;
@@ -3497,7 +3526,7 @@
           available
         };
       }
-      toast(`تم تعديل باقة "${label}" بنجاح.`);
+      toast(`تم تعديل عرض "${label}" بنجاح.`);
     } else {
       const newPlan = {
         id: newId('plan'),
@@ -3509,7 +3538,7 @@
         available
       };
       currentEditorPlans.push(newPlan);
-      toast(`تمت إضافة باقة "${label}" بنجاح.`);
+      toast(`تمت إضافة عرض "${label}" بنجاح.`);
     }
 
     editorDirty = true;
@@ -3598,7 +3627,7 @@
       visible: true,
       featured: Boolean(form?.elements.featured?.checked),
       plans: currentEditorPlans.length > 0 ? currentEditorPlans : [
-        { id: 'temp-1', label: 'باقة تجريبية للمعاينة', price: 99, group: 'الباقات', available: true }
+        { id: 'temp-1', label: 'عرض تجريبي للمعاينة', price: 99, group: 'العروض', available: true }
       ]
     };
     openService(tempService);
@@ -3642,7 +3671,7 @@
       renderAdmin();
       renderStore();
       closeDialog('editorDialog');
-      toast('تم حفظ الخدمة والباقات في المسودة بنجاح.');
+      toast('تم حفظ الخدمة والعروض في المسودة بنجاح.');
     } catch (error) {
       if ($('editorError')) {
         $('editorError').textContent = error.message;
@@ -3692,7 +3721,7 @@
   // Delete Service Button
   $('deleteServiceButton')?.addEventListener('click', async () => {
     if (!editingServiceId || publishing) return;
-    if (await confirmAction('حذف الخدمة بالكامل؟', 'ستُحذف الخدمة وجميع باقاتها من المسودة. يمكنك إخفاؤها بدلاً من حذفها بإلغاء «تظهر في المتجر».', 'حذف الخدمة')) {
+    if (await confirmAction('حذف الخدمة بالكامل؟', 'ستُحذف الخدمة وجميع عروضها من المسودة. يمكنك إخفاؤها بدلاً من حذفها بإلغاء «تظهر في المتجر».', 'حذف الخدمة')) {
       draft.services = draft.services.filter(s => s.id !== editingServiceId);
       editorDirty = false;
       saveDraft();
@@ -3770,7 +3799,7 @@
 
       return `
         <tr data-service-id="${esc(s.id)}" data-plan-id="${esc(p.id)}">
-          <td data-label="اسم الباقة">
+          <td data-label="اسم العرض">
             <div class="plan-col-label">
               <span>${esc(p.label)}</span>
               ${p.note ? `<span class="plan-col-note">${esc(p.note)}</span>` : ''}
@@ -3795,7 +3824,7 @@
             ` : '<span style="color:#94a3b8;">—</span>'}
           </td>
           <td data-label="المجموعة">
-            <span class="group-tag-pill">${esc(p.group || 'الباقات')}</span>
+            <span class="group-tag-pill">${esc(p.group || 'العروض')}</span>
           </td>
           <td data-label="الحالة">
             <span class="plan-status-badge ${p.available ? 'active' : 'inactive'}" data-master-toggle="${esc(s.id)}:${esc(p.id)}" title="اضغط لتبديل التوفر">
@@ -3804,13 +3833,13 @@
           </td>
           <td class="actions-cell">
             <div class="plan-actions-group">
-              <button type="button" class="table-action-btn edit-btn" data-master-edit="${esc(s.id)}:${esc(p.id)}" title="تعديل الباقة">
+              <button type="button" class="table-action-btn edit-btn" data-master-edit="${esc(s.id)}:${esc(p.id)}" title="تعديل العرض">
                 ${icon('edit-3')}
               </button>
-              <button type="button" class="table-action-btn duplicate-btn" data-master-dup="${esc(s.id)}:${esc(p.id)}" title="تكرار الباقة">
+              <button type="button" class="table-action-btn duplicate-btn" data-master-dup="${esc(s.id)}:${esc(p.id)}" title="تكرار العرض">
                 ${icon('copy')}
               </button>
-              <button type="button" class="table-action-btn delete-btn" data-master-del="${esc(s.id)}:${esc(p.id)}" title="حذف الباقة">
+              <button type="button" class="table-action-btn delete-btn" data-master-del="${esc(s.id)}:${esc(p.id)}" title="حذف العرض">
                 ${icon('trash-2')}
               </button>
             </div>
@@ -3875,7 +3904,7 @@
         plan.available = !plan.available;
         saveDraft();
         renderMasterPlansTable();
-        toast(`تم تحويل باقة "${plan.label}" إلى ${plan.available ? 'متاحة' : 'غير متاحة'}.`);
+        toast(`تم تحويل عرض "${plan.label}" إلى ${plan.available ? 'متاح' : 'غير متاح'}.`);
       }
       return;
     }
@@ -3905,7 +3934,7 @@
         srv.plans.push(clone);
         saveDraft();
         renderMasterPlansTable();
-        toast(`تم تكرار باقة "${clone.label}" بنجاح.`);
+        toast(`تم تكرار عرض "${clone.label}" بنجاح.`);
       }
       return;
     }
@@ -3916,11 +3945,11 @@
       const srv = draft.services.find(s => s.id === srvId);
       const plan = srv?.plans.find(p => p.id === planId);
       if (srv && plan) {
-        if (await confirmAction('حذف الباقة؟', `هل أنت متأكد من حذف باقة "${plan.label}" نهائيًا من خدمة "${srv.name}"؟`, 'حذف الباقة')) {
+        if (await confirmAction('حذف العرض؟', `هل أنت متأكد من حذف عرض "${plan.label}" نهائيًا من خدمة "${srv.name}"؟`, 'حذف العرض')) {
           srv.plans = srv.plans.filter(p => p.id !== planId);
           saveDraft();
           renderMasterPlansTable();
-          toast(`تم حذف باقة "${plan.label}".`);
+          toast(`تم حذف عرض "${plan.label}".`);
         }
       }
       return;
@@ -3929,7 +3958,7 @@
 
   $('deleteServiceButton')?.addEventListener('click', async () => {
     if (!editingServiceId || publishing) return;
-    if (await confirmAction('حذف الخدمة بالكامل؟', 'ستُحذف الخدمة وجميع باقاتها من المسودة. يمكنك إخفاؤها بدلاً من حذفها بإلغاء «تظهر في المتجر».', 'حذف الخدمة')) {
+    if (await confirmAction('حذف الخدمة بالكامل؟', 'ستُحذف الخدمة وجميع عروضها من المسودة. يمكنك إخفاؤها بدلاً من حذفها بإلغاء «تظهر في المتجر».', 'حذف الخدمة')) {
       draft.services = draft.services.filter(s => s.id !== editingServiceId);
       editorDirty = false;
       saveDraft();

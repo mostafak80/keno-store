@@ -196,7 +196,30 @@
       }
       settings.trustBadges = (s.trustBadges || root.KenoConfig?.TRUST_BADGES || []).slice(0,8).map(b => ({icon: String(b.icon || 'shield').slice(0,40), title:requireString(b.title,100,'عنوان الثقة'), desc:requireString(b.desc,500,'وصف الثقة')}));
       settings.sectionVisibility = {};
-      for (const id of ['home','collections','picks','payments','trust','how','testimonials','faq']) settings.sectionVisibility[id] = s.sectionVisibility?.[id] !== false;
+      const knownComponents = ['home','collections','picks','trust','catalog','payments','how','testimonials','faq', 'header', 'announcement', 'audioIntro', 'cartButton', 'themeToggle', 'heroSearches', 'heroTags', 'heroFeature', 'stageMiniOffers', 'catalogToolbar', 'categoryTabs', 'customBanner', 'footer', 'dlgVoice', 'dlgQuote'];
+      for (const id of knownComponents) settings.sectionVisibility[id] = s.sectionVisibility?.[id] !== false;
+
+      // Studio layout, dimensions, gaps and scaling
+      settings.layout = {
+        siteScale: typeof s.layout?.siteScale === 'string' && /^(85|90|95|100|105|110|115|120)%$/.test(s.layout.siteScale) ? s.layout.siteScale : '100%',
+        containerMax: typeof s.layout?.containerMax === 'string' && /^(1100px|1200px|1320px|1440px|1600px|100%)$/.test(s.layout.containerMax) ? s.layout.containerMax : '1200px',
+        gridCols: typeof s.layout?.gridCols === 'string' && /^(auto|2|3|4)$/.test(s.layout.gridCols) ? s.layout.gridCols : '3',
+        cardGap: typeof s.layout?.cardGap === 'string' && /^(10px|16px|20px|28px|36px)$/.test(s.layout.cardGap) ? s.layout.cardGap : '20px',
+        sectionGap: typeof s.layout?.sectionGap === 'string' && /^(32px|56px|80px|110px)$/.test(s.layout.sectionGap) ? s.layout.sectionGap : '56px',
+        cardPadding: typeof s.layout?.cardPadding === 'string' && /^(12px|18px|24px|30px)$/.test(s.layout.cardPadding) ? s.layout.cardPadding : '18px',
+        cardRadius: typeof s.layout?.cardRadius === 'string' && /^(4px|10px|16px|24px|32px)$/.test(s.layout.cardRadius) ? s.layout.cardRadius : '16px',
+        headingAlign: typeof s.layout?.headingAlign === 'string' && /^(right|center|left)$/.test(s.layout.headingAlign) ? s.layout.headingAlign : 'right',
+        heroAlign: typeof s.layout?.heroAlign === 'string' && /^(right|center)$/.test(s.layout.heroAlign) ? s.layout.heroAlign : 'right'
+      };
+
+      // Homepage section ordering
+      const validSections = ['home','collections','picks','trust','catalog','payments','how','testimonials','faq'];
+      settings.sectionOrder = Array.isArray(s.sectionOrder)
+        ? [...new Set(s.sectionOrder.filter(id => validSections.includes(id)))]
+        : validSections;
+      for (const id of validSections) {
+        if (!settings.sectionOrder.includes(id)) settings.sectionOrder.push(id);
+      }
 
       // Validate Categories
       if (!Array.isArray(raw.categories) || raw.categories.length < 1 || raw.categories.length > 30) {
@@ -248,22 +271,22 @@
           ? service.notes.slice(0, 30).map(n => requireString(n, 500, 'شروط الخدمة'))
           : [];
 
-        // Validate Plans
+        // Validate Plans / Offers
         const plans = Array.isArray(service.plans) ? service.plans : [];
         if (plans.length > 300) {
-          throw new Error(`عدد باقات الخدمة "${service.name}" كبير جدًا.`);
+          throw new Error(`عدد عروض الخدمة "${service.name}" كبير جدًا.`);
         }
 
         const planIds = new Set();
         const validPlans = plans.map(plan => {
           if (!plainObject(plan) || !validId(plan.id) || planIds.has(plan.id)) {
-            throw new Error(`معرّف باقة غير صالح أو مكرر في خدمة "${service.name}".`);
+            throw new Error(`معرّف عرض غير صالح أو مكرر في خدمة "${service.name}".`);
           }
           planIds.add(plan.id);
 
           const price = Number(plan.price);
           if (!Number.isFinite(price) || price <= 0 || price > 10000000) {
-            throw new Error(`سعر الباقة "${plan.label}" غير صالح (يجب أن يكون رقمًا أكبر من الصفر).`);
+            throw new Error(`سعر العرض "${plan.label}" غير صالح (يجب أن يكون رقمًا أكبر من الصفر).`);
           }
 
           // Optional originalPrice for discount strikethrough
@@ -278,11 +301,11 @@
           totalPlanCount++;
           return {
             id: plan.id,
-            label: requireString(plan.label, 150, 'اسم الباقة'),
+            label: requireString(plan.label, 150, 'اسم العرض'),
             price: Math.round(price * 100) / 100,
             originalPrice,
-            group: requireString(plan.group || 'الباقات', 80, 'مجموعة الباقة'),
-            note: requireString(plan.note || '', 500, 'ملاحظة الباقة', true),
+            group: requireString(plan.group || 'العروض', 80, 'مجموعة العرض'),
+            note: requireString(plan.note || '', 500, 'ملاحظة العرض', true),
             available: typeof plan.available === 'boolean' ? plan.available : true
           };
         });
@@ -440,7 +463,7 @@
           planId: typeof fc.planId === 'string' ? fc.planId.trim() : '',
           offerQuantity: requireString(fc.offerQuantity || '', 60, 'كمية أو مسمى العرض', true),
           offerPrice: requireString(fc.offerPrice || '', 60, 'سعر العرض المميز', true),
-          buttonText: requireString(fc.buttonText || 'اكتشف الباقات', 60, 'نص زر الطلب', true),
+          buttonText: requireString(fc.buttonText || 'اكتشف العروض', 60, 'نص زر الطلب', true),
           theme,
           tagline: requireString(fc.tagline || 'KENO / FEATURED', 40, 'العلامة السفلية للبطاقة', true)
         };
@@ -456,7 +479,7 @@
           planId: 'pubg-3',
           offerQuantity: '325 شدة',
           offerPrice: '270 جنيه',
-          buttonText: 'شوف كل باقات ببجي',
+          buttonText: 'شوف كل عروض ببجي',
           theme: 'red',
           tagline: 'KENO / FEATURED'
         };
@@ -474,7 +497,7 @@
 
       const maxBytes = root.KenoConfig?.MAX_BYTES || 800000;
       if (new TextEncoder().encode(JSON.stringify(data)).length > maxBytes) {
-        throw new Error('حجم ملف البيانات الإجمالي كبير جدًا. يرجى تقليل حجم الصور المرفوعة أو عدد الباقات.');
+        throw new Error('حجم ملف البيانات الإجمالي كبير جدًا. يرجى تقليل حجم الصور المرفوعة أو عدد العروض.');
       }
 
       return data;

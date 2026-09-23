@@ -90,7 +90,7 @@
     const faqPhone = $('faqPayment');
     if (faqPhone) {
       const paragraph = faqPhone.closest('p');
-      const lead = document.createTextNode(methods.length ? `طرق الدفع المتاحة: ${methods.map(m => m.name).join('، ')}. بيانات التحويل موضحة في قسم طرق الدفع وعند اختيار الباقة. أكّد السعر والإتاحة على واتساب قبل التحويل.` : 'تواصل مع كينو لتأكيد وسيلة الدفع المتاحة قبل التحويل.');
+      const lead = document.createTextNode(methods.length ? `طرق الدفع المتاحة: ${methods.map(m => m.name).join('، ')}. بيانات التحويل موضحة في قسم طرق الدفع وعند اختيار العرض. أكّد السعر والإتاحة على واتساب قبل التحويل.` : 'تواصل مع كينو لتأكيد وسيلة الدفع المتاحة قبل التحويل.');
       const anchor = document.createElement('bdi'); anchor.id = 'faqPayment'; anchor.hidden = true;
       paragraph.replaceChildren(lead, anchor);
     }

@@ -193,7 +193,7 @@
           msgEl.innerHTML = `
             <div style="display:flex;align-items:center;gap:8px;">
               <i data-icon="layout-grid"></i>
-              <span><strong>صلاحية محرر محتوى (EDITOR):</strong> يمكنك تعديل الخدمات والباقات والأقسام والبطاقة المميزة. إعدادات المتجر وطرق الدفع والنشر مخصصة لمالك المتجر.</span>
+              <span><strong>صلاحية محرر محتوى (EDITOR):</strong> يمكنك تعديل الخدمات والعروض والأقسام والبطاقة المميزة. إعدادات المتجر وطرق الدفع والنشر مخصصة لمالك المتجر.</span>
             </div>
           `;
           msgEl.hidden = false;
@@ -341,7 +341,7 @@
           const linkedService = draft.services.find(s => s.id === $('fcServiceSelect')?.value && s.visible);
           const linkedPlan = linkedService?.plans?.find(p => p.id === $('fcPlanSelect')?.value && p.available);
           if ($('fcEnabledInput')?.checked && !linkedPlan) {
-            throw new Error('اختار خدمة ظاهرة وباقة متاحة للعرض الرئيسي.');
+            throw new Error('اختار خدمة ظاهرة وعرض متاح للبطاقة الرئيسية.');
           }
           this.updateLivePreview();
           draft.featuredCard = {
@@ -355,7 +355,7 @@
             planId: $('fcPlanSelect')?.value || '',
             offerQuantity: $('fcQuantityInput')?.value.trim() || '',
             offerPrice: $('fcPriceInput')?.value.trim() || '',
-            buttonText: $('fcButtonTextInput')?.value.trim() || 'اكتشف الباقات',
+            buttonText: $('fcButtonTextInput')?.value.trim() || 'اكتشف العروض',
             theme,
             tagline: $('fcTaglineInput')?.value.trim() || 'KENO / FEATURED'
           };
@@ -388,7 +388,7 @@
         planId: 'pubg-3',
         offerQuantity: '325 شدة',
         offerPrice: '270 جنيه',
-        buttonText: 'شوف كل باقات ببجي',
+        buttonText: 'شوف كل عروض ببجي',
         theme: 'red',
         tagline: 'KENO / FEATURED'
       };
@@ -444,12 +444,12 @@
       const srv = draft?.services.find(s => s.id === serviceId);
 
       if (!srv || !srv.plans || srv.plans.length === 0) {
-        planSelect.innerHTML = '<option value="">-- لا توجد باقات محددة لهذه الخدمة --</option>';
+        planSelect.innerHTML = '<option value="">-- لا توجد عروض محددة لهذه الخدمة --</option>';
         return;
       }
 
       selectedPlanId = selectedPlanId || srv.plans.find(p => p.available)?.id || '';
-      planSelect.innerHTML = '<option value="">-- اختيار الباقة المحددة --</option>' +
+      planSelect.innerHTML = '<option value="">-- اختيار العرض المحدد --</option>' +
         srv.plans.map(p => `
           <option value="${p.id}" ${!p.available ? 'disabled' : ''} ${p.id === selectedPlanId ? 'selected' : ''}>
             ${esc(p.label)} (${p.price} ج.م)
@@ -466,8 +466,8 @@
       if ($('fcDescInput') && !$('fcDescInput').value) {
         $('fcDescInput').value = srv.description || '';
       }
-      if ($('fcButtonTextInput') && (!$('fcButtonTextInput').value || $('fcButtonTextInput').value === 'اكتشف الباقات')) {
-        $('fcButtonTextInput').value = `شوف باقات ${srv.name}`;
+      if ($('fcButtonTextInput') && (!$('fcButtonTextInput').value || $('fcButtonTextInput').value === 'اكتشف العروض')) {
+        $('fcButtonTextInput').value = `شوف عروض ${srv.name}`;
       }
       this.updateLivePreview();
     },
@@ -498,11 +498,11 @@
       const draft = root.getAdminDraft ? root.getAdminDraft() : null;
       const service = draft?.services.find(s => s.id === $('fcServiceSelect')?.value);
       const plan = service?.plans?.find(p => p.id === $('fcPlanSelect')?.value && p.available);
-      const qty = plan?.label || 'اختر باقة متاحة';
+      const qty = plan?.label || 'اختر عرض متاح';
       const price = plan ? `${plan.price} جنيه` : '—';
       if ($('fcQuantityInput')) $('fcQuantityInput').value = plan?.label || '';
       if ($('fcPriceInput')) $('fcPriceInput').value = plan ? price : '';
-      const btnText = $('fcButtonTextInput')?.value.trim() || 'شوف كل باقات ببجي';
+      const btnText = $('fcButtonTextInput')?.value.trim() || 'شوف كل عروض ببجي';
       const tagline = $('fcTaglineInput')?.value.trim() || 'KENO / FEATURED';
 
       // Update Theme Class

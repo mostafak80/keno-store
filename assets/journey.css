@@ -56,3 +56,201 @@
 .content-reset-btn{flex-shrink:0;background:none;border:1px solid var(--line);border-radius:6px;cursor:pointer;font-size:1.1rem;padding:6px 8px;color:var(--muted);transition:color .15s,border-color .15s;margin-top:22px}
 .content-reset-btn:hover{color:var(--accent);border-color:var(--accent)}
 @media(max-width:600px){.content-fields-grid{grid-template-columns:1fr}.content-search-wrap{flex-wrap:wrap}.content-section{padding:10px}}
+
+/* ==========================================================================
+   Storefront Layout Studio & Responsive Scaling System
+   ========================================================================== */
+:root {
+  --ui-scale: 1;
+  --container-max: 1200px;
+  --grid-cols-desktop: 3;
+  --card-gap: 20px;
+  --section-gap: 56px;
+  --card-padding: 18px;
+  --card-radius: 16px;
+  --heading-align: right;
+  --hero-align: right;
+}
+
+/* Overall UI Zoom / Scale */
+body {
+  zoom: var(--ui-scale, 1);
+}
+
+/* Container Width */
+.container,
+.site-header .container,
+.site-footer .container {
+  max-width: var(--container-max, 1200px) !important;
+}
+
+/* Service Grid Columns & Gaps */
+@media (min-width: 992px) {
+  body.keno-motion .service-grid,
+  .service-grid {
+    grid-template-columns: repeat(var(--grid-cols-desktop, 3), minmax(0, 1fr)) !important;
+    gap: var(--card-gap, 20px) !important;
+  }
+}
+@media (min-width: 601px) and (max-width: 991px) {
+  body.keno-motion .service-grid,
+  .service-grid {
+    gap: var(--card-gap, 16px) !important;
+  }
+}
+@media (max-width: 600px) {
+  body.keno-motion .service-grid,
+  .service-grid {
+    gap: calc(var(--card-gap, 16px) * 0.65) !important;
+  }
+}
+
+/* Service Card Padding & Border Radius */
+.service-card,
+.keno-card,
+.mini-offer,
+.hero-feature {
+  border-radius: var(--card-radius, 16px) !important;
+}
+.service-card {
+  padding: var(--card-padding, 18px) !important;
+}
+
+/* Section vertical gaps & spacing */
+#storefront {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--section-gap, 56px) !important;
+}
+body.keno-motion :is(.collections-section,.picks-section,.catalog-section,.trust-section,.how-section,.testimonials-section,.faq-section) {
+  padding-block: calc(var(--section-gap, 56px) * 0.3) !important;
+}
+
+/* Headings Alignment (Moving sentences / headings) */
+.section-heading,
+.section-heading > div,
+.results-meta,
+.custom-banner {
+  text-align: var(--heading-align, right) !important;
+}
+
+/* Hero Alignment */
+.hero-copy {
+  text-align: var(--hero-align, right) !important;
+}
+
+/* Storefront Flex Order for Section Reordering */
+#home { order: var(--sec-order-home, 1); }
+#collections { order: var(--sec-order-collections, 2); }
+#picks { order: var(--sec-order-picks, 3); }
+#trust { order: var(--sec-order-trust, 4); }
+#catalog { order: var(--sec-order-catalog, 5); }
+#payments { order: var(--sec-order-payments, 6); }
+#how { order: var(--sec-order-how, 7); }
+#testimonials { order: var(--sec-order-testimonials, 8); }
+#faq { order: var(--sec-order-faq, 9); }
+
+/* Service Reorder Controls in Admin Table */
+.reorder-btn-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--paper);
+  padding: 2px 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.service-pos-input {
+  width: 44px;
+  padding: 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.service-pos-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.reorder-btn-group .icon-btn.tiny {
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+}
+
+/* Layout Studio UI Controls in Admin Settings */
+.layout-studio-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  background: var(--bg);
+  margin-block: 16px;
+}
+.layout-studio-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.section-reorder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.section-reorder-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  gap: 12px;
+}
+.section-reorder-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.section-reorder-badge {
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: var(--accent);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  min-width: 28px;
+  text-align: center;
+}
+.visibility-toggles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.visibility-toggle-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.visibility-toggle-card input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+

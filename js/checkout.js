@@ -3,7 +3,7 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const labels = ['اختار الباقة', 'اكتب بيانات الشحن', 'راجع وافتح واتساب'];
+  const labels = ['اختار العرض', 'اكتب بيانات الشحن', 'راجع وافتح واتساب'];
   let active, step = 1, audio, onChange, allPlans = false;
   const fallback = { title:'بيانات الحساب / الشحن', description:'وضّح المطلوب وسنتفق على التنفيذ عبر واتساب.', securityNote:'لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.', fields:[], audio:[] };
   function config(service) { return service?.fulfillment || fallback; }
@@ -82,10 +82,12 @@
       if (!el.hidden) count++;
     });
     $('planGroups').querySelectorAll('.plan-group').forEach(el => { el.hidden = !el.querySelector('.plan-option:not([hidden])'); });
-    $('planFilterStatus').textContent = count ? `${count} باقة بالسعر الموضح` : 'مفيش باقة بالميزانية دي. جرّب مبلغ أكبر أو ابعتلنا فويس.';
-    $('allPlans').textContent = allPlans ? 'الباقات المختارة' : 'كل الباقات';
+    $('planFilterStatus').textContent = count ? `${count} عرض بالسعر الموضح` : 'مفيش عروض بالميزانية دي. جرّب مبلغ أكبر أو ابعتلنا فويس.';
+    const txtAllOffers = root.KenoCheckout.settings?.content?.['dlg-all-plans-0'] || 'كل العروض';
+    const txtPicksOnly = root.KenoCheckout.settings?.content?.['dlg-picks-only-0'] || 'العروض المختارة';
+    $('allPlans').textContent = allPlans ? txtPicksOnly : txtAllOffers;
     const chosen = active.plans.find(p=>p.id === selected);
-    $('budgetSelectionNotice').textContent = chosen && chosen.price > budget ? `الباقة المختارة سعرها ${chosen.price} جنيه وتتجاوز الميزانية. اختار باقة مناسبة أو عدّل الميزانية.` : '';
+    $('budgetSelectionNotice').textContent = chosen && chosen.price > budget ? `العرض المختار سعره ${chosen.price} جنيه ويتجاوز الميزانية. اختار عرض مناسب أو عدّل الميزانية.` : '';
     $('serviceNext').disabled = Boolean(chosen && chosen.price > budget) || Boolean(active.plans.length && !chosen) || active.available === false || active.status === 'unavailable';
   }
   function open(service, settings, callback) {
