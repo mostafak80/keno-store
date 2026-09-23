@@ -97,7 +97,22 @@
       document.addEventListener('pointerdown', touch, { passive:true });
       document.addEventListener('keydown', touch);
 
-      const session = KenoAdminAuth.getSession();
+      let session = KenoAdminAuth.getSession();
+      const currentFbUser = root.KenoFirebase?.getCurrentUser?.();
+      if (!session && currentFbUser?.email && root.KenoFirebase?.checkAdminAuthorization) {
+        try {
+          const authCheck = await root.KenoFirebase.checkAdminAuthorization(currentFbUser.email);
+          if (authCheck && authCheck.authorized) {
+            const role = String(authCheck.role || 'OWNER').toUpperCase();
+            session = KenoAdminAuth.setSession(role, {
+              email: currentFbUser.email,
+              name: currentFbUser.displayName || currentFbUser.email,
+              photo: currentFbUser.photoURL || ''
+            });
+          }
+        } catch (_) {}
+      }
+
       if (session) {
         if (typeof root.ensureAdminWorkspace === 'function') {
           root.ensureAdminWorkspace(session).then(() => {
@@ -132,10 +147,23 @@
       }, 1000);
     },
 
-    showLoginGate() {
+    async showLoginGate() {
       if ($('adminHeading')) $('adminHeading').hidden = true;
       if ($('adminLogin')) $('adminLogin').hidden = false;
       if ($('adminWorkspace')) $('adminWorkspace').hidden = true;
+
+      const errEl = $('loginError');
+      const errText = $('loginErrorText') || errEl;
+      const currentFbUser = root.KenoFirebase?.getCurrentUser?.();
+      if (currentFbUser && currentFbUser.email && root.KenoFirebase?.checkAdminAuthorization) {
+        try {
+          const authCheck = await root.KenoFirebase.checkAdminAuthorization(currentFbUser.email);
+          if (!authCheck?.authorized && errEl) {
+            errText.textContent = `أنت مسجّل الدخول بحساب (${currentFbUser.email}) وهو حساب عميل. لوحة التحكم مخصصة للمشرفين والمسؤولين فقط.`;
+            errEl.hidden = false;
+          }
+        } catch (_) {}
+      }
     },
 
     unlockWorkspace(session) {
@@ -245,9 +273,7 @@
           // Verify Whitelist Authorization against hidden ADMIN_EMAILS / Firestore
           const authCheck = await root.KenoFirebase.checkAdminAuthorization(user.email);
           if (!authCheck || !authCheck.authorized) {
-            // Immediately sign out unauthorized account
-            await root.KenoFirebase.signOut();
-            throw new Error('Access Denied: هذا الحساب غير مصرح له بالوصول إلى لوحة الإدارة.');
+            throw new Error(`حسابك (${user.email}) مسجل كعميل. لوحة التحكم مخصصة لمديري ومشرفي المتجر فقط.`);
           }
 
           const role = String(authCheck.role || 'OWNER').toUpperCase();

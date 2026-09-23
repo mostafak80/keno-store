@@ -617,4 +617,311 @@ body.keno-motion :is(.collections-section,.picks-section,.catalog-section,.trust
   stroke: #34d399 !important;
 }
 
+/* ==========================================================================
+   Header Auth & Admin Access Controls (Optional Customer & Admin Auth)
+   ========================================================================== */
+.header-auth-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 1. Google Login Button in Header */
+.header-auth-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  padding: 6px 12px !important;
+  min-height: 38px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+  color: var(--ink, #f1f5f9) !important;
+  cursor: pointer !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  white-space: nowrap !important;
+}
+
+.header-auth-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+}
+
+.header-auth-btn .google-icon-svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* 2. Customer User Profile Pill */
+.header-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px 4px 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 750;
+  color: var(--ink, #f1f5f9);
+  transition: all 0.2s ease;
+}
+
+.header-user-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--accent, #e52d3f);
+}
+
+.header-user-name {
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-signout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0;
+  color: var(--muted, #94a3b8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.header-signout-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  transform: scale(1.08);
+}
+
+.header-signout-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* 3. Admin Control Room Button (Only for Admins) */
+.header-admin-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  padding: 6px 14px !important;
+  min-height: 38px !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #e52d3f 0%, #b91c1c 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 0 16px -2px rgba(229, 45, 63, 0.5) !important;
+  animation: adminPulseGlow 3s infinite ease-in-out !important;
+  transition: all 0.22s ease !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+@keyframes adminPulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 14px -2px rgba(229, 45, 63, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 22px 2px rgba(229, 45, 63, 0.7);
+  }
+}
+
+.header-admin-btn:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  filter: brightness(1.1) !important;
+  box-shadow: 0 0 24px rgba(229, 45, 63, 0.8) !important;
+}
+
+.header-admin-btn svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* Navigation bar admin link */
+.nav-admin-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: #ff3b53 !important;
+  font-weight: 800 !important;
+  background: rgba(255, 59, 83, 0.1) !important;
+  border: 1px solid rgba(255, 59, 83, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 4px 10px !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  .header-auth-btn span {
+    display: none;
+  }
+  .header-auth-btn {
+    padding: 6px 9px !important;
+    min-height: 34px !important;
+  }
+  .header-user-name {
+    display: none;
+  }
+  .header-admin-btn span {
+    font-size: 11.5px !important;
+  }
+  .header-admin-btn {
+    padding: 5px 9px !important;
+    min-height: 34px !important;
+  }
+}
+
+/* ==========================================================================
+   Admin Portal Login Gate Card Styling
+   ========================================================================== */
+.admin-portal-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 55vh;
+  padding: 40px 16px;
+}
+
+.admin-portal-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--paper, #12151c);
+  border: 1.5px solid var(--line, rgba(255, 255, 255, 0.1));
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.admin-portal-badge {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: rgba(229, 45, 63, 0.12);
+  border: 1.5px solid rgba(229, 45, 63, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff3b53;
+}
+
+.admin-portal-badge svg {
+  width: 28px;
+  height: 28px;
+}
+
+.portal-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff3b53;
+  background: rgba(229, 45, 63, 0.1);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.portal-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.portal-subtitle {
+  font-size: 13.5px;
+  color: var(--muted, #94a3b8);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.button-google-signin {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  padding: 12px 20px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border-radius: 12px !important;
+  border: 1px solid #e5e7eb !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.button-google-signin:hover {
+  background: #f9fafb !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.google-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-portal-error {
+  margin-top: 18px;
+  padding: 12px 14px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px;
+  color: #f87171;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: right;
+  line-height: 1.5;
+}
+
+.admin-portal-error svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.portal-footer {
+  margin-top: 24px;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+  padding-top: 16px;
+}
+
+.portal-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--muted, #94a3b8);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.portal-back-link:hover {
+  color: var(--ink, #fff);
+}
+
+
+
 

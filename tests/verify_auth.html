@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Auth Test</title>
+</head>
+<body>
+  <div id="headerAuthArea">
+    <button type="button" id="headerGoogleLoginBtn"><span>دخول Google</span></button>
+    <div id="headerUserPill" hidden>
+      <img id="headerUserAvatar" src="" hidden>
+      <span id="headerUserName"></span>
+      <button type="button" id="headerSignOutBtn">خروج</button>
+    </div>
+    <a href="#admin" id="headerAdminBtn" hidden>لوحة التحكم</a>
+  </div>
+  <a href="#admin" id="navAdminLink" hidden>لوحة التحكم</a>
+  <div id="toast" hidden></div>
+  <div id="results"></div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const results = [];
+    function assert(desc, condition) {
+      const res = (condition ? 'PASS: ' : 'FAIL: ') + desc;
+      results.push(res);
+      console.log(res);
+    }
+
+    // Mock KenoFirebase
+    let mockUser = null;
+    window.KenoFirebase = {
+      isConfigured: () => true,
+      getCurrentUser: () => mockUser,
+      signInWithGoogle: async () => mockUser,
+      signOut: async () => { mockUser = null; },
+      checkAdminAuthorization: async (email) => {
+        if (email === 'admin@keno.com') {
+          return { authorized: true, role: 'OWNER' };
+        }
+        return { authorized: false };
+      },
+      onAuthStateChanged: async (cb) => {
+        window.__authCallback = cb;
+        return () => {};
+      }
+    };
+
+    window.KenoAdminAuth = {
+      setSession: (role, creds) => {
+        sessionStorage.setItem('keno_admin_session_v3', JSON.stringify({ role, ...creds }));
+      },
+      getSession: () => {
+        try {
+          return JSON.parse(sessionStorage.getItem('keno_admin_session_v3'));
+        } catch (_) { return null; }
+      }
+    };
+
+    // Storefront Auth Logic Under Test
+    function setupStorefrontAuth() {
+      const loginBtn = $('headerGoogleLoginBtn');
+      const userPill = $('headerUserPill');
+      const userAvatar = $('headerUserAvatar');
+      const userName = $('headerUserName');
+      const adminBtn = $('headerAdminBtn');
+      const navAdminLink = $('navAdminLink');
+      const signOutBtn = $('headerSignOutBtn');
+
+      async function applyAuthState(user) {
+        if (!user) {
+          if (loginBtn) {
+            loginBtn.hidden = false;
+            loginBtn.disabled = false;
+          }
+          if (userPill) userPill.hidden = true;
+          if (adminBtn) adminBtn.hidden = true;
+          if (navAdminLink) navAdminLink.hidden = true;
+          return;
+        }
+
+        if (loginBtn) loginBtn.hidden = true;
+        if (userPill) {
+          userPill.hidden = false;
+          if (userName) userName.textContent = user.displayName || user.email.split('@')[0];
+          if (userAvatar) {
+            if (user.photoURL) {
+              userAvatar.src = user.photoURL;
+              userAvatar.hidden = false;
+            } else {
+              userAvatar.hidden = true;
+            }
+          }
+        }
+
+        let isAdmin = false;
+        let role = null;
+        try {
+          if (window.KenoFirebase && typeof window.KenoFirebase.checkAdminAuthorization === 'function') {
+            const authCheck = await window.KenoFirebase.checkAdminAuthorization(user.email);
+            if (authCheck && authCheck.authorized) {
+              isAdmin = true;
+              role = String(authCheck.role || 'OWNER').toUpperCase();
+            }
+          }
+        } catch (err) {
+          console.warn('Failed checking admin role:', err);
+        }
+
+        if (isAdmin) {
+          if (adminBtn) adminBtn.hidden = false;
+          if (navAdminLink) navAdminLink.hidden = false;
+
+          if (window.KenoAdminAuth && typeof window.KenoAdminAuth.setSession === 'function') {
+            window.KenoAdminAuth.setSession(role, {
+              email: user.email,
+              name: user.displayName || user.email,
+              photo: user.photoURL || ''
+            });
+          }
+        } else {
+          if (adminBtn) adminBtn.hidden = true;
+          if (navAdminLink) navAdminLink.hidden = true;
+          try { sessionStorage.removeItem('keno_admin_session_v3'); } catch (_) {}
+        }
+      }
+
+      if (loginBtn) {
+        loginBtn.addEventListener('click', async () => {
+          loginBtn.disabled = true;
+          const user = await window.KenoFirebase.signInWithGoogle();
+          if (user) await applyAuthState(user);
+          loginBtn.disabled = false;
+        });
+      }
+
+      if (signOutBtn) {
+        signOutBtn.addEventListener('click', async () => {
+          await window.KenoFirebase.signOut();
+          try { sessionStorage.removeItem('keno_admin_session_v3'); } catch (_) {}
+          await applyAuthState(null);
+        });
+      }
+
+      window.__applyAuthState = applyAuthState;
+    }
+
+    async function executeTests() {
+      setupStorefrontAuth();
+
+      // Test 1: Guest (not logged in)
+      await window.__applyAuthState(null);
+      assert('1. Guest: Login button visible', !$('headerGoogleLoginBtn').hidden);
+      assert('2. Guest: User pill hidden', $('headerUserPill').hidden);
+      assert('3. Guest: Admin button hidden', $('headerAdminBtn').hidden);
+      assert('4. Guest: Nav admin link hidden', $('navAdminLink').hidden);
+
+      // Test 2: Regular Customer signs in
+      mockUser = { email: 'customer@example.com', displayName: 'سارة العميل' };
+      $('headerGoogleLoginBtn').click();
+      await new Promise(r => setTimeout(r, 100));
+
+      assert('5. Customer: Login button hidden', $('headerGoogleLoginBtn').hidden);
+      assert('6. Customer: User pill visible', !$('headerUserPill').hidden);
+      assert('7. Customer: User name displayed', $('headerUserName').textContent === 'سارة العميل');
+      assert('8. Customer: Admin button STRICTLY hidden', $('headerAdminBtn').hidden);
+      assert('9. Customer: Nav admin link STRICTLY hidden', $('navAdminLink').hidden);
+      assert('10. Customer: No admin session', sessionStorage.getItem('keno_admin_session_v3') === null);
+
+      // Test 3: Logout
+      $('headerSignOutBtn').click();
+      await new Promise(r => setTimeout(r, 100));
+      assert('11. Logout: Login button visible', !$('headerGoogleLoginBtn').hidden);
+      assert('12. Logout: User pill hidden', $('headerUserPill').hidden);
+      assert('13. Logout: Admin button hidden', $('headerAdminBtn').hidden);
+
+      // Test 4: Admin signs in
+      mockUser = { email: 'admin@keno.com', displayName: 'مصطفى كينو' };
+      $('headerGoogleLoginBtn').click();
+      await new Promise(r => setTimeout(r, 100));
+
+      assert('14. Admin: Login button hidden', $('headerGoogleLoginBtn').hidden);
+      assert('15. Admin: User pill visible', !$('headerUserPill').hidden);
+      assert('16. Admin: Admin button IS VISIBLE', !$('headerAdminBtn').hidden);
+      assert('17. Admin: Nav admin link IS VISIBLE', !$('navAdminLink').hidden);
+      const session = JSON.parse(sessionStorage.getItem('keno_admin_session_v3') || '{}');
+      assert('18. Admin: Session role is OWNER', session.role === 'OWNER');
+
+      // Test 5: Admin logs out
+      $('headerSignOutBtn').click();
+      await new Promise(r => setTimeout(r, 100));
+      assert('19. Admin Logout: Admin button hidden', $('headerAdminBtn').hidden);
+      assert('20. Admin Logout: Nav admin link hidden', $('navAdminLink').hidden);
+      assert('21. Admin Logout: Session cleared', sessionStorage.getItem('keno_admin_session_v3') === null);
+
+      $('results').innerHTML = results.map(r => `<div>${r}</div>`).join('');
+    }
+
+    executeTests();
+  </script>
+</body>
+</html>

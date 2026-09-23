@@ -1131,6 +1131,12 @@
         status: 'pending'
       };
 
+      const authUser = window.KenoFirebase?.getCurrentUser?.();
+      if (authUser) {
+        orderObj.customerEmail = authUser.email || '';
+        orderObj.customerName = authUser.displayName || '';
+      }
+
       orderObj.serviceIds = [...new Set(orderObj.items.map(it=>it.serviceId))];
       KenoReviews.remember(orderObj);
       // 1. Validate WhatsApp number exists and is valid
@@ -1621,6 +1627,12 @@
         notes: $('cartOrderNote')?.value.trim() || '',
         status: 'pending'
       };
+
+      const authUserCart = window.KenoFirebase?.getCurrentUser?.();
+      if (authUserCart) {
+        orderObj.customerEmail = authUserCart.email || '';
+        orderObj.customerName = authUserCart.displayName || '';
+      }
 
       orderObj.serviceIds = [...new Set(orderObj.items.map(it=>it.serviceId))];
       KenoReviews.remember(orderObj);
@@ -4411,11 +4423,139 @@
     }
   });
 
+  // --- Optional Storefront Google Authentication & Role-Based UI Controller ---
+  function setupStorefrontAuth() {
+    const loginBtn = $('headerGoogleLoginBtn');
+    const userPill = $('headerUserPill');
+    const userAvatar = $('headerUserAvatar');
+    const userName = $('headerUserName');
+    const adminBtn = $('headerAdminBtn');
+    const navAdminLink = $('navAdminLink');
+    const signOutBtn = $('headerSignOutBtn');
+
+    async function applyAuthState(user) {
+      if (!user) {
+        if (loginBtn) {
+          loginBtn.hidden = false;
+          loginBtn.disabled = false;
+        }
+        if (userPill) userPill.hidden = true;
+        if (adminBtn) adminBtn.hidden = true;
+        if (navAdminLink) navAdminLink.hidden = true;
+        return;
+      }
+
+      if (loginBtn) loginBtn.hidden = true;
+      if (userPill) {
+        userPill.hidden = false;
+        if (userName) userName.textContent = user.displayName || user.email.split('@')[0];
+        if (userAvatar) {
+          if (user.photoURL) {
+            userAvatar.src = user.photoURL;
+            userAvatar.hidden = false;
+          } else {
+            userAvatar.hidden = true;
+          }
+        }
+      }
+
+      let isAdmin = false;
+      let role = null;
+      try {
+        if (window.KenoFirebase && typeof window.KenoFirebase.checkAdminAuthorization === 'function') {
+          const authCheck = await window.KenoFirebase.checkAdminAuthorization(user.email);
+          if (authCheck && authCheck.authorized) {
+            isAdmin = true;
+            role = String(authCheck.role || 'OWNER').toUpperCase();
+          }
+        }
+      } catch (err) {
+        console.warn('Failed checking admin role:', err);
+      }
+
+      if (isAdmin) {
+        if (adminBtn) adminBtn.hidden = false;
+        if (navAdminLink) navAdminLink.hidden = false;
+
+        if (window.KenoAdminAuth && typeof window.KenoAdminAuth.setSession === 'function') {
+          window.KenoAdminAuth.setSession(role, {
+            email: user.email,
+            name: user.displayName || user.email,
+            photo: user.photoURL || ''
+          });
+        }
+      } else {
+        if (adminBtn) adminBtn.hidden = true;
+        if (navAdminLink) navAdminLink.hidden = true;
+        try { sessionStorage.removeItem('keno_admin_session_v3'); } catch (_) {}
+      }
+    }
+
+    if (loginBtn) {
+      loginBtn.addEventListener('click', async () => {
+        if (!window.KenoFirebase || typeof window.KenoFirebase.signInWithGoogle !== 'function') {
+          toast('خدمة تسجيل الدخول غير متوفرة حالياً.');
+          return;
+        }
+        try {
+          loginBtn.disabled = true;
+          const user = await window.KenoFirebase.signInWithGoogle();
+          if (user) {
+            await applyAuthState(user);
+            const check = await window.KenoFirebase.checkAdminAuthorization(user.email);
+            if (check?.authorized) {
+              toast(`مرحبًا بك يا أدمن (${user.displayName || user.email})! تم إظهار زر لوحة التحكم.`);
+            } else {
+              toast(`أهلاً بك يا ${user.displayName || 'عميلنا العزيز'}! يمكنك متابعة التسوق بكل حرية.`);
+            }
+          }
+        } catch (err) {
+          console.warn('Google sign-in error:', err);
+          toast(err.message || 'تعذّر تسجيل الدخول بحساب Google.');
+        } finally {
+          if (loginBtn) loginBtn.disabled = false;
+        }
+      });
+    }
+
+    if (signOutBtn) {
+      signOutBtn.addEventListener('click', async () => {
+        try {
+          if (window.KenoFirebase && typeof window.KenoFirebase.signOut === 'function') {
+            await window.KenoFirebase.signOut();
+          }
+          try { sessionStorage.removeItem('keno_admin_session_v3'); } catch (_) {}
+          await applyAuthState(null);
+          toast('تم تسجيل الخروج بنجاح.');
+          if (location.hash === '#admin') {
+            location.hash = '#catalog';
+          }
+        } catch (err) {
+          console.warn('Sign-out error:', err);
+        }
+      });
+    }
+
+    // Subscribe to Firebase Auth state updates
+    (async () => {
+      try {
+        if (window.KenoFirebase && typeof window.KenoFirebase.onAuthStateChanged === 'function') {
+          await window.KenoFirebase.onAuthStateChanged(async (user) => {
+            await applyAuthState(user);
+          });
+        }
+      } catch (err) {
+        console.warn('Auth observer setup failed:', err);
+      }
+    })();
+  }
+
   // --- Initialization ---
   hydrateIcons();
   renderStore();
   route();
   updateOrdersBadgeCount();
+  setupStorefrontAuth();
 
   // --- Live Catalog Hydration from Firestore ---
   // After initial render from static bundle, check Firestore for newer published catalog.

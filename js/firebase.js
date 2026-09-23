@@ -188,6 +188,20 @@
     },
 
     /**
+     * Subscribes to Firebase Auth state changes.
+     * @param {Function} callback (user) => void
+     * @returns {Promise<Function>} Unsubscribe function
+     */
+    async onAuthStateChanged(callback) {
+      const fb = await this.init();
+      if (!fb || !authModules) {
+        if (typeof callback === 'function') callback(null);
+        return () => {};
+      }
+      return authModules.onAuthStateChanged(fb.auth, callback);
+    },
+
+    /**
      * Checks if an email is authorized in the admin whitelist.
      * Queries the Firestore 'users' collection or falls back to KenoConfig.AUTHORIZED_ADMINS.
      * Roles supported: OWNER, EDITOR, VIEWER.
