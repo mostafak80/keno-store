@@ -50,6 +50,42 @@ service cloud.firestore {
       allow update, delete: if isEditorOrOwner();
     }
 
+    // The private claim is never exposed in the public review collection.
+    match /reviewSubmissions/{reviewId} {
+      function order() {
+        return get(/databases/$(database)/documents/orders/$(request.resource.data.orderId)).data;
+      }
+      allow create: if request.resource.data.keys().hasOnly(['orderId','token','serviceId','name','rating','comment','createdAt'])
+        && request.resource.data.orderId is string
+        && request.resource.data.serviceId is string
+        && reviewId == request.resource.data.orderId + '--' + request.resource.data.serviceId
+        && request.resource.data.token is string && request.resource.data.token.size() == 48
+        && order().status == 'delivered'
+        && order().reviewToken == request.resource.data.token
+        && request.resource.data.serviceId in order().serviceIds
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80
+        && request.resource.data.comment is string && request.resource.data.comment.size() > 0 && request.resource.data.comment.size() <= 1500
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.createdAt == request.time;
+      allow read: if isAuthorizedAdmin();
+      // Immutable submissions prevent changes to a customer's opinion during moderation.
+      allow update, delete: if false;
+    }
+    match /reviews/{reviewId} {
+      function submission() {
+        return get(/databases/$(database)/documents/reviewSubmissions/$(reviewId)).data;
+      }
+      allow read: if true;
+      allow create, update: if isEditorOrOwner()
+        && request.resource.data.keys().hasOnly(['name','comment','rating','serviceId','timestamp'])
+        && request.resource.data.name == submission().name
+        && request.resource.data.comment == submission().comment
+        && request.resource.data.rating == submission().rating
+        && request.resource.data.serviceId == submission().serviceId
+        && request.resource.data.timestamp == submission().createdAt.toMillis();
+      allow delete: if isEditorOrOwner();
+    }
+
     // Users / Admins Whitelist Collection
     // - Authenticated users can read to verify their own access
     // - Only the Owner can grant, edit, or revoke admin privileges

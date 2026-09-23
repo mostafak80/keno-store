@@ -249,9 +249,11 @@
       }
 
       // 1. Save backup to local IndexedDB
+      let localSaved = false;
       try {
         if (root.KenoOrderStore) {
           await root.KenoOrderStore.saveOrder(orderObj);
+          localSaved = true;
         }
       } catch (err) {
         console.warn('Local backup save failed:', err);
@@ -264,6 +266,8 @@
           const docRef = firestoreModules.doc(fb.db, 'orders', orderObj.id);
           const firestorePayload = {
             id: orderObj.id,
+            reviewToken: orderObj.reviewToken || '',
+            serviceIds: orderObj.serviceIds || [],
             timestamp: orderObj.timestamp || Date.now(),
             dateStr: orderObj.dateStr || new Date().toLocaleString('ar-EG'),
             type: orderObj.type || 'direct',
@@ -290,11 +294,11 @@
           return { success: true, cloud: true, orderId: orderObj.id };
         } catch (err) {
           console.error('Firestore order write error:', err);
-          return { success: true, cloud: false, orderId: orderObj.id, error: err.message };
+          return { success: localSaved, cloud: false, orderId: orderObj.id, error: err.message };
         }
       }
 
-      return { success: true, cloud: false, orderId: orderObj.id };
+      return { success: localSaved, cloud: false, orderId: orderObj.id };
     },
 
     /**
@@ -356,6 +360,7 @@
 
       // 1. Update Cloud Firestore
       const fb = await this.init();
+      if (!fb && this.isConfigured()) throw new Error('السحابة غير متصلة؛ لم تُحفظ حالة الطلب.');
       if (fb && firestoreModules) {
         try {
           const docRef = firestoreModules.doc(fb.db, 'orders', orderId);
@@ -365,7 +370,7 @@
             updatedBy: adminEmail || 'admin'
           });
         } catch (e) {
-          console.warn('Firestore status update failed:', e);
+          throw new Error('لم تُحفظ حالة الطلب في السحابة: ' + e.message);
         }
       }
 
@@ -392,12 +397,13 @@
       if (!orderId) return false;
 
       const fb = await this.init();
+      if (!fb && this.isConfigured()) throw new Error('السحابة غير متصلة؛ لم يُحذف الطلب.');
       if (fb && firestoreModules) {
         try {
           const docRef = firestoreModules.doc(fb.db, 'orders', orderId);
           await firestoreModules.deleteDoc(docRef);
         } catch (e) {
-          console.warn('Firestore delete failed:', e);
+          throw new Error('لم يُحذف الطلب من السحابة: ' + e.message);
         }
       }
 
@@ -459,6 +465,61 @@
   };
 
   root.KenoFirebase = KenoFirebase;
+
+  async function cloud() {
+    const fb = await KenoFirebase.init();
+    if (!fb || !firestoreModules) throw new Error('الاتصال بالسحابة غير متاح؛ لم يتم حفظ التغيير.');
+    return fb;
+  }
+  KenoFirebase.getOrder = async function(id) {
+    const fb = await cloud();
+    const snap = await firestoreModules.getDoc(firestoreModules.doc(fb.db,'orders',id));
+    return snap.exists() ? snap.data() : null;
+  };
+  KenoFirebase.getOrders = async function() {
+    const fb = await cloud();
+    const snap = await firestoreModules.getDocs(firestoreModules.query(firestoreModules.collection(fb.db,'orders'),firestoreModules.orderBy('timestamp','desc')));
+    return snap.docs.map(d=>d.data());
+  };
+  KenoFirebase.submitReview = async function(review) {
+    const fb = await cloud();
+    if (!review.name || !review.comment) throw new Error('اكتب الاسم والتعليق.');
+    const id = review.orderId + '--' + review.serviceId;
+    await firestoreModules.setDoc(firestoreModules.doc(fb.db,'reviewSubmissions',id), {...review, createdAt:firestoreModules.serverTimestamp()});
+  };
+  KenoFirebase.listReviews = async function() {
+    const fb = await cloud();
+    const q = firestoreModules.query(firestoreModules.collection(fb.db,'reviews'),firestoreModules.orderBy('timestamp','desc'),firestoreModules.limit(100));
+    const snap = await firestoreModules.getDocs(q);
+    return snap.docs.map(d=>({id:d.id,...d.data()}));
+  };
+  KenoFirebase.listReviewSubmissions = async function() {
+    const fb = await cloud();
+    const q = firestoreModules.query(firestoreModules.collection(fb.db,'reviewSubmissions'),firestoreModules.orderBy('createdAt','desc'),firestoreModules.limit(100));
+    const snap = await firestoreModules.getDocs(q);
+    return snap.docs.map(d=>({id:d.id,...d.data(),timestamp:d.data().createdAt.toMillis()}));
+  };
+  KenoFirebase.moderateReview = async function(id, publish) {
+    const fb = await cloud(), m = firestoreModules;
+    const target = m.doc(fb.db,'reviews',id);
+    if (!publish) { await m.deleteDoc(target); return; }
+    const snap = await m.getDoc(m.doc(fb.db,'reviewSubmissions',id));
+    if (!snap.exists()) throw new Error('التعليق غير موجود.');
+    const r = snap.data();
+    await m.setDoc(target,{name:r.name,comment:r.comment,rating:r.rating,serviceId:r.serviceId,timestamp:r.createdAt.toMillis()});
+  };
+  KenoFirebase.reviewInvite = async function(id, legacyServiceId = '') {
+    const order = await this.getOrder(id);
+    if (!order || order.status !== 'delivered') throw new Error('يلزم طلب موجود تم تسليمه.');
+    if (!order.serviceIds?.length && !legacyServiceId) throw new Error('راجع تفاصيل الطلب القديم ثم اختر الخدمة المشتراة لربطها به.');
+    if (!order.reviewToken || !order.serviceIds?.length) {
+      order.reviewToken = order.reviewToken || root.KenoReviews.newToken();
+      order.serviceIds = order.serviceIds?.length ? order.serviceIds : [legacyServiceId];
+      const fb = await cloud();
+      await firestoreModules.updateDoc(firestoreModules.doc(fb.db,'orders',id),{reviewToken:order.reviewToken,serviceIds:order.serviceIds});
+    }
+    return order;
+  };
 
   // ========================================================================
   // Catalog Publishing & Live Hydration (Production Publishing Workflow)

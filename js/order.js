@@ -102,13 +102,19 @@
         grandTotal += itemTotal;
         const srvName = item.service?.name || 'خدمة رقمية';
         const plnLabel = item.plan?.label || 'باقة';
+        const fields = item.service?.fulfillment?.fields || [];
+        const fulfillment = fields.filter(f => f.type !== 'password' && item.fields?.[f.id])
+          .map(f => `   ${f.label}: ${item.fields[f.id]}`).join('\n');
+        const details = fulfillment ? '\n' + fulfillment : '\n   بيانات التنفيذ: يتم الاتفاق عليها في المحادثة';
+        if (item.service?.plans?.length === 0) return `${index + 1}. ${srvName} — ${plnLabel} (السعر يُحدد في المحادثة)${details}`;
         if (qty > 1) {
-          return `${index + 1}. ${srvName} — ${plnLabel} (${qty} × ${itemPrice.toLocaleString('en-US')} ج.م = ${itemTotal.toLocaleString('en-US')} ج.م)`;
+          return `${index + 1}. ${srvName} — ${plnLabel} (${qty} × ${itemPrice.toLocaleString('en-US')} ج.م = ${itemTotal.toLocaleString('en-US')} ج.م)${details}`;
         }
-        return `${index + 1}. ${srvName} — ${plnLabel} (${itemPrice.toLocaleString('en-US')} ج.م)`;
+        return `${index + 1}. ${srvName} — ${plnLabel} (${itemPrice.toLocaleString('en-US')} ج.م)${details}`;
       });
 
-      const totalFormatted = `${Number(grandTotal).toLocaleString('en-US')} ج.م`;
+      const hasQuote = (cartItems || []).some(item => item.service?.plans?.length === 0);
+      const totalFormatted = `${Number(grandTotal).toLocaleString('en-US')} ج.م${hasQuote ? ' + خدمات تحتاج تسعيرًا قبل الدفع' : ''}`;
 
       let customerAccount = (options.customerAccount && options.customerAccount.trim())
         ? options.customerAccount.trim()
@@ -134,8 +140,8 @@
         '',
         `طريقة الدفع: ${paymentInfo}`,
         '',
-        'بيانات الحساب / الشحن:',
-        customerAccount,
+        'بيانات كل حساب موضحة تحت الخدمة الخاصة به.',
+        options.orderNote ? `ملاحظات الطلب: ${options.orderNote}` : '',
         '',
         'ملاحظة: سيتم إرسال صورة إثبات التحويل هنا في المحادثة.',
         '',

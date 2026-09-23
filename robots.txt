@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kenostore.com/sitemap.xml
+Sitemap: https://keno-store.vercel.app/sitemap.xml

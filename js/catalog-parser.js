@@ -32,6 +32,41 @@
     return digits;
   }
 
+  // Media values are data, never executable HTML or arbitrary URL schemes.
+  function media(value, kind) {
+    const v = requireString(value || '', 160000, 'ملف المساعدة', true);
+    if (!v) return '';
+    if (/^(\.\/)?assets\/[a-zA-Z0-9_./-]+$/.test(v) && !v.includes('..')) return v;
+    if (/^https:\/\//i.test(v)) { const u = new URL(v); if (!u.username && !u.password) return u.href; }
+    const pattern = kind === 'audio' ? /^data:audio\/(mpeg|mp3|wav|ogg|webm);base64,[A-Za-z0-9+/=]+$/ : /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/;
+    if (pattern.test(v)) return v;
+    throw new Error('استخدم رابط HTTPS أو ملفًا من assets أو ملف صورة/صوت مدعوم.');
+  }
+
+  function fulfillment(service) {
+    const f = service.fulfillment || {};
+    const fields = f.fields ?? [{ id: 'details', type: 'text', label: service.accountFieldLabel || 'بيانات تنفيذ الخدمة', placeholder: service.accountFieldPlaceholder || '', hint: service.accountFieldDesc || 'وضّح المطلوب؛ سنتفق على طريقة التنفيذ عبر واتساب.', required: false }];
+    if (!Array.isArray(fields) || fields.length > 12) throw new Error('الحد الأقصى 12 خانة لكل خدمة.');
+    const ids = new Set();
+    const result = {
+      title: requireString(f.title || 'بيانات الحساب / الشحن', 100, 'عنوان بيانات الشحن'),
+      description: requireString(f.description || 'اكتب بيانات هذه الخدمة فقط، وراجعها قبل إرسال الطلب.', 500, 'شرح الشحن'),
+      securityNote: requireString(f.securityNote || 'نستخدم البيانات المحددة لتنفيذ هذه الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.', 500, 'وصف الخصوصية'),
+      audio: [0,1,2].map(i => media(f.audio?.[i], 'audio')),
+      featuredPlanIds: Array.isArray(f.featuredPlanIds) ? [...new Set(f.featuredPlanIds)].filter(id => service.plans?.some(p => p.id === id)).slice(0,8) : [],
+      fields: fields.map(field => {
+        if (!plainObject(field) || !validId(field.id) || ids.has(field.id)) throw new Error('معرّف خانة غير صالح أو مكرر.');
+        ids.add(field.id);
+        if (!['text','id','email','url','tel','textarea','password'].includes(field.type)) throw new Error('نوع خانة غير مدعوم.');
+        return { id: field.id, type: field.type, label: requireString(field.label,100,'اسم الخانة'), required: field.required === true,
+          placeholder: requireString(field.placeholder || '',200,'مثال الخانة',true), hint: requireString(field.hint || '',500,'شرح الخانة',true),
+          helpImage: media(field.helpImage,'image'), helpAlt: requireString(field.helpAlt || '',500,'شرح صورة المساعدة',true) };
+      })
+    };
+    if (result.fields.some(f => f.type === 'password') && !result.securityNote.includes('كلمة')) throw new Error('وضّح استخدام كلمة المرور في وصف الخصوصية لهذه الخدمة.');
+    return result;
+  }
+
   const KenoCatalogParser = {
     /**
      * Validates and normalizes the entire catalog data object.
@@ -145,6 +180,23 @@
         announcement: requireString(s.announcement, 180, 'الشريط الإعلاني العلوي'),
         currency: 'EGP'
       };
+      settings.siteUrl = requireString(s.siteUrl || '', 500, 'عنوان الموقع', true);
+      if (settings.siteUrl) {
+        const u = new URL(settings.siteUrl);
+        if (u.protocol !== 'https:' || u.username || u.password || u.search || u.hash) throw new Error('عنوان الموقع يجب أن يكون HTTPS بدون معاملات أو علامات #.');
+        settings.siteUrl = u.href.replace(/\/$/, '') + '/';
+      }
+      settings.stepAudio = [0,1,2].map(i => media(s.stepAudio?.[i], 'audio'));
+      settings.logo = media(s.logo || 'assets/logo.png', 'image');
+      settings.brandColor = /^#[a-fA-F0-9]{6}$/.test(s.brandColor || '') ? s.brandColor : '#e52d3f';
+      settings.content = {};
+      for (const [key, value] of Object.entries(s.content || {})) {
+        if (!/^[a-zA-Z0-9_-]{1,80}$/.test(key) || Object.keys(settings.content).length >= 300) throw new Error('مفتاح محتوى غير صالح.');
+        settings.content[key] = requireString(value, 2000, 'نص الواجهة', true);
+      }
+      settings.trustBadges = (s.trustBadges || root.KenoConfig?.TRUST_BADGES || []).slice(0,8).map(b => ({icon: String(b.icon || 'shield').slice(0,40), title:requireString(b.title,100,'عنوان الثقة'), desc:requireString(b.desc,500,'وصف الثقة')}));
+      settings.sectionVisibility = {};
+      for (const id of ['home','collections','picks','payments','trust','how','testimonials','faq']) settings.sectionVisibility[id] = s.sectionVisibility?.[id] !== false;
 
       // Validate Categories
       if (!Array.isArray(raw.categories) || raw.categories.length < 1 || raw.categories.length > 30) {
@@ -262,6 +314,9 @@
           aliases,
           badge,
           plans: validPlans,
+          fulfillment: fulfillment(service),
+          available: service.available !== false,
+          status: service.status === 'unavailable' ? 'unavailable' : (service.visible ? 'visible' : 'hidden'),
           notes,
           featured: service.featured,
           visible: service.visible

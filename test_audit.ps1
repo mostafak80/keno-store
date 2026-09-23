@@ -6,7 +6,7 @@ $scripts = [regex]::Matches($content, '<script[^>]*src=["'']([^"'']+)["'']')
 foreach ($s in $scripts) {
     $src = $s.Groups[1].Value
     if ($src -notmatch '^https?://') {
-        $cleanPath = $src.TrimStart('.').TrimStart('/\').Replace('/', '\')
+        $cleanPath = ($src -split '\?')[0].TrimStart('.').TrimStart('/\').Replace('/', '\')
         if (-not (Test-Path $cleanPath)) {
             $errors += "Script not found: $src"
         }
@@ -18,7 +18,7 @@ $cssLinks = [regex]::Matches($content, '<link[^>]*rel=["'']stylesheet["''][^>]*h
 foreach ($c in $cssLinks) {
     $href = $c.Groups[1].Value
     if ($href -notmatch '^https?://') {
-        $cleanPath = $href.TrimStart('.').TrimStart('/\').Replace('/', '\')
+        $cleanPath = ($href -split '\?')[0].TrimStart('.').TrimStart('/\').Replace('/', '\')
         if (-not (Test-Path $cleanPath)) {
             $errors += "CSS file not found: $href"
         }
@@ -43,4 +43,3 @@ foreach ($btn in $closeBtns) {
 
 $errors
 if ($errors.Count -eq 0) { "All asset links, dialogs, and close targets are valid!" }
-

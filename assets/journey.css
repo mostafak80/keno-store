@@ -1,0 +1,38 @@
+/* New fulfillment, content and review components own their styles here. */
+.journey-progress,.journey-navigation,.plan-tools{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.journey-progress{width:100%;padding:4px}
+.journey-progress strong{font-size:.95rem;outline-offset:4px}
+.journey-navigation{margin-bottom:12px}
+.journey-navigation .button{flex:1;min-height:48px}
+.journey-voice-help{width:100%;margin-top:8px;min-height:44px}
+.plan-tools label{flex:1;min-width:150px}
+.plan-tools input,.fulfillment-field input,.fulfillment-field textarea,.review-form input,.review-form textarea,.review-form select{width:100%;max-width:100%;padding:12px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;font:inherit}
+.fulfillment-field{display:grid;gap:8px;margin-block:18px}
+.fulfillment-field label{font-weight:800;color:var(--ink-heading)}
+.fulfillment-field small,.fulfillment-security{color:var(--muted);line-height:1.8}
+.field-help summary{cursor:pointer;color:var(--ink);font-weight:700;padding:10px;border:1px solid var(--line);border-radius:8px;width:fit-content}
+.field-help img{display:block;width:auto;max-width:100%;max-height:65vh;object-fit:contain;margin:12px auto}
+.review-account-card,.fulfillment-editor,.review-form,.fulfillment-editor-row,.content-editor,.review-moderation,#cartFulfillmentFields fieldset{border:1px solid var(--line);border-radius:12px;padding:18px;margin-block:16px;background:var(--paper);min-width:0}
+.review-account-card pre,.invoice-item-name pre,#adminView pre,#orderDetailsDialog pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.9;color:var(--ink);text-align:start}
+.review-account-card pre{font-size:1.15rem;font-weight:800;padding:12px;border:1px dashed var(--line)}
+.review-account-card input[type=checkbox],#cartReviewConfirmed{width:22px;height:22px;vertical-align:middle;margin-inline-end:8px}
+.review-account-card label{display:block;cursor:pointer;padding:10px}
+.fulfillment-editor .form-grid,.content-editor .form-grid{margin-block:12px}
+.content-editor summary{cursor:pointer;font-weight:800}
+.fulfillment-editor audio,.content-editor audio{width:100%;max-width:100%;margin-block:8px}
+.fulfillment-editor input,.content-editor input{min-width:0}
+.review-form .form-grid{margin-block:16px}
+.review-moderation button{margin:4px}
+.keno-motion .floating-contact{width:auto;max-width:calc(100vw - 32px);border-radius:28px;padding:10px 16px;gap:8px;color:var(--ink);font-weight:800}
+.keno-motion .floating-contact>span{display:inline}
+#serviceDialog .service-checkout-hero{margin-bottom:16px}
+#serviceDialog .service-hero-media{max-height:180px}
+#serviceDialog .checkout-scroll-body{scroll-behavior:auto}
+#cartListen{margin:8px 20px;min-height:44px;flex-shrink:0}
+#cartFulfillmentFields{grid-column:1/-1;min-width:0}
+#cartFulfillmentFields legend{font-weight:800;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+#serviceDialog .dialog-topbar-start{flex:1;min-width:0}
+#planFilterStatus,#budgetSelectionNotice{font-size:.9rem;margin-block:10px}
+#budgetSelectionNotice{color:var(--accent-readable)}
+@media(max-width:600px){.fulfillment-editor .form-grid,.content-editor .form-grid,.review-form .form-grid{grid-template-columns:1fr}.journey-progress{gap:6px}.journey-progress strong{font-size:.8rem}.journey-progress .button{padding:8px;font-size:.8rem}#serviceDialog .service-hero-media{max-height:120px}.review-account-card,.fulfillment-editor,.review-form,.content-editor{padding:12px}.keno-motion .floating-contact{bottom:84px;font-size:.85rem}}
+@media print{.floating-contact,.journey-navigation,#serviceListen,#cartListen{display:none!important}}

@@ -1,0 +1,864 @@
+/* typography-and-responsive — owned component styles; loaded in explicit cascade order. */
+body, input, button, select, textarea, optgroup {
+  font-family: var(--font) !important;
+}
+
+h1, .hero-copy h1 {
+  margin-top: 10px;
+  font-size: var(--text-4xl) !important;
+  font-weight: var(--weight-black) !important;
+  line-height: var(--leading-tight) !important;
+  color: var(--ink-heading) !important;
+  letter-spacing: 0px !important;
+}
+
+h2, .section-heading h2, .faq-section h2 {
+  font-size: var(--text-3xl) !important;
+  font-weight: var(--weight-black) !important;
+  line-height: var(--leading-tight) !important;
+  color: var(--ink-heading) !important;
+  letter-spacing: 0px !important;
+}
+
+h3, .service-card h3, .dialog-service-title, #cartDrawerTitle {
+  font-size: var(--text-lg) !important;
+  font-weight: var(--weight-extrabold) !important;
+  line-height: var(--leading-snug) !important;
+  color: var(--ink) !important;
+  letter-spacing: 0px !important;
+}
+
+.dialog-service-title {
+  font-size: var(--text-2xl) !important;
+  line-height: var(--leading-tight) !important;
+}
+
+h4, .step-title, .invoice-header h4, .summary-title-wrap h4 {
+  font-size: var(--text-base) !important;
+  font-weight: var(--weight-extrabold) !important;
+  line-height: var(--leading-snug) !important;
+  color: var(--ink) !important;
+  letter-spacing: 0px !important;
+}
+
+.eyebrow {
+  text-transform: none;
+  font-size: var(--text-xs) !important;
+  font-weight: var(--weight-extrabold) !important;
+  line-height: var(--leading-none) !important;
+  color: var(--muted-light) !important;
+  letter-spacing: 0px !important;
+}
+
+p, .hero-copy > p, .section-heading > p, .faq-list p, .dialog-service-desc {
+  font-size: var(--text-sm) !important;
+  line-height: var(--leading-relaxed) !important;
+  color: var(--muted-light) !important;
+  letter-spacing: 0px !important;
+}
+
+.hero-copy > p {
+  font-size: var(--text-base) !important;
+  line-height: var(--leading-relaxed) !important;
+}
+
+.button, button.button {
+  font-family: var(--font) !important;
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-extrabold) !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0px !important;
+  white-space-collapse: collapse !important;
+  text-wrap-mode: nowrap !important;
+}
+
+.dialog-primary-whatsapp {
+  font-size: 1rem !important;
+  font-weight: var(--weight-black) !important;
+}
+
+.dialog-secondary-cart {
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-bold) !important;
+}
+
+.feature-button {
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-extrabold) !important;
+}
+
+.service-card .card-category > span:first-child {
+  font-size: var(--text-xs) !important;
+  font-weight: var(--weight-bold) !important;
+  color: var(--muted) !important;
+}
+
+.plans-count-tag {
+  font-size: 0.78rem !important;
+  font-weight: var(--weight-extrabold) !important;
+  color: var(--ink) !important;
+  background-image: initial !important;
+  background-position-x: initial !important;
+  background-position-y: initial !important;
+  background-size: initial !important;
+  background-repeat: initial !important;
+  background-attachment: initial !important;
+  background-origin: initial !important;
+  background-clip: initial !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-top-color:  !important;
+  border-top-style:  !important;
+  border-top-width:  !important;
+  border-right-color:  !important;
+  border-right-style:  !important;
+  border-right-width:  !important;
+  border-bottom-color:  !important;
+  border-bottom-style:  !important;
+  border-bottom-width:  !important;
+  border-left-color:  !important;
+  border-left-style:  !important;
+  border-left-width:  !important;
+  border-image-source:  !important;
+  border-image-slice:  !important;
+  border-image-width:  !important;
+  border-image-outset:  !important;
+  border-image-repeat:  !important;
+  padding-top: 3px !important;
+  padding-right: 9px !important;
+  padding-bottom: 3px !important;
+  padding-left: 9px !important;
+  border-top-left-radius:  !important;
+  border-top-right-radius:  !important;
+  border-bottom-right-radius:  !important;
+  border-bottom-left-radius:  !important;
+  letter-spacing: 0px !important;
+}
+
+.service-card h3 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  font-size: var(--text-lg) !important;
+  font-weight: var(--weight-extrabold) !important;
+  line-height: var(--leading-snug) !important;
+  color: var(--ink) !important;
+}
+
+.service-card .card-description {
+  font-size: 0.875rem !important;
+  color: var(--muted-light) !important;
+  line-height: 1.62 !important;
+  margin-top: 0px !important;
+  margin-right: 0px !important;
+  margin-bottom: 14px !important;
+  margin-left: 0px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  text-overflow: ellipsis !important;
+  min-height: 3.25em !important;
+  letter-spacing: 0px !important;
+}
+
+.card-price > span {
+  margin-bottom: 2px;
+  font-size: var(--text-2xs) !important;
+  font-weight: var(--weight-semibold) !important;
+  color: var(--muted) !important;
+}
+
+.card-price strong {
+  font-size: 1.3rem !important;
+  font-weight: var(--weight-black) !important;
+  color: var(--ink) !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.card-price strong small {
+  margin-inline-start: 4px;
+  font-size: var(--text-xs) !important;
+  font-weight: var(--weight-bold) !important;
+  color: var(--muted-light) !important;
+}
+
+.card-action-indicator {
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-extrabold) !important;
+  letter-spacing: 0px !important;
+}
+
+.step-number-badge {
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-black) !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.step-desc {
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  color: var(--muted-light) !important;
+}
+
+label {
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-bold) !important;
+  color: var(--ink) !important;
+}
+
+input, textarea, select {
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-medium) !important;
+  line-height: var(--leading-normal) !important;
+}
+
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+.category-tabs button {
+  font-size: 0.875rem !important;
+  font-weight: var(--weight-bold) !important;
+}
+
+.category-count {
+  font-size: 0.78rem !important;
+  font-weight: var(--weight-extrabold) !important;
+  padding-top: 2px !important;
+  padding-right: 8px !important;
+  padding-bottom: 2px !important;
+  padding-left: 8px !important;
+}
+
+.pill, .badge, .status-badge, .card-badge, .account-badge-pill {
+  font-size: 0.78125rem !important;
+  font-weight: var(--weight-extrabold) !important;
+  letter-spacing: 0px !important;
+  font-variant-numeric: tabular-nums !important;
+  line-height: 1.3 !important;
+}
+
+.quote-price {
+  font-size: 0.95rem !important;
+  font-weight: var(--weight-extrabold) !important;
+  color: var(--muted-light) !important;
+}
+
+.admin-table th, .plans-compact-table th {
+  font-size: var(--text-xs) !important;
+  font-weight: var(--weight-extrabold) !important;
+  color: var(--muted-light) !important;
+  letter-spacing: 0px !important;
+}
+
+.admin-table td, .plans-compact-table td {
+  font-size: var(--text-sm) !important;
+  font-weight: var(--weight-medium) !important;
+  color: var(--ink) !important;
+}
+
+.card-mark, [dir="ltr"] .card-mark, .feature-index, .order-code, .mono-code {
+  font-family: var(--font) !important;
+  letter-spacing: 0.05em !important;
+}
+
+html[lang="ar"], [dir="rtl"], body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select, label {
+  font-synthesis-weight: none !important;
+  font-synthesis-style: none !important;
+  font-synthesis-small-caps: none !important;
+  font-feature-settings: "liga", "calt", "ccmp", "locl", "kern" !important;
+  font-variant-ligatures: common-ligatures contextual !important;
+  font-optical-sizing: auto !important;
+  letter-spacing: 0px !important;
+}
+
+h1, h2, h3, h4, h5, h6, .hero-copy h1, .section-heading h2, .service-card h3, .dialog-service-title, .step-title, .modal-title, .section-title, .faq-question, .trust-card h3, .testimonial-author strong, .invoice-header h4 {
+  text-wrap-mode: initial !important;
+  text-wrap-style: balance !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+p, .hero-copy > p, .section-heading > p, .service-card .card-description, .step-desc, .dialog-service-desc, .dialog-desc, .faq-answer, .info-note, .empty-state p, .testimonial-quote {
+  text-wrap-mode: initial !important;
+  text-wrap-style: pretty !important;
+  overflow-wrap: break-word !important;
+}
+
+bdi, [dir="ltr"], .bidi-isolate, .order-code, .mono-code, .phone-number, .whatsapp-number, .payment-quick-tag, .drawer-val, .cart-item-code, .account-number, [data-phone], #announcementPhone, #announcementInsta, .feature-word {
+  display: inline-block;
+  text-align: left;
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+}
+
+.card-price, .dialog-summary-price, .cart-total-price, .plan-price, .plan-col-price, .footer-big-price {
+  unicode-bidi: isolate;
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 0.9375rem !important;
+    line-height: 1.72 !important;
+  }
+
+  .hero-copy h1 {
+    font-size: 1.95rem !important;
+    line-height: 1.38 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-copy > p {
+    font-size: 0.9375rem !important;
+    line-height: 1.72 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .section-heading h2 {
+    font-size: 1.6rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .section-heading > p {
+    font-size: 0.90625rem !important;
+    line-height: 1.68 !important;
+  }
+
+  .service-card {
+    padding-top: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+  }
+
+  .service-card h3 {
+    font-size: 1.0625rem !important;
+    font-weight: var(--weight-extrabold) !important;
+    line-height: 1.42 !important;
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .service-card .card-description {
+    font-size: 0.875rem !important;
+    color: var(--muted) !important;
+    line-height: 1.65 !important;
+    min-height: 3.3em !important;
+    margin-bottom: 14px !important;
+  }
+
+  .service-card .card-category > span:first-child {
+    font-size: 0.78125rem !important;
+    color: var(--muted-light) !important;
+  }
+
+  .card-price strong {
+    font-size: 1.25rem !important;
+  }
+
+  .card-action-indicator {
+    font-size: 0.875rem !important;
+    font-weight: var(--weight-extrabold) !important;
+    padding-top: 8px !important;
+    padding-right: 14px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+  }
+
+  .service-dialog, .editor-dialog {
+    padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .dialog-service-title {
+    font-size: 1.35rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .dialog-service-desc {
+    font-size: 0.90625rem !important;
+    line-height: 1.68 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .step-title {
+    font-size: 0.9375rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .step-desc {
+    font-size: 0.84375rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .plan-card, .payment-card {
+    padding-top: 12px !important;
+    padding-right: 14px !important;
+    padding-bottom: 12px !important;
+    padding-left: 14px !important;
+  }
+
+  .plan-card-name {
+    font-size: 0.9375rem !important;
+    font-weight: var(--weight-bold) !important;
+    line-height: 1.45 !important;
+  }
+
+  .plan-card-desc {
+    font-size: 0.8125rem !important;
+    line-height: 1.55 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .plan-col-price strong {
+    font-size: 1.15rem !important;
+  }
+
+  input, textarea, select {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    padding-top: 12px !important;
+    padding-right: 14px !important;
+    padding-bottom: 12px !important;
+    padding-left: 14px !important;
+  }
+
+  label, .field-caption {
+    font-size: 0.875rem !important;
+    font-weight: var(--weight-bold) !important;
+    margin-bottom: 6px !important;
+  }
+
+  .field-hint {
+    font-size: 0.8125rem !important;
+    line-height: 1.6 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .button, button.button {
+    font-size: 0.9375rem !important;
+    min-height: 46px !important;
+    padding-inline-start: 18px !important;
+    padding-inline-end: 18px !important;
+  }
+
+  .dialog-primary-whatsapp {
+    font-size: 0.95rem !important;
+    min-height: 48px !important;
+  }
+
+  .dialog-secondary-cart {
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+  }
+
+  .category-tabs {
+    padding-block-start: 12px !important;
+    padding-block-end: 8px !important;
+    row-gap: 6px !important;
+    column-gap: 6px !important;
+  }
+
+  .category-tabs button {
+    font-size: 0.84375rem !important;
+    padding-top: 8px !important;
+    padding-right: 14px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    min-height: 40px !important;
+  }
+
+  .category-count {
+    font-size: 0.75rem !important;
+    padding-top: 2px !important;
+    padding-right: 7px !important;
+    padding-bottom: 2px !important;
+    padding-left: 7px !important;
+  }
+
+  .faq-question {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    padding-top: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+  }
+
+  .faq-answer {
+    font-size: 0.875rem !important;
+    line-height: 1.72 !important;
+    color: var(--muted-light) !important;
+    padding-top: 0px !important;
+    padding-right: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+  }
+
+  .testimonial-quote {
+    font-size: 0.875rem !important;
+    line-height: 1.7 !important;
+    color: var(--muted-light) !important;
+  }
+
+  .testimonial-author strong {
+    font-size: 0.90625rem !important;
+  }
+
+  .cart-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .cart-item-info h4 {
+    font-size: 0.9375rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .cart-item-plan {
+    font-size: 0.8125rem !important;
+    line-height: 1.5 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-copy h1 {
+    font-size: 1.7rem !important;
+  }
+
+  .hero-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .hero-actions .button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .service-card h3 {
+    font-size: 1rem !important;
+  }
+
+  .service-card .card-description {
+    font-size: 0.84375rem !important;
+  }
+
+  .card-action-indicator span {
+    font-size: 0.8125rem !important;
+  }
+
+  .dialog-service-title {
+    font-size: 1.2rem !important;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover {
+    transform: translateY(-4px);
+    border-top-color:  !important;
+    border-right-color:  !important;
+    border-bottom-color:  !important;
+    border-left-color:  !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+
+  .button:hover {
+    filter: brightness(1.08);
+  }
+
+  .plan-card:hover, .payment-card:hover {
+    transform: translateY(-1px);
+    border-top-color: rgba(255, 255, 255, 0.25) !important;
+    border-right-color: rgba(255, 255, 255, 0.25) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.25) !important;
+    border-left-color: rgba(255, 255, 255, 0.25) !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .service-card:hover, .plan-card:hover, .payment-card:hover, .category-tabs button:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .button:active, .service-card:active, .plan-card:active, .payment-card:active, .category-tabs button:active, .mobile-nav-item:active {
+    transform: scale(0.97) !important;
+    transition-behavior: normal !important;
+    transition-duration: 0.08s !important;
+    transition-timing-function: ease-out !important;
+    transition-delay: 0s !important;
+    transition-property: transform !important;
+  }
+
+  .button, .category-tabs button, .mobile-nav-item, .card-action-indicator, .plan-card, .payment-card {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .site-header {
+    padding-top: env(safe-area-inset-top, 0px);
+    position: relative !important;
+  }
+
+  .header-inner {
+    min-height: 52px !important;
+  }
+
+  .brand {
+    width: 120px !important;
+  }
+
+  .hero {
+    padding-top: 16px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .service-dialog, .editor-dialog {
+    max-height: 98dvh !important;
+    margin-top: auto !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: 0px !important;
+    border-top-left-radius:  !important;
+    border-top-right-radius:  !important;
+    border-bottom-right-radius:  !important;
+    border-bottom-left-radius:  !important;
+  }
+
+  .dialog-header {
+    padding-top: 12px !important;
+    padding-right: 18px !important;
+    padding-bottom: 12px !important;
+    padding-left: 18px !important;
+  }
+
+  .dialog-body {
+    padding-top: 14px !important;
+    padding-right: 18px !important;
+    padding-bottom: 14px !important;
+    padding-left: 18px !important;
+    max-height: 60vh !important;
+  }
+
+  .dialog-order-footer {
+    padding-top:  !important;
+    padding-right:  !important;
+    padding-bottom:  !important;
+    padding-left:  !important;
+  }
+
+  .mobile-nav {
+    height: 50px !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+
+  .mobile-nav-item svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  body {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .floating-contact {
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1320px !important;
+  }
+
+  .service-grid {
+    grid-template-columns: repeat(3, minmax(0px, 1fr)) !important;
+    row-gap: 24px !important;
+    column-gap: 24px !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .button, .service-card, .plan-card, .payment-card, .cart-drawer, .service-dialog {
+    border-top-width: 2px !important;
+    border-right-width: 2px !important;
+    border-bottom-width: 2px !important;
+    border-left-width: 2px !important;
+    border-top-style: solid !important;
+    border-right-style: solid !important;
+    border-bottom-style: solid !important;
+    border-left-style: solid !important;
+    border-top-color: canvastext !important;
+    border-right-color: canvastext !important;
+    border-bottom-color: canvastext !important;
+    border-left-color: canvastext !important;
+    border-image-source: none !important;
+    border-image-slice: 100% !important;
+    border-image-width: 1 !important;
+    border-image-outset: 0 !important;
+    border-image-repeat: stretch !important;
+  }
+
+  .card-action-indicator, .pill, .badge {
+    border-top-width: 1px !important;
+    border-right-width: 1px !important;
+    border-bottom-width: 1px !important;
+    border-left-width: 1px !important;
+    border-top-style: solid !important;
+    border-right-style: solid !important;
+    border-bottom-style: solid !important;
+    border-left-style: solid !important;
+    border-top-color: canvastext !important;
+    border-right-color: canvastext !important;
+    border-bottom-color: canvastext !important;
+    border-left-color: canvastext !important;
+    border-image-source: none !important;
+    border-image-slice: 100% !important;
+    border-image-width: 1 !important;
+    border-image-outset: 0 !important;
+    border-image-repeat: stretch !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --line: rgba(255, 255, 255, 0.22) !important;
+    --muted: #cbd5e1 !important;
+    --muted-light: #ffffff !important;
+  }
+
+  .service-card, .plan-card, .payment-card, input, textarea, select {
+    border-top-color: rgba(255, 255, 255, 0.3) !important;
+    border-right-color: rgba(255, 255, 255, 0.3) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.3) !important;
+    border-left-color: rgba(255, 255, 255, 0.3) !important;
+  }
+}
+
+@media print {
+  *, ::before, ::after {
+    background-image: initial !important;
+    background-position-x: initial !important;
+    background-position-y: initial !important;
+    background-size: initial !important;
+    background-repeat: initial !important;
+    background-attachment: initial !important;
+    background-origin: initial !important;
+    background-clip: initial !important;
+    background-color: transparent !important;
+    color: var(--ink) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  body {
+    background-image:  !important;
+    background-position-x:  !important;
+    background-position-y:  !important;
+    background-size:  !important;
+    background-repeat:  !important;
+    background-attachment:  !important;
+    background-origin:  !important;
+    background-clip:  !important;
+    background-color:  !important;
+    color: var(--ink) !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    padding-top: 0px !important;
+    padding-right: 0px !important;
+    padding-bottom: 0px !important;
+    padding-left: 0px !important;
+    margin-top: 0px !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: 0px !important;
+  }
+
+  .site-header, .announcement, .mobile-nav, .floating-contact, .skip-link, .catalog-toolbar, .header-actions, .cart-drawer-backdrop, .cart-drawer, .admin-sticky-save-bar, .dialog-close, .hero-actions, .card-action-indicator, .button:not(.print-keep), #toastContainer, .footer-big-actions {
+    display: none !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 0px !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: 0px !important;
+    padding-top: 10mm !important;
+    padding-right: 15mm !important;
+    padding-bottom: 10mm !important;
+    padding-left: 15mm !important;
+  }
+
+  .service-grid {
+    display: block !important;
+  }
+
+  .service-card {
+    break-inside: avoid;
+    border-top-width: 1px !important;
+    border-right-width: 1px !important;
+    border-bottom-width: 1px !important;
+    border-left-width: 1px !important;
+    border-top-style: solid !important;
+    border-right-style: solid !important;
+    border-bottom-style: solid !important;
+    border-left-style: solid !important;
+    border-top-color: rgb(203, 213, 225) !important;
+    border-right-color: rgb(203, 213, 225) !important;
+    border-bottom-color: rgb(203, 213, 225) !important;
+    border-left-color: rgb(203, 213, 225) !important;
+    border-image-source: none !important;
+    border-image-slice: 100% !important;
+    border-image-width: 1 !important;
+    border-image-outset: 0 !important;
+    border-image-repeat: stretch !important;
+    margin-bottom: 14pt !important;
+    padding-top: 14pt !important;
+    padding-right: 14pt !important;
+    padding-bottom: 14pt !important;
+    padding-left: 14pt !important;
+  }
+
+  .dialog-summary-box, .order-invoice {
+    break-inside: avoid;
+    border-top-width: 1px !important;
+    border-right-width: 1px !important;
+    border-bottom-width: 1px !important;
+    border-left-width: 1px !important;
+    border-top-style: solid !important;
+    border-right-style: solid !important;
+    border-bottom-style: solid !important;
+    border-left-style: solid !important;
+    border-top-color: rgb(148, 163, 184) !important;
+    border-right-color: rgb(148, 163, 184) !important;
+    border-bottom-color: rgb(148, 163, 184) !important;
+    border-left-color: rgb(148, 163, 184) !important;
+    border-image-source: none !important;
+    border-image-slice: 100% !important;
+    border-image-width: 1 !important;
+    border-image-outset: 0 !important;
+    border-image-repeat: stretch !important;
+    padding-top: 12pt !important;
+    padding-right: 12pt !important;
+    padding-bottom: 12pt !important;
+    padding-left: 12pt !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    break-after: avoid;
+    color: var(--ink) !important;
+  }
+
+  a[href]::after {
+    content: "" !important;
+  }
+}

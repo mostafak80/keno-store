@@ -1,6 +1,6 @@
 window.KENO_CATALOG = {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-10T00:00:00.000Z",
+  "updatedAt": "2026-09-23T20:59:02.099Z",
   "settings": {
     "storeName": "Keno Store",
     "tagline": "كل خدماتك الرقمية في مكان واحد",
@@ -17,7 +17,14 @@ window.KENO_CATALOG = {
     "telegram": "",
     "telegramEnabled": true,
     "announcement": "اختار خدمتك، شوف سعرها، وكمّل طلبك مع كينو.",
-    "currency": "EGP"
+    "currency": "EGP",
+    "siteUrl": "https://keno-store.vercel.app/",
+    "stepAudio": [
+      "",
+      "",
+      ""
+    ],
+    "content": {}
   },
   "categories": [
     {
@@ -294,11 +301,39 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "gold"
+      "color": "gold",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "اكتب رقم اللاعب من ملفك داخل اللعبة، وراجعه قبل الإرسال.",
+        "securityNote": "الطلب باستخدام رقم اللاعب فقط؛ لا تكتب كلمة المرور.",
+        "fields": [
+          {
+            "id": "player-id",
+            "type": "id",
+            "label": "رقم اللاعب (ID)",
+            "required": true,
+            "placeholder": "اكتب الرقم كما يظهر في اللعبة",
+            "hint": "افتح ملف اللاعب وانسخ رقم ID. لم يتم التحقق من صحة الحساب.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "pubg-1",
+          "pubg-2",
+          "pubg-3",
+          "pubg-4"
+        ]
+      }
     },
     {
       "id": "netflix",
-      "name": "Netflix",
+      "name": "نتفليكس — أفلام ومسلسلات",
       "category": "entertainment",
       "description": "أفلام ومسلسلات، وملف مشاهدة خاص باسمك.",
       "mark": "NETFLIX",
@@ -345,11 +380,40 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "red"
+      "color": "red",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "راجع شروط الحساب المشترك الموضحة بالأعلى. نرسل تفاصيل الاستلام في محادثة واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "profile-name",
+            "type": "text",
+            "label": "الاسم المطلوب لملف المشاهدة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "netflix-1",
+          "netflix-2",
+          "netflix-3",
+          "netflix-4"
+        ]
+      },
+      "aliases": "Netflix NETFLIX"
     },
     {
       "id": "chatgpt",
-      "name": "ChatGPT Plus",
+      "name": "شات جي بي تي — مساعد للكتابة والدراسة",
       "category": "ai",
       "description": "للدراسة والبرمجة وكتابة المحتوى وتحليل الملفات.",
       "mark": "GPT",
@@ -387,11 +451,27 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "green"
+      "color": "green",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "راجع شروط الحساب المشترك الموضحة بالأعلى. نرسل تفاصيل الاستلام في محادثة واتساب.",
+        "securityNote": "هذه باقة حساب مشترك؛ لا نحتاج بيانات الدخول إلى حسابك الشخصي. تجنب الملفات والمحادثات الحساسة في الحساب المشترك.",
+        "fields": [],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "gpt-1",
+          "gpt-2",
+          "gpt-3"
+        ]
+      }
     },
     {
       "id": "shahid",
-      "name": "شاهد",
+      "name": "شاهد — مسلسلات وبرامج عربية",
       "category": "entertainment",
       "description": "مسلسلات وبرامج عربية، مع خيارات اشتراك متعددة.",
       "mark": "SHAHID",
@@ -438,11 +518,40 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "green"
+      "color": "green",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "راجع شروط الحساب المشترك الموضحة بالأعلى. نرسل تفاصيل الاستلام في محادثة واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "profile-name",
+            "type": "text",
+            "label": "الاسم المطلوب لملف المشاهدة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "shahid-1",
+          "shahid-2",
+          "shahid-3",
+          "shahid-4"
+        ]
+      },
+      "aliases": "شاهد SHAHID"
     },
     {
       "id": "efootball",
-      "name": "eFootball / PES",
+      "name": "بيس إي فوتبول — شحن كوينز",
       "category": "games",
       "description": "كوينز بيس العادية والعروض الخاصة المتاحة لحسابك.",
       "mark": "PES",
@@ -559,11 +668,40 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+        "fields": [
+          {
+            "id": "account-provider",
+            "type": "text",
+            "label": "طريقة ربط الحساب (كونامي أو جوجل)",
+            "required": true,
+            "placeholder": "",
+            "hint": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "pes-1",
+          "pes-2",
+          "pes-3",
+          "pes-4"
+        ]
+      },
+      "aliases": "eFootball / PES PES"
     },
     {
       "id": "tiktok",
-      "name": "عملات TikTok",
+      "name": "تيك توك — شحن عملات",
       "category": "social",
       "description": "اختار عدد العملات المناسب لحساب تيك توك.",
       "mark": "TikTok",
@@ -648,7 +786,36 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "dark"
+      "color": "dark",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+        "fields": [
+          {
+            "id": "account-name",
+            "type": "text",
+            "label": "اسم حساب تيك توك",
+            "required": true,
+            "placeholder": "",
+            "hint": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "tt-1",
+          "tt-2",
+          "tt-3",
+          "tt-4"
+        ]
+      },
+      "aliases": "عملات TikTok TikTok"
     },
     {
       "id": "pubg-korea",
@@ -769,11 +936,39 @@ window.KENO_CATALOG = {
       ],
       "featured": false,
       "visible": true,
-      "color": "gold"
+      "color": "gold",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "أكّد نسخة اللعبة وطريقة التنفيذ مع المتجر قبل الدفع.",
+        "securityNote": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+        "fields": [
+          {
+            "id": "account-provider",
+            "type": "text",
+            "label": "طريقة ربط الحساب (جوجل أو فيسبوك أو إكس)",
+            "required": true,
+            "placeholder": "",
+            "hint": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "kr-1",
+          "kr-2",
+          "kr-3",
+          "kr-4"
+        ]
+      }
     },
     {
       "id": "roblox",
-      "name": "Roblox",
+      "name": "روبلوكس — شحن روبوكس",
       "category": "games",
       "description": "Robux لباقات صغيرة أو كميات أكبر.",
       "mark": "ROBLOX",
@@ -882,11 +1077,40 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "dark"
+      "color": "dark",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+        "fields": [
+          {
+            "id": "account-name",
+            "type": "text",
+            "label": "اسم حساب روبلوكس",
+            "required": true,
+            "placeholder": "",
+            "hint": "تنفيذ هذه الخدمة يحتاج الدخول إلى الحساب. اتفق مع المتجر على طريقة التنفيذ في واتساب؛ لا تكتب كلمة المرور أو رموز التحقق هنا.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "robux-1",
+          "robux-2",
+          "robux-3",
+          "robux-4"
+        ]
+      },
+      "aliases": "Roblox ROBLOX"
     },
     {
       "id": "free-fire",
-      "name": "Free Fire",
+      "name": "فري فاير — جواهر وعضويات",
       "category": "games",
       "description": "جواهر فري فاير، عضويات وعروض المستوى.",
       "mark": "FREE FIRE",
@@ -994,11 +1218,40 @@ window.KENO_CATALOG = {
       ],
       "featured": true,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "اكتب رقم اللاعب من ملفك داخل اللعبة، وراجعه قبل الإرسال.",
+        "securityNote": "الطلب باستخدام رقم اللاعب فقط؛ لا تكتب كلمة المرور.",
+        "fields": [
+          {
+            "id": "player-id",
+            "type": "id",
+            "label": "رقم اللاعب (ID)",
+            "required": true,
+            "placeholder": "",
+            "hint": "انسخ رقم اللاعب من الملف الشخصي داخل اللعبة؛ راجعه قبل الإرسال.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "ff-level-1",
+          "ff-level200-1",
+          "ff-level800-1",
+          "ff-level350-1"
+        ]
+      },
+      "aliases": "Free Fire FREE FIRE"
     },
     {
       "id": "fc-mobile",
-      "name": "FC Mobile",
+      "name": "إف سي موبايل — شحن عملات",
       "category": "games",
       "description": "شحن Silver وFIFA Points بالكميات المتاحة.",
       "mark": "FC",
@@ -1106,11 +1359,40 @@ window.KENO_CATALOG = {
       ],
       "featured": false,
       "visible": true,
-      "color": "green"
+      "color": "green",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "نسخة اللعبة ونوع العملة",
+            "required": true,
+            "placeholder": "",
+            "hint": "يتم تأكيد طريقة التنفيذ قبل الدفع.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "fc-silver-1",
+          "fc-silver-2",
+          "fc-silver-3",
+          "fc-silver-4"
+        ]
+      },
+      "aliases": "FC Mobile FC"
     },
     {
       "id": "yalla-ludo",
-      "name": "Yalla Ludo",
+      "name": "يلا لودو — شحن ذهب وجواهر",
       "category": "games",
       "description": "شحن جواهر وذهب يلا لودو بالـ ID.",
       "mark": "LUDO",
@@ -1186,7 +1468,36 @@ window.KENO_CATALOG = {
       ],
       "featured": false,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "اكتب رقم اللاعب من ملفك داخل اللعبة، وراجعه قبل الإرسال.",
+        "securityNote": "الطلب باستخدام رقم اللاعب فقط؛ لا تكتب كلمة المرور.",
+        "fields": [
+          {
+            "id": "player-id",
+            "type": "id",
+            "label": "رقم اللاعب (ID)",
+            "required": true,
+            "placeholder": "اكتب الرقم كما يظهر في اللعبة",
+            "hint": "افتح ملف اللاعب وانسخ رقم ID. لم يتم التحقق من صحة الحساب.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": [
+          "ludo-gem-1",
+          "ludo-gem-2",
+          "ludo-gem-3",
+          "ludo-gem-4"
+        ]
+      },
+      "aliases": "Yalla Ludo LUDO"
     },
     {
       "id": "pubg-vietnam",
@@ -1199,11 +1510,34 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "gold"
+      "color": "gold",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "أكّد نسخة اللعبة وطريقة التنفيذ مع المتجر قبل الدفع.",
+        "securityNote": "لا ترسل كلمة المرور أو رموز التحقق هنا. نتفق على طريقة التنفيذ في المحادثة.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "نسخة اللعبة والكمية المطلوبة",
+            "required": true,
+            "placeholder": "",
+            "hint": "يتم تأكيد طريقة التنفيذ قبل الدفع.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "mobile-legends",
-      "name": "Mobile Legends",
+      "name": "موبايل ليجندز — شحن عملات",
       "category": "games",
       "description": "شحن عملات موبايل ليجندز حسب الباقة.",
       "mark": "ML",
@@ -1212,11 +1546,35 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "Mobile Legends ML"
     },
     {
       "id": "blood-strike",
-      "name": "Blood Strike",
+      "name": "بلود سترايك — شحن اللعبة",
       "category": "games",
       "description": "شحن اللعبة بالكميات المتاحة.",
       "mark": "BS",
@@ -1225,11 +1583,35 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "red"
+      "color": "red",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "Blood Strike BS"
     },
     {
       "id": "coin-master",
-      "name": "Coin Master",
+      "name": "كوين ماستر — شحن اللعبة",
       "category": "games",
       "description": "طلبات شحن كوين ماستر حسب المتاح.",
       "mark": "CM",
@@ -1238,7 +1620,31 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "gold"
+      "color": "gold",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "Coin Master CM"
     },
     {
       "id": "other-games",
@@ -1251,11 +1657,34 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "اسم اللعبة والكمية المطلوبة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "osn",
-      "name": "OSN+",
+      "name": "أو إس إن بلس — أفلام ومسلسلات",
       "category": "entertainment",
       "description": "اشتراكات مشاهدة حسب المدة والخطة المتاحة.",
       "mark": "OSN+",
@@ -1264,11 +1693,35 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "red"
+      "color": "red",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "OSN+ OSN+"
     },
     {
       "id": "yango",
-      "name": "Yango Play",
+      "name": "يانجو بلاي — مشاهدة وترفيه",
       "category": "entertainment",
       "description": "اشتراكات يانجو بلاي؛ اسأل عن المدد المتاحة.",
       "mark": "YANGO",
@@ -1277,11 +1730,35 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "Yango Play YANGO"
     },
     {
       "id": "crunchyroll",
-      "name": "Crunchyroll",
+      "name": "كرانشي رول — مشاهدة أنمي",
       "category": "entertainment",
       "description": "اشتراكات الأنمي حسب الخطة المتاحة.",
       "mark": "CRUNCHY",
@@ -1290,11 +1767,35 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "Crunchyroll CRUNCHY"
     },
     {
       "id": "iptv",
-      "name": "IPTV",
+      "name": "آي بي تي في — باقات مشاهدة",
       "category": "entertainment",
       "description": "اسأل عن الباقات والمحتوى والأجهزة المدعومة.",
       "mark": "IPTV",
@@ -1303,7 +1804,31 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "IPTV IPTV"
     },
     {
       "id": "music",
@@ -1316,11 +1841,34 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "green"
+      "color": "green",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "gemini",
-      "name": "Gemini Pro",
+      "name": "جيميني — مساعد جوجل الذكي",
       "category": "ai",
       "description": "اشتراكات أدوات Google للذكاء الاصطناعي حسب الخطة.",
       "mark": "GEMINI",
@@ -1329,11 +1877,35 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "Gemini Pro GEMINI"
     },
     {
       "id": "claude",
-      "name": "Claude",
+      "name": "كلود — مساعد للكتابة والبرمجة",
       "category": "ai",
       "description": "اشتراكات كلود للكتابة والتحليل والبرمجة.",
       "mark": "CLAUDE",
@@ -1342,7 +1914,31 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "Claude CLAUDE"
     },
     {
       "id": "other-ai",
@@ -1355,11 +1951,34 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "اسم الأداة والخطة والمدة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "google-play",
-      "name": "تطبيقات Google Play",
+      "name": "جوجل بلاي — تطبيقات وألعاب",
       "category": "apps",
       "description": "شراء التطبيقات والألعاب والاشتراكات المتاحة.",
       "mark": "PLAY",
@@ -1368,11 +1987,35 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "green"
+      "color": "green",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "تطبيقات Google Play PLAY"
     },
     {
       "id": "app-store",
-      "name": "تطبيقات App Store",
+      "name": "آب ستور — تطبيقات آيفون",
       "category": "apps",
       "description": "شراء تطبيقات وألعاب واشتراكات أجهزة Apple.",
       "mark": "APP",
@@ -1381,7 +2024,31 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "تطبيقات App Store APP"
     },
     {
       "id": "software",
@@ -1394,7 +2061,30 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "dark"
+      "color": "dark",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "renew",
@@ -1407,7 +2097,30 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل تنفيذ الخدمة",
+            "required": false,
+            "placeholder": "وضّح المطلوب بدون كلمات مرور",
+            "hint": "يحدد المتجر البيانات اللازمة حسب طريقة التنفيذ المتفق عليها.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "courses",
@@ -1420,7 +2133,40 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "course-url",
+            "type": "url",
+            "label": "رابط الكورس",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "التفاصيل والمدة المطلوبة",
+            "required": false,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "websites",
@@ -1433,11 +2179,44 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "dark"
+      "color": "dark",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "site-url",
+            "type": "url",
+            "label": "رابط الموقع أو صفحة الاشتراك",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "الخطة والمدة المطلوبة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "paypal",
-      "name": "تحويلات PayPal",
+      "name": "باي بال — تحويل رصيد",
       "category": "payments",
       "description": "اسأل عن قيمة التحويل والرسوم قبل التنفيذ.",
       "mark": "PayPal",
@@ -1446,7 +2225,41 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "recipient-email",
+            "type": "email",
+            "label": "بريد باي بال المستلم",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "amount",
+            "type": "text",
+            "label": "المبلغ والعملة المطلوبان",
+            "required": true,
+            "placeholder": "",
+            "hint": "يتم الاتفاق على الرسوم قبل الدفع.",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "تحويلات PayPal PayPal"
     },
     {
       "id": "online-buy",
@@ -1459,11 +2272,44 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "product-url",
+            "type": "url",
+            "label": "رابط المنتج أو الخدمة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل طلب الشراء",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "facebook-ads",
-      "name": "إعلانات Facebook",
+      "name": "فيسبوك — إعلانات ممولة",
       "category": "marketing",
       "description": "إعداد إعلان ممول حسب الهدف والميزانية.",
       "mark": "FACEBOOK",
@@ -1472,11 +2318,45 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "page-url",
+            "type": "url",
+            "label": "رابط صفحة فيسبوك",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "هدف الإعلان والميزانية",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "إعلانات Facebook FACEBOOK"
     },
     {
       "id": "instagram-ads",
-      "name": "إعلانات Instagram",
+      "name": "إنستجرام — إعلانات ممولة",
       "category": "marketing",
       "description": "إعلانات ممولة للوصول إلى جمهورك المناسب.",
       "mark": "INSTAGRAM",
@@ -1485,11 +2365,45 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "red"
+      "color": "red",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "page-url",
+            "type": "url",
+            "label": "رابط حساب إنستجرام",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "هدف الإعلان والميزانية",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "إعلانات Instagram INSTAGRAM"
     },
     {
       "id": "tiktok-ads",
-      "name": "إعلانات TikTok",
+      "name": "تيك توك — إعلانات ممولة",
       "category": "marketing",
       "description": "تجهيز وإدارة الإعلان حسب نشاطك وهدفك.",
       "mark": "TIKTOK",
@@ -1498,11 +2412,45 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "dark"
+      "color": "dark",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "page-url",
+            "type": "url",
+            "label": "رابط حساب تيك توك",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "هدف الإعلان والميزانية",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "إعلانات TikTok TIKTOK"
     },
     {
       "id": "snapchat-ads",
-      "name": "إعلانات Snapchat",
+      "name": "سناب شات — إعلانات ممولة",
       "category": "marketing",
       "description": "حملات إعلانية ممولة حسب الميزانية.",
       "mark": "SNAP",
@@ -1511,7 +2459,41 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "gold"
+      "color": "gold",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "page-url",
+            "type": "url",
+            "label": "رابط حساب سناب شات",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "هدف الإعلان والميزانية",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "إعلانات Snapchat SNAP"
     },
     {
       "id": "campaigns",
@@ -1524,7 +2506,40 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "red"
+      "color": "red",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "page-url",
+            "type": "url",
+            "label": "رابط الصفحة أو الموقع",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "هدف الحملة والميزانية",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "design",
@@ -1537,11 +2552,34 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "orange"
+      "color": "orange",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "وصف التصميم والمقاس والنص المطلوب",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "facebook-pages",
-      "name": "صفحات Facebook المتاحة",
+      "name": "فيسبوك — صفحات متاحة",
       "category": "social",
       "description": "استفسر عن الصفحات المتاحة وتفاصيل كل صفحة.",
       "mark": "PAGES",
@@ -1550,7 +2588,31 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "blue"
+      "color": "blue",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "مجال الصفحة وحجم الجمهور المطلوب",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      },
+      "aliases": "صفحات Facebook المتاحة PAGES"
     },
     {
       "id": "social-setup",
@@ -1563,7 +2625,40 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "green"
+      "color": "green",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "page-url",
+            "type": "url",
+            "label": "رابط الصفحة إن وجدت",
+            "required": false,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          },
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "اسم النشاط والخدمة المطلوبة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     },
     {
       "id": "custom-service",
@@ -1576,7 +2671,30 @@ window.KENO_CATALOG = {
       "notes": [],
       "featured": false,
       "visible": true,
-      "color": "red"
+      "color": "red",
+      "fulfillment": {
+        "title": "بيانات الحساب / الشحن",
+        "description": "وضّح طلبك وسنتفق على طريقة التنفيذ الفعلية في واتساب.",
+        "securityNote": "نستخدم البيانات الموضحة لتنفيذ الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.",
+        "fields": [
+          {
+            "id": "details",
+            "type": "textarea",
+            "label": "تفاصيل الخدمة المطلوبة",
+            "required": true,
+            "placeholder": "",
+            "hint": "",
+            "helpImage": "",
+            "helpAlt": ""
+          }
+        ],
+        "audio": [
+          "",
+          "",
+          ""
+        ],
+        "featuredPlanIds": []
+      }
     }
   ],
   "featuredCard": {

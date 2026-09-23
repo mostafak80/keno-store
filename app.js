@@ -383,48 +383,9 @@
 
   // --- Trust & Testimonials Dynamic Rendering ---
   function renderTrustAndTestimonials() {
-    const trustGrid = $('trustGrid');
-    if (trustGrid && (!trustGrid.children.length || trustGrid.dataset.rendered !== 'true')) {
-      const badges = Config.TRUST_BADGES || [];
-      trustGrid.innerHTML = badges.map(b => `
-        <div class="trust-card">
-          <div class="trust-icon">${icon(b.icon)}</div>
-          <div class="trust-info">
-            <h3>${esc(b.title)}</h3>
-            <p>${esc(b.desc)}</p>
-          </div>
-        </div>
-      `).join('');
-      trustGrid.dataset.rendered = 'true';
-    }
-
-    const testGrid = $('testimonialsGrid');
-    if (testGrid && (!testGrid.children.length || testGrid.dataset.rendered !== 'true')) {
-      const testimonials = Config.TESTIMONIALS || [];
-      testGrid.innerHTML = testimonials.map(t => {
-        const starCount = Math.min(5, Math.max(1, t.rating || 5));
-        const starsHtml = Array.from({ length: starCount }, () => icon('star')).join('');
-        return `
-          <article class="testimonial-card">
-            <div class="testimonial-header">
-              <div class="testimonial-stars" aria-label="تقييم ${starCount} من 5 نجوم">
-                ${starsHtml}
-              </div>
-              <span class="testimonial-date">${esc(t.date)}</span>
-            </div>
-            <p class="testimonial-comment">"${esc(t.comment)}"</p>
-            <div class="testimonial-author">
-              <div class="author-meta">
-                <strong>${esc(t.name)}</strong>
-                <span class="verified-tag">${icon('check-check')} مشترٍ موثق</span>
-              </div>
-              <span class="service-tag">${esc(t.service)}</span>
-            </div>
-          </article>
-        `;
-      }).join('');
-      testGrid.dataset.rendered = 'true';
-    }
+    const badges = viewData().settings.trustBadges || Config.TRUST_BADGES || [];
+    $('trustGrid').innerHTML = badges.map(b => '<div class="trust-card"><div class="trust-icon">'+icon(b.icon)+'</div><div class="trust-info"><h3>'+esc(b.title)+'</h3><p>'+esc(b.desc)+'</p></div></div>').join('');
+    KenoReviews.render(viewData());
   }
 
   // --- Storefront Rendering ---
@@ -477,6 +438,7 @@
     }
 
     document.title = `${s.storeName} | ${s.tagline}`;
+    KenoContent.render(s);
 
     // Ensure selected category is valid
     if (!data.categories.some(c => c.id === category)) {
@@ -614,6 +576,7 @@
 
     renderTrustAndTestimonials();
     window.KenoStorefront?.render(data, { icon, esc, money });
+    KenoContent.render(s);
     renderGrid();
     renderCart();
   }
@@ -831,84 +794,6 @@
       }
     }
 
-    // Dynamic Customer Fields Configuration
-    const serviceNameLower = (service.name || '').toLowerCase();
-    const serviceMarkLower = (service.mark || '').toLowerCase();
-    const serviceIdLower = (service.id || '').toLowerCase();
-    const isPubg = serviceIdLower.includes('pubg') || 
-                   serviceNameLower.includes('ببجي') || 
-                   serviceNameLower.includes('pubg') || 
-                   serviceMarkLower.includes('pubg');
-    const isGame = service.category === 'games';
-    const isAccountGame = isGame && !isPubg;
-
-    const panelPubg = $('panelPubgId');
-    const panelAccount = $('panelAccountGame');
-    const panelOther = $('panelOtherCustom');
-
-    // Reset input fields
-    if ($('pubgPlayerIdInput')) $('pubgPlayerIdInput').value = '';
-    if ($('gameAccountUserInput')) $('gameAccountUserInput').value = '';
-    if ($('gameAccountPassInput')) $('gameAccountPassInput').value = '';
-    if ($('serviceCustomAccountInput')) $('serviceCustomAccountInput').value = '';
-    if ($('customerAccount')) $('customerAccount').value = '';
-
-    if (panelPubg) panelPubg.hidden = !isPubg;
-    if (panelAccount) panelAccount.hidden = !isAccountGame;
-    if (panelOther) panelOther.hidden = (isPubg || isAccountGame);
-
-    if (!isPubg && !isAccountGame && panelOther) {
-      const catId = service.category || '';
-      const customTitle = $('customAccountLabelText') || $('customFieldLabel');
-      const customBadge = $('customAccountRequiredTag') || $('customFieldBadge');
-      const customDesc = $('customAccountHintText') || $('customFieldDesc');
-      const customInput = $('serviceCustomAccountInput');
-      const customHintBox = $('customAccountHintBox');
-      if (customHintBox) customHintBox.hidden = false;
-
-      if (service.accountFieldLabel || service.accountFieldPlaceholder) {
-        if (customTitle) customTitle.textContent = service.accountFieldLabel || 'البيانات المطلوبة';
-        if (customBadge) customBadge.textContent = 'مطلوب للتنفيذ';
-        if (customDesc) customDesc.textContent = service.accountFieldDesc || `يرجى إدخال ${service.accountFieldLabel || 'البيانات المطلوبة'} للتنفيذ.`;
-        if (customInput) customInput.placeholder = service.accountFieldPlaceholder || 'أدخل البيانات المطلوبة هنا...';
-      } else if (catId === 'entertainment') {
-        if (customTitle) customTitle.textContent = 'البريد الإلكتروني للتفعيل';
-        if (customBadge) customBadge.textContent = 'تفعيل فوري';
-        if (customDesc) customDesc.textContent = 'أدخل البريد الإلكتروني أو الحساب المطلوب تفعيل الباقة عليه.';
-        if (customInput) customInput.placeholder = 'name@example.com أو اسم المستخدم';
-      } else if (catId === 'ai') {
-        if (customTitle) customTitle.textContent = 'بريد تفعيل الذكاء الاصطناعي';
-        if (customBadge) customBadge.textContent = 'اشتراك رسمي';
-        if (customDesc) customDesc.textContent = 'أدخل البريد الإلكتروني لتفعيل اشتراك (ChatGPT / Claude / Midjourney).';
-        if (customInput) customInput.placeholder = 'your-email@gmail.com';
-      } else if (catId === 'apps') {
-        if (customTitle) customTitle.textContent = 'بيانات الحساب / الإيميل';
-        if (customBadge) customBadge.textContent = 'مطلوب للتفعيل';
-        if (customDesc) customDesc.textContent = 'أدخل البريد الإلكتروني أو رقم الهاتف المسجل بالتطبيق المراد تفعيله.';
-        if (customInput) customInput.placeholder = 'رقم الهاتف أو البريد الإلكتروني';
-      } else if (catId === 'payments') {
-        if (customTitle) customTitle.textContent = 'بيانات التحويل والاستلام';
-        if (customBadge) customBadge.textContent = 'تحويل لحظي';
-        if (customDesc) customDesc.textContent = 'أدخل رقم المحفظة أو الحساب البنكي أو عنوان InstaPay المراد استلام المبلغ عليه.';
-        if (customInput) customInput.placeholder = '01xxxxxxxxx أو عنوان إنستاباي';
-      } else if (catId === 'marketing') {
-        if (customTitle) customTitle.textContent = 'رابط الحملة / الصفحة';
-        if (customBadge) customBadge.textContent = 'تفاصيل الطلب';
-        if (customDesc) customDesc.textContent = 'أدخل رابط الصفحة أو تفاصيل الحملة الإعلانية أو التصميم المطلوب بدقة.';
-        if (customInput) customInput.placeholder = 'رابط الصفحة أو المنشور أو وصف الطلب';
-      } else if (catId === 'social') {
-        if (customTitle) customTitle.textContent = 'رابط الحساب / القناة';
-        if (customBadge) customBadge.textContent = 'تنفيذ فوري';
-        if (customDesc) customDesc.textContent = 'أدخل رابط الحساب أو القناة أو المنشور المراد تزويده.';
-        if (customInput) customInput.placeholder = 'https://instagram.com/username أو رابط القناة';
-      } else {
-        if (customTitle) customTitle.textContent = 'بيانات الحساب / المعرف';
-        if (customBadge) customBadge.textContent = 'مطلوب للتنفيذ';
-        if (customDesc) customDesc.textContent = 'اكتب رقم الهاتف أو المعرف المراد شحنه أو تقديم الخدمة له.';
-        if (customInput) customInput.placeholder = 'معرف الحساب أو رقم الهاتف أو الرابط';
-      }
-    }
-
     // Service terms/notes
     const notesContainer = $('serviceNotes');
     if (notesContainer) {
@@ -977,6 +862,7 @@
     // Render dynamic enabled payment methods
     dialogSelectedPaymentId = renderPaymentMethodsList($('dialogPaymentMethods'), dialogSelectedPaymentId, 'dialog-payment');
 
+    KenoCheckout.open(service, data.settings, syncCustomerAccount);
     updateSelectedPlan();
     if (window.Icons && typeof window.Icons.hydrate === 'function') {
       window.Icons.hydrate();
@@ -997,7 +883,7 @@
   });
 
   function updateSelectedPlan() {
-    const service = viewData().services.find(s => s.id === selectedService);
+    const service = KenoCheckout.active?.id === selectedService ? KenoCheckout.active : viewData().services.find(s => s.id === selectedService);
     if (!service) return;
 
     const plan = service.plans.find(p => p.id === selectedPlan && p.available);
@@ -1048,7 +934,7 @@
     }
     if ($('addToCartBtn')) {
       $('addToCartBtn').disabled = isDisabled;
-      $('addToCartBtn').hidden = isUnavailable;
+      $('addToCartBtn').hidden = isUnavailable || $('paymentSelectionSection').hidden;
     }
   }
 
@@ -1063,56 +949,11 @@
     }
   });
 
-  // Dynamic Customer Fields Sync Helper
   function syncCustomerAccount() {
-    const service = viewData().services.find(s => s.id === selectedService);
+    const service = window.KenoCheckout.active;
     if (!service) return;
-    const serviceNameLower = (service.name || '').toLowerCase();
-    const serviceMarkLower = (service.mark || '').toLowerCase();
-    const serviceIdLower = (service.id || '').toLowerCase();
-    const isPubg = serviceIdLower.includes('pubg') || 
-                   serviceNameLower.includes('ببجي') || 
-                   serviceNameLower.includes('pubg') || 
-                   serviceMarkLower.includes('pubg');
-    const isGame = service.category === 'games';
-    const isAccountGame = isGame && !isPubg;
-
-    const hiddenAcc = $('customerAccount');
-    if (!hiddenAcc) return;
-
-    if (isPubg) {
-      const pid = $('pubgPlayerIdInput')?.value.trim() || '';
-      hiddenAcc.value = pid ? `Player ID: ${pid}` : '';
-    } else if (isAccountGame) {
-      const user = $('gameAccountUserInput')?.value.trim() || '';
-      const pass = $('gameAccountPassInput')?.value.trim() || '';
-      if (user || pass) {
-        hiddenAcc.value = `الحساب: ${user} | كلمة السر: ${pass}`;
-      } else {
-        hiddenAcc.value = '';
-      }
-    } else {
-      const val = $('serviceCustomAccountInput')?.value.trim() || '';
-      hiddenAcc.value = val;
-    }
+    $('customerAccount').value = KenoCheckout.format(service, KenoCheckout.values($('fulfillmentFields')));
   }
-
-  $('pubgPlayerIdInput')?.addEventListener('input', syncCustomerAccount);
-  $('gameAccountUserInput')?.addEventListener('input', syncCustomerAccount);
-  $('gameAccountPassInput')?.addEventListener('input', syncCustomerAccount);
-  $('serviceCustomAccountInput')?.addEventListener('input', syncCustomerAccount);
-
-  $('togglePassBtn')?.addEventListener('click', () => {
-    const passInput = $('gameAccountPassInput');
-    const btn = $('togglePassBtn');
-    if (!passInput || !btn) return;
-    const isPass = passInput.type === 'password';
-    passInput.type = isPass ? 'text' : 'password';
-    btn.innerHTML = isPass ? icon('eye-off') : icon('eye');
-    if (window.Icons && typeof window.Icons.hydrate === 'function') {
-      window.Icons.hydrate();
-    }
-  });
 
   // --- Receipt Image Processing & Upload Helper ---
   function initReceiptUpload(dropzoneEl, fileInputEl, previewCardEl, previewImgEl, nameEl, sizeEl, removeBtnEl, changeBtnEl, onFileCompressed, onFileRemoved) {
@@ -1187,6 +1028,7 @@
   }
 
   async function updateOrdersBadgeCount() {
+    if (!adminOpen) return;
     try {
       let orders = [];
       if (window.KenoFirebase && typeof window.KenoFirebase.getOrders === 'function') {
@@ -1228,46 +1070,7 @@
 
       syncCustomerAccount();
 
-      // Dynamic validation based on customer info requirement
-      const serviceNameLower = (service?.name || '').toLowerCase();
-      const serviceMarkLower = (service?.mark || '').toLowerCase();
-      const serviceIdLower = (service?.id || '').toLowerCase();
-      const isPubg = serviceIdLower.includes('pubg') || 
-                     serviceNameLower.includes('ببجي') || 
-                     serviceNameLower.includes('pubg') || 
-                     serviceMarkLower.includes('pubg');
-      const isGame = service?.category === 'games';
-      const isAccountGame = isGame && !isPubg;
-
-      if (isPubg) {
-        const pid = $('pubgPlayerIdInput')?.value.trim() || '';
-        if (!pid) {
-          toast('يرجى إدخال Player ID الخاص بك لشحن ببجي.');
-          $('pubgPlayerIdInput')?.focus();
-          return;
-        }
-      } else if (isAccountGame) {
-        const user = $('gameAccountUserInput')?.value.trim() || '';
-        const pass = $('gameAccountPassInput')?.value.trim() || '';
-        if (!user) {
-          toast('يرجى إدخال اسم المستخدم أو البريد الإلكتروني للحساب.');
-          $('gameAccountUserInput')?.focus();
-          return;
-        }
-        if (!pass) {
-          toast('يرجى إدخال كلمة المرور للتنفيذ.');
-          $('gameAccountPassInput')?.focus();
-          return;
-        }
-      } else {
-        const custVal = $('serviceCustomAccountInput')?.value.trim() || '';
-        if (!custVal && service?.plans?.length > 0) {
-          toast('يرجى إدخال البيانات المطلوبة لتنفيذ طلبك.');
-          $('serviceCustomAccountInput')?.focus();
-          return;
-        }
-      }
-
+      if (!KenoCheckout.ready()) { toast('راجع بيانات الطلب وأكد المراجعة.'); return; }
       const options = getOrderOptionsFromDialog();
       const orderCode = OrderUtils.generateOrderCode();
       options.orderCode = orderCode;
@@ -1275,10 +1078,14 @@
       // Save order record to KenoOrderStore
       const orderObj = {
         id: orderCode,
+        reviewToken: KenoReviews.newToken(),
+        serviceIds: [],
         timestamp: Date.now(),
         dateStr: new Date().toLocaleString('ar-EG'),
         type: 'single',
         items: [{
+          serviceId: service.id,
+          fulfillment: KenoCheckout.entries(service,KenoCheckout.values($('fulfillmentFields'),false)),
           serviceName: service?.name || '',
           planLabel: plan?.label || options.quoteDetails || 'خدمة حسب الطلب',
           quantity: 1,
@@ -1295,6 +1102,8 @@
         status: 'pending'
       };
 
+      orderObj.serviceIds = [...new Set(orderObj.items.map(it=>it.serviceId))];
+      KenoReviews.remember(orderObj);
       // 1. Validate WhatsApp number exists and is valid
       const storePhone = data?.settings?.whatsapp;
       if (!OrderUtils.isValidWhatsAppNumber(storePhone)) {
@@ -1320,7 +1129,8 @@
       (async () => {
         try {
           if (window.KenoFirebase && typeof window.KenoFirebase.createOrder === 'function') {
-            await window.KenoFirebase.createOrder(orderObj);
+            const saved = await window.KenoFirebase.createOrder(orderObj);
+            if (!saved.cloud) toast('طلبك جاهز في واتساب، لكن لم يتأكد حفظه بالسحابة. احتفظ بكود الطلب.');
           } else {
             await KenoOrderStore.saveOrder(orderObj);
           }
@@ -1411,18 +1221,8 @@
     }
 
     const items = getCartItems();
-    const existing = items.find(it => it.serviceId === serviceId && it.planId === planId);
-
-    if (existing) {
-      existing.quantity = Math.min(99, (existing.quantity || 1) + quantity);
-    } else {
-      items.push({
-        serviceId,
-        planId: plan ? plan.id : null,
-        quantity: Math.max(1, quantity),
-        addedAt: Date.now()
-      });
-    }
+    const fields = KenoCheckout.active?.id === serviceId ? KenoCheckout.values($('fulfillmentFields'), false) : {};
+    items.push({ lineId: OrderUtils.generateOrderCode(), serviceId, planId: plan?.id || null, quantity: Math.max(1, quantity), fields, quoteDetails: $('quoteDetails')?.value.trim() || '', addedAt: Date.now() });
 
     saveCartItems(items);
     toast(`تمت إضافة "${plan ? plan.label : service.name}" إلى سلة الطلبات 🛒`);
@@ -1474,6 +1274,7 @@
   }
 
   function closeCart() {
+    KenoCheckout.stopAudio();
     document.body.style.overflow = previousOverflow;
     cartInertNodes.forEach((value, el) => { el.inert = value; });
     cartInertNodes.clear();
@@ -1507,7 +1308,7 @@
           validItems.push({
             ...it,
             service: srv,
-            plan: pln || { id: null, label: 'خدمة حسب الطلب', price: 0 }
+            plan: pln || { id: null, label: it.quoteDetails || 'خدمة حسب الطلب', price: 0 }
           });
         }
       }
@@ -1526,7 +1327,7 @@
     });
 
     if ($('cartItemsCount')) $('cartItemsCount').textContent = totalCount;
-    if ($('cartGrandTotal')) $('cartGrandTotal').textContent = `${money(grandTotal)} ج.م`;
+    if ($('cartGrandTotal')) $('cartGrandTotal').textContent = `${money(grandTotal)} ج.م${validItems.some(it => !it.service.plans.length) ? ' + خدمات تحتاج تسعيرًا' : ''}`;
 
     const emptyEl = $('cartEmptyState');
     const footerEl = $('cartFooter');
@@ -1539,7 +1340,7 @@
       if (footerEl) footerEl.hidden = true;
       if (stepperBar) stepperBar.hidden = true;
       if (listEl) listEl.innerHTML = '';
-      for (let s = 1; s <= 5; s++) {
+      for (let s = 1; s <= 3; s++) {
         const panel = $(`checkoutStep${s}`);
         if (panel) panel.hidden = s !== 1;
       }
@@ -1558,7 +1359,7 @@
             <div class="cart-item-info">
               <div class="cart-item-title">${esc(item.service.name)}</div>
               <div class="cart-item-plan">${esc(item.plan.label)}</div>
-              <div class="cart-item-price">${money(itemTotal)} ج.م <small style="color:var(--muted);font-weight:normal;">(${money(item.plan.price)} × ${item.quantity})</small></div>
+              <div class="cart-item-price">${item.service.plans.length ? money(itemTotal)+' ج.م' : 'السعر يُحدد في المحادثة'} <small style="color:var(--muted);font-weight:normal;">الكمية: ${item.quantity} لنفس الحساب</small></div>
             </div>
             <div class="cart-item-controls">
               <button type="button" class="cart-qty-btn" data-cart-action="dec" data-cart-index="${idx}" aria-label="تقليل الكمية">−</button>
@@ -1571,78 +1372,48 @@
       }).join('');
     }
 
+    renderCartFulfillment();
     setCheckoutStep(currentCheckoutStep);
   }
 
-  // --- 4-Step Guided Checkout Controller ---
   let currentCheckoutStep = 1;
-
+  function renderCartFulfillment() {
+    const host = $('cartFulfillmentFields'); host.replaceChildren();
+    getCartItems().forEach((item, i) => {
+      const service = viewData().services.find(s=>s.id===item.serviceId);
+      const block = document.createElement('fieldset'); block.dataset.cartLine = String(i);
+      const legend = document.createElement('legend'); legend.textContent = (i+1)+'. '+service.name+' — '+(service.plans.find(p=>p.id===item.planId)?.label || 'حسب الطلب');
+      const inputs = document.createElement('div'); KenoCheckout.renderFields(inputs, service, item.fields || {}, 'cart-'+i);
+      block.append(legend, inputs); host.append(block);
+      inputs.addEventListener('input', () => {
+        const items = getCartItems(); if (!items[i]) return;
+        items[i].fields = KenoCheckout.values(inputs, false);
+        storageSet(CART_STORAGE_KEY, JSON.stringify(items)); $('cartReviewConfirmed').checked = false;
+      });
+    });
+  }
+  function validateCart() { return KenoCheckout.validate($('cartFulfillmentFields')); }
   function setCheckoutStep(step) {
-    const rawItems = getCartItems();
-    if (rawItems.length === 0 && step > 1) {
-      step = 1;
+    currentCheckoutStep = getCartItems().length ? Math.max(1, Math.min(3, step)) : 1;
+    for (let s=1;s<=3;s++) {
+      $('checkoutStep'+s).hidden = s !== currentCheckoutStep;
+      $('stepIndicator'+s)?.classList.toggle('active',s===currentCheckoutStep);
+      $('stepIndicator'+s)?.setAttribute('aria-current',s===currentCheckoutStep?'step':'false');
     }
-    currentCheckoutStep = Math.max(1, Math.min(4, step));
-
-    // Update Progress Stepper Bar
-    if ($('checkoutStepperBar')) {
-      $('checkoutStepperBar').hidden = rawItems.length === 0;
+    $('stepperProgressFill').style.width = (currentCheckoutStep/3*100)+'%';
+    $('cartPrevStepBtn').hidden = currentCheckoutStep===1;
+    $('cartNextStepBtn').hidden = currentCheckoutStep===3;
+    $('cartNextStepBtn').querySelector('span').textContent = 'التالي';
+    $('cartSubmitOrderBtn').hidden = currentCheckoutStep!==3;
+    $('cartSubActions').hidden = currentCheckoutStep!==1;
+    if (currentCheckoutStep===3) {
+      $('checkoutStep4').hidden = false;
+      cartSelectedPaymentId = renderPaymentMethodsList($('cartPaymentMethods'),cartSelectedPaymentId,'cart-payment');
+      renderInvoiceSummary(); $('cartReviewConfirmed').checked=false;
     }
-    const fillPercent = ((currentCheckoutStep - 0.5) / 3.5) * 100;
-    if ($('stepperProgressFill')) {
-      $('stepperProgressFill').style.width = `${Math.max(20, fillPercent)}%`;
-    }
-
-    // Update Step Indicators & Panels
-    for (let s = 1; s <= 4; s++) {
-      const ind = $(`stepIndicator${s}`);
-      const panel = $(`checkoutStep${s}`);
-      if (ind) {
-        ind.classList.toggle('active', s === currentCheckoutStep);
-        ind.classList.toggle('completed', s < currentCheckoutStep);
-      }
-      if (panel) {
-        panel.hidden = s !== currentCheckoutStep;
-      }
-    }
-
-    // Step-Specific Preparation
-    if (currentCheckoutStep === 3) {
-      cartSelectedPaymentId = renderPaymentMethodsList($('cartPaymentMethods'), cartSelectedPaymentId, 'cart-payment');
-    } else if (currentCheckoutStep === 4) {
-      renderInvoiceSummary();
-    }
-
-    // Update Stepper Navigation Buttons
-    const prevBtn = $('cartPrevStepBtn');
-    const nextBtn = $('cartNextStepBtn');
-    const submitBtn = $('cartSubmitOrderBtn');
-    const subActions = $('cartSubActions');
-
-    if (prevBtn) prevBtn.hidden = currentCheckoutStep === 1;
-
-    if (nextBtn && submitBtn) {
-      if (currentCheckoutStep === 4) {
-        nextBtn.hidden = true;
-        submitBtn.hidden = false;
-      } else {
-        nextBtn.hidden = false;
-        submitBtn.hidden = true;
-        const labels = {
-          1: 'متابعة للبيانات',
-          2: 'متابعة لاختيار وسيلة الدفع',
-          3: 'مراجعة وتأكيد الطلب'
-        };
-        const textSpan = nextBtn.querySelector('span');
-        if (textSpan) textSpan.textContent = labels[currentCheckoutStep] || 'متابعة';
-      }
-    }
-
-    if (subActions) {
-      subActions.hidden = currentCheckoutStep !== 1;
-    }
-
-    if ($('cartBody')) $('cartBody').scrollTop = 0;
+    KenoCheckout.stopAudio();
+    KenoCheckout.audioButton($('cartListen'),viewData().settings.stepAudio?.[currentCheckoutStep-1]);
+    $('cartBody').scrollTop=0;
   }
 
   function renderInvoiceSummary() {
@@ -1655,8 +1426,9 @@
         const pln = srv.plans.find(p => p.id === it.planId && p.available);
         if (pln || srv.plans.length === 0) {
           validItems.push({
+            ...it,
             service: srv,
-            plan: pln || { id: null, label: 'خدمة حسب الطلب', price: 0 },
+            plan: pln || { id: null, label: it.quoteDetails || 'خدمة حسب الطلب', price: 0 },
             quantity: it.quantity || 1
           });
         }
@@ -1681,10 +1453,10 @@
       $('invoiceItemsSummary').innerHTML = validItems.map(it => `
         <div class="invoice-item-row">
           <div class="invoice-item-name">
-            <strong>${esc(it.service.name)}</strong>
+            <strong>${esc(it.service.name)}</strong><pre dir="auto">${esc(KenoCheckout.format(it.service,it.fields || {},true))}</pre>
             <span>${esc(it.plan.label)} (${it.quantity} × ${money(it.plan.price)} ج.م)</span>
           </div>
-          <span class="invoice-item-price">${money((it.plan.price || 0) * it.quantity)} ج.م</span>
+          <span class="invoice-item-price">${it.service.plans.length ? money((it.plan.price || 0) * it.quantity)+' ج.م' : 'يحتاج تسعيرًا'}</span>
         </div>
       `).join('');
     }
@@ -1705,60 +1477,26 @@
     }
 
     if ($('invoiceTotalAmount')) {
-      $('invoiceTotalAmount').textContent = `${money(grandTotal)} ج.م`;
+      $('invoiceTotalAmount').textContent = `${money(grandTotal)} ج.م${validItems.some(it => !it.service.plans.length) ? ' + خدمات تحتاج تسعيرًا' : ''}`;
     }
   }
 
-  // Stepper Next Button
   $('cartNextStepBtn')?.addEventListener('click', () => {
-    const rawItems = getCartItems();
-    if (rawItems.length === 0) {
-      toast('سلة الطلبات فارغة.');
-      return;
-    }
-
-    if (currentCheckoutStep === 1) {
-      setCheckoutStep(2);
-    } else if (currentCheckoutStep === 2) {
-      const acc = $('cartCustomerAccount')?.value.trim();
-      if (!acc) {
-        $('cartCustomerAccount')?.focus();
-        toast('يرجى إدخال بيانات الحساب أو الـ ID للشحن للمتابعة.');
-        return;
-      }
-      setCheckoutStep(3);
-    } else if (currentCheckoutStep === 3) {
-      setCheckoutStep(4);
-    }
+    if (!getCartItems().length) return;
+    if (currentCheckoutStep===2 && !validateCart()) return;
+    setCheckoutStep(currentCheckoutStep+1);
   });
-
-  // Stepper Prev Button
-  $('cartPrevStepBtn')?.addEventListener('click', () => {
-    if (currentCheckoutStep > 1) {
-      setCheckoutStep(currentCheckoutStep - 1);
-    }
-  });
-
-  // Stepper Header Direct Click
+  $('cartPrevStepBtn')?.addEventListener('click', () => setCheckoutStep(currentCheckoutStep-1));
   $('checkoutStepperBar')?.addEventListener('click', event => {
-    const ind = event.target.closest('.step-indicator');
-    if (!ind) return;
-    const targetStep = Number(ind.dataset.step);
-    if (targetStep) {
-      const rawItems = getCartItems();
-      if (rawItems.length === 0) return;
-      if (targetStep > 2 && !$('cartCustomerAccount')?.value.trim()) {
-        toast('يرجى كتابة بيانات الحساب أولاً.');
-        setCheckoutStep(2);
-        return;
-      }
-      setCheckoutStep(targetStep);
-    }
+    const target=Number(event.target.closest('[data-step]')?.dataset.step);
+    if (!target) return;
+    if (target===3 && !validateCart()) {setCheckoutStep(2); validateCart(); return;}
+    setCheckoutStep(target);
   });
 
   // Add to Cart from Service Dialog
   $('addToCartBtn')?.addEventListener('click', () => {
-    if (!selectedService) return;
+    if (!selectedService || !KenoCheckout.ready()) return;
     addToCart(selectedService, selectedPlan, 1);
     closeDialog('serviceDialog');
     currentCheckoutStep = 1;
@@ -1797,6 +1535,8 @@
   // Cart WhatsApp Order Final Submission
   $('cartSubmitOrderBtn')?.addEventListener('click', async () => {
     try {
+      if (!validateCart()) {setCheckoutStep(2); validateCart(); return;}
+      if (!$('cartReviewConfirmed').checked) {toast('راجع بيانات كل عنصر وأكد المراجعة.'); return;}
       const data = viewData();
       const rawItems = getCartItems();
       const validItems = [];
@@ -1807,8 +1547,9 @@
           const pln = srv.plans.find(p => p.id === it.planId && p.available);
           if (pln || srv.plans.length === 0) {
             validItems.push({
+              ...it,
               service: srv,
-              plan: pln || { id: null, label: 'خدمة حسب الطلب', price: 0 },
+              plan: pln || { id: null, label: it.quoteDetails || 'خدمة حسب الطلب', price: 0 },
               quantity: it.quantity || 1
             });
           }
@@ -1827,10 +1568,14 @@
       // Save Order Record into KenoOrderStore
       const orderObj = {
         id: orderCode,
+        reviewToken: KenoReviews.newToken(),
+        serviceIds: [],
         timestamp: Date.now(),
         dateStr: new Date().toLocaleString('ar-EG'),
         type: 'cart',
         items: validItems.map(it => ({
+          serviceId: it.service.id,
+          fulfillment: KenoCheckout.entries(it.service,it.fields || {}),
           serviceName: it.service.name,
           planLabel: it.plan.label,
           quantity: it.quantity,
@@ -1848,6 +1593,8 @@
         status: 'pending'
       };
 
+      orderObj.serviceIds = [...new Set(orderObj.items.map(it=>it.serviceId))];
+      KenoReviews.remember(orderObj);
       // 1. Validate WhatsApp number exists and is valid
       const storePhone = data?.settings?.whatsapp;
       if (!OrderUtils.isValidWhatsAppNumber(storePhone)) {
@@ -1883,7 +1630,8 @@
       (async () => {
         try {
           if (window.KenoFirebase && typeof window.KenoFirebase.createOrder === 'function') {
-            await window.KenoFirebase.createOrder(orderObj);
+            const saved = await window.KenoFirebase.createOrder(orderObj);
+            if (!saved.cloud) toast('طلبك جاهز في واتساب، لكن لم يتأكد حفظه بالسحابة. احتفظ بكود الطلب.');
           } else {
             await KenoOrderStore.saveOrder(orderObj);
           }
@@ -1903,7 +1651,7 @@
       currentCheckoutStep = 1;
       if ($('invoiceOrderCode')) $('invoiceOrderCode').dataset.code = '';
       closeCart();
-      toast(`تم تأكيد طلبك ${orderCode}. جاري فتح واتساب...`);
+      toast(`تم تجهيز طلبك ${orderCode}. جاري فتح واتساب...`);
     } catch (err) {
       console.error('Cart WhatsApp error:', err);
       toast('تعذر فتح واتساب، يرجى المحاولة مرة أخرى.');
@@ -1923,8 +1671,9 @@
           const pln = srv.plans.find(p => p.id === it.planId && p.available);
           if (pln || srv.plans.length === 0) {
             validItems.push({
+              ...it,
               service: srv,
-              plan: pln || { id: null, label: 'خدمة حسب الطلب', price: 0 },
+              plan: pln || { id: null, label: it.quoteDetails || 'خدمة حسب الطلب', price: 0 },
               quantity: it.quantity || 1
             });
           }
@@ -1972,7 +1721,7 @@
         return;
       }
       const storeName = data?.settings?.storeName || 'Keno Store';
-      const text = `أهلًا ${storeName}، أود الاستفسار عن الخدمات الرقمية.`.normalize('NFC');
+      const text = `أهلًا ${storeName}، هبعتلكم فويس بتفاصيل طلبي.`.normalize('NFC');
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
       const opened = OrderUtils.openWhatsApp(url);
       if (!opened) {
@@ -2172,6 +1921,7 @@
     // Populate Settings Form
     if (!settingsDirty && $('settingsForm')) {
       const form = $('settingsForm');
+      KenoContent.loadEditor(draft.settings);
       for (const field of ['storeName', 'tagline', 'whatsapp', 'paymentPhone', 'instapay', 'workingHours', 'facebook', 'instagram', 'tiktok', 'telegram', 'announcement']) {
         if (form.elements[field]) {
           form.elements[field].value = draft.settings[field] || '';
@@ -2799,6 +2549,7 @@
   let activeViewerReceipt = null;
 
   async function renderAdminOrders() {
+    KenoReviews.admin();
     const tbody = $('adminOrdersTableBody');
     const emptyState = $('adminOrdersEmptyState');
     if (!tbody) return;
@@ -2861,7 +2612,7 @@
         if (o.items && o.items.length > 0) {
           itemsHtml = o.items.map(it => `
             <div class="order-item-chip">
-              <strong>${esc(it.serviceName)}</strong>: ${esc(it.planLabel || 'الخدمة')} ${it.quantity > 1 ? `<span class="quantity-badge">×${it.quantity}</span>` : ''}
+              <strong>${esc(it.serviceName)}</strong>: ${esc(it.planLabel || 'الخدمة')}<pre dir="auto">${esc((it.fulfillment || []).map(f=>f.label+": "+f.value).join("\n"))}</pre> ${it.quantity > 1 ? `<span class="quantity-badge">×${it.quantity}</span>` : ''}
             </div>
           `).join('');
         } else if (o.serviceName) {
@@ -2931,9 +2682,10 @@
         `;
       }).join('');
 
-      icons();
+      hydrateIcons();
     } catch (err) {
       console.error('Failed to render orders:', err);
+      showAdminMessage('تعذر تحميل الطلبات من السحابة. تحقق من الاتصال وتسجيل الدخول وصلاحيات Firebase؛ لم يتم تأكيد بيانات الطلبات.');
     }
   }
 
@@ -3001,7 +2753,7 @@
 
       const statusBadge = $('orderModalStatusBadge');
       if (statusBadge) {
-        const statuses = root.KenoConfig?.ORDER_STATUSES || {};
+        const statuses = window.KenoConfig?.ORDER_STATUSES || {};
         const stInfo = statuses[order.status || 'pending'] || { label: order.status || 'قيد الانتظار', class: 'status-pending' };
         statusBadge.textContent = stInfo.label;
         statusBadge.className = `status-pill ${stInfo.class || 'status-pending'}`;
@@ -3019,7 +2771,7 @@
               await KenoOrderStore.updateOrderStatus(order.id, newSt);
             }
             order.status = newSt;
-            const statuses = root.KenoConfig?.ORDER_STATUSES || {};
+            const statuses = window.KenoConfig?.ORDER_STATUSES || {};
             const stInfo = statuses[newSt] || { label: newSt, class: 'status-pending' };
             if (statusBadge) {
               statusBadge.textContent = stInfo.label;
@@ -3040,7 +2792,7 @@
           itemsTbody.innerHTML = order.items.map(it => `
             <tr>
               <td><strong>${esc(it.serviceName)}</strong></td>
-              <td>${esc(it.planLabel || '—')}</td>
+              <td>${esc(it.planLabel || '—')}<pre dir="auto">${esc((it.fulfillment || []).map(f=>f.label+": "+f.value).join("\n"))}</pre></td>
               <td>${it.quantity || 1}</td>
               <td><strong>${it.price || 0} ج.م</strong></td>
             </tr>
@@ -3123,7 +2875,7 @@
       }
 
       $('orderDetailsDialog')?.showModal();
-      icons();
+      hydrateIcons();
       return;
     }
 
@@ -3243,6 +2995,7 @@
       const next = JSON.parse(JSON.stringify(draft));
       const form = $('settingsForm');
       if (!form) return;
+      Object.assign(next.settings, KenoContent.readEditor());
       for (const field of ['storeName', 'tagline', 'whatsapp', 'paymentPhone', 'instapay', 'workingHours', 'facebook', 'instagram', 'tiktok', 'telegram', 'announcement']) {
         if (form.elements[field]) {
           next.settings[field] = form.elements[field].value.trim();
@@ -3558,6 +3311,7 @@
       if (form.elements[field]) form.elements[field].value = service[field] || '';
     }
 
+    KenoCheckout.loadEditor(service);
     form.elements.image.value = service.image || '';
 
     let statusVal = 'visible';
@@ -3832,6 +3586,7 @@
     const form = $('serviceForm');
     const tempService = {
       id: editingServiceId || 'preview-temp-service',
+      fulfillment: KenoCheckout.readEditor(),
       name: form?.elements.name?.value.trim() || 'معاينة الخدمة',
       category: form?.elements.category?.value || 'games',
       description: form?.elements.description?.value.trim() || '',
@@ -3869,6 +3624,7 @@
       service.status = st;
       service.featured = Boolean(form.elements.featured?.checked);
 
+      service.fulfillment = KenoCheckout.readEditor();
       service.notes = form.elements.notes.value.split('\n').map(n => n.trim()).filter(Boolean);
       service.plans = JSON.parse(JSON.stringify(currentEditorPlans));
 
@@ -3903,6 +3659,7 @@
       const clonedId = newId('service');
       const service = {
         id: clonedId,
+        fulfillment: KenoCheckout.readEditor(),
         name: form.elements.name.value.trim() + ' (نسخة)',
         category: form.elements.category.value,
         description: form.elements.description.value.trim(),
@@ -4628,3 +4385,4 @@
     }
   })();
 })();
+
