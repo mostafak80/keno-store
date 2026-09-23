@@ -184,26 +184,11 @@ body.keno-motion #accountInfoSection #orderNote { min-height:58px; padding:7px 9
 @media (max-width:560px) {
   body.keno-motion #accountInfoSection .account-fields-grid { grid-template-columns:minmax(0,1fr); }
 }
-/* Payment methods start collapsed; only the chosen drawer expands. */
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card { min-width:0; padding:0 !important; border-radius:9px; box-shadow:none; backdrop-filter:none; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card:has(.payment-details-drawer.open) { grid-column:1 / -1; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card-header { flex-direction:row; justify-content:flex-start; min-height:52px; padding:7px; gap:5px; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card-main { display:flex; flex-direction:row; width:100%; gap:5px; align-items:center; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-info-title { min-width:0; text-align:start; align-items:flex-start; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-info-title strong { font-size:14px; line-height:1.45; overflow-wrap:normal; word-break:normal; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-icon-wrap { width:22px; height:22px; border:0; border-radius:5px; box-shadow:none; background:transparent; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-icon-wrap .icon { width:18px; height:18px; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) :is(.payment-sub,.payment-quick-tag) { display:none !important; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .custom-radio { position:absolute; top:3px; inset-inline-start:auto; inset-inline-end:3px; width:6px; height:6px; border:0; box-shadow:none; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-details-drawer { padding:0; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-drawer-content { padding:6px 8px; gap:4px; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-field { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4px 6px; gap:4px 8px; border-radius:6px; min-width:0; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-field-info { gap:3px 8px; min-width:0; flex:1 1 150px; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-label { font-size:12px; line-height:1.4; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) :is(.drawer-val,.drawer-val-text) { font-size:14px; line-height:1.45; overflow-wrap:anywhere; padding:1px 4px; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) :is(.drawer-copy-btn,.drawer-link-btn) { min-height:32px; padding:4px 7px; font-size:12px; }
-body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-desc { padding:3px 5px; font-size:12px; line-height:1.45; }
+/* Payment methods layout handled cleanly by journey.css */
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; width:100%; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card { display:contents; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card-header { grid-row:1; }
+body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-details-drawer { grid-column:1 / -1; grid-row:2; }
 body.keno-motion #serviceDialog .order-whatsapp-notice { padding:8px 10px; gap:7px; margin-top:8px; border-radius:9px; }
 body.keno-motion #serviceDialog .order-whatsapp-notice strong { font-size:13px; }
 body.keno-motion #serviceDialog .order-whatsapp-notice .notice-text > span { font-size:12px; line-height:1.5; }

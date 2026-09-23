@@ -224,83 +224,94 @@
 
     containerEl.innerHTML = enabledMethods.map(pm => {
       const isSelected = pm.id === selectedId;
-      const subtitle = pm.id === 'vodafone' ? 'محفظة كاش إلكترونية' : (pm.id === 'instapay' ? 'تحويل بنكي ولحظي' : (pm.id === 'telda' ? 'بطاقة وتطبيق تيلدا' : 'تحويل مباشر'));
+      const cleanName = esc(pm.name.replace(/\s*\([^)]*\)/g, ''));
       return `
         <div class="payment-card ${isSelected ? 'selected' : ''}" data-pm-id="${esc(pm.id)}">
-          <div class="payment-card-header" role="button" tabindex="0" aria-label="${esc(pm.name)}" aria-expanded="false" aria-pressed="${isSelected}">
-            <div class="payment-card-main">
-              <span class="custom-radio ${isSelected ? 'checked' : ''}" aria-hidden="true"></span>
-              <input type="radio" name="${esc(radioName)}" value="${esc(pm.id)}" ${isSelected ? 'checked' : ''} style="display:none;">
-              <div class="payment-icon-wrap">
-                ${icon(pm.icon || 'wallet-cards')}
-              </div>
-              <div class="payment-info-title">
-                <strong>${esc(pm.name.replace(/\s*\([^)]*\)/g, ''))}</strong>
-                <span class="payment-sub">${subtitle}</span>
-              </div>
+          <div class="payment-card-header" role="button" tabindex="0" aria-label="${esc(pm.name)}" aria-expanded="${isSelected ? 'true' : 'false'}" aria-pressed="${isSelected ? 'true' : 'false'}">
+            <span class="custom-radio ${isSelected ? 'checked' : ''}" aria-hidden="true"></span>
+            <input type="radio" name="${esc(radioName)}" value="${esc(pm.id)}" ${isSelected ? 'checked' : ''} style="display:none;">
+            <div class="payment-icon-wrap">
+              ${icon(pm.icon || 'wallet-cards')}
             </div>
-            ${pm.number ? `<span class="payment-quick-tag" dir="ltr">${esc(pm.number)}</span>` : ''}
+            <div class="payment-info-title">
+              <strong>${cleanName}</strong>
+            </div>
           </div>
 
-          <div class="payment-details-drawer">
-            <div class="payment-drawer-content">
-              ${pm.number ? `
-                <div class="drawer-field">
-                  <div class="drawer-field-info">
-                    <span class="drawer-label">
-                      ${icon('credit-card')}
-                      <span>الرقم / المعرّف:</span>
-                    </span>
-                    <code class="drawer-val" dir="ltr">${esc(pm.number)}</code>
-                  </div>
-                  <button type="button" class="drawer-copy-btn" data-copy-type="number" data-value="${esc(pm.number)}" title="نسخ رقم التحويل">
-                    ${icon('copy')}
-                    <span>نسخ الرقم</span>
-                  </button>
+          <div class="payment-details-drawer ${isSelected ? 'open' : ''}">
+            <div class="payment-drawer-card">
+              <div class="drawer-header-banner">
+                <div class="drawer-header-title">
+                  <span class="drawer-header-icon">${icon(pm.icon || 'wallet-cards')}</span>
+                  <span>بيانات التحويل عبر <strong>${cleanName}</strong></span>
                 </div>
-              ` : ''}
+                <span class="drawer-secure-pill">${icon('shield-check')} <span>فوري ومؤكد</span></span>
+              </div>
 
-              ${pm.accountName ? `
-                <div class="drawer-field">
-                  <div class="drawer-field-info">
-                    <span class="drawer-label">
-                      ${icon('user')}
-                      <span>اسم المستلم:</span>
-                    </span>
-                    <strong class="drawer-val-text">${esc(pm.accountName)}</strong>
-                  </div>
-                  <button type="button" class="drawer-copy-btn" data-copy-type="account" data-value="${esc(pm.accountName)}" title="نسخ اسم الحساب">
-                    ${icon('copy')}
-                    <span>نسخ الاسم</span>
-                  </button>
-                </div>
-              ` : ''}
-
-              ${pm.link ? `
-                <div class="drawer-field has-link">
-                  <span class="drawer-label">
-                    ${icon('external-link')}
-                    <span>رابط الدفع:</span>
-                  </span>
-                  <div class="drawer-actions-row">
-                    <button type="button" class="drawer-copy-btn" data-copy-type="link" data-value="${esc(pm.link)}" title="نسخ رابط الدفع">
+              <div class="payment-drawer-content">
+                ${pm.number ? `
+                  <div class="drawer-field">
+                    <div class="drawer-field-info">
+                      <span class="drawer-label">
+                        ${icon('credit-card')}
+                        <span>رقم المحفظة / التحويل:</span>
+                      </span>
+                      <code class="drawer-val" dir="ltr">${esc(pm.number)}</code>
+                    </div>
+                    <button type="button" class="drawer-copy-btn" data-copy-type="number" data-value="${esc(pm.number)}" title="نسخ رقم التحويل">
                       ${icon('copy')}
-                      <span>نسخ الرابط</span>
+                      <span>نسخ الرقم</span>
                     </button>
-                    <a href="${esc(pm.link)}" target="_blank" rel="noopener noreferrer" class="drawer-link-btn" title="فتح رابط الدفع في نافذة جديدة">
-                      ${icon('external-link')}
-                      <span>فتح الرابط</span>
-                    </a>
                   </div>
-                </div>
-              ` : ''}
+                ` : ''}
 
-              ${pm.description ? `
-                <div class="drawer-desc">
-                  ${icon('info')}
-                  <span>${esc(pm.description)}</span>
-                </div>
-              ` : ''}
+                ${pm.accountName ? `
+                  <div class="drawer-field">
+                    <div class="drawer-field-info">
+                      <span class="drawer-label">
+                        ${icon('user')}
+                        <span>اسم المستلم:</span>
+                      </span>
+                      <strong class="drawer-val-text">${esc(pm.accountName)}</strong>
+                    </div>
+                    <button type="button" class="drawer-copy-btn" data-copy-type="account" data-value="${esc(pm.accountName)}" title="نسخ اسم الحساب">
+                      ${icon('copy')}
+                      <span>نسخ الاسم</span>
+                    </button>
+                  </div>
+                ` : ''}
+
+                ${pm.link ? `
+                  <div class="drawer-field has-link">
+                    <span class="drawer-label">
+                      ${icon('external-link')}
+                      <span>رابط الدفع:</span>
+                    </span>
+                    <div class="drawer-actions-row">
+                      <button type="button" class="drawer-copy-btn" data-copy-type="link" data-value="${esc(pm.link)}" title="نسخ رابط الدفع">
+                        ${icon('copy')}
+                        <span>نسخ الرابط</span>
+                      </button>
+                      <a href="${esc(pm.link)}" target="_blank" rel="noopener noreferrer" class="drawer-link-btn" title="فتح رابط الدفع في نافذة جديدة">
+                        ${icon('external-link')}
+                        <span>فتح الرابط</span>
+                      </a>
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${pm.description ? `
+                  <div class="drawer-desc">
+                    ${icon('info')}
+                    <span>${esc(pm.description)}</span>
+                  </div>
+                ` : `
+                  <div class="drawer-desc">
+                    ${icon('info')}
+                    <span>حوّل المبلغ المحدد، ثم أرفق إشعار أو سكرين شوت التحويل في شات واتساب للتأكيد والتنفيذ فوراً.</span>
+                  </div>
+                `}
+              </div>
             </div>
           </div>
         </div>
@@ -328,13 +339,22 @@
         await copyPaymentText(val, label);
         const originalHtml = copyBtn.innerHTML;
         copyBtn.innerHTML = `${icon('check')} <span>تم النسخ!</span>`;
-        setTimeout(() => { copyBtn.innerHTML = originalHtml; }, 1800);
+        copyBtn.classList.add('copied');
+        setTimeout(() => { 
+          copyBtn.innerHTML = originalHtml; 
+          copyBtn.classList.remove('copied');
+        }, 1800);
         return;
       }
 
       const linkBtn = event.target.closest('.drawer-link-btn');
       if (linkBtn) {
         event.stopPropagation();
+        return;
+      }
+
+      // Clicking inside the details drawer (selecting text, reading) should not collapse or toggle
+      if (event.target.closest('.payment-details-drawer')) {
         return;
       }
 
@@ -346,8 +366,15 @@
 
         if (isCurrentlyOpen) {
           // Collapse the open method on re-click
-          card.classList.remove('drawer-expanded');
+          card.classList.remove('selected', 'drawer-expanded');
+          const radioSpan = card.querySelector('.custom-radio');
+          if (radioSpan) radioSpan.classList.remove('checked');
           if (currentDrawer) currentDrawer.classList.remove('open');
+          const hdr = card.querySelector('.payment-card-header');
+          if (hdr) {
+            hdr.setAttribute('aria-expanded', 'false');
+            hdr.setAttribute('aria-pressed', 'false');
+          }
         } else {
           // Open clicked method and automatically collapse all other methods
           containerEl.querySelectorAll('.payment-card').forEach(c => {
@@ -358,14 +385,16 @@
             if (radioSpan) radioSpan.classList.toggle('checked', isThis);
             const drawer = c.querySelector('.payment-details-drawer');
             if (drawer) drawer.classList.toggle('open', isThis);
+            const hdr = c.querySelector('.payment-card-header');
+            if (hdr) {
+              hdr.setAttribute('aria-expanded', String(isThis));
+              hdr.setAttribute('aria-pressed', String(isThis));
+            }
+            const radioInput = c.querySelector('input[type=radio]');
+            if (radioInput) radioInput.checked = isThis;
           });
         }
 
-        containerEl.querySelectorAll('.payment-card').forEach(c => {
-          c.querySelector('input[type=radio]').checked = c.dataset.pmId === pmId;
-          c.querySelector('.payment-card-header').setAttribute('aria-pressed', String(c.dataset.pmId === pmId));
-          c.querySelector('.payment-card-header').setAttribute('aria-expanded', String(c.querySelector('.payment-details-drawer').classList.contains('open')));
-        });
         if (typeof onSelectionChange === 'function') {
           onSelectionChange(pmId);
         }
