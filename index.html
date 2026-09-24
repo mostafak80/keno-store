@@ -58,6 +58,7 @@
   <script src="./js/storefront.js" defer></script>
   <script src="./js/mobile-ui.js" defer></script>
   <script src="./js/mobile-design-admin.js" defer></script>
+  <script src="./js/texts-admin.js" defer></script>
   <script src="./js/admin.js" id="keno-admin-script" defer></script>
   <script src="./app.js?v=20260922-3" defer></script>
 
@@ -789,6 +790,11 @@
           <i data-icon="shopping-bag"></i>
           <span>الطلبات والإيصالات</span>
           <span class="status-pill active-pill" id="adminOrdersBadge" style="margin-inline-start:4px;padding:1px 7px;font-size:0.7rem;">0</span>
+        </button>
+        <button type="button" id="textsTab" role="tab" aria-selected="false" aria-controls="adminTexts" data-admin-tab="adminTexts" tabindex="-1" style="position:relative;">
+          <i data-icon="file-text"></i>
+          <span>نصوص وكلمات الموقع</span>
+          <span style="position:absolute;top:4px;inset-inline-end:6px;background:var(--red,#e52d3f);color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
         </button>
         <button type="button" id="settingsTab" role="tab" aria-selected="false" aria-controls="adminSettings" data-admin-tab="adminSettings" tabindex="-1">
           <i data-icon="settings-2"></i>
@@ -2150,6 +2156,13 @@
 
         </div>
       </div><!-- #adminMobileDesign -->
+
+      <!-- ══════════════════════════════════════════════════════════
+           Tab: Website Texts & Copywriting Management (نصوص وكلمات الموقع)
+           ══════════════════════════════════════════════════════════ -->
+      <div id="adminTexts" role="tabpanel" aria-labelledby="textsTab" hidden>
+        <div id="adminTextsContainer"></div>
+      </div><!-- #adminTexts -->
 
       <!-- Tab: Featured Hero Card Management -->
       <div id="adminFeatured" role="tabpanel" aria-labelledby="featuredTab" hidden>

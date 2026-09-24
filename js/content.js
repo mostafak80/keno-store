@@ -420,8 +420,8 @@
   function download(name,text,type){const a=document.createElement('a');const u=URL.createObjectURL(new Blob([text],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 
   function readEditor(){
-    const content={...current.content};
-    $('contentSettingsEditor').querySelectorAll('[data-content-setting]').forEach(el=>{content[el.dataset.contentSetting]=el.value;});
+    const content={...(current.content || {})};
+    document.querySelectorAll('[data-content-setting]').forEach(el=>{content[el.dataset.contentSetting]=el.value;});
 
     const layout = {
       siteScale: $('layoutSiteScale')?.value || '100%',
@@ -447,7 +447,7 @@
       layout,
       sectionOrder: sectionOrder.length ? sectionOrder : (current.sectionOrder || ['home','collections','picks','trust','catalog','payments','how','testimonials','faq']),
       stepAudio: [...($('globalAudioEditor')?.querySelectorAll('[data-audio-index]') || [])].map(el=>el.value.trim()),
-      sectionVisibility: Object.fromEntries([...($('contentSettingsEditor')?.querySelectorAll('[data-section-setting]') || [])].map(el=>[el.dataset.sectionSetting,el.checked])),
+      sectionVisibility: Object.fromEntries([...(document.querySelectorAll('[data-section-setting]') || [])].map(el=>[el.dataset.sectionSetting,el.checked])),
       trustBadges: [...($('trustContentEditor')?.children || [])].map(el=>({
         title: el.querySelector('[data-trust-title]')?.value || '',
         desc: el.querySelector('[data-trust-desc]')?.value || '',
@@ -455,5 +455,5 @@
       }))
     };
   }
-  root.KenoContent={render,loadEditor,readEditor};
+  root.KenoContent={render,loadEditor,readEditor,getCopyItems:()=>copy,sections:SECTIONS};
 })(window);

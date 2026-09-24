@@ -303,6 +303,13 @@
       } catch (err) {
         console.error('Error in initMobileDesignPanel:', err);
       }
+      try {
+        if (typeof root.initTextsAdminPanel === 'function') {
+          root.initTextsAdminPanel();
+        }
+      } catch (err) {
+        console.error('Error in initTextsAdminPanel:', err);
+      }
     },
 
 

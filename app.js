@@ -37,6 +37,7 @@
       el.outerHTML = el.id ? markup.replace('<svg ', `<svg id="${esc(el.id)}" `) : markup;
     });
   }
+  window.hydrateIcons = hydrateIcons;
 
   // --- Initial Catalog Loading ---
   let live;
@@ -2337,6 +2338,9 @@
     });
     if (button.dataset.adminTab === 'adminOrders') {
       renderAdminOrders();
+    }
+    if (button.dataset.adminTab === 'adminTexts' && typeof window.initTextsAdminPanel === 'function') {
+      window.initTextsAdminPanel();
     }
   }
 
