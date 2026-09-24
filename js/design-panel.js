@@ -1,5 +1,5 @@
 /**
- * Keno Store � Design Control Panel Engine
+ * Keno Store � Design Control Panel Engine
  * Full visual control: colors, typography, layouts, animations, card styles, spacing.
  * Settings are persisted to Firestore and applied via CSS custom properties on <html>.
  */
@@ -57,6 +57,14 @@
     heroGradient: '#a7162b,#e62e42',
     heroEnabled: true,
     footerLayout: 'standard',
+    // ── Mobile Settings ───────────────────────
+    mobileLayout: 'grid',
+    mobileColumns: 3,
+    mobileGap: 6,
+    mobileCardScale: 5,
+    mobileShowDescription: false,
+    mobileShowCategory: true,
+    mobileFontScale: 95,
   };
 
   let current = { ...DEFAULTS };
@@ -104,6 +112,31 @@
     r.style.setProperty('--kd-tab-active-color', s.tabActiveColor);
     r.style.setProperty('--kd-tab-active-bg', s.tabActiveBg);
     r.style.setProperty('--kd-tab-active-text', s.tabActiveText);
+
+    // ── Mobile settings ──────────────────────────────────────
+    const mLayout = s.mobileLayout || 'grid';
+    const mColsRaw = parseInt(s.mobileColumns, 10) || 3;
+    const mCols = (mLayout === 'vertical') ? 1 : Math.max(1, Math.min(10, mColsRaw));
+    const mScaleNum = Math.max(1, Math.min(10, parseInt(s.mobileCardScale, 10) || 5));
+    // Factor: 0.60 (size 1) to 1.40 (size 10), size 5 is ~0.955
+    const mScaleFactor = 0.60 + ((mScaleNum - 1) / 9) * 0.80;
+    const mGap = typeof s.mobileGap === 'number' ? s.mobileGap : 6;
+    const mFontScale = (s.mobileFontScale || 95) / 100;
+
+    r.style.setProperty('--kd-mobile-cols', String(mCols));
+    r.style.setProperty('--kd-mobile-gap', mGap + 'px');
+    r.style.setProperty('--kd-mobile-scale-factor', mScaleFactor.toFixed(3));
+    r.style.setProperty('--kd-mobile-font-scale', mFontScale.toFixed(2));
+
+    body.classList.toggle('kd-mobile-layout-vertical', mLayout === 'vertical' || mCols === 1);
+    body.classList.toggle('kd-mobile-hide-desc', !s.mobileShowDescription);
+    body.classList.toggle('kd-mobile-show-desc', !!s.mobileShowDescription);
+    body.classList.toggle('kd-mobile-hide-cat', s.mobileShowCategory === false);
+
+    for (let i = 1; i <= 10; i++) {
+      body.classList.remove('kd-mobile-cols-' + i);
+    }
+    body.classList.add('kd-mobile-cols-' + mCols);
 
     body.classList.toggle('kd-no-animations', !s.animationsEnabled);
     body.classList.toggle('kd-no-drift', !s.cardDriftEnabled);

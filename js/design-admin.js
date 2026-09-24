@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Keno Store — Design Admin Panel Controller
  * Wires all design panel inputs to KenoDesign.save() for live preview.
  * Runs only when admin is authenticated.
@@ -51,14 +51,67 @@
     if (root.KenoDesign) root.KenoDesign.apply({ ...curr(), ...partial });
   }
 
+  // ── Helper: scale label for mobile sizes 1 to 10 ──────────────────────
+  function getScaleLabel(scale) {
+    const s = parseInt(scale, 10) || 5;
+    const labels = {
+      1: '1 من 10 (فائق الصغر)',
+      2: '2 من 10 (صغير جداً)',
+      3: '3 من 10 (صغير)',
+      4: '4 من 10 (أصغر من المتوسط)',
+      5: '5 من 10 (افتراضي متناسق لـ 3 كروت)',
+      6: '6 من 10 (متوسط)',
+      7: '7 من 10 (متوسط كبير)',
+      8: '8 من 10 (كبير)',
+      9: '9 من 10 (كبير جداً)',
+      10: '10 من 10 (أكبر حجم واسع)',
+    };
+    return labels[s] || (s + ' من 10');
+  }
+
   // ── Sync form fields to current settings ──────────────────────────────
   function syncFormToCurrent() {
     const s = curr();
     const $ = id => document.getElementById(id);
 
-    // Grid cols
+    // ── Mobile Settings Sync ──
+    const mLayout = s.mobileLayout || 'grid';
+    document.querySelectorAll('.design-layout-opt').forEach(el => {
+      const active = el.dataset.layout === mLayout;
+      el.classList.toggle('active', active);
+      const radio = el.querySelector('input[type=radio]');
+      if (radio) radio.checked = active;
+    });
+    if ($('designMobileColsContainer')) {
+      $('designMobileColsContainer').style.display = mLayout === 'vertical' ? 'none' : 'block';
+    }
+
+    const mCols = parseInt(s.mobileColumns, 10) || 3;
+    document.querySelectorAll('.design-mcol-btn').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.dataset.mcols, 10) === mCols);
+    });
+    if ($('designMobileColsVal')) {
+      $('designMobileColsVal').textContent = mCols + ' كروت في الصف';
+    }
+
+    const mScale = parseInt(s.mobileCardScale, 10) || 5;
+    if ($('designMobileCardScale')) $('designMobileCardScale').value = mScale;
+    if ($('designMobileScaleVal')) $('designMobileScaleVal').textContent = getScaleLabel(mScale);
+
+    const mGap = typeof s.mobileGap === 'number' ? s.mobileGap : 6;
+    if ($('designMobileGap')) $('designMobileGap').value = mGap;
+    if ($('designMobileGapVal')) $('designMobileGapVal').textContent = mGap;
+
+    if ($('designMobileShowDesc')) $('designMobileShowDesc').checked = !!s.mobileShowDescription;
+    if ($('designMobileShowCategory')) $('designMobileShowCategory').checked = s.mobileShowCategory !== false;
+
+    const mFontScale = s.mobileFontScale || 95;
+    if ($('designMobileFontScale')) $('designMobileFontScale').value = mFontScale;
+    if ($('designMobileFontScaleVal')) $('designMobileFontScaleVal').textContent = mFontScale;
+
+    // ── Desktop Grid cols ──
     document.querySelectorAll('.design-col-btn').forEach(btn => {
-      btn.classList.toggle('active', parseInt(btn.dataset.cols) === s.gridColumns);
+      btn.classList.toggle('active', parseInt(btn.dataset.cols, 10) === s.gridColumns);
     });
 
     // Ranges
@@ -146,10 +199,83 @@
   function wireControls() {
     const $ = id => document.getElementById(id);
 
-    // Grid columns buttons
+    // ── Mobile Controls Wiring ──
+    document.querySelectorAll('.design-layout-opt').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.design-layout-opt').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        const layout = el.dataset.layout;
+        const radio = el.querySelector('input[type=radio]');
+        if (radio) radio.checked = true;
+        if ($('designMobileColsContainer')) {
+          $('designMobileColsContainer').style.display = layout === 'vertical' ? 'none' : 'block';
+        }
+        liveApply({ mobileLayout: layout });
+      });
+    });
+
+    document.querySelectorAll('.design-mcol-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.design-mcol-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cols = parseInt(btn.dataset.mcols, 10);
+        if ($('designMobileColsVal')) {
+          $('designMobileColsVal').textContent = cols + ' كروت في الصف';
+        }
+        liveApply({ mobileColumns: cols });
+      });
+    });
+
+    const mScaleInput = $('designMobileCardScale');
+    if (mScaleInput) {
+      mScaleInput.addEventListener('input', () => {
+        const val = parseInt(mScaleInput.value, 10);
+        if ($('designMobileScaleVal')) $('designMobileScaleVal').textContent = getScaleLabel(val);
+        liveApply({ mobileCardScale: val });
+      });
+    }
+
+    function makeRange(inputId, spanId, key, parser) {
+      const input = $(inputId);
+      const span  = $(spanId);
+      if (!input) return;
+      input.addEventListener('input', () => {
+        const val = parser(input.value);
+        if (span) span.textContent = val;
+        liveApply({ [key]: val });
+      });
+    }
+
+    makeRange('designMobileGap', 'designMobileGapVal', 'mobileGap', Number);
+    makeRange('designMobileFontScale', 'designMobileFontScaleVal', 'mobileFontScale', Number);
+
+    if ($('designMobileShowDesc')) {
+      $('designMobileShowDesc').addEventListener('change', e => liveApply({ mobileShowDescription: e.target.checked }));
+    }
+    if ($('designMobileShowCategory')) {
+      $('designMobileShowCategory').addEventListener('change', e => liveApply({ mobileShowCategory: e.target.checked }));
+    }
+
+    const previewBtn = $('toggleMobilePreviewBtn');
+    if (previewBtn) {
+      previewBtn.addEventListener('click', () => {
+        const isSimulating = document.body.classList.toggle('kd-preview-mobile');
+        previewBtn.classList.toggle('is-active', isSimulating);
+        previewBtn.innerHTML = isSimulating
+          ? '<i data-icon="x"></i> <span>إلغاء معاينة الفون</span>'
+          : '<i data-icon="smartphone"></i> <span>معاينة عرض الفون</span>';
+        if (root.Icons?.hydrate) root.Icons.hydrate();
+        if (isSimulating) {
+          const sf = document.getElementById('storefront') || document.getElementById('serviceGrid');
+          if (sf) sf.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    }
+
+    // ── Desktop Grid columns buttons ──
     document.querySelectorAll('.design-col-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const cols = parseInt(btn.dataset.cols);
+        const cols = parseInt(btn.dataset.cols, 10);
         document.querySelectorAll('.design-col-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         liveApply({ gridColumns: cols });
@@ -174,17 +300,7 @@
       });
     });
 
-    // Range sliders
-    function makeRange(inputId, spanId, key, parser) {
-      const input = $(inputId);
-      const span  = $(spanId);
-      if (!input) return;
-      input.addEventListener('input', () => {
-        const val = parser(input.value);
-        if (span) span.textContent = val;
-        liveApply({ [key]: val });
-      });
-    }
+    // Desktop Range sliders
     makeRange('designGridGap',   'designGapVal',       'gridGap',          Number);
     makeRange('designCardVisualH','designVisualHVal',  'cardVisualHeight',  Number);
     makeRange('designCardRadius','designRadiusVal',    'cardRadius',        Number);
@@ -270,14 +386,16 @@
       saveBtn.addEventListener('click', async () => {
         const msg = $('designSaveMsg');
         saveBtn.disabled = true;
-        saveBtn.textContent = 'جارٍ الحفظ…';
+        saveBtn.textContent = 'جارٍ الحفظ والنشر…';
         try {
           const ok = await root.KenoDesign?.save(root.KenoDesign.current());
           if (msg) {
             msg.hidden = false;
-            msg.className = ok ? 'admin-message success-message' : 'admin-message error-message';
-            msg.textContent = ok ? '✅ تم حفظ التصميم ونشره بنجاح!' : '⚠️ تم تطبيق التصميم محلياً لكن Firestore غير متاح.';
-            setTimeout(() => { msg.hidden = true; }, 4000);
+            msg.className = ok ? 'admin-message success-message' : 'admin-message warning-message';
+            msg.textContent = ok
+              ? '✅ تم حفظ ونشر تصميم الموقع بنجاح! التعديلات مباشرة ومحفوظة بالسحابة لجميع العملاء.'
+              : '⚠️ تم تطبيق التصميم محلياً وحفظه بالمتصفح.';
+            setTimeout(() => { msg.hidden = true; }, 5000);
           }
         } catch (err) {
           if (msg) {

@@ -1136,11 +1136,134 @@
 
         <div class="design-panel-grid">
 
+          <!-- ══ Section: Mobile / Phone Display Customization ══ -->
+          <div class="design-section design-section-mobile" id="designMobileSection" style="grid-column: span 2; border: 2px solid rgba(255, 206, 80, 0.4); background: linear-gradient(135deg, rgba(255,206,80,0.05) 0%, rgba(25,27,32,0.95) 100%);">
+            <div class="design-section-header">
+              <i data-icon="smartphone" style="color:var(--accent,#ffce50);width:20px;height:20px;"></i>
+              <h4 style="font-size:14px;color:var(--accent,#ffce50);">📱 تخصيص عرض الهاتف / الموبايل بالكامل</h4>
+              <span class="design-badge-new">قسم الهاتف</span>
+            </div>
+
+            <p class="field-hint" style="margin-bottom:16px;">
+              تحكم كامل ومفصل في مظهر الموقع وكروت الخدمات على شاشات الهواتف المحمولة: طريقة الترتيب، عدد الكروت في الصف، الأحجام من 1 إلى 10، والمسافات.
+            </p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+              <!-- عمود 1: طريقة العرض وعدد الأعمدة والمسافات -->
+              <div>
+                <!-- 1. طريقة الترتيب: تحت بعض أو جنب بعض -->
+                <div class="design-field-group">
+                  <label class="design-label">طريقة ترتيب الكروت على الفون</label>
+                  <div class="design-mobile-layout-selector" id="designMobileLayoutGroup">
+                    <label class="design-layout-opt active" data-layout="grid">
+                      <input type="radio" name="designMobileLayoutR" value="grid" checked hidden>
+                      <div class="dlo-icon">
+                        <span class="dlo-box"></span><span class="dlo-box"></span><span class="dlo-box"></span>
+                      </div>
+                      <strong>جنب بعض (شبكة)</strong>
+                      <small>كروت متجاورة في الصف</small>
+                    </label>
+                    <label class="design-layout-opt" data-layout="vertical">
+                      <input type="radio" name="designMobileLayoutR" value="vertical" hidden>
+                      <div class="dlo-icon vertical">
+                        <span class="dlo-bar"></span><span class="dlo-bar"></span>
+                      </div>
+                      <strong>تحت بعض (عمودي)</strong>
+                      <small>كارت واحد بعرض الشاشة</small>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 2. عدد الكروت في الصف الواحد (من 1 إلى 10) -->
+                <div class="design-field-group" id="designMobileColsContainer">
+                  <label class="design-label">
+                    عدد الكروت في الصف الواحد (جنب بعض) — <span id="designMobileColsVal" style="color:var(--accent,#ffce50);font-weight:700;">3 كروت في الصف</span>
+                  </label>
+                  <div class="design-mobile-cols-bar" id="designMobileColsBar">
+                    <button type="button" class="design-mcol-btn" data-mcols="1">1</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="2">2</button>
+                    <button type="button" class="design-mcol-btn active" data-mcols="3">3</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="4">4</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="5">5</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="6">6</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="7">7</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="8">8</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="9">9</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="10">10</button>
+                  </div>
+                  <p class="field-hint">الافتراضي 3 كروت في الصف الواحد لعرض متناسق ومصغر على الفون.</p>
+                </div>
+
+                <!-- 3. المسافة بين الكروت على الفون -->
+                <div class="design-field-group">
+                  <label class="design-label">المسافة بين الكروت على الفون — <span id="designMobileGapVal">6</span>px</label>
+                  <input type="range" id="designMobileGap" min="2" max="20" value="6" step="1" class="design-range">
+                </div>
+              </div>
+
+              <!-- عمود 2: الحجم والمقاييس والخيارات -->
+              <div>
+                <!-- 4. حجم الكروت على الفون من 1 إلى 10 -->
+                <div class="design-field-group">
+                  <label class="design-label">
+                    حجم الكروت على الفون (أحجام من 1 إلى 10) — <span id="designMobileScaleVal" style="color:var(--accent,#ffce50);font-weight:700;">5 من 10 (افتراضي متناسق)</span>
+                  </label>
+                  <input type="range" id="designMobileCardScale" min="1" max="10" value="5" step="1" class="design-range">
+                  <div class="design-range-labels">
+                    <span>1 (أصغر حجم)</span>
+                    <span>5 (متناسق لـ 3 كروت)</span>
+                    <span>10 (أكبر حجم)</span>
+                  </div>
+                </div>
+
+                <!-- 5. مفاتيح التبديل للخيارات الإضافية -->
+                <div class="design-toggle-field" style="margin-bottom:10px;">
+                  <div>
+                    <strong>إظهار وصف الخدمة على الفون</strong>
+                    <p class="field-hint">إخفاء الوصف يجعل الكروت أصغر وأنيقة في العرض الثلاثي</p>
+                  </div>
+                  <label class="design-toggle">
+                    <input type="checkbox" id="designMobileShowDesc">
+                    <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                  </label>
+                </div>
+
+                <div class="design-toggle-field" style="margin-bottom:10px;">
+                  <div>
+                    <strong>إظهار شارة القسم وعدد العروض</strong>
+                    <p class="field-hint">تظهر أعلى عنوان الخدمة في الكارت</p>
+                  </div>
+                  <label class="design-toggle">
+                    <input type="checkbox" id="designMobileShowCategory" checked>
+                    <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                  </label>
+                </div>
+
+                <!-- 6. مقياس الخط العام على الفون -->
+                <div class="design-field-group">
+                  <label class="design-label">مقياس خطوط الموقع على الفون — <span id="designMobileFontScaleVal">95</span>%</label>
+                  <input type="range" id="designMobileFontScale" min="80" max="120" value="95" step="5" class="design-range">
+                </div>
+              </div>
+            </div>
+
+            <!-- شريط المعاينة للفون -->
+            <div style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--line,#ffffff20);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+              <div>
+                <strong style="font-size:12.5px;color:var(--ink,#f7f6f2);">📱 محاكاة مظهر شاشة الهاتف (Live Mobile Preview)</strong>
+                <p class="field-hint" style="margin:2px 0 0;">يمكنك تفعيل هذا الخيار لرؤية النتيجة فوراً على شاشة الكمبيوتر وكأنك تتصفح من هاتف محمول.</p>
+              </div>
+              <button type="button" class="button button-outline small" id="toggleMobilePreviewBtn">
+                <i data-icon="smartphone"></i> <span>معاينة عرض الفون</span>
+              </button>
+            </div>
+          </div>
+
           <!-- ══ Section 1: Grid & Card Layout ══ -->
           <div class="design-section">
             <div class="design-section-header">
               <i data-icon="layout-grid"></i>
-              <h4>شبكة الكروت وطريقة العرض</h4>
+              <h4>شبكة الكروت على الكمبيوتر</h4>
             </div>
 
             <div class="design-field-group">
