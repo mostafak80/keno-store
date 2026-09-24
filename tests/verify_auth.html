@@ -57,6 +57,15 @@
       console.log(res);
     }
 
+    let downloadAttempts = [];
+    const origAnchorClick = HTMLAnchorElement.prototype.click;
+    HTMLAnchorElement.prototype.click = function() {
+      if (this.download) {
+        downloadAttempts.push(this.download);
+      }
+      return origAnchorClick.apply(this, arguments);
+    };
+
     // Mock KenoFirebase methods for testing
     let mockUser = null;
     window.KenoFirebase.getCurrentUser = () => mockUser;
@@ -242,14 +251,15 @@
       assert('20. Admin Click: AdminView is VISIBLE', $('adminView').hidden === false);
       assert('21. Admin Click: AdminWorkspace is UNLOCKED & VISIBLE', $('adminWorkspace').hidden === false);
       assert('22. Admin Click: AdminLogin is HIDDEN', $('adminLogin').hidden === true);
+      assert('23. Zero Auto-Downloads: No files downloaded automatically', downloadAttempts.length === 0);
 
       // Test 6: Sign out from Admin
       $('headerSignOutBtn').click();
       await new Promise(r => setTimeout(r, 100));
-      assert('23. Admin Logout: Admin button hidden', $('headerAdminBtn').hidden);
-      assert('24. Admin Logout: Storefront restored', $('storefront').hidden === false);
-      assert('25. Admin Logout: AdminView hidden', $('adminView').hidden === true);
-      assert('26. Admin Logout: Session cleared', sessionStorage.getItem('keno_admin_session_v3') === null);
+      assert('24. Admin Logout: Admin button hidden', $('headerAdminBtn').hidden);
+      assert('25. Admin Logout: Storefront restored', $('storefront').hidden === false);
+      assert('26. Admin Logout: AdminView hidden', $('adminView').hidden === true);
+      assert('27. Admin Logout: Session cleared', sessionStorage.getItem('keno_admin_session_v3') === null);
 
       $('results').innerHTML = results.map(r => `<div>${r}</div>`).join('');
     }

@@ -1868,21 +1868,15 @@
       try {
         const record = JSON.parse(saved);
         const previous = CatalogParser.validate(record.data);
-        const sameBase = record.sha === newSha && (newSha !== null || JSON.stringify(record.base) === JSON.stringify(data));
-
-        if (sameBase && JSON.stringify(previous) !== JSON.stringify(data)) {
-          if (await confirmAction('يوجد مسودة محفوظة مسبقًا', 'هل ترغب في استعادة آخر تعديلات غير منشورة تم حفظها في هذا المتصفح؟', 'استعادة المسودة')) {
-            draft = previous;
-          }
-        } else if (!sameBase && JSON.stringify(previous) !== JSON.stringify(data)) {
-          downloadFile('keno-previous-draft.json', JSON.stringify(previous, null, 2), 'application/json');
-          showAdminMessage('المسودة السابقة مبنية على نسخة مختلفة من المتجر. تم تنزيلها تلقائيًا كنسخة احتياطية وبدأنا من النسخة الأحدث.');
+        if (previous && Array.isArray(previous.services) && previous.services.length > 0) {
+          draft = previous;
         }
       } catch (_) {
-        showAdminMessage('تعذّر استعادة المسودة السابقة. تم تحميل أحدث نسخة متوفرة.');
+        draft = JSON.parse(JSON.stringify(data));
       }
     }
 
+    if ($('adminHeading')) $('adminHeading').hidden = false;
     if ($('adminLogin')) $('adminLogin').hidden = true;
     if ($('adminWorkspace')) $('adminWorkspace').hidden = false;
     renderAdmin();
@@ -1900,11 +1894,20 @@
     if (!draft) {
       startWorkspace(live, null).then(() => renderAdmin());
     } else {
+      if ($('adminHeading')) $('adminHeading').hidden = false;
+      if ($('adminLogin')) $('adminLogin').hidden = true;
+      if ($('adminWorkspace')) $('adminWorkspace').hidden = false;
       renderAdmin();
     }
   };
   window.ensureAdminWorkspace = async (creds = null) => {
-    if (draft && !creds?.token) return draft;
+    if (draft && !creds?.token) {
+      if ($('adminHeading')) $('adminHeading').hidden = false;
+      if ($('adminLogin')) $('adminLogin').hidden = true;
+      if ($('adminWorkspace')) $('adminWorkspace').hidden = false;
+      renderAdmin();
+      return draft;
+    }
     if (creds?.token && creds?.repo) {
       try {
         const candidate = GitHubClientFactory.createGitHubClient(window.fetch.bind(window), creds.repo, creds.branch || 'main', creds.token);
@@ -4503,6 +4506,15 @@
 
         // Preload admin script in background so clicking is instantaneous!
         loadAdminScript().catch(() => {});
+
+        // If user is currently on #admin or enters admin view, open workspace immediately!
+        if (location.hash === '#admin' || location.hash.startsWith('#admin/')) {
+          if (window.KenoAdmin && typeof window.KenoAdmin.init === 'function') {
+            window.KenoAdmin.init();
+          } else {
+            loadAdminScript().then(a => a?.init?.());
+          }
+        }
       } else {
         if (adminBtn) adminBtn.hidden = true;
         if (navAdminLink) navAdminLink.hidden = true;
@@ -4512,10 +4524,11 @@
 
     const handleAdminClick = (e) => {
       e.preventDefault();
-      if (location.hash !== '#admin') {
+      if (location.hash === '#admin') {
+        route();
+      } else {
         location.hash = '#admin';
       }
-      route();
       window.scrollTo({ top: 0, behavior: 'instant' });
     };
 

@@ -185,12 +185,24 @@
       // Role-based UI restrictions
       this.applyRoleRestrictions(session.role);
 
-      // Render Admin Tabs
-      if (typeof root.renderAdminStore === 'function') {
-        root.renderAdminStore();
+      // Render Admin Tabs safely
+      try {
+        if (typeof root.renderAdminStore === 'function') {
+          root.renderAdminStore();
+        }
+      } catch (err) {
+        console.error('Error in renderAdminStore:', err);
       }
-      this.renderAdminFeatured();
-      this.subscribeRealtimeOrders();
+      try {
+        this.renderAdminFeatured();
+      } catch (err) {
+        console.error('Error in renderAdminFeatured:', err);
+      }
+      try {
+        this.subscribeRealtimeOrders();
+      } catch (err) {
+        console.error('Error in subscribeRealtimeOrders:', err);
+      }
     },
 
     applyRoleRestrictions(role) {

@@ -230,11 +230,13 @@
 
     // Admin Whitelist for Google OAuth Sign-In (Roles: OWNER, EDITOR, VIEWER)
     ADMIN_EMAILS: [
-      'aboab411@gmail.com'
+      'aboab411@gmail.com',
+      'mostafak80@gmail.com'
     ],
 
     AUTHORIZED_ADMINS: {
-      'aboab411@gmail.com': { role: 'OWNER', name: 'مالك المتجر' }
+      'aboab411@gmail.com': { role: 'OWNER', name: 'مالك المتجر' },
+      'mostafak80@gmail.com': { role: 'OWNER', name: 'مالك المتجر' }
     },
 
     // Social Media Platforms
