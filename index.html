@@ -44,6 +44,8 @@
   <script src="./assets/icons.js" defer></script>
   <script src="./js/config.js" defer></script>
   <script src="./js/firebase.js" defer></script>
+  <script src="./js/design-panel.js" defer></script>
+  <script src="./js/design-admin.js" defer></script>
   <script src="./js/image.js" defer></script>
   <script src="./js/order.js" defer></script>
   <script src="./js/github.js" defer></script>
@@ -779,7 +781,12 @@
           <i data-icon="archive"></i>
           <span>النسخ والنشر</span>
         </button>
+        <button type="button" id="designTab" role="tab" aria-selected="false" aria-controls="adminDesign" data-admin-tab="adminDesign" tabindex="-1">
+          <i data-icon="palette"></i>
+          <span>تصميم الموقع</span>
+        </button>
       </div>
+
 
       <!-- Tab 1: Services & Pricing Management -->
       <div id="adminServices" role="tabpanel" aria-labelledby="servicesTab">
@@ -1110,8 +1117,459 @@
         </div>
       </div>
 
+      <!-- Tab: Design Control Panel -->
+      <div id="adminDesign" role="tabpanel" aria-labelledby="designTab" hidden>
+        <div class="admin-toolbar">
+          <div>
+            <h3>🎨 تصميم الموقع — تحكم كامل</h3>
+            <p class="field-hint">تحكم في كل تفصيلة في شكل الموقع: شبكة الكروت، الألوان، الخطوط، الحركات، المسافات، وأكثر. التغييرات تظهر فورياً وتُحفظ تلقائياً.</p>
+          </div>
+          <div class="button-row">
+            <button type="button" class="button button-outline" id="designResetBtn">
+              <i data-icon="rotate-ccw"></i> <span>استعادة الافتراضي</span>
+            </button>
+            <button type="button" class="button button-red" id="designSaveBtn">
+              <i data-icon="save"></i> <span>حفظ ونشر التصميم</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="design-panel-grid">
+
+          <!-- ══ Section 1: Grid & Card Layout ══ -->
+          <div class="design-section">
+            <div class="design-section-header">
+              <i data-icon="layout-grid"></i>
+              <h4>شبكة الكروت وطريقة العرض</h4>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">عدد الأعمدة في كل صف</label>
+              <div class="design-cols-selector" id="designGridCols">
+                <button type="button" class="design-col-btn" data-cols="1">1</button>
+                <button type="button" class="design-col-btn" data-cols="2">2</button>
+                <button type="button" class="design-col-btn active" data-cols="3">3</button>
+                <button type="button" class="design-col-btn" data-cols="4">4</button>
+                <button type="button" class="design-col-btn" data-cols="5">5</button>
+              </div>
+              <p class="field-hint">يظهر الأثر فوراً على الكروت في الصفحة الرئيسية.</p>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">المسافة بين الكروت — <span id="designGapVal">18</span>px</label>
+              <input type="range" id="designGridGap" min="4" max="40" value="18" step="2" class="design-range">
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">شكل الكروت</label>
+              <div class="design-card-style-grid" id="designCardStyle">
+                <label class="design-card-style-opt active" data-style="default">
+                  <input type="radio" name="designCardStyleR" value="default" checked hidden>
+                  <div class="dcs-preview dcs-default">
+                    <div class="dcs-visual"></div>
+                    <div class="dcs-body"><div class="dcs-line"></div><div class="dcs-line short"></div></div>
+                  </div>
+                  <span>افتراضي</span>
+                </label>
+                <label class="design-card-style-opt" data-style="compact">
+                  <input type="radio" name="designCardStyleR" value="compact" hidden>
+                  <div class="dcs-preview dcs-compact">
+                    <div class="dcs-visual small"></div>
+                    <div class="dcs-body"><div class="dcs-line short"></div></div>
+                  </div>
+                  <span>مضغوط</span>
+                </label>
+                <label class="design-card-style-opt" data-style="list">
+                  <input type="radio" name="designCardStyleR" value="list" hidden>
+                  <div class="dcs-preview dcs-list">
+                    <div class="dcs-visual side"></div>
+                    <div class="dcs-body"><div class="dcs-line"></div><div class="dcs-line short"></div></div>
+                  </div>
+                  <span>قائمة</span>
+                </label>
+                <label class="design-card-style-opt" data-style="wide">
+                  <input type="radio" name="designCardStyleR" value="wide" hidden>
+                  <div class="dcs-preview dcs-wide">
+                    <div class="dcs-visual tall"></div>
+                    <div class="dcs-body"><div class="dcs-line"></div><div class="dcs-line short"></div></div>
+                  </div>
+                  <span>عريض</span>
+                </label>
+                <label class="design-card-style-opt" data-style="magazine">
+                  <input type="radio" name="designCardStyleR" value="magazine" hidden>
+                  <div class="dcs-preview dcs-magazine">
+                    <div class="dcs-visual featured"></div>
+                    <div class="dcs-visual small-pair"></div>
+                  </div>
+                  <span>مجلة</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">ارتفاع الصورة في الكرت — <span id="designVisualHVal">134</span>px</label>
+              <input type="range" id="designCardVisualH" min="60" max="260" value="134" step="4" class="design-range">
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">حواف زوايا الكروت — <span id="designRadiusVal">16</span>px</label>
+              <input type="range" id="designCardRadius" min="0" max="32" value="16" step="2" class="design-range">
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">تأثير الكرت عند التحويم (Hover)</label>
+              <div class="design-radio-row" id="designHoverEffect">
+                <label><input type="radio" name="designHoverR" value="lift" checked> <span>↑ ارتفاع</span></label>
+                <label><input type="radio" name="designHoverR" value="glow"> <span>✨ توهج</span></label>
+                <label><input type="radio" name="designHoverR" value="border"> <span>🟡 إطار</span></label>
+                <label><input type="radio" name="designHoverR" value="none"> <span>✗ بدون</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ Section 2: Colors ══ -->
+          <div class="design-section">
+            <div class="design-section-header">
+              <i data-icon="palette"></i>
+              <h4>الألوان والمظهر العام</h4>
+            </div>
+
+            <div class="design-colors-grid">
+              <div class="design-color-field">
+                <label>اللون الرئيسي (Accent)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcAccent" value="#ffce50" class="design-color-input">
+                  <input type="text" id="dcAccentText" value="#ffce50" class="design-color-text" maxlength="9" placeholder="#ffce50">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>لون الأحمر / الخطر</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcRed" value="#e52d3f" class="design-color-input">
+                  <input type="text" id="dcRedText" value="#e52d3f" class="design-color-text" maxlength="9" placeholder="#e52d3f">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>خلفية الصفحة (BG)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcBg" value="#101114" class="design-color-input">
+                  <input type="text" id="dcBgText" value="#101114" class="design-color-text" maxlength="9" placeholder="#101114">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>خلفية الكروت (Paper)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcPaper" value="#191b20" class="design-color-input">
+                  <input type="text" id="dcPaperText" value="#191b20" class="design-color-text" maxlength="9" placeholder="#191b20">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>لون الكتابة الرئيسي</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcInk" value="#f7f6f2" class="design-color-input">
+                  <input type="text" id="dcInkText" value="#f7f6f2" class="design-color-text" maxlength="9" placeholder="#f7f6f2">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>لون النص الثانوي (Muted)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcMuted" value="#b2b3bc" class="design-color-input">
+                  <input type="text" id="dcMutedText" value="#b2b3bc" class="design-color-text" maxlength="9" placeholder="#b2b3bc">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>خلفية الهيدر</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcHeader" value="#101114" class="design-color-input">
+                  <input type="text" id="dcHeaderText" value="#101114" class="design-color-text" maxlength="9" placeholder="#101114">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>خلفية الفوتر</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcFooter" value="#0c0d10" class="design-color-input">
+                  <input type="text" id="dcFooterText" value="#0c0d10" class="design-color-text" maxlength="9" placeholder="#0c0d10">
+                </div>
+              </div>
+            </div>
+
+            <div class="design-section-header" style="margin-top:20px">
+              <i data-icon="swatch-book"></i>
+              <h4>ألوان ظل الكروت (Tone Colors)</h4>
+            </div>
+            <div class="design-colors-grid">
+              <div class="design-color-field">
+                <label>أحمر (Red)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcToneRed" value="#49232b" class="design-color-input">
+                  <input type="text" id="dcToneRedText" value="#49232b" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>ذهبي (Gold)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcToneGold" value="#423c24" class="design-color-input">
+                  <input type="text" id="dcToneGoldText" value="#423c24" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>أخضر (Green)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcToneGreen" value="#203d34" class="design-color-input">
+                  <input type="text" id="dcToneGreenText" value="#203d34" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>أزرق (Blue)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcToneBlue" value="#253544" class="design-color-input">
+                  <input type="text" id="dcToneBlueText" value="#253544" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>برتقالي (Orange)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcToneOrange" value="#493022" class="design-color-input">
+                  <input type="text" id="dcToneOrangeText" value="#493022" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>داكن (Dark)</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcToneDark" value="#2a2d34" class="design-color-input">
+                  <input type="text" id="dcToneDarkText" value="#2a2d34" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+            </div>
+
+            <div class="design-section-header" style="margin-top:20px">
+              <i data-icon="mouse-pointer-2"></i>
+              <h4>لون تاب الفئات النشط</h4>
+            </div>
+            <div class="design-colors-grid">
+              <div class="design-color-field">
+                <label>خلفية التاب النشط</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcTabBg" value="#ffce50" class="design-color-input">
+                  <input type="text" id="dcTabBgText" value="#ffce50" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+              <div class="design-color-field">
+                <label>نص التاب النشط</label>
+                <div class="design-color-row">
+                  <input type="color" id="dcTabText" value="#241e10" class="design-color-input">
+                  <input type="text" id="dcTabTextText" value="#241e10" class="design-color-text" maxlength="9">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ Section 3: Typography ══ -->
+          <div class="design-section">
+            <div class="design-section-header">
+              <i data-icon="type"></i>
+              <h4>الخطوط والكتابة</h4>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">نوع الخط</label>
+              <div class="design-font-grid" id="designFontFamily">
+                <label class="design-font-opt active" data-font="cairo">
+                  <input type="radio" name="designFontR" value="cairo" checked hidden>
+                  <span style="font-family:'Cairo',sans-serif;font-weight:700">Cairo</span>
+                  <small>عربي — افتراضي</small>
+                </label>
+                <label class="design-font-opt" data-font="tajawal">
+                  <input type="radio" name="designFontR" value="tajawal" hidden>
+                  <span style="font-family:'Tajawal',sans-serif;font-weight:700">تجوال</span>
+                  <small>عربي — حديث</small>
+                </label>
+                <label class="design-font-opt" data-font="noto">
+                  <input type="radio" name="designFontR" value="noto" hidden>
+                  <span style="font-family:'Noto Sans Arabic',sans-serif;font-weight:700">Noto</span>
+                  <small>عربي — قياسي</small>
+                </label>
+                <label class="design-font-opt" data-font="inter">
+                  <input type="radio" name="designFontR" value="inter" hidden>
+                  <span style="font-family:'Inter',sans-serif;font-weight:700">Inter</span>
+                  <small>إنجليزي — أنيق</small>
+                </label>
+                <label class="design-font-opt" data-font="roboto">
+                  <input type="radio" name="designFontR" value="roboto" hidden>
+                  <span style="font-family:'Roboto',sans-serif;font-weight:700">Roboto</span>
+                  <small>إنجليزي — واضح</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">مقياس الخط — <span id="designFontScaleVal">100</span>%</label>
+              <input type="range" id="designFontScale" min="80" max="125" value="100" step="5" class="design-range">
+              <div class="design-range-labels"><span>80%</span><span>100%</span><span>125%</span></div>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">وزن خط العناوين</label>
+              <div class="design-radio-row" id="designHeadingWeight">
+                <label><input type="radio" name="designHWR" value="700"> <span>Bold 700</span></label>
+                <label><input type="radio" name="designHWR" value="800"> <span>ExtraBold 800</span></label>
+                <label><input type="radio" name="designHWR" value="900" checked> <span>Black 900</span></label>
+              </div>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">تباعد الأسطر — <span id="designLineHVal">1.7</span></label>
+              <input type="range" id="designLineH" min="1.2" max="2.2" value="1.7" step="0.1" class="design-range">
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">تباعد حروف العناوين — <span id="designLetterSVal">-0.3</span>px</label>
+              <input type="range" id="designLetterS" min="-3" max="3" value="-0.3" step="0.1" class="design-range">
+            </div>
+          </div>
+
+          <!-- ══ Section 4: Animations ══ -->
+          <div class="design-section">
+            <div class="design-section-header">
+              <i data-icon="zap"></i>
+              <h4>الحركات والتأثيرات</h4>
+            </div>
+
+            <div class="design-toggle-field">
+              <div>
+                <strong>تفعيل الحركات والتأثيرات</strong>
+                <p class="field-hint">إيقاف الحركات يسرّع أداء الموقع</p>
+              </div>
+              <label class="design-toggle">
+                <input type="checkbox" id="designAnimEnabled" checked>
+                <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="design-toggle-field">
+              <div>
+                <strong>حركة الكرت المميز (Hero Drift)</strong>
+                <p class="field-hint">تأثير الميل على بطاقة العرض الرئيسية</p>
+              </div>
+              <label class="design-toggle">
+                <input type="checkbox" id="designDriftEnabled" checked>
+                <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="design-toggle-field">
+              <div>
+                <strong>تأثير اللمعان (Shimmer)</strong>
+                <p class="field-hint">البريق اللامع على البطاقة المميزة</p>
+              </div>
+              <label class="design-toggle">
+                <input type="checkbox" id="designShimmerEnabled" checked>
+                <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">سرعة الـ Hover — <span id="designTransitionVal">250</span>ms</label>
+              <input type="range" id="designTransition" min="0" max="600" value="250" step="50" class="design-range">
+              <div class="design-range-labels"><span>فوري</span><span>بطيء</span></div>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">منحنى الحركة (Easing)</label>
+              <select id="designEasing" class="design-select">
+                <option value="cubic-bezier(.2,.7,.2,1)">Smooth (افتراضي)</option>
+                <option value="ease-in-out">Ease In-Out</option>
+                <option value="ease-out">Ease Out</option>
+                <option value="linear">Linear</option>
+                <option value="cubic-bezier(0.34,1.56,0.64,1)">Spring (نابض)</option>
+                <option value="cubic-bezier(0.87,0,0.13,1)">Dramatic</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ══ Section 5: Spacing & Sizing ══ -->
+          <div class="design-section">
+            <div class="design-section-header">
+              <i data-icon="ruler"></i>
+              <h4>المسافات والأبعاد</h4>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">عرض المحتوى (Container) — <span id="designContainerVal">1240</span>px</label>
+              <input type="range" id="designContainer" min="960" max="1600" value="1240" step="40" class="design-range">
+              <div class="design-range-labels"><span>960px (ضيق)</span><span>1240px</span><span>1600px (واسع)</span></div>
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">مسافة رأس/أسفل الأقسام — <span id="designSectionPadVal">56</span>px</label>
+              <input type="range" id="designSectionPad" min="20" max="120" value="56" step="8" class="design-range">
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">حواف الزوايا الأساسية — <span id="designRadiusBaseVal">16</span>px</label>
+              <input type="range" id="designRadiusBase" min="0" max="32" value="16" step="2" class="design-range">
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">ارتفاع الأزرار — <span id="designBtnHVal">46</span>px</label>
+              <input type="range" id="designBtnH" min="36" max="60" value="46" step="2" class="design-range">
+            </div>
+
+            <div class="design-field-group">
+              <label class="design-label">حواف زوايا الأزرار — <span id="designBtnRVal">11</span>px</label>
+              <input type="range" id="designBtnR" min="0" max="30" value="11" step="1" class="design-range">
+            </div>
+          </div>
+
+          <!-- ══ Section 6: Quick Presets ══ -->
+          <div class="design-section design-section-presets">
+            <div class="design-section-header">
+              <i data-icon="sparkles"></i>
+              <h4>إعدادات جاهزة (Presets)</h4>
+            </div>
+            <p class="field-hint">اختر إعداداً جاهزاً لتغيير شكل الموقع بنقرة واحدة.</p>
+            <div class="design-presets-grid" id="designPresets">
+              <button type="button" class="design-preset-btn" data-preset="default">
+                <span class="preset-icon">🎮</span>
+                <strong>كينو الافتراضي</strong>
+                <small>الشكل الأصلي</small>
+              </button>
+              <button type="button" class="design-preset-btn" data-preset="dark-pro">
+                <span class="preset-icon">⚫</span>
+                <strong>Dark Pro</strong>
+                <small>داكن احترافي</small>
+              </button>
+              <button type="button" class="design-preset-btn" data-preset="vibrant">
+                <span class="preset-icon">🟡</span>
+                <strong>Vibrant</strong>
+                <small>ألوان زاهية</small>
+              </button>
+              <button type="button" class="design-preset-btn" data-preset="minimal">
+                <span class="preset-icon">⬜</span>
+                <strong>Minimal</strong>
+                <small>بسيط ونظيف</small>
+              </button>
+              <button type="button" class="design-preset-btn" data-preset="compact-list">
+                <span class="preset-icon">📋</span>
+                <strong>قائمة مضغوطة</strong>
+                <small>عرض القائمة</small>
+              </button>
+              <button type="button" class="design-preset-btn" data-preset="magazine">
+                <span class="preset-icon">📰</span>
+                <strong>Magazine</strong>
+                <small>عرض المجلة</small>
+              </button>
+            </div>
+          </div>
+
+        </div><!-- .design-panel-grid -->
+
+        <div id="designSaveMsg" class="admin-message" hidden></div>
+      </div><!-- #adminDesign -->
+
       <!-- Tab: Featured Hero Card Management -->
       <div id="adminFeatured" role="tabpanel" aria-labelledby="featuredTab" hidden>
+
         <div class="admin-toolbar">
           <div>
             <h3>إدارة البطاقة المميزة في الواجهة (Hero Featured Card)</h3>

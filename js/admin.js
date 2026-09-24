@@ -289,7 +289,15 @@
       } catch (err) {
         console.error('Error in subscribeRealtimeOrders:', err);
       }
+      try {
+        if (typeof root.initDesignAdminPanel === 'function') {
+          root.initDesignAdminPanel();
+        }
+      } catch (err) {
+        console.error('Error in initDesignAdminPanel:', err);
+      }
     },
+
 
     applyRoleRestrictions(role) {
       const currentRole = String(role || 'VIEWER').toUpperCase();

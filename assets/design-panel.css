@@ -1,0 +1,196 @@
+/**
+ * Keno Store — Design Panel CSS
+ * Uses --kd-* variables set by design-panel.js to override storefront styles.
+ * All overrides are scoped to body.keno-motion for specificity safety.
+ */
+
+/* -- Grid Layout --------------------------------------------------- */
+body.keno-motion .service-grid {
+  grid-template-columns: repeat(var(--kd-grid-cols, 4), minmax(0, 1fr)) !important;
+  gap: var(--kd-grid-gap, 18px) !important;
+}
+
+/* -- Card Radius & Visual Height ----------------------------------- */
+body.keno-motion .service-card {
+  border-radius: var(--kd-card-radius, 16px) !important;
+  transition: transform var(--kd-transition, 250ms) var(--kd-ease), border-color var(--kd-transition, 250ms) !important;
+}
+body.keno-motion .card-visual {
+  height: var(--kd-card-visual-h, 134px) !important;
+  min-height: var(--kd-card-visual-h, 134px) !important;
+}
+
+/* -- Card Hover Effects --------------------------------------------- */
+body.keno-motion .service-card.hover-lift:hover  { transform: translateY(-5px); border-color: #ffffff40; box-shadow: 0 14px 30px #0003; }
+body.keno-motion .service-card.hover-glow:hover  { transform: translateY(-2px); box-shadow: 0 0 0 2px var(--kd-accent, #ffce50), 0 12px 30px #0003; border-color: var(--kd-accent, #ffce50) !important; }
+body.keno-motion .service-card.hover-border:hover { transform: none; border-color: var(--kd-accent, #ffce50) !important; box-shadow: none; }
+body.keno-motion .service-card.hover-none:hover   { transform: none; box-shadow: none; }
+
+/* -- Card Style Variants -------------------------------------------- */
+
+/* Compact */
+body.keno-motion .service-grid.card-style-compact .service-card .card-visual {
+  height: 80px !important; min-height: 80px !important;
+}
+body.keno-motion .service-grid.card-style-compact .service-card .card-visual > .icon {
+  width: 32px !important; height: 32px !important;
+}
+body.keno-motion .service-grid.card-style-compact .service-card h3 {
+  font-size: 13px !important;
+}
+body.keno-motion .service-grid.card-style-compact .service-card .card-description {
+  display: none !important;
+}
+body.keno-motion .service-grid.card-style-compact .card-body {
+  padding: 10px 12px !important;
+}
+
+/* List */
+body.keno-motion .service-grid.card-style-list {
+  grid-template-columns: 1fr !important;
+}
+body.keno-motion .service-grid.card-style-list .service-card {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+}
+body.keno-motion .service-grid.card-style-list .card-visual {
+  width: 160px !important;
+  flex-shrink: 0 !important;
+  height: auto !important;
+  min-height: 90px !important;
+  border-radius: var(--kd-card-radius, 16px) 0 0 var(--kd-card-radius, 16px) !important;
+}
+body.keno-motion .service-grid.card-style-list .card-body {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 16px 20px !important;
+}
+body.keno-motion .service-grid.card-style-list .card-footer {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: none !important;
+}
+body.keno-motion .service-grid.card-style-list .card-description {
+  display: none !important;
+}
+
+/* Wide */
+body.keno-motion .service-grid.card-style-wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+body.keno-motion .service-grid.card-style-wide .card-visual {
+  height: 200px !important; min-height: 200px !important;
+}
+
+/* Magazine */
+body.keno-motion .service-grid.card-style-magazine {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+body.keno-motion .service-grid.card-style-magazine .service-card:first-child {
+  grid-column: span 2 !important;
+}
+body.keno-motion .service-grid.card-style-magazine .service-card:first-child .card-visual {
+  height: 200px !important; min-height: 200px !important;
+}
+
+/* -- Colors --------------------------------------------------------- */
+body.keno-motion {
+  background: var(--kd-bg, var(--bg)) !important;
+}
+body.keno-motion .service-card {
+  background: var(--kd-paper, var(--paper)) !important;
+}
+body.keno-motion .site-header {
+  background: var(--kd-header-bg, #101114f7) !important;
+}
+body.keno-motion .site-footer {
+  background: var(--kd-footer-bg, #0c0d10) !important;
+}
+body.keno-motion .card-visual.tone-red   { background: var(--kd-tone-red, #49232b) !important; }
+body.keno-motion .card-visual.tone-gold  { background: var(--kd-tone-gold, #423c24) !important; }
+body.keno-motion .card-visual.tone-green { background: var(--kd-tone-green, #203d34) !important; }
+body.keno-motion .card-visual.tone-blue  { background: var(--kd-tone-blue, #253544) !important; }
+body.keno-motion .card-visual.tone-orange { background: var(--kd-tone-orange, #493022) !important; }
+body.keno-motion .card-visual.tone-dark  { background: var(--kd-tone-dark, #2a2d34) !important; }
+
+/* Accent color overrides */
+body.keno-motion .category-tabs button[aria-pressed="true"] {
+  background: var(--kd-tab-active-bg, #ffce50) !important;
+  color: var(--kd-tab-active-text, #241e10) !important;
+  border-color: var(--kd-tab-active-color, #ffce50) !important;
+}
+body.keno-motion .card-action-indicator { color: var(--kd-accent, #f1ca72) !important; }
+body.keno-motion .header-actions .contact-trigger {
+  background: var(--kd-accent, #ffce50) !important;
+}
+body.keno-motion .pick-arrow { background: var(--kd-accent, #ffce50) !important; }
+
+/* -- Typography ----------------------------------------------------- */
+body.keno-motion {
+  font-family: var(--kd-font, var(--font)) !important;
+  font-size: calc(1em * var(--kd-font-scale, 1));
+  line-height: var(--kd-line-height, 1.7);
+}
+body.keno-motion h1, body.keno-motion h2, body.keno-motion h3, body.keno-motion h4 {
+  font-weight: var(--kd-heading-weight, 900) !important;
+  letter-spacing: var(--kd-letter-spacing, -0.3px);
+}
+
+/* -- Buttons -------------------------------------------------------- */
+body.keno-motion .button {
+  border-radius: var(--kd-btn-radius, 11px) !important;
+  min-height: var(--kd-btn-height, 46px) !important;
+}
+
+/* -- Container ------------------------------------------------------ */
+body.keno-motion .container {
+  width: min(var(--kd-container-w, 1240px), calc(100% - 64px)) !important;
+  max-width: var(--kd-container-w, 1240px) !important;
+}
+
+/* -- Section Padding ------------------------------------------------ */
+body.keno-motion .catalog-section {
+  padding-block: 24px var(--kd-section-pad-v, 56px) !important;
+}
+
+/* -- Animation Disabling -------------------------------------------- */
+body.kd-no-animations *, body.kd-no-animations *::before, body.kd-no-animations *::after {
+  animation: none !important;
+  transition: none !important;
+}
+body.kd-no-drift #heroFeature {
+  animation: none !important;
+  transform: none !important;
+}
+body.kd-no-shimmer #heroFeature::after {
+  animation: none !important;
+  display: none !important;
+}
+
+/* -- Responsive overrides (keep mobile intact) ---------------------- */
+@media (max-width: 900px) {
+  body.keno-motion .service-grid {
+    grid-template-columns: repeat(min(var(--kd-grid-cols, 4), 2), minmax(0, 1fr)) !important;
+  }
+  body.keno-motion .service-grid.card-style-list .service-card {
+    flex-direction: column !important;
+  }
+  body.keno-motion .service-grid.card-style-list .card-visual {
+    width: 100% !important;
+    border-radius: var(--kd-card-radius) var(--kd-card-radius) 0 0 !important;
+  }
+  body.keno-motion .service-grid.card-style-list .card-body {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
+@media (max-width: 560px) {
+  body.keno-motion .service-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -605,4 +605,46 @@
     }
   };
 
+  /**
+   * Saves design settings to Firestore doc `settings/design`.
+   * @param {Object} settings - Design settings object from KenoDesign
+   * @returns {Promise<boolean>}
+   */
+  KenoFirebase.saveDesignSettings = async function (settings) {
+    const fb = await this.init();
+    if (!fb || !firestoreModules) return false;
+    try {
+      const docRef = firestoreModules.doc(fb.db, 'settings', 'design');
+      await firestoreModules.setDoc(docRef, {
+        data: settings,
+        updatedAt: firestoreModules.serverTimestamp ? firestoreModules.serverTimestamp() : new Date()
+      });
+      return true;
+    } catch (err) {
+      console.warn('Design settings save error:', err);
+      return false;
+    }
+  };
+
+  /**
+   * Loads design settings from Firestore doc `settings/design`.
+   * @returns {Promise<Object|null>}
+   */
+  KenoFirebase.loadDesignSettings = async function () {
+    const fb = await this.init();
+    if (!fb || !firestoreModules) return null;
+    try {
+      const docRef = firestoreModules.doc(fb.db, 'settings', 'design');
+      const snap = await firestoreModules.getDoc(docRef);
+      if (snap.exists()) {
+        return snap.data().data || null;
+      }
+      return null;
+    } catch (err) {
+      console.warn('Design settings load error:', err);
+      return null;
+    }
+  };
+
 })(typeof window !== 'undefined' ? window : this);
+
