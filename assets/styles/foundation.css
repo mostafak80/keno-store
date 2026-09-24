@@ -148,11 +148,6 @@ a {
   text-decoration-thickness: initial;
   text-decoration-style: initial;
   text-decoration-color: initial;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 button {
@@ -258,9 +253,6 @@ svg.icon {
 }
 
 :focus-visible {
-  outline-color: ;
-  outline-style: ;
-  outline-width: ;
   outline-offset: 3px;
 }
 
@@ -317,21 +309,8 @@ svg.icon {
   padding-right: 20px;
   padding-bottom: 12px;
   padding-left: 20px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   font-weight: 700;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   box-shadow: var(--shadow-md);
   transition-behavior: normal;
   transition-duration: 0.2s;
@@ -367,10 +346,6 @@ svg.icon {
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   min-height: 48px;
   padding-top: 10px;
   padding-right: 20px;
@@ -380,11 +355,6 @@ svg.icon {
   font-size: 0.9375rem;
   line-height: 1.5;
   text-align: center;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
   user-select: none;
 }
 
@@ -444,28 +414,10 @@ svg.icon {
 }
 
 .button-yellow {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: rgb(30, 24, 3);
 }
 
 .button-yellow:hover:not(:disabled) {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .button.small {
@@ -475,10 +427,6 @@ svg.icon {
   padding-bottom: 6px;
   padding-left: 14px;
   font-size: 0.8125rem;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .button.compact {
@@ -506,11 +454,6 @@ svg.icon {
   color: var(--red);
   font-weight: 750;
   font-size: 0.9375rem;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .text-button:hover {
@@ -519,27 +462,6 @@ svg.icon {
 }
 
 .icon-btn {
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   min-width: 44px;
   min-height: 44px;
   display: inline-flex;
@@ -555,11 +477,6 @@ svg.icon {
   background-origin: initial;
   background-clip: initial;
   background-color: rgba(255, 255, 255, 0.03);
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .icon-btn:hover {
@@ -572,10 +489,6 @@ svg.icon {
   background-origin: initial;
   background-clip: initial;
   background-color: rgba(255, 255, 255, 0.08);
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--ink);
   transform: translateY(-1px);
 }
@@ -601,19 +514,7 @@ svg.icon {
 }
 
 .announcement {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--muted);
-  border-bottom-width: ;
-  border-bottom-style: ;
-  border-bottom-color: ;
   font-size: 0.8125rem;
   font-weight: 600;
 }
@@ -657,10 +558,6 @@ svg.icon {
   padding-right: 10px;
   padding-bottom: 3px;
   padding-left: 10px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   background-image: initial;
   background-position-x: initial;
   background-position-y: initial;
@@ -690,11 +587,6 @@ svg.icon {
   color: var(--yellow);
   font-size: 0.75rem;
   font-weight: 700;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .announcement-btn:hover {
@@ -707,10 +599,6 @@ svg.icon {
   background-origin: initial;
   background-clip: initial;
   background-color: rgba(245, 158, 11, 0.18);
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
 }
 
 .announcement-end {
@@ -810,19 +698,6 @@ svg.icon {
   display: inline-block;
   width: 24px;
   height: 3px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .hero-copy h1 {
@@ -905,10 +780,6 @@ svg.icon {
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 32px;
   padding-right: 36px;
   padding-bottom: 32px;
@@ -958,10 +829,6 @@ svg.icon {
 }
 
 .pill {
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-size: 0.75rem;
   font-weight: 800;
   padding-top: 4px;
@@ -1065,15 +932,6 @@ svg.icon {
 }
 
 .feature-button {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: rgb(30, 24, 3);
   width: 100%;
   justify-content: space-between;
@@ -1584,19 +1442,10 @@ svg.icon {
   padding-right: 16px;
   padding-bottom: 0px;
   padding-left: 16px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   min-width: 0px;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0%;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .search-field > svg {
@@ -1653,10 +1502,6 @@ svg.icon {
   column-gap: 8px;
   padding-inline-start: 14px;
   padding-inline-end: 14px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   color: var(--muted);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
@@ -1718,30 +1563,17 @@ svg.icon {
   flex-shrink: 0;
   white-space-collapse: collapse;
   text-wrap-mode: nowrap;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 10px;
   padding-right: 16px;
   padding-bottom: 10px;
   padding-left: 16px;
   min-height: 44px;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .category-count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .results-meta {
@@ -1782,9 +1614,6 @@ svg.icon {
 }
 
 .service-card:focus-visible {
-  outline-color: ;
-  outline-style: ;
-  outline-width: ;
   outline-offset: 3px;
 }
 
@@ -1793,10 +1622,6 @@ svg.icon {
   margin-right: 12px;
   margin-bottom: 0px;
   margin-left: 12px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   min-height: 100px;
   padding-top: 16px;
   padding-right: 16px;
@@ -1830,10 +1655,6 @@ svg.icon {
   min-height: unset;
   width: 100%;
   aspect-ratio: 2 / 1;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -1888,15 +1709,6 @@ svg.icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--muted);
 }
 
@@ -1939,24 +1751,11 @@ svg.icon {
 
 .card-category .featured-tag {
   color: var(--red);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   font-size: 0.6875rem;
   padding-top: 2px;
   padding-right: 8px;
   padding-bottom: 2px;
   padding-left: 8px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-weight: 800;
 }
 
@@ -2012,43 +1811,16 @@ svg.icon {
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--red);
   padding-top: 8px;
   padding-right: 14px;
   padding-bottom: 8px;
   padding-left: 14px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-weight: 800;
   min-height: 40px;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .card-open:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
 }
 
@@ -2063,10 +1835,6 @@ svg.icon {
   padding-bottom: 64px;
   padding-left: 24px;
   text-align: center;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   margin-block-start: 20px;
   margin-block-end: 20px;
 }
@@ -2099,10 +1867,6 @@ svg.icon {
   align-items: center;
   row-gap: 24px;
   column-gap: 24px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 28px;
   padding-right: 32px;
   padding-bottom: 28px;
@@ -2126,10 +1890,6 @@ svg.icon {
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   display: grid;
   align-items: center;
   justify-items: center;
@@ -2174,9 +1934,6 @@ svg.icon {
 }
 
 .steps-grid article + article {
-  border-inline-start-width: ;
-  border-inline-start-style: ;
-  border-inline-start-color: ;
   padding-inline-start: 36px;
 }
 
@@ -2231,15 +1988,9 @@ svg.icon {
 }
 
 .faq-list details {
-  border-bottom-width: ;
-  border-bottom-style: ;
-  border-bottom-color: ;
 }
 
 .faq-list details:first-child {
-  border-top-width: ;
-  border-top-style: ;
-  border-top-color: ;
 }
 
 .faq-list summary {
@@ -2290,21 +2041,9 @@ svg.icon {
 }
 
 .site-footer {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--muted);
   padding-block-start: 48px;
   padding-block-end: 24px;
-  border-top-width: ;
-  border-top-style: ;
-  border-top-color: ;
 }
 
 .footer-main {
@@ -2361,10 +2100,6 @@ svg.icon {
   padding-right: 14px;
   padding-bottom: 6px;
   padding-left: 14px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-size: 0.78125rem;
   font-weight: 750;
   text-decoration-line: none;
@@ -2456,15 +2191,6 @@ svg.icon {
 }
 
 .footer-social-btn.tiktok-btn:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-color: rgb(37, 244, 238);
   border-right-color: rgb(37, 244, 238);
   border-bottom-color: rgb(37, 244, 238);
@@ -2515,15 +2241,6 @@ svg.icon {
   padding-right: 20px;
   padding-bottom: 12px;
   padding-left: 20px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -2541,20 +2258,11 @@ svg.icon {
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   box-shadow: var(--shadow-xl);
   color: var(--ink);
   z-index: 90;
   font-size: 0.875rem;
   font-weight: 750;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .floating-contact .icon {
@@ -2562,24 +2270,11 @@ svg.icon {
 }
 
 .floating-contact:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   transform: translateY(-3px) scale(1.02);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 12px 30px;
 }
 
 dialog {
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 0px;
@@ -2592,10 +2287,6 @@ dialog {
 .service-dialog {
   width: 700px;
   max-width: calc(100% - 24px);
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   color: var(--ink);
   overflow-x: hidden;
   overflow-y: hidden;
@@ -2611,10 +2302,6 @@ dialog {
   padding-bottom: 28px;
   padding-left: 28px;
   width: 460px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .confirm-dialog h2 {

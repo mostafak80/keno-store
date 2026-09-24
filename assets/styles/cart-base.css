@@ -5,67 +5,19 @@
   row-gap: 8px;
   column-gap: 8px;
   position: relative;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   padding-top: 8px;
   padding-right: 16px;
   padding-bottom: 8px;
   padding-left: 16px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-family: inherit;
   font-size: 0.875rem;
   font-weight: 750;
   color: var(--ink);
   cursor: pointer;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .cart-btn:hover {
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--red);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   transform: translateY(-1px);
 }
 
@@ -79,19 +31,6 @@
   padding-right: 5px;
   padding-bottom: 0px;
   padding-left: 5px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   font-size: 0.72rem;
   font-weight: 850;
@@ -192,15 +131,6 @@
 }
 
 .cart-item-count {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--red);
   font-size: 0.78rem;
   font-weight: 850;
@@ -208,10 +138,6 @@
   padding-right: 8px;
   padding-bottom: 2px;
   padding-left: 8px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .cart-body {
@@ -281,10 +207,6 @@
   padding-right: 16px;
   padding-bottom: 14px;
   padding-left: 16px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .cart-item-card:hover {
@@ -335,45 +257,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   cursor: pointer;
   font-weight: 800;
   font-size: 0.95rem;
   color: var(--ink);
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
   touch-action: manipulation;
   position: relative;
 }
@@ -388,19 +275,6 @@
 }
 
 .cart-qty-btn:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
 }
 
 .cart-qty-val {
@@ -446,15 +320,6 @@
   padding-left: 6px;
   color: var(--muted);
   cursor: pointer;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -473,15 +338,6 @@
 
 .cart-item-remove:hover {
   color: var(--red);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .cart-item-remove svg {
@@ -490,10 +346,6 @@
 }
 
 .cart-footer {
-  padding-top: ;
-  padding-right: ;
-  padding-bottom: ;
-  padding-left: ;
   display: flex;
   flex-direction: column;
   row-gap: 12px;
@@ -529,27 +381,6 @@
   padding-right: 12px;
   padding-bottom: 8px;
   padding-left: 12px;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .cart-actions {
@@ -575,9 +406,6 @@
   background-clip: initial;
   background-color: rgba(14, 19, 32, 0.94);
   backdrop-filter: blur(16px);
-  border-top-width: ;
-  border-top-style: ;
-  border-top-color: ;
   display: none;
   align-items: center;
   justify-content: space-around;
@@ -631,11 +459,6 @@
   border-image-outset: 0;
   border-image-repeat: stretch;
   cursor: pointer;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
   letter-spacing: 0px !important;
 }
 
@@ -665,9 +488,6 @@
   padding-right: 0px;
   padding-bottom: 48px;
   padding-left: 0px;
-  border-bottom-width: ;
-  border-bottom-style: ;
-  border-bottom-color: ;
 }
 
 .trust-grid {
@@ -686,49 +506,10 @@
   padding-right: 22px;
   padding-bottom: 22px;
   padding-left: 22px;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .trust-card:hover {
   transform: translateY(-2px);
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 10px 25px;
 }
 
@@ -739,20 +520,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--red);
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .trust-icon svg {
@@ -782,18 +550,6 @@
   padding-right: 0px;
   padding-bottom: 56px;
   padding-left: 0px;
-  border-bottom-width: ;
-  border-bottom-style: ;
-  border-bottom-color: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .testimonials-grid {
@@ -812,42 +568,7 @@
   padding-right: 24px;
   padding-bottom: 24px;
   padding-left: 24px;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   box-shadow: rgba(0, 0, 0, 0.03) 0px 4px 16px;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .testimonial-card:hover {
@@ -933,24 +654,11 @@
 
 .service-tag {
   font-size: 0.72rem;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--muted);
   padding-top: 3px;
   padding-right: 8px;
   padding-bottom: 3px;
   padding-left: 8px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-weight: 750;
   white-space-collapse: collapse;
   text-wrap-mode: nowrap;
@@ -972,15 +680,6 @@
   align-items: center;
   row-gap: 3px;
   column-gap: 3px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: rgb(5, 150, 105);
   font-size: 0.72rem;
   font-weight: 850;
@@ -988,10 +687,6 @@
   padding-right: 8px;
   padding-bottom: 2px;
   padding-left: 8px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   margin-inline-start: 6px;
 }
 
@@ -1016,10 +711,6 @@
   padding-right: 10px;
   padding-bottom: 3px;
   padding-left: 10px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   z-index: 2;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
 }
@@ -1097,9 +788,6 @@
     border-inline-start-width: 0px;
     border-inline-start-style: initial;
     border-inline-start-color: initial;
-    border-top-width: ;
-    border-top-style: ;
-    border-top-color: ;
     padding-top: 24px;
     padding-inline-start: 0px;
   }
@@ -1154,10 +842,6 @@
     margin-right: 0px;
     margin-bottom: 0px;
     margin-left: 0px;
-    border-top-left-radius: ;
-    border-top-right-radius: ;
-    border-bottom-right-radius: ;
-    border-bottom-left-radius: ;
   }
 
   .plan-grid {

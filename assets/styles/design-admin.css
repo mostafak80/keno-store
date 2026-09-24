@@ -478,13 +478,13 @@
 /* Mobile columns 1 to 10 selector */
 .design-mobile-cols-bar {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 4px;
   margin-bottom: 6px;
 }
 @media (max-width: 600px) {
   .design-mobile-cols-bar {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 6px;
   }
 }

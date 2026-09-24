@@ -106,31 +106,10 @@ p, .hero-copy > p, .section-heading > p, .faq-list p, .dialog-service-desc {
   background-origin: initial !important;
   background-clip: initial !important;
   background-color: rgba(255, 255, 255, 0.08) !important;
-  border-top-color:  !important;
-  border-top-style:  !important;
-  border-top-width:  !important;
-  border-right-color:  !important;
-  border-right-style:  !important;
-  border-right-width:  !important;
-  border-bottom-color:  !important;
-  border-bottom-style:  !important;
-  border-bottom-width:  !important;
-  border-left-color:  !important;
-  border-left-style:  !important;
-  border-left-width:  !important;
-  border-image-source:  !important;
-  border-image-slice:  !important;
-  border-image-width:  !important;
-  border-image-outset:  !important;
-  border-image-repeat:  !important;
   padding-top: 3px !important;
   padding-right: 9px !important;
   padding-bottom: 3px !important;
   padding-left: 9px !important;
-  border-top-left-radius:  !important;
-  border-top-right-radius:  !important;
-  border-bottom-right-radius:  !important;
-  border-bottom-left-radius:  !important;
   letter-spacing: 0px !important;
 }
 
@@ -559,10 +538,6 @@ bdi, [dir="ltr"], .bidi-isolate, .order-code, .mono-code, .phone-number, .whatsa
 @media (hover: hover) and (pointer: fine) {
   .service-card:hover {
     transform: translateY(-4px);
-    border-top-color:  !important;
-    border-right-color:  !important;
-    border-bottom-color:  !important;
-    border-left-color:  !important;
     box-shadow: var(--shadow-lg) !important;
   }
 
@@ -625,10 +600,6 @@ bdi, [dir="ltr"], .bidi-isolate, .order-code, .mono-code, .phone-number, .whatsa
     margin-right: 0px !important;
     margin-bottom: 0px !important;
     margin-left: 0px !important;
-    border-top-left-radius:  !important;
-    border-top-right-radius:  !important;
-    border-bottom-right-radius:  !important;
-    border-bottom-left-radius:  !important;
   }
 
   .dialog-header {
@@ -647,10 +618,6 @@ bdi, [dir="ltr"], .bidi-isolate, .order-code, .mono-code, .phone-number, .whatsa
   }
 
   .dialog-order-footer {
-    padding-top:  !important;
-    padding-right:  !important;
-    padding-bottom:  !important;
-    padding-left:  !important;
   }
 
   .mobile-nav {
@@ -759,15 +726,6 @@ bdi, [dir="ltr"], .bidi-isolate, .order-code, .mono-code, .phone-number, .whatsa
   }
 
   body {
-    background-image:  !important;
-    background-position-x:  !important;
-    background-position-y:  !important;
-    background-size:  !important;
-    background-repeat:  !important;
-    background-attachment:  !important;
-    background-origin:  !important;
-    background-clip:  !important;
-    background-color:  !important;
     color: var(--ink) !important;
     font-size: 11pt !important;
     line-height: 1.5 !important;

@@ -23,40 +23,10 @@
 }
 
 .panel {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   padding-top: 30px;
   padding-right: 30px;
   padding-bottom: 30px;
   padding-left: 30px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   box-shadow: var(--shadow-sm);
 }
 
@@ -79,15 +49,6 @@
   flex-shrink: 1;
   flex-basis: 0%;
   height: 1px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .admin-status-bar {
@@ -96,40 +57,10 @@
   align-items: center;
   row-gap: 16px;
   column-gap: 16px;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   padding-top: 16px;
   padding-right: 22px;
   padding-bottom: 16px;
   padding-left: 22px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   box-shadow: var(--shadow-sm);
 }
 
@@ -155,40 +86,10 @@
 }
 
 .admin-stats > div {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   padding-top: 18px;
   padding-right: 22px;
   padding-bottom: 18px;
   padding-left: 22px;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   box-shadow: var(--shadow-sm);
 }
 
@@ -207,9 +108,6 @@
   display: flex;
   row-gap: 20px;
   column-gap: 20px;
-  border-bottom-width: ;
-  border-bottom-style: ;
-  border-bottom-color: ;
   margin-bottom: 24px;
   overflow-x: auto;
 }
@@ -254,11 +152,6 @@
   font-size: 0.9375rem;
   color: var(--muted);
   font-weight: 750;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .admin-tabs button:hover {
@@ -266,10 +159,6 @@
 }
 
 .admin-tabs button[aria-selected="true"] {
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--red);
 }
 
@@ -295,36 +184,6 @@
   padding-right: 14px;
   padding-bottom: 10px;
   padding-left: 14px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   font-size: 0.875rem;
   font-weight: 600;
@@ -341,44 +200,10 @@
 }
 
 .admin-toolbar .filter-select:focus {
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   box-shadow: 0 0 0 3px var(--red-soft);
 }
 
 .table-container {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   overflow-x: auto;
   box-shadow: var(--shadow-sm);
 }
@@ -409,15 +234,6 @@
 }
 
 .status-pill {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: rgb(5, 150, 105);
   border-top-width: 1px;
   border-right-width: 1px;
@@ -441,38 +257,7 @@
 }
 
 .status-pill.clickable {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   color: var(--ink);
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .status-pill.clickable:hover {
@@ -496,59 +281,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   cursor: pointer;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .reorder-btn-group .icon-btn.tiny:hover:not(:disabled) {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--red);
 }
 
@@ -606,40 +343,10 @@
 }
 
 .editor-plan-row {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   padding-top: 14px;
   padding-right: 14px;
   padding-bottom: 14px;
   padding-left: 14px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   margin-top: 12px;
   display: grid;
   grid-template-columns: 1.6fr 0.9fr 1fr auto;
@@ -688,19 +395,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .upload-preview .preview-item {
@@ -714,36 +408,6 @@
   width: 64px;
   height: 64px;
   object-fit: contain;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
 }
 
 .draft-preview-bar {
@@ -757,15 +421,6 @@
   padding-right: 24px;
   padding-bottom: 12px;
   padding-left: 24px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   display: flex;
   row-gap: 16px;
@@ -791,15 +446,6 @@
   padding-right: 24px;
   padding-bottom: 14px;
   padding-left: 24px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   border-top-width: 1px;
   border-right-width: 1px;
@@ -819,10 +465,6 @@
   border-image-outset: 0;
   border-image-repeat: stretch;
   box-shadow: var(--shadow-xl);
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-size: 0.875rem;
   font-weight: 700;
   text-align: center;
@@ -876,10 +518,6 @@
   background-origin: initial;
   background-clip: initial;
   background-color: rgb(254, 243, 199);
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   color: rgb(146, 64, 14);
   font-size: 0.875rem;
   margin-block-start: 16px;
@@ -893,37 +531,7 @@
   padding-right: 16px;
   padding-bottom: 12px;
   padding-left: 16px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   color: var(--red);
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   font-size: 0.875rem;
   margin-block-start: 12px;
   margin-block-end: 12px;

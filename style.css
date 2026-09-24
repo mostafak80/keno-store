@@ -13,6 +13,7 @@
 @import url("./assets/compact-cards.css");
 @import url("./assets/journey.css");
 @import url("./assets/design-panel.css");
+@import url("./assets/styles/mobile.css");
 
 /* Master view state enforcement */
 [hidden],

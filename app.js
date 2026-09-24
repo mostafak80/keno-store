@@ -1904,6 +1904,11 @@
     }
 
     const isAdmin = requestedAdmin && isAuthorizedAdmin();
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+      const active = link.getAttribute('href') === (hash || '#home');
+      if (active) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
     if ($('storefront')) {
       $('storefront').hidden = isAdmin;
       if (isAdmin) {

@@ -1,0 +1,123 @@
+/* Mobile shell, checkout and admin. Card layout belongs to design-panel.css. */
+@media (max-width: 780px) {
+  html { scroll-padding-top:128px; }
+  body.keno-motion { zoom:1; padding-bottom:calc(76px + env(safe-area-inset-bottom)); }
+  body.keno-motion .container { width:calc(100% - 32px) !important; }
+  body.keno-motion .site-header { position:sticky; top:0; }
+  body.keno-motion .header-inner { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; padding-block:8px; }
+  body.keno-motion .brand { min-width:0; }
+  body.keno-motion .brand img { width:min(128px,100%); height:auto; }
+  body.keno-motion .header-actions { gap:4px; margin:0; }
+  body.keno-motion :is(.header-actions > .contact-trigger,.header-search,.store-nav-shell) { display:none; }
+  body.keno-motion .header-auth-area { gap:4px; }
+  body.keno-motion :is(.header-auth-btn span,.header-admin-btn span,.header-user-name) { display:none; }
+  body.keno-motion .header-actions :is(.button,.theme-toggle,.cart-btn,.header-signout-btn) { width:44px; height:44px; min-height:44px !important; padding:8px !important; justify-content:center; }
+  body.keno-motion .discovery-search { grid-column:1 / -1; width:100%; box-sizing:border-box; gap:8px; }
+  body.keno-motion .discovery-search input { height:44px; font-size:16px; }
+  body.keno-motion .discovery-search button { width:44px; min-height:44px; }
+  body.keno-motion .mobile-nav { min-height:64px; padding-bottom:env(safe-area-inset-bottom); }
+  body.keno-motion .mobile-nav-item { min-height:56px; font-size:12px; }
+  body.keno-motion .mobile-nav-item[aria-current="page"] { color:var(--accent-readable); background:var(--yellow-soft); border-radius:10px; }
+  body.keno-motion .floating-contact { bottom:calc(76px + env(safe-area-inset-bottom)); min-height:44px; font-size:12px; padding:8px 12px; }
+  body.keno-motion:has(dialog[open],.cart-drawer:not([hidden])) :is(.mobile-nav,.floating-contact) { visibility:hidden; }
+  body.keno-motion #storefront { gap:clamp(20px,var(--section-gap,32px),36px) !important; }
+  body.keno-motion #storefront section[id] { scroll-margin-top:128px; }
+  body.keno-motion .hero { grid-template-columns:1fr; gap:24px; padding-block:24px 8px; }
+  body.keno-motion .hero-copy h1 { font-size:clamp(30px,8.7vw,42px) !important; line-height:1.45 !important; }
+  body.keno-motion .hero-copy > p { font-size:14px !important; line-height:1.85 !important; }
+  body.keno-motion .hero-actions { flex-wrap:wrap; }
+  body.keno-motion .hero-actions .button { flex:1 1 130px; min-height:48px !important; }
+  body.keno-motion .hero-searches button { min-height:44px; font-size:12px; }
+  body.keno-motion .hero-stage { margin:0; }
+  body.keno-motion .collection-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  body.keno-motion .collection-tile { padding:14px 8px; }
+  body.keno-motion .collection-tile b { font-size:14px; }
+  body.keno-motion .collection-tile small { font-size:12px; }
+  body.keno-motion .section-link { min-height:44px; font-size:13px; }
+  body.keno-motion .category-tabs { gap:8px; padding-block:6px; }
+  body.keno-motion .category-tabs button { min-height:44px; font-size:14px; }
+  body.keno-motion .service-card.is-unavailable { opacity:1; }
+  body.keno-motion .pick-content > b { font-size:15px; line-height:1.65; }
+  body.keno-motion .pick-plan { font-size:13px; }
+  body.keno-motion .steps-grid { grid-template-columns:1fr; }
+  body.keno-motion .payment-showcase { padding:18px; }
+  body.keno-motion :is(input,select,textarea) { font-size:16px !important; max-width:100%; }
+  body.keno-motion :is(button,a,input,select,textarea,summary):focus-visible { outline:3px solid var(--accent-readable); outline-offset:3px; }
+  body.keno-motion :is(input,select):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]) { min-height:44px; }
+  body.keno-motion .button { min-height:max(44px,var(--kd-btn-height,46px)) !important; }
+
+  /* Only the dialog body scrolls, while the next step stays within reach. */
+  body.keno-motion #serviceDialog[open] { inset:0; margin:auto; width:100%; max-width:100%; height:100dvh; max-height:100dvh; border:0; border-radius:0; }
+  body.keno-motion #serviceDialog .service-dialog-topbar { padding:max(8px,env(safe-area-inset-top)) 12px 8px; gap:8px; }
+  #serviceDialog .dialog-topbar-start { flex:1; min-width:0; }
+  #serviceDialog .journey-progress { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+  #serviceDialog #serviceStepLabel { font-size:13px; line-height:1.6; }
+  #serviceDialog #serviceListen { font-size:12px; padding:6px 8px; }
+  #serviceDialog .dialog-topbar-actions { gap:4px; }
+  #serviceDialog #shareServiceBtn { display:none; }
+  body.keno-motion #serviceDialog .dialog-action-icon-btn { width:44px; height:44px; }
+  body.keno-motion #serviceDialog .checkout-scroll-body { padding:12px 16px 20px; min-height:0; overscroll-behavior:contain; }
+  body.keno-motion #serviceDialog .service-hero-name { font-size:18px !important; line-height:1.6 !important; }
+  body.keno-motion #serviceDialog :is(.step-title,.step-title-flex) { font-size:16px !important; line-height:1.6 !important; }
+  body.keno-motion #serviceDialog .step-desc { font-size:14px; line-height:1.75; }
+  body.keno-motion #serviceDialog .summary-total-row { flex-wrap:wrap; gap:8px; }
+  #serviceDialog .summary-price-box { flex-wrap:wrap; }
+  #serviceDialog :is(.summary-price-amount,.summary-price-original,.summary-savings-tag) { white-space:nowrap; }
+  #serviceDialog .summary-price-amount { font-size:24px; }
+  #serviceDialog .plan-tools { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:10px; }
+  #serviceDialog .plan-tools label { min-width:0; font-size:14px; }
+  #serviceDialog .plan-tools input { width:100%; }
+  body.keno-motion #serviceDialog .plan-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  body.keno-motion #serviceDialog .plan-option { min-height:88px; padding:12px !important; }
+  body.keno-motion #serviceDialog .plan-option .plan-label { font-size:14px !important; }
+  body.keno-motion #serviceDialog .modern-checkout-footer { display:grid; grid-template-columns:64px minmax(0,1fr); padding:8px 12px max(8px,env(safe-area-inset-bottom)); gap:6px; }
+  #serviceDialog .journey-navigation { grid-column:1 / -1; gap:8px; }
+  #serviceDialog .journey-navigation:has(#serviceNext[hidden]) { grid-column:1; }
+  #serviceDialog .journey-navigation:has(#serviceNext[hidden]) #servicePrev { min-width:0; padding-inline:8px; }
+  #serviceDialog .checkout-footer-single-action { display:contents; }
+  body.keno-motion #serviceDialog .keno-confirm-whatsapp-btn { grid-column:2; width:100%; min-width:0; min-height:48px; padding:8px; gap:6px; }
+  #serviceDialog .btn-icon-bubble { display:none; }
+  body.keno-motion #serviceDialog .btn-main-label { font-size:14px; }
+  #serviceDialog .checkout-footer-secondary-row { grid-column:1 / -1; gap:6px; margin:0; }
+  #serviceDialog .checkout-footer-secondary-row:has(#addToCartBtn[hidden]):has(#copyOrderButton[hidden]) { display:none; }
+  body.keno-motion #serviceDialog :is(.secondary-cart-link,.secondary-copy-link) { min-height:44px; font-size:12px; padding:6px; }
+  #serviceDialog .journey-voice-help { grid-column:1 / -1; margin:0; }
+  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector { grid-template-columns:repeat(auto-fit,minmax(96px,1fr)) !important; }
+  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-card { display:contents !important; }
+  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector .payment-card-header { grid-row:auto !important; order:0; min-height:64px !important; padding:8px !important; }
+  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-details-drawer { grid-row:auto !important; grid-column:1 / -1; order:1; }
+  body.keno-motion .cart-drawer { top:0; bottom:auto; height:100dvh; max-height:100dvh; width:100%; max-width:100%; border-radius:0; }
+  body.keno-motion .cart-header { padding:10px 12px; }
+  body.keno-motion .cart-header h2 { font-size:16px; }
+  body.keno-motion .cart-header .icon-btn { width:44px; height:44px; }
+  body.keno-motion .cart-body { min-height:0; padding:16px; overscroll-behavior:contain; }
+  body.keno-motion .cart-footer { padding:8px 12px max(8px,env(safe-area-inset-bottom)); gap:6px; }
+  body.keno-motion .cart-footer :is(.text-button,.button) { min-height:44px; }
+  body.keno-motion .checkout-stepper-bar { padding:8px 16px; }
+  body.keno-motion .step-indicator { min-height:44px; }
+  body.keno-motion #cartListen { margin:0 12px 6px; align-self:flex-end; }
+  body.keno-motion :is(.cart-account-card,.invoice-item-details,.cart-item-info,.invoice-row) { min-width:0; overflow-wrap:anywhere; }
+  body.keno-motion .cart-qty-btn { width:44px; height:44px; }
+  body.keno-motion .cart-item-remove { min-width:44px; min-height:44px; }
+  body.keno-motion .form-grid { grid-template-columns:minmax(0,1fr); }
+  body.keno-motion .form-grid > * { grid-column:1 / -1; min-width:0; }
+  body.keno-motion .admin-view { padding-block:16px; }
+  body.keno-motion :is(.admin-tabs,.admin-toolbar,.admin-actions,.design-topbar-actions) { flex-wrap:wrap; gap:8px; }
+  body.keno-motion :is(.admin-tabs button,.admin-toolbar button,.reorder-btn,.tiny-btn) { min-height:44px; }
+  body.keno-motion .design-panel-grid { grid-template-columns:minmax(0,1fr); }
+  body.keno-motion .design-panel-grid > * { grid-column:1 / -1 !important; min-width:0; }
+  body.keno-motion #designMobileSection > div[style*="grid"] { grid-template-columns:minmax(0,1fr) !important; }
+  body.keno-motion .design-mobile-cols-bar { flex-wrap:wrap; }
+  body.keno-motion .design-mcol-btn { min-width:44px; min-height:44px; }
+  body.keno-motion .editor-dialog { width:calc(100% - 16px); max-height:calc(100dvh - 16px); }
+  body.keno-motion .editor-dialog .dialog-scroll { padding:16px; }
+  body.keno-motion :is(.fulfillment-editor-row,.content-edit-grid,.visibility-toggles-grid) { grid-template-columns:minmax(0,1fr); }
+}
+@media (max-height:540px) and (max-width:900px) {
+  /* Short landscape/keyboard viewport: allow content and actions to scroll together. */
+  body.keno-motion #serviceDialog[open] { overflow-y:auto; }
+  body.keno-motion #serviceDialog .checkout-scroll-body { flex:0 0 auto; overflow:visible; }
+  body.keno-motion #serviceDialog .modern-checkout-footer { flex:0 0 auto; }
+  body.keno-motion .cart-drawer { overflow-y:auto; }
+  body.keno-motion .cart-body { flex:0 0 auto; overflow:visible; }
+}

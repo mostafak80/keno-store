@@ -238,15 +238,6 @@
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -575,15 +566,6 @@
   flex-direction: column;
   row-gap: 20px;
   column-gap: 20px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .checkout-step-section {
@@ -1111,15 +1093,6 @@
   padding-right: 14px;
   padding-bottom: 12px;
   padding-left: 14px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   border-top-width: 1.5px;
   border-right-width: 1.5px;
@@ -1378,15 +1351,6 @@
   padding-block-end: 12px;
   padding-inline-start: 42px;
   padding-inline-end: 16px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1.5px;
   border-right-width: 1.5px;
   border-bottom-width: 1.5px;
@@ -1426,15 +1390,6 @@
   outline-color: initial;
   outline-style: none;
   outline-width: initial;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   box-shadow: rgba(0, 242, 254, 0.18) 0px 0px 0px 3px, rgba(0, 242, 254, 0.15) 0px 0px 16px;
 }
 
@@ -1703,15 +1658,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   transition-behavior: normal;
   transition-duration: 0.2s;
@@ -1905,15 +1851,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   display: inline-block;
   flex-shrink: 0;
   transition-behavior: normal;
@@ -2119,15 +2056,6 @@
   justify-content: space-between;
   row-gap: 10px;
   column-gap: 10px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   padding-top: 8px;
   padding-right: 12px;
   padding-bottom: 8px;
@@ -2575,22 +2503,9 @@
   position: sticky;
   bottom: 0px;
   z-index: 25;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: rgba(255, 255, 255, 0.09);
-  padding-top: ;
-  padding-right: ;
-  padding-bottom: ;
-  padding-left: ;
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -2981,10 +2896,6 @@
   .modern-checkout-footer {
     position: sticky;
     bottom: 0px;
-    padding-top: ;
-    padding-right: ;
-    padding-bottom: ;
-    padding-left: ;
     z-index: 10;
   }
 
@@ -3038,32 +2949,14 @@ label input:not([type="checkbox"]):not([type="radio"]), label select, label text
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 10px;
   padding-right: 14px;
   padding-bottom: 10px;
   padding-left: 14px;
   color: var(--ink);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   font-size: 0.9375rem;
   min-height: 46px;
   width: 100%;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 label textarea {
@@ -3071,10 +2964,6 @@ label textarea {
 }
 
 label input:focus, label select:focus, label textarea:focus {
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   box-shadow: rgba(225, 29, 72, 0.12) 0px 0px 0px 3px;
   outline-color: initial;
   outline-style: none;

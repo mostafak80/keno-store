@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <meta name="theme-color" content="#101114">
   <script src="./js/theme.js?v=20260922-3"></script>
   <meta name="description" content="متجر كينو للخدمات الرقمية: شحن ألعاب (ببجي، فري فاير، بيس)، اشتراكات ترفيه وذكاء اصطناعي (نتفليكس، شاهد، ChatGPT Plus)، ودفع إلكتروني. عروض واضحة وسلة طلبات مجمعة عبر واتساب.">
@@ -1177,27 +1177,20 @@
                 <!-- 2. عدد الكروت في الصف الواحد (من 1 إلى 10) -->
                 <div class="design-field-group" id="designMobileColsContainer">
                   <label class="design-label">
-                    عدد الكروت في الصف الواحد (جنب بعض) — <span id="designMobileColsVal" style="color:var(--accent,#ffce50);font-weight:700;">3 كروت في الصف</span>
+                    عدد الكروت في الصف الواحد (جنب بعض) — <span id="designMobileColsVal" style="color:var(--accent,#ffce50);font-weight:700;">2 كارت في الصف</span>
                   </label>
                   <div class="design-mobile-cols-bar" id="designMobileColsBar">
                     <button type="button" class="design-mcol-btn" data-mcols="1">1</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="2">2</button>
-                    <button type="button" class="design-mcol-btn active" data-mcols="3">3</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="4">4</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="5">5</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="6">6</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="7">7</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="8">8</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="9">9</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="10">10</button>
+                    <button type="button" class="design-mcol-btn active" data-mcols="2">2</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="3">3</button>
                   </div>
-                  <p class="field-hint">الافتراضي 3 كروت في الصف الواحد لعرض متناسق ومصغر على الفون.</p>
+                  <p class="field-hint">الافتراضي خدمتان في الصف. الشاشات الصغيرة تعرض خدمتين بحد أقصى للحفاظ على وضوح الاسم والسعر، والتابلت حتى 3.</p>
                 </div>
 
                 <!-- 3. المسافة بين الكروت على الفون -->
                 <div class="design-field-group">
-                  <label class="design-label">المسافة بين الكروت على الفون — <span id="designMobileGapVal">6</span>px</label>
-                  <input type="range" id="designMobileGap" min="2" max="20" value="6" step="1" class="design-range">
+                  <label class="design-label">المسافة بين الكروت على الفون — <span id="designMobileGapVal">12</span>px</label>
+                  <input type="range" id="designMobileGap" min="10" max="20" value="12" step="1" class="design-range">
                 </div>
               </div>
 
@@ -1211,7 +1204,7 @@
                   <input type="range" id="designMobileCardScale" min="1" max="10" value="5" step="1" class="design-range">
                   <div class="design-range-labels">
                     <span>1 (أصغر حجم)</span>
-                    <span>5 (متناسق لـ 3 كروت)</span>
+                    <span>5 (متناسق)</span>
                     <span>10 (أكبر حجم)</span>
                   </div>
                 </div>
@@ -1220,7 +1213,7 @@
                 <div class="design-toggle-field" style="margin-bottom:10px;">
                   <div>
                     <strong>إظهار وصف الخدمة على الفون</strong>
-                    <p class="field-hint">إخفاء الوصف يجعل الكروت أصغر وأنيقة في العرض الثلاثي</p>
+                    <p class="field-hint">اختر إظهار وصف توضيحي إضافي تحت اسم الخدمة</p>
                   </div>
                   <label class="design-toggle">
                     <input type="checkbox" id="designMobileShowDesc">
@@ -1241,8 +1234,8 @@
 
                 <!-- 6. مقياس الخط العام على الفون -->
                 <div class="design-field-group">
-                  <label class="design-label">مقياس خطوط الموقع على الفون — <span id="designMobileFontScaleVal">95</span>%</label>
-                  <input type="range" id="designMobileFontScale" min="80" max="120" value="95" step="5" class="design-range">
+                  <label class="design-label">مقياس خطوط الموقع على الفون — <span id="designMobileFontScaleVal">100</span>%</label>
+                  <input type="range" id="designMobileFontScale" min="100" max="120" value="100" step="5" class="design-range">
                 </div>
               </div>
             </div>

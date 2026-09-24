@@ -8,6 +8,7 @@ KenoFirebase.getOrders=()=>KenoOrderStore.getOrders();
 KenoFirebase.getOrder=id=>KenoOrderStore.getOrder(id);
 KenoFirebase.listReviews=async()=>[];
 KenoFirebase.listReviewSubmissions=async()=>[];
+KenoFirebase.getCurrentUser=()=>{try{return sessionStorage.getItem('test-owner')?{email:KenoConfig.ADMIN_EMAILS?.[0]||Object.keys(KenoConfig.AUTHORIZED_ADMINS)[0]}:null}catch(_){return null}};
 KenoFirebase.createOrder=async order=>{window.__savedOrder=order;await KenoOrderStore.saveOrder(order);return{success:true,cloud:false}};
 `;
 (async()=>{
@@ -72,8 +73,8 @@ KenoFirebase.createOrder=async order=>{window.__savedOrder=order;await KenoOrder
   const order=await page.evaluate(()=>__savedOrder);assert.equal(order.items[0].fulfillment[0].value,'11111111');assert.equal(order.items[1].fulfillment[0].value,'33333333');
   const message=await page.evaluate(()=>decodeURIComponent(__wa));assert.match(message,/11111111/);assert.match(message,/33333333/);
   // Local admin fixture: no production identity or writes are used in this test.
-  await page.evaluate(()=>location.hash='#admin');await page.waitForFunction(()=>window.KenoAdminAuth);
-  await page.evaluate(async()=>{KenoAdminAuth.setSession('OWNER');await ensureAdminWorkspace();document.querySelector('#adminLogin').hidden=true;document.querySelector('#adminWorkspace').hidden=false;});
+  await page.evaluate(()=>{sessionStorage.setItem('test-owner','1');location.hash='#admin'});await page.waitForFunction(()=>window.KenoAdminAuth);
+  await page.evaluate(async()=>{KenoAdminAuth.setSession('OWNER',{email:KenoFirebase.getCurrentUser().email});await ensureAdminWorkspace();});
   await page.locator('[data-edit-service="pubg"]').click();
   await page.locator('#fulfillmentTitle').fill('بيانات شحن تجريبية');
   await page.locator('[data-prop="hint"]').first().fill('انسخ الرقم من ملف اللاعب');
@@ -85,7 +86,9 @@ KenoFirebase.createOrder=async order=>{window.__savedOrder=order;await KenoOrder
   await page.waitForFunction(()=>!document.querySelector('#editorDialog').open);
   const config=await page.evaluate(()=>getAdminDraft().services.find(s=>s.id==='pubg').fulfillment);
   assert.equal(config.title,'بيانات شحن تجريبية');assert.equal(config.fields[0].helpImage,'https://example.com/help.png');assert.equal(config.audio[0],'https://example.com/step.mp3');
-  await page.locator('#settingsTab').click();await page.locator('#contentSettingsEditor summary').click();
+  await page.locator('#settingsTab').click();
+  await page.locator('#settingSiteUrl').locator('xpath=ancestor::details[1]').locator('summary').click();
+  await page.locator('[data-content-setting]').first().locator('xpath=ancestor::details[1]').locator('summary').click();
   await page.locator('#settingSiteUrl').fill('https://keno-store.vercel.app/');
   await page.locator('[data-content-setting]').first().fill('محتوى قابل للتعديل');
   await page.locator('#settingSiteUrl').scrollIntoViewIfNeeded();
@@ -105,7 +108,8 @@ KenoFirebase.createOrder=async order=>{window.__savedOrder=order;await KenoOrder
   await page.locator('#themeToggle').click();await page.screenshot({path:path.join(shots,'light-home.png')});
   const theme=await page.getAttribute('html','data-theme');await page.reload();assert.equal(await page.getAttribute('html','data-theme'),theme);
   await page.evaluate(()=>location.hash='#admin');await page.waitForFunction(()=>window.KenoAdminAuth);
-  await page.locator('#confirmAccept').click();await page.locator('#adminWorkspace').waitFor({state:'visible'});
+  await page.locator('#adminWorkspace').waitFor({state:'visible'});
+  assert.equal(await page.evaluate(()=>getAdminDraft().services.find(s=>s.id==='pubg').fulfillment.title),'بيانات شحن تجريبية');
   await page.evaluate(()=>{getAdminDraft().services[0].plans[0].price+=1;saveAdminDraft();KenoFirebase.publishCatalog=async()=>{throw Error('offline test')};KenoFirebase.getIdToken=async()=>null;});
   await page.locator('#publishButton').click();await page.locator('#confirmAccept').click();
   await page.waitForFunction(()=>document.querySelector('#adminMessage').textContent.includes('تعذر النشر'));

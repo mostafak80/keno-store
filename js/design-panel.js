@@ -59,12 +59,12 @@
     footerLayout: 'standard',
     // ── Mobile Settings ───────────────────────
     mobileLayout: 'grid',
-    mobileColumns: 3,
-    mobileGap: 6,
+    mobileColumns: 2,
+    mobileGap: 12,
     mobileCardScale: 5,
     mobileShowDescription: false,
     mobileShowCategory: true,
-    mobileFontScale: 95,
+    mobileFontScale: 100,
   };
 
   let current = { ...DEFAULTS };
@@ -115,13 +115,16 @@
 
     // ── Mobile settings ──────────────────────────────────────
     const mLayout = s.mobileLayout || 'grid';
-    const mColsRaw = parseInt(s.mobileColumns, 10) || 3;
-    const mCols = (mLayout === 'vertical') ? 1 : Math.max(1, Math.min(10, mColsRaw));
+    const mColsRaw = parseInt(s.mobileColumns, 10) || 2;
+    s.mobileColumns = Math.max(1, Math.min(3, mColsRaw));
+    const mCols = (mLayout === 'vertical') ? 1 : s.mobileColumns;
     const mScaleNum = Math.max(1, Math.min(10, parseInt(s.mobileCardScale, 10) || 5));
     // Factor: 0.60 (size 1) to 1.40 (size 10), size 5 is ~0.955
     const mScaleFactor = 0.60 + ((mScaleNum - 1) / 9) * 0.80;
-    const mGap = typeof s.mobileGap === 'number' ? s.mobileGap : 6;
-    const mFontScale = (s.mobileFontScale || 95) / 100;
+    const mGap = Math.max(10, Math.min(20, Number(s.mobileGap) || 12));
+    s.mobileGap = mGap;
+    s.mobileFontScale = Math.max(100, Math.min(120, Number(s.mobileFontScale) || 100));
+    const mFontScale = s.mobileFontScale / 100;
 
     r.style.setProperty('--kd-mobile-cols', String(mCols));
     r.style.setProperty('--kd-mobile-gap', mGap + 'px');
@@ -199,7 +202,7 @@
 
   async function init() {
     const local = loadLocal();
-    if (local) applySettings(local);
+    applySettings(local || DEFAULTS);
     const remote = await loadFromFirestore();
     if (remote) { applySettings(remote); saveLocal(remote); }
   }
@@ -210,8 +213,8 @@
     async save(partial) {
       const merged = { ...current, ...partial };
       applySettings(merged);
-      saveLocal(merged);
-      return await saveToFirestore(merged);
+      saveLocal(current);
+      return await saveToFirestore(current);
     },
     apply: applySettings,
     reset() {

@@ -59,7 +59,7 @@
       2: '2 من 10 (صغير جداً)',
       3: '3 من 10 (صغير)',
       4: '4 من 10 (أصغر من المتوسط)',
-      5: '5 من 10 (افتراضي متناسق لـ 3 كروت)',
+      5: '5 من 10 (افتراضي متناسق)',
       6: '6 من 10 (متوسط)',
       7: '7 من 10 (متوسط كبير)',
       8: '8 من 10 (كبير)',
@@ -86,7 +86,7 @@
       $('designMobileColsContainer').style.display = mLayout === 'vertical' ? 'none' : 'block';
     }
 
-    const mCols = parseInt(s.mobileColumns, 10) || 3;
+    const mCols = parseInt(s.mobileColumns, 10) || 2;
     document.querySelectorAll('.design-mcol-btn').forEach(btn => {
       btn.classList.toggle('active', parseInt(btn.dataset.mcols, 10) === mCols);
     });
@@ -98,14 +98,14 @@
     if ($('designMobileCardScale')) $('designMobileCardScale').value = mScale;
     if ($('designMobileScaleVal')) $('designMobileScaleVal').textContent = getScaleLabel(mScale);
 
-    const mGap = typeof s.mobileGap === 'number' ? s.mobileGap : 6;
+    const mGap = typeof s.mobileGap === 'number' ? s.mobileGap : 12;
     if ($('designMobileGap')) $('designMobileGap').value = mGap;
     if ($('designMobileGapVal')) $('designMobileGapVal').textContent = mGap;
 
     if ($('designMobileShowDesc')) $('designMobileShowDesc').checked = !!s.mobileShowDescription;
     if ($('designMobileShowCategory')) $('designMobileShowCategory').checked = s.mobileShowCategory !== false;
 
-    const mFontScale = s.mobileFontScale || 95;
+    const mFontScale = s.mobileFontScale || 100;
     if ($('designMobileFontScale')) $('designMobileFontScale').value = mFontScale;
     if ($('designMobileFontScaleVal')) $('designMobileFontScaleVal').textContent = mFontScale;
 

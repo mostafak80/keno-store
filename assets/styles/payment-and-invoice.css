@@ -74,32 +74,6 @@
   border-top-right-radius: 999px;
   border-bottom-right-radius: 999px;
   border-bottom-left-radius: 999px;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
   font-size: 0.78rem;
   font-weight: 700;
@@ -119,19 +93,6 @@
 }
 
 .copy-chip:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--ink);
 }
 
@@ -144,15 +105,6 @@
 }
 
 .copy-chip.chip-account {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-color: rgb(187, 247, 208);
   border-right-color: rgb(187, 247, 208);
   border-bottom-color: rgb(187, 247, 208);
@@ -161,44 +113,13 @@
 }
 
 .copy-chip.chip-account:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .copy-chip.chip-link {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: rgb(29, 78, 216);
 }
 
 .copy-chip.chip-link:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .link-action-btn {
@@ -303,19 +224,6 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--ink);
 }
 
@@ -368,32 +276,6 @@
 }
 
 .reorder-btn {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -414,19 +296,6 @@
 }
 
 .reorder-btn:hover:not(:disabled) {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
 }
 
 .reorder-btn:disabled {
@@ -440,36 +309,6 @@
   padding-right: 14px;
   padding-bottom: 10px;
   padding-left: 14px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .preset-row label {
@@ -504,36 +343,6 @@
   padding-right: 16px;
   padding-bottom: 16px;
   padding-left: 16px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   margin-block-start: 6px;
   margin-block-end: 6px;
 }
@@ -569,18 +378,6 @@
   padding-right: 20px;
   padding-bottom: 10px;
   padding-left: 20px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-bottom-width: ;
-  border-bottom-style: ;
-  border-bottom-color: ;
 }
 
 .stepper-track {
@@ -589,15 +386,6 @@
   left: 36px;
   right: 36px;
   height: 3px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   z-index: 1;
   border-top-left-radius: 999px;
   border-top-right-radius: 999px;
@@ -607,15 +395,6 @@
 
 .stepper-progress {
   height: 100%;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-left-radius: 999px;
   border-top-right-radius: 999px;
   border-bottom-right-radius: 999px;
@@ -685,15 +464,6 @@
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 2px;
   border-right-width: 2px;
   border-bottom-width: 2px;
@@ -739,19 +509,6 @@
 }
 
 .step-indicator.active .step-num {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--ink);
   box-shadow: 0 0 0 4px var(--red-soft);
 }
@@ -840,15 +597,6 @@
   font-size: 0.7rem;
   font-weight: 800;
   color: rgb(37, 99, 235);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -870,10 +618,6 @@
   padding-right: 9px;
   padding-bottom: 3px;
   padding-left: 9px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .step-badge svg {
@@ -893,41 +637,6 @@
   padding-right: 12px;
   padding-bottom: 10px;
   padding-left: 12px;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  transition-property: ;
-  transition-duration: ;
-  transition-timing-function: ;
-  transition-delay: ;
-  transition-behavior: ;
 }
 
 .checkout-fields input:focus, .checkout-fields textarea:focus {
@@ -971,19 +680,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   transition-behavior: normal;
   transition-duration: 0.2s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -995,36 +691,10 @@
 }
 
 .payment-card:hover {
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;
 }
 
 .payment-card.selected {
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   box-shadow: 0 0 0 1px var(--red), 0 4px 14px rgba(225, 29, 72, 0.1);
 }
 
@@ -1076,15 +746,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   position: relative;
   flex-shrink: 0;
   transition-behavior: normal;
@@ -1095,19 +756,6 @@
 }
 
 .payment-card.selected .custom-radio, .custom-radio.checked {
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .payment-card.selected .custom-radio::after, .custom-radio.checked::after {
@@ -1121,51 +769,12 @@
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   transform: translate(-50%, -50%);
 }
 
 .payment-icon-wrap, .payment-card-icon {
   width: 38px;
   height: 38px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-top-style: ;
-  border-top-width: ;
-  border-right-color: ;
-  border-right-style: ;
-  border-right-width: ;
-  border-bottom-color: ;
-  border-bottom-style: ;
-  border-bottom-width: ;
-  border-left-color: ;
-  border-left-style: ;
-  border-left-width: ;
-  border-image-source: ;
-  border-image-slice: ;
-  border-image-width: ;
-  border-image-outset: ;
-  border-image-repeat: ;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1184,19 +793,6 @@
 }
 
 .payment-card.selected .payment-icon-wrap, .payment-card.selected .payment-card-icon {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--red);
 }
 
@@ -1226,15 +822,6 @@
   font-weight: 800;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   color: var(--muted);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   padding-top: 3px;
   padding-right: 8px;
   padding-bottom: 3px;
@@ -1246,15 +833,6 @@
 }
 
 .payment-card.selected .payment-quick-tag {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   color: var(--red);
 }
 
@@ -1267,15 +845,6 @@
   border-top-width: 1px;
   border-top-style: dashed;
   border-top-color: rgb(226, 232, 240);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   animation-duration: 0.22s;
   animation-timing-function: ease-out;
   animation-delay: 0s;
@@ -1305,15 +874,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -1331,10 +891,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 8px;
   padding-right: 12px;
   padding-bottom: 8px;
@@ -1373,19 +929,6 @@
   padding-right: 12px;
   padding-bottom: 6px;
   padding-left: 12px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -1417,32 +960,10 @@
 }
 
 .drawer-copy-btn:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-color: ;
-  border-right-color: ;
-  border-bottom-color: ;
-  border-left-color: ;
   color: var(--ink);
 }
 
 .drawer-copy-btn.copied {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-color: rgb(16, 185, 129);
   border-right-color: rgb(16, 185, 129);
   border-bottom-color: rgb(16, 185, 129);
@@ -1463,19 +984,6 @@
   padding-right: 12px;
   padding-bottom: 6px;
   padding-left: 12px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -1509,15 +1017,6 @@
 }
 
 .drawer-link-btn:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .drawer-hint {
@@ -1555,24 +1054,11 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 24px;
   padding-right: 16px;
   padding-bottom: 24px;
   padding-left: 16px;
   text-align: center;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   cursor: pointer;
   transition-behavior: normal;
   transition-duration: 0.2s;
@@ -1587,15 +1073,6 @@
   border-right-color: rgb(59, 130, 246);
   border-bottom-color: rgb(59, 130, 246);
   border-left-color: rgb(59, 130, 246);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
 }
 
 .receipt-dropzone.dragover {
@@ -1603,15 +1080,6 @@
   border-right-color: rgb(37, 99, 235);
   border-bottom-color: rgb(37, 99, 235);
   border-left-color: rgb(37, 99, 235);
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   transform: scale(1.01);
 }
 
@@ -1635,15 +1103,6 @@
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -1717,15 +1176,6 @@
   padding-right: 14px;
   padding-bottom: 12px;
   padding-left: 14px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -1743,10 +1193,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;
   animation-duration: 0.2s;
   animation-timing-function: ease-out;
@@ -1764,10 +1210,6 @@
 .receipt-preview-thumb {
   width: 54px;
   height: 54px;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   overflow-x: hidden;
   overflow-y: hidden;
   border-top-width: 1px;
@@ -1787,15 +1229,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   flex-shrink: 0;
 }
 
@@ -1855,15 +1288,6 @@
 }
 
 .danger-outline:hover {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-color: rgb(253, 164, 175);
   border-right-color: rgb(253, 164, 175);
   border-bottom-color: rgb(253, 164, 175);
@@ -1883,19 +1307,6 @@
   padding-right: 10px;
   padding-bottom: 8px;
   padding-left: 10px;
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
 }
 
 .send-later-option input {
@@ -1903,15 +1314,6 @@
 }
 
 .order-invoice-card {
-  background-image: ;
-  background-position-x: ;
-  background-position-y: ;
-  background-size: ;
-  background-repeat: ;
-  background-attachment: ;
-  background-origin: ;
-  background-clip: ;
-  background-color: ;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
@@ -1929,10 +1331,6 @@
   border-image-width: 1;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  border-top-left-radius: ;
-  border-top-right-radius: ;
-  border-bottom-right-radius: ;
-  border-bottom-left-radius: ;
   padding-top: 18px;
   padding-right: 20px;
   padding-bottom: 18px;
