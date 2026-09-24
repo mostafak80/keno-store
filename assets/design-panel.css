@@ -178,7 +178,7 @@ body.kd-no-shimmer #heroFeature::after {
 body.keno-motion.kd-preview-mobile #storefront { max-width:420px; margin-inline:auto; }
 @container services (max-width: 780px) {
  body.keno-motion .service-grid[class] {
-  grid-template-columns:repeat(min(var(--kd-mobile-cols,2),2),minmax(0,1fr)) !important;
+  grid-template-columns:repeat(min(var(--kd-mobile-cols,3),3),minmax(0,1fr)) !important;
   gap:clamp(10px,var(--kd-mobile-gap,12px),20px) !important;
  }
  body.keno-motion .service-grid[class] .service-card { grid-column:auto !important; display:flex !important; flex-direction:column !important; padding:0 !important; min-width:0; overflow:hidden; }
@@ -203,6 +203,9 @@ body.keno-motion.kd-preview-mobile #storefront { max-width:420px; margin-inline:
  body.keno-motion .service-grid[class] .card-action-indicator { width:100% !important; min-height:44px !important; height:auto !important; padding:8px !important; justify-content:space-between; border:1px solid var(--line); border-radius:8px; }
  body.keno-motion .service-grid[class] .card-action-indicator span { display:inline !important; font-size:13px !important; }
  body.keno-motion .service-grid[class] .card-action-indicator .icon { width:18px !important; height:18px !important; }
+}
+@container services (max-width:327px) {
+ body.keno-motion .service-grid[class] { grid-template-columns:repeat(min(var(--kd-mobile-cols,3),2),minmax(0,1fr)) !important; }
 }
 @container services (min-width:600px) and (max-width:780px) {
  body.keno-motion .service-grid[class] { grid-template-columns:repeat(min(var(--kd-mobile-cols,2),3),minmax(0,1fr)) !important; }

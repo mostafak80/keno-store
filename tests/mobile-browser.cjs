@@ -14,7 +14,7 @@ KenoFirebase.getCurrentUser=()=>sessionStorage.getItem('test-owner')?{email:Keno
   const file=path.resolve(root,'.'+(req.url.split('?')[0]==='/'?'/index.html':req.url.split('?')[0]));
   if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end()}
   try{let data=fs.readFileSync(file);if(file.endsWith(path.join('js','firebase.js')))data=Buffer.from(data+mock);
-   res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript; charset=utf-8','.woff':'font/woff','.png':'image/png'})[path.extname(file)]||'application/octet-stream');res.end(data);
+   res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript; charset=utf-8','.woff':'font/woff','.png':'image/png','.svg':'image/svg+xml'})[path.extname(file)]||'application/octet-stream');res.end(data);
   }catch(_){res.writeHead(404);res.end()}
  }).listen(0,'127.0.0.1');
  await new Promise(r=>server.once('listening',r));
@@ -26,18 +26,27 @@ KenoFirebase.getCurrentUser=()=>sessionStorage.getItem('test-owner')?{email:Keno
   const page=await ctx.newPage();page.on('pageerror',e=>errors.push(e.message));page.setDefaultTimeout(6000);
   await page.goto(url+'/#admin');await page.locator('#serviceGrid .service-card').first().waitFor();
   assert.equal(await page.locator('#adminView').isVisible(),false,'visitor cannot enter admin');
+  await page.locator('#discoverySearch').fill('نتفليكس');
+  assert.equal(await page.locator('#serviceGrid .service-card').count(),1,'phone search updates results as you type');
+  await page.locator('#discoverySearch').fill('');
+  await page.locator('#mobileCategoryFilter').selectOption('ai');
+  assert.ok(await page.locator('#serviceGrid .service-card').count()<41,'phone category selector works');
+  await page.locator('#mobileCategoryFilter').selectOption('all');
+  assert.equal(await page.locator('#serviceGrid .service-card').count(),41);
   const overflow=async label=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,label);
   const dialogOverflow=async()=>assert.equal(await page.locator('#serviceDialog').evaluate(e=>e.scrollWidth>e.clientWidth+1),false,'dialog horizontal overflow');
   fs.mkdirSync(path.join(root,'qa'),{recursive:true});
   for(const [width,height] of [[320,568],[360,640],[390,844],[430,932],[768,1024],[844,390]]){
    await page.setViewportSize({width,height});await overflow('storefront '+width);
    if(width<=780){
-    assert.ok((await page.locator('.site-header').boundingBox()).height<=130,'compact phone header');
+    assert.ok((await page.locator('.site-header').boundingBox()).height<=146,'compact phone header');
     const cols=await page.locator('#serviceGrid').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length);
-    assert.ok(cols<=2,'readable card columns');
-    assert.ok(await page.locator('#serviceGrid h3').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=15),'readable service name');
+    assert.equal(cols,width<360?2:3,'reference card columns');
+    assert.ok(await page.locator('#serviceGrid h3').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=13),'readable service name');
    }
+   if(width===390){await page.evaluate(()=>scrollTo(0,0));await page.waitForFunction(()=>[...document.querySelectorAll('#serviceGrid .service-card:nth-child(-n+3) img')].every(i=>i.complete&&i.naturalWidth>0));await page.screenshot({path:path.join(root,'qa','reference-home.png')});}
    await page.locator('#picksGrid [data-open-service="pubg"]').click();await dialogOverflow();
+   if(width===390)await page.screenshot({path:path.join(root,'qa','reference-plans.png')});
    await page.locator('#serviceNext').click();await page.locator('#fulfill-player-id').fill('5123456789');
    if(width===390){
     await page.setViewportSize({width,height:360});
@@ -46,6 +55,11 @@ KenoFirebase.getCurrentUser=()=>sessionStorage.getItem('test-owner')?{email:Keno
     await page.setViewportSize({width,height});
    }
    await page.locator('#serviceNext').click();await dialogOverflow();
+   if(width===390){
+    await page.locator('[data-service-edit-step="2"]').click();assert.equal(await page.locator('#fulfill-player-id').inputValue(),'5123456789');await page.locator('#serviceNext').click();
+    await page.locator('[data-service-edit-step="1"]').click();await page.locator('#serviceNext').click();await page.locator('#serviceNext').click();
+    await page.screenshot({path:path.join(root,'qa','reference-review-top.png')});
+   }
    for(const header of await page.locator('#dialogPaymentMethods .payment-card-header').all())await header.click();
    await page.locator('#reviewConfirmed').check();
    await page.locator('#orderButton').scrollIntoViewIfNeeded();
@@ -55,6 +69,7 @@ KenoFirebase.getCurrentUser=()=>sessionStorage.getItem('test-owner')?{email:Keno
    await page.locator('#cartNextStepBtn').click();
    await page.locator('#cart-0-player-id').fill('987654321');
    await page.locator('#cartNextStepBtn').click();await page.locator('#cartReviewConfirmed').check();
+   if(width===390){await page.locator('[data-cart-review-edit="2"]').click();assert.equal(await page.locator('#cart-0-player-id').inputValue(),'987654321');await page.locator('#cartNextStepBtn').click();await page.screenshot({path:path.join(root,'qa','reference-cart-review.png')});}
    await overflow('cart '+width);await page.locator('#closeCartBtn').click();
    // Reset cart fixture for the next device, without submitting any order.
    await page.evaluate(()=>localStorage.removeItem('keno.cart.v1'));
@@ -64,17 +79,18 @@ KenoFirebase.getCurrentUser=()=>sessionStorage.getItem('test-owner')?{email:Keno
   // Saved extreme design settings must not make phone cards illegible.
   for(const style of ['default','list','wide','magazine','compact']){
    await page.evaluate(style=>KenoDesign.apply({...KenoDesign.current(),cardStyle:style,mobileColumns:10,mobileCardScale:1,mobileFontScale:80}),style);
-   await overflow(style);assert.ok(await page.locator('#serviceGrid h3').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=15));
-   assert.equal(await page.locator('#serviceGrid').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),2);
+   await overflow(style);assert.ok(await page.locator('#serviceGrid h3').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=13));
+   assert.equal(await page.locator('#serviceGrid').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),3);
   }
   await page.evaluate(()=>KenoDesign.apply({...KenoDesign.DEFAULTS,mobileLayout:'vertical'}));
   assert.equal(await page.locator('#serviceGrid').evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),1);
   await page.evaluate(()=>KenoDesign.apply(KenoDesign.DEFAULTS));
-  await page.locator('#themeToggle').click();
+  await page.locator('#mobileAccountBtn').click();assert.equal(await page.locator('#mobileLoginAction').isVisible(),true);await page.locator('[data-close-dialog="mobileMoreDialog"]').click();
+  await page.locator('#mobileMoreBtn').click();await page.locator('#mobileThemeAction').click();await page.locator('[data-close-dialog="mobileMoreDialog"]').click();
   await page.waitForFunction(()=>document.documentElement.dataset.theme==='light');
   await page.waitForFunction(()=>getComputedStyle(document.body).backgroundColor==='rgb(245, 246, 248)');
   assert.equal(await page.locator('body').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(245, 246, 248)','light background is not overridden by saved dark design');
-  await page.locator('#themeToggle').click();
+  await page.locator('#mobileMoreBtn').click();await page.locator('#mobileThemeAction').click();await page.locator('[data-close-dialog="mobileMoreDialog"]').click();
   await page.evaluate(()=>{location.hash='#catalog'});await page.locator('#serviceGrid').scrollIntoViewIfNeeded();
   await page.screenshot({path:path.join(root,'qa','mobile-catalog-final.png')});
   await page.evaluate(()=>{sessionStorage.setItem('test-owner','1');location.hash='#admin'});

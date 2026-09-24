@@ -86,7 +86,7 @@
       $('designMobileColsContainer').style.display = mLayout === 'vertical' ? 'none' : 'block';
     }
 
-    const mCols = parseInt(s.mobileColumns, 10) || 2;
+    const mCols = parseInt(s.mobileColumns, 10) || 3;
     document.querySelectorAll('.design-mcol-btn').forEach(btn => {
       btn.classList.toggle('active', parseInt(btn.dataset.mcols, 10) === mCols);
     });

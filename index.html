@@ -56,6 +56,7 @@
   <script src="./js/search.js" defer></script>
   <script src="./assets/catalog.js" defer></script>
   <script src="./js/storefront.js" defer></script>
+  <script src="./js/mobile-ui.js" defer></script>
   <script src="./js/admin.js" id="keno-admin-script" defer></script>
   <script src="./app.js?v=20260922-3" defer></script>
 
@@ -115,13 +116,14 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#home" aria-label="كينو ستور — الرئيسية" data-content="copy-1">
+        <span class="mobile-brand-name" id="mobileBrandName" dir="ltr">KENO STORE</span>
         <img src="./assets/logo.png" width="525" height="147" alt="Keno Store — Digital Services" loading="eager" decoding="async">
       </a>
       <form class="discovery-search" id="discoverySearchForm" role="search">
         <label for="discoverySearch" class="sr-only" data-content="copy-2">ابحث في خدمات كينو</label>
         <i data-icon="search"></i>
         <input id="discoverySearch" type="search" placeholder="لعبتك، اشتراكك، أو خدمتك…" autocomplete="off" maxlength="150">
-        <button type="submit" aria-label="عرض نتائج البحث" data-content="copy-3"><i data-icon="arrow-left"></i></button>
+        <button type="submit" aria-label="عرض نتائج البحث" data-content="copy-3"><i data-icon="search"></i></button>
       </form>
       <div class="header-actions">
         <!-- Optional Google Auth & Admin Action Container -->
@@ -281,6 +283,7 @@
       <!-- Results Meta -->
       <div class="results-meta">
         <h3 id="resultsTitle" data-content="copy-65">كل الخدمات</h3>
+        <label class="mobile-category-label"><span class="sr-only">تصنيف الخدمات</span><select id="mobileCategoryFilter" aria-label="تصنيف الخدمات"><option value="all">الكل</option></select></label>
         <span id="resultCount" aria-live="polite" data-content="copy-66"></span>
       </div>
 
@@ -491,6 +494,7 @@
 
         <div class="order-invoice-card" id="cartOrderInvoice">
           <div class="invoice-header">
+            <button type="button" class="review-edit-button" data-cart-review-edit="1">تعديل الطلب ✎</button>
             <div>
               <span class="invoice-tag" data-content="cart-inv-tag">طلب كينو ستور</span>
               <h4 id="invoiceOrderCode">#KENO-0000</h4>
@@ -501,6 +505,7 @@
           <div class="invoice-items" id="invoiceItemsSummary"></div>
           <div class="invoice-divider"></div>
           <div class="invoice-rows">
+            <button type="button" class="review-edit-button" data-cart-review-edit="2">تعديل بيانات الحساب ✎</button>
             <div class="invoice-row">
               <span data-content="cart-inv-pay">وسيلة الدفع:</span>
               <strong id="invoicePaymentName">فودافون كاش</strong>
@@ -562,13 +567,14 @@
 
   <!-- Sticky Mobile Bottom Navigation -->
   <nav class="mobile-nav" id="mobileNav" aria-label="التنقل السريع على الموبايل">
-    <a href="#home" class="mobile-nav-item" aria-label="الرئيسية">
+    <button type="button" class="mobile-nav-item" id="mobileAccountBtn" aria-label="حسابي"><i data-icon="circle-dot"></i><span>حسابي</span></button>
+    <a href="#catalog" class="mobile-nav-item mobile-home-link" aria-label="الرئيسية">
       <i data-icon="store"></i>
       <span data-content="nav-home">الرئيسية</span>
     </a>
-    <a href="#catalog" class="mobile-nav-item" aria-label="الخدمات">
+    <a href="#collections" class="mobile-nav-item mobile-collections-link" aria-label="الأقسام">
       <i data-icon="layout-grid"></i>
-      <span data-content="nav-services">الخدمات</span>
+      <span data-content="nav-services">الأقسام</span>
     </a>
     <button type="button" class="mobile-nav-item" id="mobileCartBtn" aria-label="سلة الطلبات">
       <div class="mobile-nav-cart-wrapper">
@@ -577,11 +583,21 @@
       </div>
       <span data-content="nav-cart">السلة</span>
     </button>
-    <button type="button" class="mobile-nav-item contact-trigger" aria-label="واتساب">
-      <i data-icon="message-circle"></i>
-      <span data-content="nav-whatsapp">واتساب</span>
+    <button type="button" class="mobile-nav-item" id="mobileMoreBtn" aria-label="المزيد">
+      <i data-icon="sliders-horizontal"></i>
+      <span>المزيد</span>
     </button>
   </nav>
+  <dialog id="mobileMoreDialog" class="mobile-more-dialog" aria-labelledby="mobileMoreTitle">
+    <div class="dialog-header"><h2 id="mobileMoreTitle">حسابك والمساعدة</h2><button type="button" class="icon-btn" data-close-dialog="mobileMoreDialog" aria-label="إغلاق"><i data-icon="x"></i></button></div>
+    <p id="mobileAccountStatus">تسجيل الدخول اختياري. تقدر تطلب من غير حساب.</p>
+    <button type="button" class="button button-outline" id="mobileLoginAction">تسجيل الدخول بحساب Google</button>
+    <button type="button" class="button button-outline" id="mobileLogoutAction" hidden>تسجيل الخروج</button>
+    <button type="button" class="button button-outline" id="mobileThemeAction">تبديل المظهر الفاتح / الداكن</button>
+    <label>ترتيب الخدمات<select id="mobileSort"><option value="featured">مختارات كينو أولًا</option><option value="price-asc">السعر: الأقل أولًا</option><option value="price-desc">السعر: الأعلى أولًا</option><option value="name">الاسم: أ–ي</option></select></label>
+    <a href="#payments">طرق الدفع</a><a href="#how">إزاي أطلب؟</a><a href="#faq">الأسئلة الشائعة</a>
+    <button type="button" class="button button-outline contact-trigger">🎙 ابعتلنا فويس بطلبك</button>
+  </dialog>
 
   <!-- Admin View (#admin) -->
   <section id="adminView" class="admin-view container" hidden aria-labelledby="adminTitle">
@@ -1177,14 +1193,14 @@
                 <!-- 2. عدد الكروت في الصف الواحد (من 1 إلى 10) -->
                 <div class="design-field-group" id="designMobileColsContainer">
                   <label class="design-label">
-                    عدد الكروت في الصف الواحد (جنب بعض) — <span id="designMobileColsVal" style="color:var(--accent,#ffce50);font-weight:700;">2 كارت في الصف</span>
+                    عدد الكروت في الصف الواحد (جنب بعض) — <span id="designMobileColsVal" style="color:var(--accent,#ffce50);font-weight:700;">3 كروت في الصف</span>
                   </label>
                   <div class="design-mobile-cols-bar" id="designMobileColsBar">
                     <button type="button" class="design-mcol-btn" data-mcols="1">1</button>
-                    <button type="button" class="design-mcol-btn active" data-mcols="2">2</button>
-                    <button type="button" class="design-mcol-btn" data-mcols="3">3</button>
+                    <button type="button" class="design-mcol-btn" data-mcols="2">2</button>
+                    <button type="button" class="design-mcol-btn active" data-mcols="3">3</button>
                   </div>
-                  <p class="field-hint">الافتراضي خدمتان في الصف. الشاشات الصغيرة تعرض خدمتين بحد أقصى للحفاظ على وضوح الاسم والسعر، والتابلت حتى 3.</p>
+                  <p class="field-hint">التصميم الجديد يعرض 3 خدمات في الصف. الشاشات الأصغر من 360 بكسل تعرض خدمتين للحفاظ على الوضوح.</p>
                 </div>
 
                 <!-- 3. المسافة بين الكروت على الفون -->
@@ -1216,7 +1232,7 @@
                     <p class="field-hint">اختر إظهار وصف توضيحي إضافي تحت اسم الخدمة</p>
                   </div>
                   <label class="design-toggle">
-                    <input type="checkbox" id="designMobileShowDesc">
+                    <input type="checkbox" id="designMobileShowDesc" checked>
                     <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
                   </label>
                 </div>
@@ -1939,6 +1955,8 @@
       </header>
 
       <!-- Service Important Notes Card -->
+      <ol class="service-journey-steps" aria-label="خطوات الطلب"><li data-journey-indicator="1"><b>1</b><span>اختار الباقة</span></li><li data-journey-indicator="2"><b>2</b><span>البيانات</span></li><li data-journey-indicator="3"><b>3</b><span>المراجعة</span></li></ol>
+      <div class="mobile-review-heading"><i data-icon="receipt"></i><div><h3 data-content="mobile-review-title">مراجعة تفاصيل الطلب</h3><p data-content="mobile-review-desc">راجع بياناتك ثم افتح واتساب لإرسال الطلب</p></div></div>
       <div id="serviceNotes" class="service-notes-card" hidden></div>
 
       <!-- Step 1: Offer Selection Section -->
@@ -2021,8 +2039,8 @@
 
       <!-- Step 4: Order Summary Card -->
       <section class="checkout-summary-section">
-        <div class="review-account-card"><h3 data-content="dlg-rev-title">راجع بياناتك قبل الإرسال</h3><pre id="serviceReview" dir="auto"></pre><p data-content="dlg-rev-desc">راجع الرقم أو البريد بنفسك؛ لم نتحقق من ملكية الحساب أو صحة رقمه.</p><label data-content="dlg-rev-confirm"><input type="checkbox" id="reviewConfirmed"> راجعت البيانات والعرض والسعر</label></div><div class="order-summary-card" id="orderSummaryCard">
-          <div class="summary-card-header">
+        <div class="review-account-card"><button type="button" class="review-edit-button" data-service-edit-step="2" data-content="review-edit-account">تعديل البيانات ✎</button><h3 data-content="dlg-rev-title">راجع بياناتك قبل الإرسال</h3><pre id="serviceReview" dir="auto"></pre><p data-content="dlg-rev-desc">راجع الرقم أو البريد بنفسك؛ لم نتحقق من ملكية الحساب أو صحة رقمه.</p><label data-content="dlg-rev-confirm"><input type="checkbox" id="reviewConfirmed"> راجعت البيانات والعرض والسعر</label></div><div class="order-summary-card" id="orderSummaryCard">
+          <div class="summary-card-header"><button type="button" class="review-edit-button" data-service-edit-step="1" data-content="review-edit-plan">تعديل الباقة ✎</button>
             <div class="summary-title-wrap">
               <i data-icon="receipt"></i>
               <h4 data-content="dlg-summary-title">ملخص الطلب</h4>
@@ -2034,6 +2052,7 @@
           </div>
 
           <div class="summary-rows-wrap">
+            <div id="reviewServiceArt" class="review-service-art" aria-hidden="true"></div>
             <div class="summary-row">
               <span class="summary-row-label" data-content="dlg-lbl-service">الخدمة:</span>
               <strong class="summary-row-val" id="summaryServiceName">-</strong>

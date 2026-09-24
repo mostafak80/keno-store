@@ -14,6 +14,7 @@
 @import url("./assets/journey.css");
 @import url("./assets/design-panel.css");
 @import url("./assets/styles/mobile.css");
+@import url("./assets/styles/mobile-reference.css");
 
 /* Master view state enforcement */
 [hidden],

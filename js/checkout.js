@@ -49,6 +49,11 @@
   }
   function setStep(next) {
     step = Math.max(1, Math.min(3, next)); stopAudio();
+    $('serviceDialog').dataset.step=String(step);
+    document.querySelectorAll('[data-journey-indicator]').forEach(el=>{
+      el.classList.toggle('active',Number(el.dataset.journeyIndicator)===step);
+      if(Number(el.dataset.journeyIndicator)===step)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');
+    });
     ['planSelectionSection','accountInfoSection','paymentSelectionSection'].forEach((id,i) => { $(id).hidden = i !== step-1; });
     $('serviceDialog').querySelector('.checkout-summary-section').hidden = step !== 3;
     $('orderButton').hidden = step !== 3;
@@ -69,6 +74,10 @@
     if (step === 2 && !validate($('fulfillmentFields'))) return;
     setStep(step+1);
   }
+  document.addEventListener('click',event=>{
+    const button=event.target.closest('[data-service-edit-step]');
+    if(button&&active&&step===3)setStep(Number(button.dataset.serviceEditStep));
+  });
   function filterPlans() {
     const input = $('planBudget'), budget = input.value.trim() ? Number(input.value) : Infinity;
     const configured = config(active).featuredPlanIds || [];

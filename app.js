@@ -647,6 +647,7 @@
         visualHtml = `
           ${icon(s.icon)}
           <span class="card-mark" dir="auto">${esc(s.mark || 'KENO')}</span>
+          ${window.KenoMobileUI?.artwork(s) || ''}
         `;
       }
 
@@ -690,7 +691,7 @@
               ${s.plans?.length ? `<span class="plans-count-tag">${s.plans.length} عروض</span>` : ''}
               ${s.featured ? '<span class="featured-tag">مختارات كينو</span>' : ''}
             </div>
-            <h3 dir="auto">${esc(s.name)}</h3>
+            <h3 dir="auto"><span class="desktop-service-name">${esc(s.name)}</span><span class="mobile-service-name">${esc(s.name.split('—')[0].trim())}</span></h3>
             <p class="card-description" dir="auto">${esc(s.description || 'خدمة رقمية فورية مع عروض متعددة وضمان كامل.')}</p>
             <div class="card-footer">
               <div class="card-price">
@@ -707,6 +708,7 @@
       `;
     }).join('');
     window.KenoStorefront?.refresh();
+    window.KenoMobileUI?.refresh(data);
   }
 
   // --- Filtering & Search Event Handlers ---
@@ -790,6 +792,7 @@
 
       const fallbackHtml = `
         <div class="dialog-banner-fallback ${toneClass}">
+          ${window.KenoMobileUI?.artwork(service) || ''}
           <div class="banner-fallback-ambient"></div>
           <div class="banner-fallback-content">
             <div class="banner-fallback-icon-wrap">
@@ -827,7 +830,7 @@
     const notesContainer = $('serviceNotes');
     if (notesContainer) {
       notesContainer.hidden = !service.notes || service.notes.length === 0;
-      notesContainer.innerHTML = '<div class="service-notes-header"><i data-icon="alert-circle"></i><span>تنبيهات وملاحظات الخدمة</span></div><ul>' + (service.notes || []).map(n => `<li>${esc(n)}</li>`).join('') + '</ul>';
+      notesContainer.innerHTML = '<details '+(matchMedia('(max-width:780px)').matches?'':'open')+'><summary class="service-notes-header"><i data-icon="alert-circle"></i><span>تنبيهات وملاحظات الخدمة</span></summary><ul>' + (service.notes || []).map(n => `<li>${esc(n)}</li>`).join('') + '</ul></details>';
     }
 
     // Plan selector groups
@@ -853,6 +856,7 @@
                     <span class="plan-check-icon">${icon('check')}</span>
                   </div>
                   <div class="plan-card-body">
+                    <span class="plan-art" aria-hidden="true">${icon(service.id.startsWith('pubg') ? 'coins' : service.icon)}${service.id.startsWith('pubg') ? '<b>UC</b>' : ''}</span>
                     <div class="plan-card-header plan-card-top">
                       <span class="plan-label">${esc(p.label)}</span>
                       ${hasDiscount ? `<span class="plan-discount-tag">وفر ${savings} ج.م</span>` : ''}
@@ -926,6 +930,7 @@
     if ($('summaryPlanLabel')) $('summaryPlanLabel').textContent = planName;
     if ($('selectedPrice')) $('selectedPrice').textContent = priceText;
     if ($('footerDisplayPrice')) $('footerDisplayPrice').textContent = priceText;
+    if ($('reviewServiceArt')) $('reviewServiceArt').innerHTML=service.image?`<img src="${esc(service.image)}" alt="" loading="lazy">`:(window.KenoMobileUI?.artwork(service)||'');
 
     // Update discounts & savings badges
     const origPriceEl = $('selectedOriginalPrice');
@@ -1430,6 +1435,7 @@
   function validateCart() { return KenoCheckout.validate($('cartFulfillmentFields')); }
   function setCheckoutStep(step) {
     currentCheckoutStep = getCartItems().length ? Math.max(1, Math.min(3, step)) : 1;
+    $('cartDrawer').dataset.step=String(currentCheckoutStep);
     for (let s=1;s<=3;s++) {
       $('checkoutStep'+s).hidden = s !== currentCheckoutStep;
       $('stepIndicator'+s)?.classList.toggle('active',s===currentCheckoutStep);
@@ -1440,7 +1446,8 @@
     $('cartNextStepBtn').hidden = currentCheckoutStep===3;
     $('cartNextStepBtn').querySelector('span').textContent = 'التالي';
     $('cartSubmitOrderBtn').hidden = currentCheckoutStep!==3;
-    $('cartSubActions').hidden = currentCheckoutStep!==1;
+    $('cartSubActions').hidden = currentCheckoutStep===2;
+    $('clearCartBtn').hidden = currentCheckoutStep!==1;
     if (currentCheckoutStep===3) {
       $('checkoutStep4').hidden = false;
       cartSelectedPaymentId = renderPaymentMethodsList($('cartPaymentMethods'),cartSelectedPaymentId,'cart-payment');
@@ -1450,6 +1457,10 @@
     KenoCheckout.audioButton($('cartListen'),viewData().settings.stepAudio?.[currentCheckoutStep-1]);
     $('cartBody').scrollTop=0;
   }
+  document.addEventListener('click',event=>{
+    const button=event.target.closest('[data-cart-review-edit]');
+    if(button&&currentCheckoutStep===3)setCheckoutStep(Number(button.dataset.cartReviewEdit));
+  });
 
   function renderInvoiceSummary() {
     const data = viewData();
@@ -1487,6 +1498,7 @@
     if ($('invoiceItemsSummary')) {
       $('invoiceItemsSummary').innerHTML = validItems.map(it => `
         <div class="invoice-item-row">
+          <div class="invoice-item-art" aria-hidden="true">${it.service.image?`<img src="${esc(it.service.image)}" alt="" loading="lazy">`:(window.KenoMobileUI?.artwork(it.service)||'')}</div>
           <div class="invoice-item-name">
             <strong>${esc(it.service.name)}</strong><pre dir="auto">${esc(KenoCheckout.format(it.service,it.fields || {},true))}</pre>
             <span>${esc(it.plan.label)} (${it.quantity} × ${money(it.plan.price)} ج.م)</span>
@@ -1905,7 +1917,7 @@
 
     const isAdmin = requestedAdmin && isAuthorizedAdmin();
     document.querySelectorAll('.mobile-nav a').forEach(link => {
-      const active = link.getAttribute('href') === (hash || '#home');
+      const active = link.getAttribute('href') === (!hash || hash==='#home' ? '#catalog' : hash);
       if (active) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });

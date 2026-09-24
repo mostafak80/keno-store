@@ -59,10 +59,10 @@
     footerLayout: 'standard',
     // ── Mobile Settings ───────────────────────
     mobileLayout: 'grid',
-    mobileColumns: 2,
+    mobileColumns: 3,
     mobileGap: 12,
     mobileCardScale: 5,
-    mobileShowDescription: false,
+    mobileShowDescription: true,
     mobileShowCategory: true,
     mobileFontScale: 100,
   };
@@ -115,7 +115,7 @@
 
     // ── Mobile settings ──────────────────────────────────────
     const mLayout = s.mobileLayout || 'grid';
-    const mColsRaw = parseInt(s.mobileColumns, 10) || 2;
+    const mColsRaw = parseInt(s.mobileColumns, 10) || 3;
     s.mobileColumns = Math.max(1, Math.min(3, mColsRaw));
     const mCols = (mLayout === 'vertical') ? 1 : s.mobileColumns;
     const mScaleNum = Math.max(1, Math.min(10, parseInt(s.mobileCardScale, 10) || 5));

@@ -16,7 +16,7 @@ KenoFirebase.createOrder=async order=>{window.__savedOrder=order;await KenoOrder
   const file=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0] === '/'?'/index.html':req.url.split('?')[0]));
   if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}
   try{let data=fs.readFileSync(file);if(file.endsWith(path.join('js','firebase.js')))data=Buffer.from(data+mock);
-   res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css','.png':'image/png','.woff':'font/woff'})[path.extname(file)]||'application/octet-stream');res.end(data);
+   res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css','.png':'image/png','.svg':'image/svg+xml','.woff':'font/woff'})[path.extname(file)]||'application/octet-stream');res.end(data);
   }catch(e){res.writeHead(404);res.end();}
  }).listen(0,'127.0.0.1');
  await new Promise(r=>server.once('listening',r));
