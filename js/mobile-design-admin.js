@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Keno Store — Mobile Design Admin Panel
  * All settings stored under 'mobileDesign' key and applied via
  * CSS custom properties ONLY inside @media (max-width: 780px).
@@ -186,11 +186,81 @@
     document.querySelectorAll('.md-font-card').forEach(function(el){
       el.addEventListener('click', function(){ liveApply({ fontFamily: el.dataset.mdFont }); syncForm(); });
     });
+    function createPhoneOverlay(){
+      if(document.getElementById('kd-phone-preview-overlay')) return;
+      var overlay = document.createElement('div');
+      overlay.id = 'kd-phone-preview-overlay';
+      overlay.innerHTML = [
+        '<div id="kd-phone-frame">',
+          '<div id="kd-phone-topbar">',
+            '<div id="kd-phone-close-btn" title="إغلاق المعاينة">✕ إغلاق المعاينة</div>',
+            '<div style="font-size:11px;color:rgba(255,255,255,0.5);">معاينة شكل الموبايل — 390px</div>',
+          '</div>',
+          '<div id="kd-phone-bezel">',
+            '<div id="kd-phone-notch"></div>',
+            '<iframe id="kd-phone-iframe" src="' + window.location.href.split('#')[0] + '" title="معاينة الموبايل" scrolling="yes"></iframe>',
+          '</div>',
+        '</div>'
+      ].join('');
+
+      var style = document.createElement('style');
+      style.id = 'kd-phone-overlay-style';
+      style.textContent = [
+        '#kd-phone-preview-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);}',
+        '#kd-phone-frame{display:flex;flex-direction:column;align-items:center;gap:12px;max-height:95vh;}',
+        '#kd-phone-topbar{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 4px;}',
+        '#kd-phone-close-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:13px;transition:background .2s;}',
+        '#kd-phone-close-btn:hover{background:rgba(255,80,80,0.4);}',
+        '#kd-phone-bezel{width:390px;height:min(780px,80vh);border-radius:40px;background:#111;box-shadow:0 0 0 8px #222,0 0 0 10px #444,0 30px 80px rgba(0,0,0,0.8);overflow:hidden;position:relative;border:2px solid #333;}',
+        '#kd-phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#111;border-radius:0 0 18px 18px;z-index:2;}',
+        '#kd-phone-iframe{width:390px;height:100%;border:none;display:block;}'
+      ].join('');
+      document.head.appendChild(style);
+
+      overlay.addEventListener('click', function(e){ if(e.target === overlay) closePreview(); });
+      document.getElementById('kd-phone-close-btn', overlay);
+      document.body.appendChild(overlay);
+
+      // wire close after appended
+      var closeEl = document.getElementById('kd-phone-close-btn');
+      if(closeEl) closeEl.addEventListener('click', closePreview);
+
+      // Pass current mobile settings into iframe once loaded
+      var iframe = document.getElementById('kd-phone-iframe');
+      if(iframe){
+        iframe.addEventListener('load', function(){
+          try {
+            var iw = iframe.contentWindow;
+            if(iw && iw.KenoMobileDesign){
+              iw.KenoMobileDesign.applySettings(current);
+            }
+          } catch(_){}
+        });
+      }
+    }
+
+    function closePreview(){
+      var el = document.getElementById('kd-phone-preview-overlay');
+      if(el) el.remove();
+      var st = document.getElementById('kd-phone-overlay-style');
+      if(st) st.remove();
+      // reset button states
+      ['mobilePreviewToggleBtn','mobilePreviewToggleBtn2'].forEach(function(id){
+        var b = document.getElementById(id); if(b) b.classList.remove('is-active');
+      });
+    }
+
     function wirePreview(id){
-      var btn = $(id); if(!btn) return;
+      var btn = document.getElementById(id); if(!btn) return;
       btn.addEventListener('click', function(){
-        var on = document.body.classList.toggle('kd-preview-mobile');
-        btn.classList.toggle('is-active', on);
+        var existing = document.getElementById('kd-phone-preview-overlay');
+        if(existing){ closePreview(); btn.classList.remove('is-active'); return; }
+        createPhoneOverlay();
+        btn.classList.add('is-active');
+        // sync both buttons
+        ['mobilePreviewToggleBtn','mobilePreviewToggleBtn2'].forEach(function(bid){
+          var b = document.getElementById(bid); if(b) b.classList.add('is-active');
+        });
       });
     }
     wirePreview('mobilePreviewToggleBtn');
