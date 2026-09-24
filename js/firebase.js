@@ -212,28 +212,7 @@
       const normalized = String(email || '').toLowerCase().trim();
       if (!normalized) return { authorized: false, role: 'VIEWER' };
 
-      // 1. Check Cloud Firestore 'users' collection if available
-      const fb = await this.init();
-      if (fb && firestoreModules) {
-        try {
-          const docRef = firestoreModules.doc(fb.db, 'users', normalized);
-          const snap = await firestoreModules.getDoc(docRef);
-          if (snap.exists()) {
-            const data = snap.data();
-            const rawRole = String(data.role || 'VIEWER').toUpperCase();
-            const role = ['OWNER', 'EDITOR', 'VIEWER'].includes(rawRole) ? rawRole : 'VIEWER';
-            return {
-              authorized: true,
-              role,
-              info: data
-            };
-          }
-        } catch (e) {
-          console.warn('Could not check users in Firestore, falling back to local config:', e);
-        }
-      }
-
-      // 2. Check local hidden whitelist in KenoConfig
+      // 1. Immediate Fast Check: local hidden whitelist in KenoConfig (0ms response)
       const adminEmails = (root.KenoConfig?.ADMIN_EMAILS || []).map(e => String(e).toLowerCase().trim());
       const staticAdmins = root.KenoConfig?.AUTHORIZED_ADMINS || {};
 
@@ -246,6 +225,27 @@
           role,
           info: adminData
         };
+      }
+
+      // 2. Check Cloud Firestore 'users' collection with safe timeout for dynamic roles
+      const fb = await this.init();
+      if (fb && firestoreModules) {
+        try {
+          const docRef = firestoreModules.doc(fb.db, 'users', normalized);
+          const snapPromise = firestoreModules.getDoc(docRef);
+          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000));
+          const snap = await Promise.race([snapPromise, timeoutPromise]);
+          if (snap && typeof snap.exists === 'function' && snap.exists()) {
+            const data = snap.data();
+            const rawRole = String(data.role || 'VIEWER').toUpperCase();
+            const role = ['OWNER', 'EDITOR', 'VIEWER'].includes(rawRole) ? rawRole : 'VIEWER';
+            return {
+              authorized: true,
+              role,
+              info: data
+            };
+          }
+        } catch (_) {}
       }
 
       return { authorized: false, role: 'VIEWER' };

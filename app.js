@@ -1796,10 +1796,28 @@
     if (window.KenoAdmin) return Promise.resolve(window.KenoAdmin);
     if (adminScriptPromise) return adminScriptPromise;
     adminScriptPromise = new Promise((resolve, reject) => {
+      if (window.KenoAdmin) return resolve(window.KenoAdmin);
       const existing = document.getElementById('keno-admin-script');
       if (existing) {
-        existing.addEventListener('load', () => resolve(window.KenoAdmin));
+        if (window.KenoAdmin) return resolve(window.KenoAdmin);
+        let attempts = 0;
+        const checkTimer = setInterval(() => {
+          attempts++;
+          if (window.KenoAdmin) {
+            clearInterval(checkTimer);
+            resolve(window.KenoAdmin);
+          } else if (attempts > 50) {
+            clearInterval(checkTimer);
+            if (window.KenoAdmin) resolve(window.KenoAdmin);
+            else reject(new Error('KenoAdmin load timeout'));
+          }
+        }, 50);
+        existing.addEventListener('load', () => {
+          clearInterval(checkTimer);
+          resolve(window.KenoAdmin);
+        });
         existing.addEventListener('error', err => {
+          clearInterval(checkTimer);
           adminScriptPromise = null;
           reject(err);
         });
@@ -4440,15 +4458,32 @@
     const navAdminLink = $('navAdminLink');
     const signOutBtn = $('headerSignOutBtn');
 
+    function checkActiveAdminSession() {
+      try {
+        const raw = sessionStorage.getItem('keno_admin_session_v3') || localStorage.getItem('keno_admin_session_v3');
+        if (!raw) return false;
+        const session = JSON.parse(raw);
+        if (session && session.role && session.expiresAt && Date.now() < session.expiresAt) {
+          if (adminBtn) adminBtn.hidden = false;
+          if (navAdminLink) navAdminLink.hidden = false;
+          return true;
+        }
+      } catch (_) {}
+      return false;
+    }
+
     async function applyAuthState(user) {
+      const hasSession = checkActiveAdminSession();
       if (!user) {
         if (loginBtn) {
           loginBtn.hidden = false;
           loginBtn.disabled = false;
         }
         if (userPill) userPill.hidden = true;
-        if (adminBtn) adminBtn.hidden = true;
-        if (navAdminLink) navAdminLink.hidden = true;
+        if (!hasSession) {
+          if (adminBtn) adminBtn.hidden = true;
+          if (navAdminLink) navAdminLink.hidden = true;
+        }
         return;
       }
 
@@ -4493,15 +4528,17 @@
           email: user.email,
           name: user.displayName || user.email,
           photo: user.photoURL || '',
+          loginMethod: 'google',
           authTime: Date.now(),
           expiresAt: Date.now() + timeoutMs
         };
         try {
           sessionStorage.setItem('keno_admin_session_v3', JSON.stringify(sessionPayload));
+          localStorage.setItem('keno_admin_session_v3', JSON.stringify(sessionPayload));
         } catch (_) {}
 
         if (window.KenoAdminAuth && typeof window.KenoAdminAuth.setSession === 'function') {
-          window.KenoAdminAuth.setSession(role, sessionPayload);
+          window.KenoAdminAuth.setSession(role, sessionPayload, true);
         }
 
         // Preload admin script in background so clicking is instantaneous!
@@ -4516,9 +4553,14 @@
           }
         }
       } else {
-        if (adminBtn) adminBtn.hidden = true;
-        if (navAdminLink) navAdminLink.hidden = true;
-        try { sessionStorage.removeItem('keno_admin_session_v3'); } catch (_) {}
+        if (!hasSession) {
+          if (adminBtn) adminBtn.hidden = true;
+          if (navAdminLink) navAdminLink.hidden = true;
+          try {
+            sessionStorage.removeItem('keno_admin_session_v3');
+            localStorage.removeItem('keno_admin_session_v3');
+          } catch (_) {}
+        }
       }
     }
 
@@ -4532,12 +4574,23 @@
       window.scrollTo({ top: 0, behavior: 'instant' });
     };
 
-    if (adminBtn) {
-      adminBtn.addEventListener('click', handleAdminClick);
-    }
-    if (navAdminLink) {
-      navAdminLink.addEventListener('click', handleAdminClick);
-    }
+    // Bind all buttons & links pointing to admin (header, nav, footer, etc.)
+    document.querySelectorAll('a[href="#admin"], [data-open-admin], #headerAdminBtn, #navAdminLink, #footerAdminLink').forEach(btn => {
+      btn.addEventListener('click', handleAdminClick);
+    });
+
+    // Global keyboard shortcut: Ctrl+Shift+A or Alt+A
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) || (e.altKey && (e.key === 'A' || e.key === 'a'))) {
+        e.preventDefault();
+        location.hash = '#admin';
+        route();
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+    });
+
+    // Check initial session state to reveal admin button immediately if already authenticated
+    checkActiveAdminSession();
 
     if (loginBtn) {
       loginBtn.addEventListener('click', async () => {
@@ -4572,7 +4625,12 @@
           if (window.KenoFirebase && typeof window.KenoFirebase.signOut === 'function') {
             await window.KenoFirebase.signOut();
           }
-          try { sessionStorage.removeItem('keno_admin_session_v3'); } catch (_) {}
+          try {
+            sessionStorage.removeItem('keno_admin_session_v3');
+            localStorage.removeItem('keno_admin_session_v3');
+          } catch (_) {}
+          if (adminBtn) adminBtn.hidden = true;
+          if (navAdminLink) navAdminLink.hidden = true;
           await applyAuthState(null);
           toast('تم تسجيل الخروج بنجاح.');
           if (location.hash === '#admin') {

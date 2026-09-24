@@ -28,6 +28,11 @@
       <h2>عنوان الإدارة</h2>
     </div>
     <div id="adminLogin" hidden>
+      <form id="adminPinForm">
+        <input type="password" id="adminPinInput">
+        <input type="checkbox" id="adminRememberMe" checked>
+        <button type="submit" id="adminPinSubmitBtn">دخول لوحة التحكم</button>
+      </form>
       <button id="googleSignInBtn">تسجيل الدخول كأدمن</button>
       <div id="loginError" hidden><span id="loginErrorText"></span></div>
     </div>
@@ -49,6 +54,7 @@
   <script src="../js/admin.js"></script>
 
   <script>
+    window.__KENO_TEST_ENV__ = true;
     const $ = id => document.getElementById(id);
     const results = [];
     function assert(desc, condition) {
@@ -261,7 +267,33 @@
       assert('26. Admin Logout: AdminView hidden', $('adminView').hidden === true);
       assert('27. Admin Logout: Session cleared', sessionStorage.getItem('keno_admin_session_v3') === null);
 
+      // Test 7: Master PIN Login (Offline / Local / Fallback)
+      $('adminPinInput').value = '2026';
+      $('adminPinForm').dispatchEvent(new Event('submit'));
+      await new Promise(r => setTimeout(r, 100));
+
+      const pinSession = window.KenoAdmin.auth.getSession();
+      assert('28. PIN Login: Session created with OWNER role', pinSession && pinSession.role === 'OWNER');
+      assert('29. PIN Login: Admin button visible in header', !$('headerAdminBtn').hidden);
+      assert('30. PIN Login: AdminWorkspace unlocked', $('adminWorkspace').hidden === false);
+      assert('31. PIN Login: AdminLogin hidden', $('adminLogin').hidden === true);
+      assert('32. PIN Login: Persisted in localStorage', localStorage.getItem('keno_admin_session_v3') !== null);
+
+      // Test 8: Logout from PIN Session
+      window.KenoAdmin.auth.logout();
+      assert('33. PIN Logout: Storage cleared', localStorage.getItem('keno_admin_session_v3') === null);
+
+      // Test 9: Wrong PIN rejection
+      let pinErrorCaught = false;
+      try {
+        window.KenoAdmin.auth.loginWithPin('wrong-pin');
+      } catch (e) {
+        pinErrorCaught = true;
+      }
+      assert('34. Security: Incorrect PIN rejected', pinErrorCaught);
+
       $('results').innerHTML = results.map(r => `<div>${r}</div>`).join('');
+      document.body.setAttribute('data-done', 'true');
     }
 
     executeTests();

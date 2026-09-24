@@ -20,13 +20,13 @@
 
     getSession() {
       try {
-        const raw = sessionStorage.getItem(this.SESSION_KEY);
+        const raw = sessionStorage.getItem(this.SESSION_KEY) || localStorage.getItem(this.SESSION_KEY);
         if (!raw) return null;
         const session = JSON.parse(raw);
         if (!session || !session.role || !session.expiresAt) return null;
 
         if (Date.now() > session.expiresAt) {
-          this.logout(true);
+          this.logout(false);
           return null;
         }
 
@@ -36,29 +36,82 @@
       }
     },
 
-    setSession(role, credentials = {}) {
-      const timeoutMs = (root.KenoConfig?.SESSION_TIMEOUT_MINUTES || 60) * 60 * 1000;
+    setSession(role, credentials = {}, remember = false) {
+      const timeoutMs = remember
+        ? 30 * 24 * 60 * 60 * 1000 // 30 days when "Remember me" is checked
+        : (root.KenoConfig?.SESSION_TIMEOUT_MINUTES || 60) * 60 * 1000;
       const session = {
         role,
         repo: credentials.repo || '',
         branch: credentials.branch || 'main',
         token: credentials.token || '',
+        email: credentials.email || 'admin@keno-store.local',
+        name: credentials.name || 'مدير المتجر',
+        photo: credentials.photo || '',
+        loginMethod: credentials.loginMethod || 'pin',
+        remember: Boolean(remember),
         authTime: Date.now(),
         expiresAt: Date.now() + timeoutMs
       };
-      sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+      try {
+        sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+        if (remember) {
+          localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+        } else {
+          localStorage.removeItem(this.SESSION_KEY);
+        }
+      } catch (_) {}
+
+      // Reveal admin buttons across header and navigation
+      const hBtn = $('headerAdminBtn');
+      const nLink = $('navAdminLink');
+      if (hBtn) hBtn.hidden = false;
+      if (nLink) nLink.hidden = false;
+
+      return session;
+    },
+
+    loginWithPin(pin, remember = true) {
+      const cleanPin = String(pin || '').trim();
+      const configPin = String(root.KenoConfig?.ADMIN_PIN || '2026').trim();
+      const backupPins = (root.KenoConfig?.ADMIN_BACKUP_PINS || ['2026', '123456']).map(p => String(p).trim());
+
+      if (!cleanPin) {
+        throw new Error('يرجى إدخال رمز المرور السري للمدير.');
+      }
+
+      if (cleanPin !== configPin && !backupPins.includes(cleanPin)) {
+        throw new Error('رمز المرور غير صحيح. يرجى التأكد من الرمز والمحاولة ثانية.');
+      }
+
+      const session = this.setSession('OWNER', {
+        email: 'admin@keno-store.local',
+        name: 'مدير المتجر (رمز المرور)',
+        loginMethod: 'pin'
+      }, remember);
+
       return session;
     },
 
     logout(isTimeout = false) {
-      sessionStorage.removeItem(this.SESSION_KEY);
+      try {
+        sessionStorage.removeItem(this.SESSION_KEY);
+        localStorage.removeItem(this.SESSION_KEY);
+      } catch (_) {}
+
+      const hBtn = $('headerAdminBtn');
+      const nLink = $('navAdminLink');
+      if (hBtn) hBtn.hidden = true;
+      if (nLink) nLink.hidden = true;
+
       if (root.KenoFirebase && typeof root.KenoFirebase.signOut === 'function') {
         root.KenoFirebase.signOut().catch(() => {});
       }
       if (isTimeout) {
-        alert('انتهت صلاحية الجلسة بسبب عدم النشاط (60 دقيقة). تم قفل لوحة الإدارة تلقائيًا لحماية المتجر.');
+        alert('انتهت صلاحية الجلسة بسبب عدم النشاط. تم قفل لوحة الإدارة تلقائيًا لحماية المتجر.');
       }
       location.hash = '#catalog';
+      if (typeof window !== 'undefined' && window.__KENO_TEST_ENV__) return;
       location.reload();
     },
 
@@ -172,6 +225,10 @@
       if ($('adminLogin')) $('adminLogin').hidden = true;
       if ($('adminWorkspace')) $('adminWorkspace').hidden = false;
 
+      // Reveal admin buttons across header and navigation
+      if ($('headerAdminBtn')) $('headerAdminBtn').hidden = false;
+      if ($('navAdminLink')) $('navAdminLink').hidden = false;
+
       // Update Role Badge (OWNER, EDITOR, VIEWER)
       const badge = $('adminRoleBadge');
       if (badge) {
@@ -256,6 +313,70 @@
     },
 
     bindLoginGate() {
+      // 1. PIN / Passcode Form Login
+      const pinForm = $('adminPinForm');
+      if (pinForm) {
+        pinForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const pinInput = $('adminPinInput');
+          const rememberInput = $('adminRememberMe');
+          const errEl = $('loginError');
+          const errText = $('loginErrorText') || errEl;
+          if (errEl) errEl.hidden = true;
+
+          const pin = pinInput?.value || '';
+          const remember = rememberInput?.checked ?? true;
+
+          try {
+            const submitBtn = $('adminPinSubmitBtn');
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.style.opacity = '0.7';
+            }
+
+            const session = KenoAdminAuth.loginWithPin(pin, remember);
+            if (typeof root.ensureAdminWorkspace === 'function') {
+              try {
+                await root.ensureAdminWorkspace(session);
+              } catch (_) {}
+            }
+
+            KenoAdmin.unlockWorkspace(session);
+            if (typeof root.showToast === 'function') {
+              root.showToast('مرحبًا بك يا أدمن! تم فتح لوحة التحكم بنجاح.');
+            }
+          } catch (err) {
+            if (errEl) {
+              errText.textContent = err.message || 'رمز المرور غير صحيح.';
+              errEl.hidden = false;
+            }
+            if (pinInput) {
+              pinInput.focus();
+              pinInput.select();
+            }
+          } finally {
+            const submitBtn = $('adminPinSubmitBtn');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = '1';
+            }
+          }
+        });
+      }
+
+      // Toggle PIN Visibility
+      const togglePinBtn = $('togglePinVisibilityBtn');
+      if (togglePinBtn) {
+        togglePinBtn.addEventListener('click', () => {
+          const pinInput = $('adminPinInput');
+          if (!pinInput) return;
+          const isPassword = pinInput.type === 'password';
+          pinInput.type = isPassword ? 'text' : 'password';
+          togglePinBtn.title = isPassword ? 'إخفاء الرمز' : 'إظهار الرمز';
+        });
+      }
+
+      // 2. Google OAuth Login
       const googleBtn = $('googleSignInBtn');
       if (!googleBtn) return;
 
@@ -264,9 +385,17 @@
         const errText = $('loginErrorText') || errEl;
         if (errEl) errEl.hidden = true;
 
+        if (location.protocol === 'file:') {
+          if (errEl) {
+            errText.textContent = 'تسجيل الدخول بحساب Google يتطلب تشغيل الموقع على خادم ويب (HTTP/HTTPS). للدخول الفوري على الحاسوب، يرجى استخدام خانة "رمز المرور السري" أعلاه (الافتراضي: 2026).';
+            errEl.hidden = false;
+          }
+          return;
+        }
+
         if (!root.KenoFirebase || typeof root.KenoFirebase.signInWithGoogle !== 'function' || !root.KenoFirebase.isConfigured()) {
           if (errEl) {
-            errText.textContent = 'خدمة Firebase غير مفعلة حالياً. يرجى مراجعة إعدادات FIREBASE_CONFIG في الكود البرمجي.';
+            errText.textContent = 'خدمة Firebase غير مفعلة حالياً. يمكنك استخدام رمز المرور السري أعلاه للدخول الفوري.';
             errEl.hidden = false;
           }
           return;
@@ -293,12 +422,13 @@
           const session = KenoAdminAuth.setSession(role, {
             email: user.email,
             name: user.displayName || user.email,
-            photo: user.photoURL || ''
-          });
+            photo: user.photoURL || '',
+            loginMethod: 'google'
+          }, true);
 
           if (typeof root.ensureAdminWorkspace === 'function') {
             try {
-              await root.ensureAdminWorkspace(null);
+              await root.ensureAdminWorkspace(session);
             } catch (_) {}
           }
 

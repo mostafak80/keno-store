@@ -239,6 +239,10 @@
       'mostafak80@gmail.com': { role: 'OWNER', name: 'مالك المتجر' }
     },
 
+    // Master Admin PIN / Passcode for instant access (offline, local, or Google fallback)
+    ADMIN_PIN: '2026',
+    ADMIN_BACKUP_PINS: ['2026', '123456'],
+
     // Social Media Platforms
     SOCIAL_PLATFORMS: ['facebook', 'instagram', 'tiktok', 'telegram', 'whatsapp'],
 

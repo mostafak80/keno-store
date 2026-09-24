@@ -54,7 +54,7 @@
   <script src="./js/search.js" defer></script>
   <script src="./assets/catalog.js" defer></script>
   <script src="./js/storefront.js" defer></script>
-  <script src="./js/admin.js" defer></script>
+  <script src="./js/admin.js" id="keno-admin-script" defer></script>
   <script src="./app.js?v=20260922-3" defer></script>
 
   <!-- Structured Data / JSON-LD for SEO -->
@@ -595,7 +595,7 @@
       </a>
     </div>
 
-    <!-- Admin Login Layout (Minimal Single-Action Google Portal) -->
+    <!-- Admin Login Layout (Dual Portal: Master PIN & Google) -->
     <div id="adminLogin" class="admin-portal-wrapper">
       <div class="admin-portal-card">
         <div class="admin-portal-badge">
@@ -603,8 +603,38 @@
         </div>
         <div class="admin-portal-header">
           <span class="portal-tag">بوابة التحكم الآمنة</span>
-          <h2 class="portal-title">Keno Store Admin Portal</h2>
-          <p class="portal-subtitle">تسجيل الدخول مقتصر على مسؤولي ومشرفي المتجر المعتمدين.</p>
+          <h2 class="portal-title">Keno Store Control Room</h2>
+          <p class="portal-subtitle">لوحة الإدارة والتحكم الشامل في أسعار وخدمات كينو ستور.</p>
+        </div>
+
+        <!-- Master PIN Entry (100% Reliable Offline, Local & Server) -->
+        <form id="adminPinForm" class="admin-pin-form">
+          <div class="pin-field-wrapper">
+            <label for="adminPinInput" class="pin-label">رمز المرور السري للمدير</label>
+            <div class="pin-input-group">
+              <i data-icon="lock-keyhole" class="pin-icon"></i>
+              <input type="password" id="adminPinInput" class="admin-pin-input" placeholder="الرمز السري (الافتراضي: 2026)" autocomplete="current-password" required>
+              <button type="button" id="togglePinVisibilityBtn" class="pin-toggle-btn" aria-label="إظهار / إخفاء الرمز" title="إظهار / إخفاء الرمز">
+                <i data-icon="eye"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="admin-remember-row">
+            <label class="remember-label">
+              <input type="checkbox" id="adminRememberMe" checked>
+              <span>تذكر تسجيل دخولي على هذا الجهاز</span>
+            </label>
+          </div>
+
+          <button type="submit" id="adminPinSubmitBtn" class="button button-red full-width admin-pin-btn">
+            <i data-icon="shield"></i>
+            <span>دخول لوحة التحكم</span>
+          </button>
+        </form>
+
+        <div class="portal-divider">
+          <span>أو الدخول بحساب Google المعتمد</span>
         </div>
 
         <button type="button" id="googleSignInBtn" class="button button-google-signin full-width">
@@ -1280,6 +1310,10 @@
     <div class="container footer-bottom">
       <span data-content="copy-127">© <span id="currentYear" data-content="copy-128">2026</span> <span id="footerStoreName" data-content="copy-129">Keno Store</span> — جميع الحقوق محفوظة.</span>
       <span data-content="copy-130">أسماء المنصات والألعاب علامات تجارية لأصحابها؛ كينو متجر مستقل لتقديم الخدمات.</span>
+      <a href="#admin" class="footer-admin-link" id="footerAdminLink" title="لوحة تحكم المشرف (اختصار: Ctrl+Shift+A)">
+        <i data-icon="shield"></i>
+        <span>لوحة الإدارة</span>
+      </a>
     </div>
   </footer>
 
