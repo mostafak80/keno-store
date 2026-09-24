@@ -57,6 +57,7 @@
   <script src="./assets/catalog.js" defer></script>
   <script src="./js/storefront.js" defer></script>
   <script src="./js/mobile-ui.js" defer></script>
+  <script src="./js/mobile-design-admin.js" defer></script>
   <script src="./js/admin.js" id="keno-admin-script" defer></script>
   <script src="./app.js?v=20260922-3" defer></script>
 
@@ -800,6 +801,11 @@
         <button type="button" id="designTab" role="tab" aria-selected="false" aria-controls="adminDesign" data-admin-tab="adminDesign" tabindex="-1">
           <i data-icon="palette"></i>
           <span>تصميم الموقع</span>
+        </button>
+        <button type="button" id="mobileDesignTab" role="tab" aria-selected="false" aria-controls="adminMobileDesign" data-admin-tab="adminMobileDesign" tabindex="-1" style="position:relative;">
+          <i data-icon="smartphone"></i>
+          <span>شكل الموبايل</span>
+          <span style="position:absolute;top:4px;inset-inline-end:6px;background:#ffce50;color:#1a1500;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
         </button>
       </div>
 
@@ -1698,6 +1704,452 @@
 
         <div id="designSaveMsg" class="admin-message" hidden></div>
       </div><!-- #adminDesign -->
+
+      <!-- ══════════════════════════════════════════════════════════
+           Tab: Mobile Design — شكل الموقع على الموبايل
+           ══════════════════════════════════════════════════════════ -->
+      <div id="adminMobileDesign" role="tabpanel" aria-labelledby="mobileDesignTab" hidden>
+
+        <!-- Header -->
+        <div class="admin-toolbar">
+          <div>
+            <h3>📱 شكل الموقع على الموبايل</h3>
+            <p class="field-hint">كل التعديلات هنا بتأثر على شاشات الهواتف فقط 📲 — التابلت والكمبيوتر مش بيتأثروا. اعدل وشوف النتيجة فوراً، وبعدين اضغط حفظ.</p>
+          </div>
+          <div class="button-row">
+            <button type="button" class="button button-outline small" id="mobilePreviewToggleBtn">
+              <i data-icon="smartphone"></i> <span>معاينة الفون</span>
+            </button>
+            <button type="button" class="button button-outline small" id="mobileDesignResetBtn">
+              <i data-icon="rotate-ccw"></i> <span>استعادة الافتراضي</span>
+            </button>
+            <button type="button" class="button button-red" id="mobileDesignSaveBtn">
+              <i data-icon="save"></i> <span>💾 حفظ تصميم الموبايل</span>
+            </button>
+          </div>
+        </div>
+        <div id="mobileDesignSaveMsg" class="admin-message" hidden></div>
+
+        <div style="display:grid;gap:20px;padding:20px 0;">
+
+          <!-- ─────────────────────────────────────────────────────
+               قسم 1: طريقة عرض الخدمات
+               ───────────────────────────────────────────────────── -->
+          <div class="panel" style="border:2px solid rgba(255,206,80,0.3);background:linear-gradient(135deg,rgba(255,206,80,0.04) 0%,var(--paper,#191b20) 100%);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <i data-icon="layout-grid" style="color:#ffce50;width:22px;height:22px;flex-shrink:0;"></i>
+              <div>
+                <h3 style="margin:0;font-size:15px;">1️⃣ طريقة عرض الخدمات</h3>
+                <p class="field-hint" style="margin:2px 0 0;">اختار تعرض الخدمات جنب بعض (شبكة) أو كل خدمة لوحدها في صف</p>
+              </div>
+            </div>
+
+            <!-- Layout: grid or vertical -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;" id="mdLayoutGroup">
+              <label class="md-layout-card md-layout-active" data-md-layout="grid" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 12px;border-radius:12px;border:2px solid var(--accent,#ffce50);background:rgba(255,206,80,0.08);cursor:pointer;transition:all .2s;">
+                <input type="radio" name="mdLayoutR" value="grid" checked hidden>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;width:50px;">
+                  <div style="height:22px;border-radius:3px;background:var(--accent,#ffce50);opacity:.7;"></div>
+                  <div style="height:22px;border-radius:3px;background:var(--accent,#ffce50);opacity:.7;"></div>
+                  <div style="height:22px;border-radius:3px;background:var(--accent,#ffce50);opacity:.7;"></div>
+                </div>
+                <strong style="font-size:13px;">جنب بعض (شبكة)</strong>
+                <small style="color:var(--muted,#b2b3bc);font-size:11px;text-align:center;">كروت متجاورة في كل صف</small>
+              </label>
+              <label class="md-layout-card" data-md-layout="vertical" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 12px;border-radius:12px;border:2px solid var(--line,#ffffff20);background:transparent;cursor:pointer;transition:all .2s;">
+                <input type="radio" name="mdLayoutR" value="vertical" hidden>
+                <div style="display:grid;grid-template-columns:1fr;gap:3px;width:50px;">
+                  <div style="height:14px;border-radius:3px;background:var(--muted,#b2b3bc);opacity:.6;"></div>
+                  <div style="height:14px;border-radius:3px;background:var(--muted,#b2b3bc);opacity:.6;"></div>
+                </div>
+                <strong style="font-size:13px;">تحت بعض (عمودي)</strong>
+                <small style="color:var(--muted,#b2b3bc);font-size:11px;text-align:center;">كارت واحد بعرض الشاشة</small>
+              </label>
+            </div>
+
+            <!-- Number of columns (when grid) -->
+            <div id="mdColsSection" style="margin-top:16px;">
+              <p style="font-size:13px;font-weight:700;margin:0 0 8px;">كم خدمة في كل صف؟</p>
+              <div style="display:flex;gap:10px;" id="mdColsBar">
+                <button type="button" class="md-cols-btn" data-md-cols="1" style="flex:1;padding:10px;border-radius:8px;border:2px solid var(--line,#ffffff20);background:transparent;color:var(--ink,#f7f6f2);font-size:18px;font-weight:900;cursor:pointer;transition:all .2s;">1</button>
+                <button type="button" class="md-cols-btn" data-md-cols="2" style="flex:1;padding:10px;border-radius:8px;border:2px solid var(--line,#ffffff20);background:transparent;color:var(--ink,#f7f6f2);font-size:18px;font-weight:900;cursor:pointer;transition:all .2s;">2</button>
+                <button type="button" class="md-cols-btn md-cols-active" data-md-cols="3" style="flex:1;padding:10px;border-radius:8px;border:2px solid var(--accent,#ffce50);background:rgba(255,206,80,0.12);color:var(--accent,#ffce50);font-size:18px;font-weight:900;cursor:pointer;transition:all .2s;">3</button>
+              </div>
+              <p class="field-hint" style="margin-top:6px;">👆 الاختيار 3 هو الأنسب لمعظم الهواتف. الهواتف الصغيرة بتعرض 2 تلقائياً.</p>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────
+               قسم 2: الحجم والمسافات
+               ───────────────────────────────────────────────────── -->
+          <div class="panel">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <i data-icon="move" style="color:#60a5fa;width:22px;height:22px;flex-shrink:0;"></i>
+              <div>
+                <h3 style="margin:0;font-size:15px;">2️⃣ الحجم والمسافات</h3>
+                <p class="field-hint" style="margin:2px 0 0;">تحكم في حجم الكروت والمسافات بينها على الموبايل</p>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+              <!-- Card size scale -->
+              <div>
+                <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px;">
+                  حجم الكروت: <span id="mdScaleLabel" style="color:#ffce50;">متناسق (5)</span>
+                </label>
+                <input type="range" id="mdCardScale" min="1" max="10" value="5" step="1" style="width:100%;accent-color:#ffce50;">
+                <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px;">
+                  <span>أصغر</span><span>متناسق</span><span>أكبر</span>
+                </div>
+              </div>
+
+              <!-- Gap between cards -->
+              <div>
+                <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px;">
+                  المسافة بين الكروت: <span id="mdGapLabel" style="color:#ffce50;">12px</span>
+                </label>
+                <input type="range" id="mdGap" min="4" max="24" value="12" step="2" style="width:100%;accent-color:#ffce50;">
+                <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px;">
+                  <span>ضيقة</span><span>معقولة</span><span>واسعة</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────
+               قسم 3: ما يظهر على الكارت
+               ───────────────────────────────────────────────────── -->
+          <div class="panel">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <i data-icon="eye" style="color:#34d399;width:22px;height:22px;flex-shrink:0;"></i>
+              <div>
+                <h3 style="margin:0;font-size:15px;">3️⃣ ما يظهر على كارت الخدمة</h3>
+                <p class="field-hint" style="margin:2px 0 0;">اختار العناصر اللي تظهر على كارت كل خدمة في الموبايل</p>
+              </div>
+            </div>
+
+            <div style="display:grid;gap:12px;margin-top:14px;">
+              <!-- Show description -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">📝 وصف الخدمة</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">السطر التوضيحي تحت اسم الخدمة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowDesc" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <!-- Show category badge -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">🏷️ شارة القسم وعدد العروض</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">تظهر فوق اسم الخدمة في الكارت</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowCategory" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <!-- Show artwork / brand logos -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">🎨 صورة/شعار الخدمة في الكارت</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">شعار Netflix, Spotify, PUBG ... إلخ</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowArtwork" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <!-- Show price on card -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">💰 عرض السعر على الكارت</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">يبين أرخص سعر متاح في الكارت</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowPrice" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <!-- Show order button on card -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">🛒 زر "اطلب الآن" على الكارت</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">زر الطلب في أسفل كل كارت خدمة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowOrderBtn" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────
+               قسم 4: الألوان على الموبايل
+               ───────────────────────────────────────────────────── -->
+          <div class="panel">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <i data-icon="palette" style="color:#f472b6;width:22px;height:22px;flex-shrink:0;"></i>
+              <div>
+                <h3 style="margin:0;font-size:15px;">4️⃣ الألوان على الموبايل</h3>
+                <p class="field-hint" style="margin:2px 0 0;">غير ألوان الموبايل بشكل مستقل عن شاشة الكمبيوتر</p>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
+              <!-- Accent color -->
+              <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">🌟 اللون الرئيسي (Accent)</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="color" id="mdAccentColor" value="#ffce50" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
+                  <input type="text" id="mdAccentColorText" value="#ffce50" maxlength="7" style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink);font-size:12px;font-family:monospace;">
+                </div>
+              </div>
+
+              <!-- Background color -->
+              <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">🌑 خلفية الصفحة</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="color" id="mdBgColor" value="#101114" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
+                  <input type="text" id="mdBgColorText" value="#101114" maxlength="7" style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink);font-size:12px;font-family:monospace;">
+                </div>
+              </div>
+
+              <!-- Card background -->
+              <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">📦 خلفية الكارت</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="color" id="mdCardBgColor" value="#191b20" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
+                  <input type="text" id="mdCardBgColorText" value="#191b20" maxlength="7" style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink);font-size:12px;font-family:monospace;">
+                </div>
+              </div>
+
+              <!-- Text color -->
+              <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">✍️ لون النصوص</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="color" id="mdInkColor" value="#f7f6f2" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
+                  <input type="text" id="mdInkColorText" value="#f7f6f2" maxlength="7" style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink);font-size:12px;font-family:monospace;">
+                </div>
+              </div>
+
+              <!-- Nav bar color -->
+              <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">📍 شريط التنقل السفلي</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="color" id="mdNavBgColor" value="#0c0d10" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
+                  <input type="text" id="mdNavBgColorText" value="#0c0d10" maxlength="7" style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink);font-size:12px;font-family:monospace;">
+                </div>
+              </div>
+
+              <!-- Header color -->
+              <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">🔝 شريط الهيدر العلوي</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="color" id="mdHeaderBgColor" value="#101114" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
+                  <input type="text" id="mdHeaderBgColorText" value="#101114" maxlength="7" style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink);font-size:12px;font-family:monospace;">
+                </div>
+              </div>
+            </div>
+
+            <!-- Color presets for mobile -->
+            <div style="margin-top:14px;">
+              <p style="font-size:12px;color:var(--muted);margin:0 0 8px;">🎨 باليتات جاهزة:</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="md-color-preset" data-md-preset="dark" style="padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:linear-gradient(135deg,#101114,#191b20);color:#ffce50;font-size:11px;cursor:pointer;">🌑 داكن (افتراضي)</button>
+                <button type="button" class="md-color-preset" data-md-preset="midnight" style="padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:linear-gradient(135deg,#08090b,#111318);color:#c8b8ff;font-size:11px;cursor:pointer;">🌌 منتصف الليل</button>
+                <button type="button" class="md-color-preset" data-md-preset="light" style="padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:linear-gradient(135deg,#f4f4f6,#ffffff);color:#2563eb;font-size:11px;cursor:pointer;">☀️ فاتح</button>
+                <button type="button" class="md-color-preset" data-md-preset="vibrant" style="padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:linear-gradient(135deg,#0e0a1a,#161126);color:#f9e040;font-size:11px;cursor:pointer;">✨ متألق</button>
+                <button type="button" class="md-color-preset" data-md-preset="forest" style="padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:linear-gradient(135deg,#0a1a0e,#112016);color:#34d399;font-size:11px;cursor:pointer;">🌿 غابة</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────
+               قسم 5: الخط والنصوص على الموبايل
+               ───────────────────────────────────────────────────── -->
+          <div class="panel">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <i data-icon="type" style="color:#a78bfa;width:22px;height:22px;flex-shrink:0;"></i>
+              <div>
+                <h3 style="margin:0;font-size:15px;">5️⃣ الخط والنصوص على الموبايل</h3>
+                <p class="field-hint" style="margin:2px 0 0;">حجم الخط ونوعه على شاشات الهواتف</p>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+              <!-- Font size scale -->
+              <div>
+                <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px;">
+                  حجم الخط: <span id="mdFontScaleLabel" style="color:#ffce50;">طبيعي (100%)</span>
+                </label>
+                <input type="range" id="mdFontScale" min="85" max="120" value="100" step="5" style="width:100%;accent-color:#a78bfa;">
+                <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px;">
+                  <span>أصغر</span><span>طبيعي</span><span>أكبر</span>
+                </div>
+              </div>
+
+              <!-- Card radius -->
+              <div>
+                <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px;">
+                  حواف الكروت: <span id="mdCardRadiusLabel" style="color:#ffce50;">16px</span>
+                </label>
+                <input type="range" id="mdCardRadius" min="0" max="28" value="16" step="2" style="width:100%;accent-color:#a78bfa;">
+                <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px;">
+                  <span>حادة</span><span>معقولة</span><span>دائرية</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Font family -->
+            <div style="margin-top:14px;">
+              <p style="font-size:13px;font-weight:700;margin:0 0 8px;">نوع الخط:</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;" id="mdFontGroup">
+                <label class="md-font-card md-font-active" data-md-font="cairo" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:10px;border:2px solid var(--accent,#ffce50);background:rgba(255,206,80,0.08);cursor:pointer;transition:all .2s;">
+                  <input type="radio" name="mdFontR" value="cairo" checked hidden>
+                  <span style="font-size:18px;font-family:'Cairo',sans-serif;font-weight:900;">ك</span>
+                  <span style="font-size:11px;font-weight:700;">Cairo (افتراضي)</span>
+                </label>
+                <label class="md-font-card" data-md-font="tajawal" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:10px;border:2px solid var(--line,#ffffff20);background:transparent;cursor:pointer;transition:all .2s;">
+                  <input type="radio" name="mdFontR" value="tajawal" hidden>
+                  <span style="font-size:18px;font-family:'Tajawal',sans-serif;font-weight:900;">ك</span>
+                  <span style="font-size:11px;">Tajawal</span>
+                </label>
+                <label class="md-font-card" data-md-font="inter" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:10px;border:2px solid var(--line,#ffffff20);background:transparent;cursor:pointer;transition:all .2s;">
+                  <input type="radio" name="mdFontR" value="inter" hidden>
+                  <span style="font-size:18px;font-family:'Inter',sans-serif;font-weight:900;">K</span>
+                  <span style="font-size:11px;">Inter</span>
+                </label>
+                <label class="md-font-card" data-md-font="noto" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:10px;border:2px solid var(--line,#ffffff20);background:transparent;cursor:pointer;transition:all .2s;">
+                  <input type="radio" name="mdFontR" value="noto" hidden>
+                  <span style="font-size:18px;font-family:'Noto Sans Arabic',sans-serif;font-weight:900;">ك</span>
+                  <span style="font-size:11px;">Noto Arabic</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────
+               قسم 6: الأقسام والتنقل
+               ───────────────────────────────────────────────────── -->
+          <div class="panel">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <i data-icon="navigation" style="color:#fb923c;width:22px;height:22px;flex-shrink:0;"></i>
+              <div>
+                <h3 style="margin:0;font-size:15px;">6️⃣ شريط التنقل والأقسام</h3>
+                <p class="field-hint" style="margin:2px 0 0;">إعدادات شريط التنقل السفلي وفلتر الأقسام</p>
+              </div>
+            </div>
+
+            <div style="display:grid;gap:12px;margin-top:14px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">🔍 إظهار شريط البحث في الهيدر</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">حقل البحث السريع أعلى الصفحة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowSearch" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">📂 فلتر الأقسام فوق الخدمات</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">اختيار القسم من قائمة منسدلة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowCategoryFilter" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">✨ تأثيرات الحركة والانتقالات</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">تفعيل أو تعطيل التأثيرات المتحركة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdAnimationsEnabled" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────
+               قسم 7: إعداد صفحة الطلب على الموبايل
+               ───────────────────────────────────────────────────── -->
+          <div class="panel">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <i data-icon="shopping-cart" style="color:#f43f5e;width:22px;height:22px;flex-shrink:0;"></i>
+              <div>
+                <h3 style="margin:0;font-size:15px;">7️⃣ شاشة الطلب على الموبايل</h3>
+                <p class="field-hint" style="margin:2px 0 0;">تحكم في شكل شاشة الطلب عند الضغط على خدمة</p>
+              </div>
+            </div>
+
+            <div style="display:grid;gap:12px;margin-top:14px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">📋 مؤشر خطوات الطلب (1→2→3)</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">الشريط اللي بيوضح العميل في أنهي خطوة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowJourneySteps" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">📝 ملاحظات الخدمة قابلة للطي</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">تبدأ مقفولة على الموبايل لتوفير مساحة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdCollapseNotes" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">🎨 صورة الباقة في الطلب</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">أيقونة/شعار الخدمة بجانب كل باقة</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowPlanArt" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────
+               زر الحفظ النهائي
+               ───────────────────────────────────────────────────── -->
+          <div style="background:linear-gradient(135deg,rgba(255,206,80,0.08),rgba(25,27,32,0.9));border:2px solid rgba(255,206,80,0.4);border-radius:16px;padding:20px;text-align:center;">
+            <p style="font-size:14px;margin:0 0 12px;color:var(--ink,#f7f6f2);">📱 لما تخلص التعديلات، اضغط الزر ده وهتشوف التغييرات على أي هاتف فوراً</p>
+            <p class="field-hint" style="margin:0 0 16px;">⚠️ التعديلات دي بتأثر على الموبايل بس — مش بتأثر على شكل الموقع على الكمبيوتر</p>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+              <button type="button" class="button button-outline" id="mobilePreviewToggleBtn2">
+                <i data-icon="smartphone"></i> معاينة على الشاشة الكبيرة
+              </button>
+              <button type="button" class="button button-red" id="mobileDesignSaveBtn2" style="font-size:15px;padding:12px 28px;">
+                <i data-icon="save"></i> 💾 حفظ ونشر تصميم الموبايل
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- #adminMobileDesign -->
 
       <!-- Tab: Featured Hero Card Management -->
       <div id="adminFeatured" role="tabpanel" aria-labelledby="featuredTab" hidden>

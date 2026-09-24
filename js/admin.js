@@ -296,6 +296,13 @@
       } catch (err) {
         console.error('Error in initDesignAdminPanel:', err);
       }
+      try {
+        if (typeof root.initMobileDesignPanel === 'function') {
+          root.initMobileDesignPanel();
+        }
+      } catch (err) {
+        console.error('Error in initMobileDesignPanel:', err);
+      }
     },
 
 
