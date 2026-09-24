@@ -166,13 +166,25 @@
         } catch (_) {}
       }
 
-      // When visiting #admin, auto-initialize an active OWNER session if none exists
+      // If not authenticated as admin, strictly kick out and do not open workspace
       if (!session) {
-        session = KenoAdminAuth.setSession('OWNER', {
-          role: 'OWNER',
-          email: 'admin@keno.store',
-          name: 'مدير المتجر'
-        });
+        if ($('storefront')) {
+          $('storefront').hidden = false;
+          $('storefront').style.removeProperty('display');
+        }
+        if ($('adminView')) {
+          $('adminView').hidden = true;
+          $('adminView').style.setProperty('display', 'none', 'important');
+        }
+        if ($('adminWorkspace')) $('adminWorkspace').hidden = true;
+        if ($('adminLogin')) $('adminLogin').hidden = true;
+        if (location.hash === '#admin' || location.hash.startsWith('#admin/')) {
+          location.hash = '#catalog';
+        }
+        if (typeof root.showToast === 'function') {
+          root.showToast('عفواً، لوحة التحكم مخصصة لمدير المتجر فقط بعد تسجيل الدخول بحسابه في الموقع.');
+        }
+        return;
       }
 
       if (typeof root.ensureAdminWorkspace === 'function') {

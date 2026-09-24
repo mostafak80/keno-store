@@ -1839,9 +1839,71 @@
     return adminScriptPromise;
   }
 
+  function isAuthorizedAdmin() {
+    // 1. Check active Firebase authenticated user against admin whitelist
+    const fbUser = window.KenoFirebase?.getCurrentUser?.();
+    if (fbUser && fbUser.email) {
+      const email = String(fbUser.email).toLowerCase().trim();
+      const adminEmails = (window.KenoConfig?.ADMIN_EMAILS || []).map(e => String(e).toLowerCase().trim());
+      const staticAdmins = window.KenoConfig?.AUTHORIZED_ADMINS || {};
+      if (adminEmails.includes(email) || staticAdmins[email]) {
+        return true;
+      }
+    }
+
+    // 2. Check active verified admin session in storage
+    try {
+      const raw = sessionStorage.getItem('keno_admin_session_v3') || localStorage.getItem('keno_admin_session_v3');
+      if (raw) {
+        const session = JSON.parse(raw);
+        if (session && session.role && session.expiresAt && Date.now() < session.expiresAt) {
+          if (session.email) {
+            const email = String(session.email).toLowerCase().trim();
+            const adminEmails = (window.KenoConfig?.ADMIN_EMAILS || []).map(e => String(e).toLowerCase().trim());
+            const staticAdmins = window.KenoConfig?.AUTHORIZED_ADMINS || {};
+            if (adminEmails.includes(email) || staticAdmins[email]) {
+              return true;
+            }
+          }
+          if (session.loginMethod === 'pin' && (session.role === 'OWNER' || session.role === 'EDITOR')) {
+            return true;
+          }
+        }
+      }
+    } catch (_) {}
+
+    return false;
+  }
+
   function route() {
     const hash = location.hash;
-    const isAdmin = hash === '#admin' || hash.startsWith('#admin/');
+    const requestedAdmin = hash === '#admin' || hash.startsWith('#admin/');
+
+    // STRICT ACCESS GUARD:
+    // If not authenticated as admin, NEVER open admin view or workspace
+    if (requestedAdmin && !isAuthorizedAdmin()) {
+      if ($('storefront')) {
+        $('storefront').hidden = false;
+        $('storefront').style.removeProperty('display');
+      }
+      if ($('adminView')) {
+        $('adminView').hidden = true;
+        $('adminView').style.setProperty('display', 'none', 'important');
+      }
+      if ($('adminWorkspace')) $('adminWorkspace').hidden = true;
+      if ($('adminLogin')) $('adminLogin').hidden = true;
+      if ($('headerAdminBtn')) $('headerAdminBtn').hidden = true;
+      if ($('navAdminLink')) $('navAdminLink').hidden = true;
+
+      if (location.hash !== '#home' && location.hash !== '#catalog') {
+        history.replaceState(null, '', location.pathname + '#catalog');
+      }
+
+      toast('لوحة التحكم مخصصة للمدير فقط بعد تسجيل الدخول بحسابه في الموقع.');
+      return;
+    }
+
+    const isAdmin = requestedAdmin && isAuthorizedAdmin();
     if ($('storefront')) {
       $('storefront').hidden = isAdmin;
       if (isAdmin) {
@@ -4466,14 +4528,6 @@
     window.addEventListener('pagehide', () => lifetime.abort(), { once: true });
   }
 
-  // Secret admin keyboard shortcut (Ctrl+Shift+A or Alt+A)
-  document.addEventListener('keydown', event => {
-    if ((event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'a') || (event.altKey && event.key.toLowerCase() === 'a')) {
-      event.preventDefault();
-      location.hash = '#admin';
-    }
-  });
-
   // --- Optional Storefront Google Authentication & Role-Based UI Controller ---
   function setupStorefrontAuth() {
     const loginBtn = $('headerGoogleLoginBtn');
@@ -4485,28 +4539,25 @@
     const signOutBtn = $('headerSignOutBtn');
 
     function checkActiveAdminSession() {
-      try {
-        const raw = sessionStorage.getItem('keno_admin_session_v3') || localStorage.getItem('keno_admin_session_v3');
-        if (!raw) return false;
-        const session = JSON.parse(raw);
-        if (session && session.role && session.expiresAt && Date.now() < session.expiresAt) {
-          if (adminBtn) adminBtn.hidden = false;
-          if (navAdminLink) navAdminLink.hidden = false;
-          return true;
-        }
-      } catch (_) {}
+      const authorized = isAuthorizedAdmin();
+      if (authorized) {
+        if (adminBtn) adminBtn.hidden = false;
+        if (navAdminLink) navAdminLink.hidden = false;
+        return true;
+      }
+      if (adminBtn) adminBtn.hidden = true;
+      if (navAdminLink) navAdminLink.hidden = true;
       return false;
     }
 
     async function applyAuthState(user) {
-      const hasSession = checkActiveAdminSession();
       if (!user) {
         if (loginBtn) {
           loginBtn.hidden = false;
           loginBtn.disabled = false;
         }
         if (userPill) userPill.hidden = true;
-        if (!hasSession) {
+        if (!isAuthorizedAdmin()) {
           if (adminBtn) adminBtn.hidden = true;
           if (navAdminLink) navAdminLink.hidden = true;
         }
@@ -4579,19 +4630,26 @@
           }
         }
       } else {
-        if (!hasSession) {
-          if (adminBtn) adminBtn.hidden = true;
-          if (navAdminLink) navAdminLink.hidden = true;
-          try {
-            sessionStorage.removeItem('keno_admin_session_v3');
-            localStorage.removeItem('keno_admin_session_v3');
-          } catch (_) {}
+        // Customer account logged in: strictly hide admin buttons, remove sessions, kick off #admin
+        if (adminBtn) adminBtn.hidden = true;
+        if (navAdminLink) navAdminLink.hidden = true;
+        try {
+          sessionStorage.removeItem('keno_admin_session_v3');
+          localStorage.removeItem('keno_admin_session_v3');
+        } catch (_) {}
+        if (location.hash === '#admin' || location.hash.startsWith('#admin/')) {
+          location.hash = '#catalog';
+          route();
         }
       }
     }
 
     const handleAdminClick = (e) => {
       e.preventDefault();
+      if (!isAuthorizedAdmin()) {
+        toast('عفواً، لوحة التحكم مخصصة للمدير فقط بعد تسجيل الدخول بحسابه في الموقع.');
+        return;
+      }
       if (location.hash === '#admin') {
         route();
       } else {
@@ -4600,8 +4658,8 @@
       window.scrollTo({ top: 0, behavior: 'instant' });
     };
 
-    // Bind all buttons & links pointing to admin (header, nav, footer, etc.)
-    document.querySelectorAll('a[href="#admin"], [data-open-admin], #headerAdminBtn, #navAdminLink, #footerAdminLink').forEach(btn => {
+    // Bind all buttons & links pointing to admin (header, nav)
+    document.querySelectorAll('a[href="#admin"], [data-open-admin], #headerAdminBtn, #navAdminLink').forEach(btn => {
       btn.addEventListener('click', handleAdminClick);
     });
 
@@ -4609,6 +4667,10 @@
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) || (e.altKey && (e.key === 'A' || e.key === 'a'))) {
         e.preventDefault();
+        if (!isAuthorizedAdmin()) {
+          toast('عفواً، لوحة التحكم مخصصة للمدير فقط بعد تسجيل الدخول بحسابه في الموقع.');
+          return;
+        }
         location.hash = '#admin';
         route();
         window.scrollTo({ top: 0, behavior: 'instant' });
