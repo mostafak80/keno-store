@@ -58,8 +58,8 @@
         throw new Error(validation.error);
       }
 
-      const targetWidth = options.targetWidth || 800; // 800x400 (2:1) is sharp on retina while keeping payload < 40KB
-      const targetRatio = 2.0; // 2:1 ratio as specified
+      const targetRatio = options.targetRatio !== undefined ? options.targetRatio : 2.0;
+      const targetWidth = options.targetWidth || (targetRatio === 1.0 ? 500 : 800);
       const quality = options.quality || COMPRESSION_QUALITY;
 
       return new Promise((resolve, reject) => {
@@ -77,26 +77,26 @@
                 throw new Error('أبعاد الصورة غير صالحة.');
               }
 
-              // Calculate 2:1 center-crop rectangle from source
+              // Calculate center-crop rectangle from source
               let sx = 0;
               let sy = 0;
               let sWidth = naturalW;
               let sHeight = naturalH;
               const currentRatio = naturalW / naturalH;
 
-              if (currentRatio > targetRatio) {
-                // Image is wider than 2:1 -> crop excess left and right
-                sWidth = Math.round(naturalH * targetRatio);
-                sx = Math.round((naturalW - sWidth) / 2);
-              } else if (currentRatio < targetRatio) {
-                // Image is taller than 2:1 -> crop excess top and bottom
-                sHeight = Math.round(naturalW / targetRatio);
-                sy = Math.round((naturalH - sHeight) / 2);
+              if (targetRatio) {
+                if (currentRatio > targetRatio) {
+                  sWidth = Math.round(naturalH * targetRatio);
+                  sx = Math.round((naturalW - sWidth) / 2);
+                } else if (currentRatio < targetRatio) {
+                  sHeight = Math.round(naturalW / targetRatio);
+                  sy = Math.round((naturalH - sHeight) / 2);
+                }
               }
 
               // Destination dimensions: downscale if source crop is larger than targetWidth
               const destWidth = Math.min(targetWidth, sWidth);
-              const destHeight = Math.round(destWidth / targetRatio);
+              const destHeight = targetRatio ? Math.round(destWidth / targetRatio) : Math.round(destWidth * (sHeight / sWidth));
 
               const canvas = document.createElement('canvas');
               canvas.width = destWidth;

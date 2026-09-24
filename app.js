@@ -638,19 +638,14 @@
       const toneClass = `tone-${s.color || 'red'}`;
 
       const hasImage = Boolean(s.image);
-      let visualHtml = '';
-      if (hasImage) {
-        visualHtml = `
-          <img class="service-image" src="${esc(s.image)}" alt="${esc(s.name)}" loading="lazy" decoding="async" ${ImageUtils.getFallbackAttr?.() || ''}>
-          <span class="fallback-icon" style="display:none;">${icon(s.icon)}</span>
-        `;
-      } else {
-        visualHtml = `
-          ${icon(s.icon)}
-          <span class="card-mark" dir="auto">${esc(s.mark || 'KENO')}</span>
-          ${window.KenoMobileUI?.artwork(s) || ''}
-        `;
-      }
+      const desktopVisualHtml = hasImage
+        ? `<img class="service-image" src="${esc(s.image)}" alt="${esc(s.name)}" loading="lazy" decoding="async" ${ImageUtils.getFallbackAttr?.() || ''}><span class="fallback-icon" style="display:none;">${icon(s.icon)}</span>`
+        : `${icon(s.icon)}<span class="card-mark" dir="auto">${esc(s.mark || 'KENO')}</span>`;
+
+      const visualHtml = `
+        <div class="desktop-card-visual" aria-hidden="true">${desktopVisualHtml}</div>
+        ${window.KenoMobileUI?.artwork(s) || ''}
+      `;
 
       // Check for lowest price plan with discount
       let priceDisplayHtml = '';
@@ -787,6 +782,7 @@
     if (bannerContainer) {
       bannerContainer.hidden = false;
       const imageUrl = (service.image || '').trim();
+      const mobileImageUrl = (service.mobileImage || '').trim();
       const toneClass = `tone-${service.color || 'red'}`;
       const serviceIconName = service.icon || categoryObj?.icon || 'sparkles';
       const serviceMark = service.mark || service.name || 'KENO';
@@ -807,16 +803,19 @@
         </div>
       `;
 
-      if (imageUrl) {
+      if (imageUrl || mobileImageUrl) {
         bannerContainer.className = 'service-hero-media has-image';
         bannerContainer.innerHTML = `
-          <img id="serviceDialogBannerImg"
-               src="${esc(imageUrl)}"
-               alt="${esc(service.name)}"
-               loading="eager"
-               decoding="async"
-               onload="this.classList.add('is-loaded');"
-               onerror="this.style.display='none'; const fb = this.nextElementSibling; if (fb) fb.style.display='flex'; this.parentElement.classList.remove('has-image'); this.parentElement.classList.add('is-fallback');">
+          <picture class="service-dialog-picture">
+            ${mobileImageUrl ? `<source media="(max-width: 780px)" srcset="${esc(mobileImageUrl)}">` : ''}
+            <img id="serviceDialogBannerImg"
+                 src="${esc(imageUrl || mobileImageUrl)}"
+                 alt="${esc(service.name)}"
+                 loading="eager"
+                 decoding="async"
+                 onload="this.classList.add('is-loaded');"
+                 onerror="this.style.display='none'; const fb = this.parentElement.nextElementSibling; if (fb) fb.style.display='flex'; this.closest('.service-hero-media').classList.remove('has-image'); this.closest('.service-hero-media').classList.add('is-fallback');">
+          </picture>
           <div class="fallback-wrapper" style="display:none; width:100%; height:100%;">
             ${fallbackHtml}
           </div>
@@ -3314,43 +3313,123 @@
 
   function updateImagePreview() {
     const form = $('serviceForm');
-    const previewContainer = $('imagePreview');
-    if (!form || !previewContainer) return;
+    if (!form) return;
+
+    const desktopPreviewContainer = $('imagePreview');
+    const mobilePreviewContainer = $('mobileImagePreview');
+    const mobileSameCardContainer = $('mobileSameCardPreview');
+    const desktopPromptEl = $('editorDropzonePrompt');
+    const mobilePromptEl = $('editorMobileDropzonePrompt');
 
     const imgVal = form.elements.image?.value?.trim() || '';
+    const mobileImgVal = form.elements.mobileImage?.value?.trim() || '';
     const badgeVal = form.elements.badge?.value?.trim() || '';
+    const serviceName = form.elements.name?.value?.trim() || 'اسم الخدمة';
+    const wordmarkText = form.elements.mark?.value?.trim() || serviceName.split('—')[0].trim() || 'KENO';
+    const showWordmark = form.elements.mobileShowWordmark ? form.elements.mobileShowWordmark.checked : true;
 
-    const promptEl = $('editorDropzonePrompt');
+    // 1. Desktop Image Preview
+    if (desktopPreviewContainer) {
+      if (imgVal) {
+        if (desktopPromptEl) desktopPromptEl.hidden = true;
+        desktopPreviewContainer.hidden = false;
+        desktopPreviewContainer.innerHTML = `
+          <div class="admin-image-preview-banner">
+            <img src="${esc(imgVal)}" alt="معاينة بانر الكمبيوتر" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'50\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%231e293b\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%2394a3b8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-size=\\'10\\'>صورة غير صالحة</text></svg>'">
+            ${badgeVal ? `<span class="preview-badge-overlay">${esc(badgeVal)}</span>` : ''}
+          </div>
+          <div class="admin-image-preview-meta">
+            <span class="preview-helper-text">
+              <i data-icon="check-circle" style="color:#16a34a;width:14px;height:14px;"></i>
+              معاينة حية للكمبيوتر: نسبة 2:1 مطابقة لكروت الشاشات الكبيرة
+            </span>
+            <button type="button" id="removeImageBtn" class="button button-outline small danger-text">حذف صورة الكمبيوتر</button>
+          </div>
+        `;
+        hydrateIcons(desktopPreviewContainer);
+        $('removeImageBtn')?.addEventListener('click', () => {
+          if (form.elements.image) form.elements.image.value = '';
+          desktopPreviewContainer.hidden = true;
+          desktopPreviewContainer.innerHTML = '';
+          if (desktopPromptEl) desktopPromptEl.hidden = false;
+          editorDirty = true;
+          updateStickyBar();
+          updateImagePreview();
+        });
+      } else {
+        if (desktopPromptEl) desktopPromptEl.hidden = false;
+        desktopPreviewContainer.hidden = true;
+        desktopPreviewContainer.innerHTML = '';
+      }
+    }
 
-    if (imgVal) {
-      if (promptEl) promptEl.hidden = true;
-      previewContainer.hidden = false;
-      previewContainer.innerHTML = `
-        <div class="admin-image-preview-banner">
-          <img src="${esc(imgVal)}" alt="معاينة البانر" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'50\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%231e293b\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%2394a3b8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-size=\\'10\\'>صورة غير صالحة</text></svg>'">
-          ${badgeVal ? `<span class="preview-badge-overlay">${esc(badgeVal)}</span>` : ''}
-        </div>
-        <div class="admin-image-preview-meta">
-          <span class="preview-helper-text">
-            <i data-icon="check-circle" style="color:#16a34a;width:14px;height:14px;"></i>
-            معاينة حية: نسبة 2:1 مطابقة للبطاقة
-          </span>
-          <button type="button" id="removeImageBtn" class="button button-outline small danger-text">حذف الصورة</button>
-        </div>
-      `;
-      hydrateIcons(previewContainer);
-      $('removeImageBtn')?.addEventListener('click', () => {
-        form.elements.image.value = '';
-        previewContainer.hidden = true;
-        previewContainer.innerHTML = '';
-        if (promptEl) promptEl.hidden = false;
-        editorDirty = true;
-        updateStickyBar();
-      });
-    } else {
-      if (promptEl) promptEl.hidden = false;
-      previewContainer.hidden = true;
-      previewContainer.innerHTML = '';
+    // 2. Mobile Image Preview (Custom Mode)
+    if (mobilePreviewContainer) {
+      if (mobileImgVal) {
+        if (mobilePromptEl) mobilePromptEl.hidden = true;
+        mobilePreviewContainer.hidden = false;
+        mobilePreviewContainer.innerHTML = `
+          <div class="mobile-mock-card" style="margin: 0 auto; max-width: 170px;">
+            <div class="mobile-mock-visual">
+              <img src="${esc(mobileImgVal)}" alt="معاينة كارت الموبايل" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23080c25\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%2394a3b8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-size=\\'10\\'>صورة غير صالحة</text></svg>'">
+              ${showWordmark ? `<b class="mobile-mock-wordmark">${esc(wordmarkText)}</b>` : ''}
+            </div>
+            <div class="mobile-mock-body">
+              <div class="mobile-mock-title" dir="auto">${esc(serviceName)}</div>
+              <div class="mobile-mock-price">مثل كارت ببجي تمامًا ⭐</div>
+            </div>
+          </div>
+          <div class="admin-image-preview-meta" style="justify-content:center;margin-top:10px;">
+            <span class="preview-helper-text" style="color:#10b981;">
+              <i data-icon="check-circle" style="width:14px;height:14px;"></i>
+              صورة مخصصة للهاتف: 1:1 مربعة مجهزة
+            </span>
+            <button type="button" id="removeMobileImageBtn" class="button button-outline small danger-text">حذف صورة الهاتف</button>
+          </div>
+        `;
+        hydrateIcons(mobilePreviewContainer);
+        $('removeMobileImageBtn')?.addEventListener('click', () => {
+          if (form.elements.mobileImage) form.elements.mobileImage.value = '';
+          mobilePreviewContainer.hidden = true;
+          mobilePreviewContainer.innerHTML = '';
+          if (mobilePromptEl) mobilePromptEl.hidden = false;
+          editorDirty = true;
+          updateStickyBar();
+          updateImagePreview();
+        });
+      } else {
+        if (mobilePromptEl) mobilePromptEl.hidden = false;
+        mobilePreviewContainer.hidden = true;
+        mobilePreviewContainer.innerHTML = '';
+      }
+    }
+
+    // 3. Mobile Same Image Preview (Inheriting Desktop Image)
+    if (mobileSameCardContainer) {
+      if (imgVal) {
+        mobileSameCardContainer.style.display = 'block';
+        mobileSameCardContainer.innerHTML = `
+          <div class="mobile-mock-card" style="margin: 0 auto; max-width: 170px;">
+            <div class="mobile-mock-visual">
+              <img src="${esc(imgVal)}" alt="معاينة الهاتف بصورة الكمبيوتر" loading="lazy">
+              ${showWordmark ? `<b class="mobile-mock-wordmark">${esc(wordmarkText)}</b>` : ''}
+            </div>
+            <div class="mobile-mock-body">
+              <div class="mobile-mock-title" dir="auto">${esc(serviceName)}</div>
+              <div style="font-size:10.5px;color:#94a3b8;line-height:1.3;">تُعرض تلقائيًا بنمط كارت ببجي</div>
+            </div>
+          </div>
+        `;
+      } else {
+        mobileSameCardContainer.style.display = 'block';
+        mobileSameCardContainer.innerHTML = `
+          <div style="padding:16px 12px;text-align:center;color:#94a3b8;font-size:12px;border:1px dashed rgba(255,255,255,0.12);border-radius:10px;background:rgba(0,0,0,0.2);">
+            <div style="font-size:22px;margin-bottom:6px;">📱</div>
+            <p style="margin:0 0 4px;font-weight:600;color:#fff;">لم يتم تعيين صورة حتى الآن</p>
+            <span style="font-size:11px;">سيظهر لزوار الهاتف شكل الأيقونة الكلاسيكية أو شعار الماركة الرسمي مع تدرج لوني فخم.</span>
+          </div>
+        `;
+      }
     }
   }
 
@@ -3517,6 +3596,22 @@
 
     KenoCheckout.loadEditor(service);
     form.elements.image.value = service.image || '';
+    if (form.elements.mobileImage) form.elements.mobileImage.value = service.mobileImage || '';
+    if (form.elements.mobileShowWordmark) form.elements.mobileShowWordmark.checked = service.mobileShowWordmark !== false;
+
+    // Reset media studio tabs to desktop tab by default
+    $('tabMediaDesktop')?.click();
+
+    // Configure mobile image mode radio
+    if (service.mobileImage) {
+      if ($('mobileImageModeCustom')) $('mobileImageModeCustom').checked = true;
+      if ($('mobileCustomDropzoneWrap')) $('mobileCustomDropzoneWrap').style.display = 'block';
+      if ($('mobileSameImagePreviewWrap')) $('mobileSameImagePreviewWrap').style.display = 'none';
+    } else {
+      if ($('mobileImageModeSame')) $('mobileImageModeSame').checked = true;
+      if ($('mobileCustomDropzoneWrap')) $('mobileCustomDropzoneWrap').style.display = 'none';
+      if ($('mobileSameImagePreviewWrap')) $('mobileSameImagePreviewWrap').style.display = 'block';
+    }
 
     let statusVal = 'visible';
     if (!service.visible || service.status === 'hidden') {
@@ -3541,7 +3636,7 @@
     if ($('editorPlanGroupFilter')) $('editorPlanGroupFilter').value = 'all';
     if ($('editorPlanStatusFilter')) $('editorPlanStatusFilter').value = 'all';
 
-    // Render 2:1 live image preview
+    // Render live dual-device image previews
     updateImagePreview();
 
     // Render compact plans table
@@ -3556,6 +3651,8 @@
       name: service.name,
       category: service.category,
       image: service.image,
+      mobileImage: service.mobileImage,
+      mobileShowWordmark: service.mobileShowWordmark,
       visible: service.visible,
       featured: service.featured,
       plans: currentEditorPlans
@@ -3737,19 +3834,55 @@
     updateImagePreview();
   });
 
-  // Image Auto-Compression on file upload with 2:1 ratio
+  // Dual-Device Media Studio: Desktop vs Mobile Tab Switching
+  $('tabMediaDesktop')?.addEventListener('click', () => {
+    $('tabMediaDesktop')?.classList.add('active');
+    $('tabMediaDesktop')?.setAttribute('aria-selected', 'true');
+    $('tabMediaMobile')?.classList.remove('active');
+    $('tabMediaMobile')?.setAttribute('aria-selected', 'false');
+    if ($('mediaBoxDesktop')) $('mediaBoxDesktop').hidden = false;
+    if ($('mediaBoxMobile')) $('mediaBoxMobile').hidden = true;
+  });
+
+  $('tabMediaMobile')?.addEventListener('click', () => {
+    $('tabMediaMobile')?.classList.add('active');
+    $('tabMediaMobile')?.setAttribute('aria-selected', 'true');
+    $('tabMediaDesktop')?.classList.remove('active');
+    $('tabMediaDesktop')?.setAttribute('aria-selected', 'false');
+    if ($('mediaBoxMobile')) $('mediaBoxMobile').hidden = false;
+    if ($('mediaBoxDesktop')) $('mediaBoxDesktop').hidden = true;
+    updateImagePreview();
+  });
+
+  // Mobile image mode radios
+  $('mobileImageModeSame')?.addEventListener('change', () => {
+    if ($('mobileCustomDropzoneWrap')) $('mobileCustomDropzoneWrap').style.display = 'none';
+    if ($('mobileSameImagePreviewWrap')) $('mobileSameImagePreviewWrap').style.display = 'block';
+    if ($('editorMobileImage')) $('editorMobileImage').value = '';
+    editorDirty = true;
+    updateStickyBar();
+    updateImagePreview();
+  });
+
+  $('mobileImageModeCustom')?.addEventListener('change', () => {
+    if ($('mobileCustomDropzoneWrap')) $('mobileCustomDropzoneWrap').style.display = 'block';
+    if ($('mobileSameImagePreviewWrap')) $('mobileSameImagePreviewWrap').style.display = 'none';
+    updateImagePreview();
+  });
+
+  // Image Auto-Compression on file upload with 2:1 ratio for Desktop
   async function processEditorImageFile(file) {
     if (!file) return;
     try {
       toast('جارٍ قص وتوسيط وضغط الصورة للنسبة 2:1 تلقائيًا...');
-      const compressedDataUrl = await ImageUtils.compressAndResize(file, { targetWidth: 800 });
+      const compressedDataUrl = await ImageUtils.compressAndResize(file, { targetRatio: 2.0, targetWidth: 800 });
       $('editorImage').value = compressedDataUrl;
       updateImagePreview();
       editorDirty = true;
       updateStickyBar();
       toast('تم ضغط الصورة وتحويلها لبانر 2:1 بنجاح.');
     } catch (err) {
-      toast('خطأ في معالجة الصورة: ' + err.message);
+      toast('خطأ في معالجة صورة الكمبيوتر: ' + err.message);
     }
   }
 
@@ -3785,6 +3918,54 @@
     });
   }
 
+  // Image Auto-Compression on file upload with 1:1 ratio for Mobile
+  async function processEditorMobileImageFile(file) {
+    if (!file) return;
+    try {
+      toast('جارٍ قص وتوسيط وضغط صورة الهاتف بنسبة 1:1 مربعة تلقائيًا...');
+      const compressedDataUrl = await ImageUtils.compressAndResize(file, { targetRatio: 1.0, targetWidth: 500 });
+      if ($('editorMobileImage')) $('editorMobileImage').value = compressedDataUrl;
+      updateImagePreview();
+      editorDirty = true;
+      updateStickyBar();
+      toast('تم ضغط صورة الهاتف وتجهيزها بنسبة 1:1 ككارت هيرو بنجاح.');
+    } catch (err) {
+      toast('خطأ في معالجة صورة الهاتف: ' + err.message);
+    }
+  }
+
+  $('editorMobileImageFile')?.addEventListener('change', async event => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (file) await processEditorMobileImageFile(file);
+  });
+
+  const editorMobileDropzone = $('editorMobileImageDropzone');
+  if (editorMobileDropzone) {
+    editorMobileDropzone.addEventListener('click', e => {
+      if (e.target.closest('button, input')) return;
+      $('editorMobileImageFile')?.click();
+    });
+    ['dragenter', 'dragover'].forEach(evName => {
+      editorMobileDropzone.addEventListener(evName, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        editorMobileDropzone.classList.add('drag-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(evName => {
+      editorMobileDropzone.addEventListener(evName, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        editorMobileDropzone.classList.remove('drag-over');
+      });
+    });
+    editorMobileDropzone.addEventListener('drop', async e => {
+      const file = e.dataTransfer?.files?.[0];
+      if (file) await processEditorMobileImageFile(file);
+    });
+  }
+
   // Preview Service / Changes Button in Sticky Save Bar
   $('previewServiceBtn')?.addEventListener('click', () => {
     const form = $('serviceForm');
@@ -3799,6 +3980,8 @@
       icon: form?.elements.icon?.value || 'globe',
       color: form?.elements.color?.value || 'red',
       image: form?.elements.image?.value.trim() || '',
+      mobileImage: form?.elements.mobileImage?.value.trim() || '',
+      mobileShowWordmark: form?.elements.mobileShowWordmark ? form.elements.mobileShowWordmark.checked : true,
       visible: true,
       featured: Boolean(form?.elements.featured?.checked),
       plans: currentEditorPlans.length > 0 ? currentEditorPlans : [
@@ -3819,9 +4002,13 @@
         id: editingServiceId || newId('service')
       };
 
-      for (const field of ['name', 'category', 'description', 'mark', 'badge', 'icon', 'color', 'image', 'aliases']) {
+      for (const field of ['name', 'category', 'description', 'mark', 'badge', 'icon', 'color', 'image', 'mobileImage', 'aliases']) {
         service[field] = form.elements[field]?.value.trim() || '';
       }
+      if ($('mobileImageModeSame')?.checked) {
+        service.mobileImage = '';
+      }
+      service.mobileShowWordmark = form.elements.mobileShowWordmark ? form.elements.mobileShowWordmark.checked : true;
       const st = form.elements.serviceStatus?.value || 'visible';
       service.visible = st !== 'hidden';
       service.available = st === 'visible';

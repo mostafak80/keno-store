@@ -1,6 +1,7 @@
 /* Navy / violet mobile storefront from the owner's visual references.
    Layout foundations stay in mobile.css; all reference artwork is local. */
 .mobile-service-art,.mobile-service-name,.mobile-brand-name,.mobile-category-label,.plan-art,.service-journey-steps,.mobile-review-heading,.review-service-art,.invoice-item-art { display:none; }
+.desktop-card-visual { display: contents; }
 .mobile-more-dialog { width:min(420px,calc(100% - 24px)); padding:20px; border:1px solid var(--line); border-radius:22px; background:var(--paper); color:var(--ink); }
 .mobile-more-dialog .button,.mobile-more-dialog > a,.mobile-more-dialog > label { display:flex; width:100%; margin-block:10px; min-height:44px; align-items:center; }
 .mobile-more-dialog > label { flex-direction:column; align-items:stretch; gap:8px; }
@@ -39,7 +40,7 @@
  html[data-theme="dark"] body.keno-motion #serviceGrid .service-card { background:linear-gradient(165deg,#11162a,#030713 75%) !important; border:1px solid #543499 !important; box-shadow:inset 0 1px #ad77ff20; }
  body.keno-motion #serviceGrid[class] .service-card { border-radius:16px !important; direction:rtl; }
  body.keno-motion #serviceGrid[class] .card-visual { position:relative; margin:0; padding:0 !important; width:100% !important; height:auto !important; aspect-ratio:calc(1 / var(--kd-mobile-scale-factor,1)); min-height:80px !important; max-height:200px; border-radius:15px 15px 12px 12px !important; overflow:hidden; background:transparent !important; }
- body.keno-motion #serviceGrid .card-visual > .icon,body.keno-motion #serviceGrid .card-mark { display:none; }
+ body.keno-motion #serviceGrid .card-visual .desktop-card-visual,body.keno-motion #serviceGrid .card-visual > .service-image,body.keno-motion #serviceGrid .card-visual > .icon,body.keno-motion #serviceGrid .card-mark { display:none !important; }
  body.keno-motion #serviceGrid .card-badge { font-size:10px; z-index:2; max-width:90%; }
  body.keno-motion #serviceGrid[class] .card-body { padding:8px 5px 5px !important; gap:5px !important; text-align:center; }
  body.keno-motion #serviceGrid[class] .card-category { display:none !important; }
@@ -71,7 +72,8 @@
  .art-wordmark { color:#e2e4ff; font:900 clamp(20px,5vw,30px)/1.3 Arial,sans-serif; text-shadow:0 0 22px #9669ff77; padding:8px; overflow-wrap:anywhere; }
  .art-caption { font:900 20px/1.3 Arial,sans-serif; color:white; }
  .art-orbit { position:absolute; width:80%; aspect-ratio:1; border:1px solid #ffffff10; transform:rotate(-25deg); border-radius:26%; }
- body.keno-motion .mobile-service-art.art-pubg img { width:100%; height:100%; max-height:none; object-fit:cover; object-position:62% 45%; position:absolute; inset:0; opacity:1; transform:none; }
+ body.keno-motion .mobile-service-art.art-pubg img,body.keno-motion .mobile-service-art.art-custom img { width:100%; height:100%; max-height:none; object-fit:var(--kd-m-image-fit,cover); object-position:center; position:absolute; inset:0; opacity:1; transform:none; }
+ body.kd-m-hide-wordmark .pubg-wordmark,body.kd-m-hide-wordmark .custom-wordmark { display:none !important; }
  .pubg-wordmark { position:absolute; bottom:8%; left:50%; transform:translateX(-50%); color:#ffc72c; border:2px solid #ffc72c; padding:2px 6px; font:900 22px/.9 Impact,'Arial Narrow',Arial,sans-serif; text-shadow:0 2px 2px #000; background:#08070988; }
  .pubg-wordmark small { display:block; font:800 8px/1.3 Arial,sans-serif; letter-spacing:2px; text-align:center; }
  body.keno-motion .mobile-nav { direction:ltr; left:8px; right:8px; width:auto; border:1px solid var(--line); border-radius:26px 26px 0 0; background:linear-gradient(180deg,var(--paper),var(--bg)) !important; box-shadow:0 -8px 32px #0005; padding-inline:6px; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); }
@@ -172,3 +174,7 @@
  body.keno-motion #serviceDialog .plan-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
  body.keno-motion #serviceGrid[class] .service-card h3 { font-size:14px !important; }
 }
+body.kd-preview-mobile #serviceGrid .card-visual .desktop-card-visual,body.kd-preview-mobile #serviceGrid .card-visual > .service-image,body.kd-preview-mobile #serviceGrid .card-visual > .icon,body.kd-preview-mobile #serviceGrid .card-mark { display:none !important; }
+body.kd-preview-mobile .mobile-service-art { display:flex !important; }
+body.kd-preview-mobile .desktop-service-name { display:none !important; }
+body.kd-preview-mobile .mobile-service-name { display:inline !important; }

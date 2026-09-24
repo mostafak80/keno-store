@@ -325,6 +325,10 @@
           ? root.KenoImage.sanitizeUrl(service.image)
           : (typeof service.image === 'string' ? service.image.trim() : '');
 
+        const mobileImage = root.KenoImage
+          ? root.KenoImage.sanitizeUrl(service.mobileImage)
+          : (typeof service.mobileImage === 'string' ? service.mobileImage.trim() : '');
+
         return {
           id: service.id,
           name: requireString(service.name, 100, 'اسم الخدمة'),
@@ -334,6 +338,8 @@
           icon,
           color,
           image,
+          mobileImage,
+          mobileShowWordmark: service.mobileShowWordmark !== false,
           aliases,
           badge,
           plans: validPlans,

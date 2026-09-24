@@ -19,6 +19,7 @@
     fontScale: 100, cardRadius: 16, fontFamily: 'cairo',
     showSearch: true, showCategoryFilter: true, animationsEnabled: true,
     showJourneySteps: true, collapseNotes: true, showPlanArt: true,
+    imageFit: 'cover', showWordmark: true,
   };
 
   const COLOR_PRESETS = {
@@ -79,6 +80,8 @@
     body.classList.toggle('kd-m-hide-journey',   !current.showJourneySteps);
     body.classList.toggle('kd-m-no-collapse-notes',!current.collapseNotes);
     body.classList.toggle('kd-m-hide-plan-art',  !current.showPlanArt);
+    r.style.setProperty('--kd-m-image-fit', current.imageFit || 'cover');
+    body.classList.toggle('kd-m-hide-wordmark', !current.showWordmark);
   }
 
   function scaleLabel(v) {
@@ -121,6 +124,8 @@
     [['mdShowDesc','showDesc'],['mdShowCategory','showCategory'],['mdShowArtwork','showArtwork'],['mdShowPrice','showPrice'],['mdShowOrderBtn','showOrderBtn'],['mdShowSearch','showSearch'],['mdShowCategoryFilter','showCategoryFilter'],['mdAnimationsEnabled','animationsEnabled'],['mdShowJourneySteps','showJourneySteps'],['mdCollapseNotes','collapseNotes'],['mdShowPlanArt','showPlanArt']].forEach(function(p){
       var el = $(p[0]); if(el) el.checked = !!s[p[1]];
     });
+    if($('mdImageFit')) $('mdImageFit').value = s.imageFit || 'cover';
+    if($('mdShowWordmark')) $('mdShowWordmark').checked = s.showWordmark !== false;
     [['mdAccentColor','mdAccentColorText','accentColor'],['mdBgColor','mdBgColorText','bgColor'],['mdCardBgColor','mdCardBgColorText','cardBgColor'],['mdInkColor','mdInkColorText','inkColor'],['mdNavBgColor','mdNavBgColorText','navBgColor'],['mdHeaderBgColor','mdHeaderBgColorText','headerBgColor']].forEach(function(p){
       var v = (s[p[2]] || '#000000').slice(0,7);
       if($(p[0])) $(p[0]).value = v;
@@ -163,6 +168,10 @@
       var el = $(p[0]);
       if(el) el.addEventListener('change', function(e){ liveApply({ [p[1]]: e.target.checked }); });
     });
+    var fitEl = $('mdImageFit');
+    if(fitEl) fitEl.addEventListener('change', function(e){ liveApply({ imageFit: e.target.value }); });
+    var wmEl = $('mdShowWordmark');
+    if(wmEl) wmEl.addEventListener('change', function(e){ liveApply({ showWordmark: e.target.checked }); });
     function wireColor(colorId, textId, key){
       var ci = $(colorId), ti = $(textId); if(!ci||!ti) return;
       ci.addEventListener('input', function(){ ti.value = ci.value; liveApply({ [key]: ci.value }); });

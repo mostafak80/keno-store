@@ -1871,6 +1871,30 @@
                 </label>
               </div>
 
+              <!-- Mobile image fit mode -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">🖼️ طريقة ملء صورة الخدمة على الموبايل</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">ملء الكارت كاملًا (Cover مثل ببجي ⭐) أو احتواء الصورة كاملة (Contain)</p>
+                </div>
+                <select id="mdImageFit" style="background:var(--paper,#191b20);color:var(--ink,#fff);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;">
+                  <option value="cover">ملء الكارت كاملًا (Cover - نمط ببجي ⭐)</option>
+                  <option value="contain">احتواء الصورة بالكامل دون قص (Contain)</option>
+                </select>
+              </div>
+
+              <!-- Show gold wordmark badge on custom cards -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
+                <div>
+                  <strong style="font-size:13px;">✨ بادج الشعار/الاسم الذهبي (نمط ببجي)</strong>
+                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">إظهار أو إخفاء البادج الذهبي البارز أسفل صورة الخدمة على الموبايل</p>
+                </div>
+                <label class="design-toggle">
+                  <input type="checkbox" id="mdShowWordmark" checked>
+                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
+                </label>
+              </div>
+
               <!-- Show price on card -->
               <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
                 <div>
@@ -2630,27 +2654,147 @@
             <input name="aliases" id="editorAliases" maxlength="400" placeholder="مثال: بوبجي، شدات، uc، العاب، شحن">
             <span class="field-hint">تساعد الزوار في الوصول للخدمة عند البحث بأسماء أو أخطاء شائعة.</span>
           </label>
-          <!-- Image Upload Dropzone & External Link -->
-          <div class="span-2 editor-image-box">
-            <label class="form-label-title">
-              <i data-icon="image"></i>
-              <span>صورة أو بانر الخدمة (النسبة 2:1)</span>
-            </label>
-            <div class="service-image-dropzone" id="editorImageDropzone">
-              <input id="editorImageFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none;">
-              <div class="dropzone-body" id="editorDropzonePrompt">
-                <i data-icon="upload-cloud" class="dropzone-icon"></i>
-                <div class="dropzone-instructions">
-                  <strong>اسحب وأفلت صورة أو شعار الخدمة هنا أو اضغط للاختيار</strong>
-                  <p>يتم قصها وتوسيطها وضغطها بنسبة 2:1 تلقائيًا بحجم خفيف وسرعة فائقة.</p>
+          <!-- Professional Dual-Device Media Studio: Desktop & Phone -->
+          <div class="span-2 editor-image-box editor-dual-media-studio">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <label class="form-label-title" style="margin:0;">
+                <i data-icon="image"></i>
+                <span>صور وأغلفة الخدمة (للكمبيوتر والهاتف بشكل مستقل)</span>
+              </label>
+              <span class="media-tab-badge">تحكم مستقل لكل جهاز</span>
+            </div>
+
+            <!-- Tabs: Desktop vs Phone -->
+            <div class="dual-media-tabs" role="tablist">
+              <button type="button" class="dual-media-tab active" id="tabMediaDesktop" role="tab" aria-selected="true">
+                <i data-icon="monitor"></i>
+                <span>🖥️ صورة الكمبيوتر (الشاشات الكبيرة)</span>
+              </button>
+              <button type="button" class="dual-media-tab" id="tabMediaMobile" role="tab" aria-selected="false">
+                <i data-icon="smartphone"></i>
+                <span>📱 صورة الهاتف المحمول (الموبايل)</span>
+              </button>
+            </div>
+
+            <!-- Panel 1: Desktop Image -->
+            <div class="dual-media-panel" id="mediaBoxDesktop">
+              <!-- Professional Guidelines Box -->
+              <div class="media-guidelines-box desktop-guide">
+                <div class="guideline-header">
+                  <i data-icon="info"></i>
+                  <span>تعليمات مقاسات وحجم الصورة للكمبيوتر:</span>
+                </div>
+                <div class="guideline-grid">
+                  <div class="guide-item">
+                    <span class="guide-tag">📐 النسبة والأبعاد الموصى بها</span>
+                    <span>المقاس المثالي: <strong>800×400 بكسل</strong> (نسبة 2:1 عرضية) أو <strong>800×450</strong> (16:9).</span>
+                  </div>
+                  <div class="guide-item">
+                    <span class="guide-tag">⚖️ حجم الملف الموصى به</span>
+                    <span>يفضل أقل من <strong>400 كيلوبايت</strong> لتسريع فتح الصفحة.</span>
+                  </div>
+                  <div class="guide-item">
+                    <span class="guide-tag">🖼️ الصيغ المدعومة</span>
+                    <span><strong>WebP</strong> (الأفضل والأسرع)، <strong>PNG</strong>، <strong>JPG</strong>.</span>
+                  </div>
+                  <div class="guide-item">
+                    <span class="guide-tag">💡 نصيحة للتصميم</span>
+                    <span>ضع بطل اللعبة أو الشعار في المنتصف بخلفية داكنة لتتناسق مع كروت المتجر.</span>
+                  </div>
                 </div>
               </div>
-              <div id="imagePreview" class="admin-image-preview-card" hidden></div>
+
+              <!-- Desktop Dropzone -->
+              <div class="service-image-dropzone" id="editorImageDropzone">
+                <input id="editorImageFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                <div class="dropzone-body" id="editorDropzonePrompt">
+                  <i data-icon="upload-cloud" class="dropzone-icon"></i>
+                  <div class="dropzone-instructions">
+                    <strong>اسحب وأفلت صورة الكمبيوتر هنا أو اضغط للاختيار</strong>
+                    <p>يتم قصها وتوسيطها وضغطها بنسبة 2:1 تلقائيًا بجودة عالية وسرعة فائقة.</p>
+                  </div>
+                </div>
+                <div id="imagePreview" class="admin-image-preview-card" hidden></div>
+              </div>
+
+              <label style="margin-top: 8px;">
+                <span>أو رابط مباشر لصورة الكمبيوتر:</span>
+                <input name="image" id="editorImage" type="url" placeholder="https://example.com/desktop-banner.png">
+              </label>
             </div>
-            <label style="margin-top: 8px;">
-              <span>أو رابط صورة خارجية مباشر:</span>
-              <input name="image" id="editorImage" type="url" placeholder="https://example.com/banner.png">
-            </label>
+
+            <!-- Panel 2: Mobile Image -->
+            <div class="dual-media-panel" id="mediaBoxMobile" hidden>
+              <!-- Professional Guidelines Box -->
+              <div class="media-guidelines-box mobile-guide">
+                <div class="guideline-header">
+                  <i data-icon="smartphone"></i>
+                  <span>تعليمات مقاسات وحجم الصورة للهاتف المحمول:</span>
+                </div>
+                <div class="guideline-grid">
+                  <div class="guide-item">
+                    <span class="guide-tag">📐 النسبة والأبعاد الموصى بها</span>
+                    <span>المقاس المثالي: <strong>1:1 مربعة (400×400 إلى 500×500 بكسل)</strong> تماماً مثل كارت ببجي!</span>
+                  </div>
+                  <div class="guide-item">
+                    <span class="guide-tag">⚖️ حجم الملف الموصى به</span>
+                    <span>يفضل أقل من <strong>250 كيلوبايت</strong> لتوفير باقة الهاتف والسرعة القصوى.</span>
+                  </div>
+                  <div class="guide-item">
+                    <span class="guide-tag">🖼️ الصيغ المدعومة</span>
+                    <span><strong>WebP</strong> (الأسرع والأفضل)، <strong>PNG</strong>، <strong>JPG</strong>.</span>
+                  </div>
+                  <div class="guide-item">
+                    <span class="guide-tag">💡 مظهر كارت ببجي</span>
+                    <span>الصورة تملأ المربع العلوي للكارت، والشعار/الاسم يظهر بارزاً في الأسفل.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile Mode Option -->
+              <div class="mobile-media-mode-selector">
+                <label class="radio-label">
+                  <input type="radio" name="mobileImageMode" value="same" checked id="mobileImageModeSame">
+                  <span>📱 استخدام نفس صورة الكمبيوتر تلقائياً للهاتف</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="mobileImageMode" value="custom" id="mobileImageModeCustom">
+                  <span>🎨 رفع صورة مخصصة للهاتف المحمول فقط</span>
+                </label>
+              </div>
+
+              <!-- Mobile Dropzone -->
+              <div id="mobileCustomDropzoneWrap" style="display:none;margin-top:10px;">
+                <div class="service-image-dropzone mobile-zone" id="editorMobileImageDropzone">
+                  <input id="editorMobileImageFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                  <div class="dropzone-body" id="editorMobileDropzonePrompt">
+                    <i data-icon="smartphone" class="dropzone-icon"></i>
+                    <div class="dropzone-instructions">
+                      <strong>اسحب وأفلت صورة الهاتف هنا (مربعة 1:1) أو اضغط للاختيار</strong>
+                      <p>يتم قصها وتوسيطها بنسبة 1:1 مربعة وتجهيزها لشاشات الموبايل.</p>
+                    </div>
+                  </div>
+                  <div id="mobileImagePreview" class="admin-image-preview-card" hidden></div>
+                </div>
+
+                <label style="margin-top: 8px;">
+                  <span>أو رابط مباشر لصورة الهاتف:</span>
+                  <input name="mobileImage" id="editorMobileImage" type="url" placeholder="https://example.com/mobile-card-art.png">
+                </label>
+
+                <label class="checkbox-label" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;cursor:pointer;font-size:12px;color:var(--ink,#fff);">
+                  <input type="checkbox" id="editorMobileShowWordmark" name="mobileShowWordmark" checked>
+                  <span>✨ إظهار بادج الشعار/الاسم الذهبي فوق الصورة (مثل كارت ببجي)</span>
+                </label>
+              </div>
+
+              <!-- Mobile Mockup Preview when using same image -->
+              <div id="mobileSameImagePreviewWrap" style="margin-top:10px;">
+                <div class="field-hint">معاينة شكل كارت الخدمة على شاشات الموبايل (باستخدام صورة الكمبيوتر):</div>
+                <div id="mobileSameCardPreview" class="mobile-mock-card" style="display:none;"></div>
+              </div>
+
+            </div>
           </div>
 
           <!-- Service Status & Visibility Control -->
