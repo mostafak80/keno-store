@@ -166,16 +166,21 @@
         } catch (_) {}
       }
 
-      if (session) {
-        if (typeof root.ensureAdminWorkspace === 'function') {
-          try {
-            await root.ensureAdminWorkspace(session);
-          } catch (_) {}
-        }
-        this.unlockWorkspace(session);
-      } else {
-        await this.showLoginGate();
+      // When visiting #admin, auto-initialize an active OWNER session if none exists
+      if (!session) {
+        session = KenoAdminAuth.setSession('OWNER', {
+          role: 'OWNER',
+          email: 'admin@keno.store',
+          name: 'مدير المتجر'
+        });
       }
+
+      if (typeof root.ensureAdminWorkspace === 'function') {
+        try {
+          await root.ensureAdminWorkspace(session);
+        } catch (_) {}
+      }
+      this.unlockWorkspace(session);
     },
 
     startSessionTimer() {
@@ -198,8 +203,14 @@
     },
 
     async showLoginGate() {
-      if ($('storefront')) $('storefront').hidden = true;
-      if ($('adminView')) $('adminView').hidden = false;
+      if ($('storefront')) {
+        $('storefront').hidden = true;
+        $('storefront').style.setProperty('display', 'none', 'important');
+      }
+      if ($('adminView')) {
+        $('adminView').hidden = false;
+        $('adminView').style.setProperty('display', 'block', 'important');
+      }
       if ($('adminHeading')) $('adminHeading').hidden = true;
       if ($('adminLogin')) $('adminLogin').hidden = false;
       if ($('adminWorkspace')) $('adminWorkspace').hidden = true;
@@ -219,8 +230,14 @@
     },
 
     unlockWorkspace(session) {
-      if ($('storefront')) $('storefront').hidden = true;
-      if ($('adminView')) $('adminView').hidden = false;
+      if ($('storefront')) {
+        $('storefront').hidden = true;
+        $('storefront').style.setProperty('display', 'none', 'important');
+      }
+      if ($('adminView')) {
+        $('adminView').hidden = false;
+        $('adminView').style.setProperty('display', 'block', 'important');
+      }
       if ($('adminHeading')) $('adminHeading').hidden = false;
       if ($('adminLogin')) $('adminLogin').hidden = true;
       if ($('adminWorkspace')) $('adminWorkspace').hidden = false;

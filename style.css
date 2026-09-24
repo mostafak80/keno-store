@@ -11,3 +11,12 @@
 @import url("./assets/theme.css");
 @import url("./assets/compact-cards.css");
 @import url("./assets/journey.css");
+
+/* Master view state enforcement */
+[hidden],
+#storefront[hidden],
+#adminView[hidden],
+#adminWorkspace[hidden],
+#adminLogin[hidden] {
+  display: none !important;
+}

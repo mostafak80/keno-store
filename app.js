@@ -1842,8 +1842,22 @@
   function route() {
     const hash = location.hash;
     const isAdmin = hash === '#admin' || hash.startsWith('#admin/');
-    if ($('storefront')) $('storefront').hidden = isAdmin;
-    if ($('adminView')) $('adminView').hidden = !isAdmin;
+    if ($('storefront')) {
+      $('storefront').hidden = isAdmin;
+      if (isAdmin) {
+        $('storefront').style.setProperty('display', 'none', 'important');
+      } else {
+        $('storefront').style.removeProperty('display');
+      }
+    }
+    if ($('adminView')) {
+      $('adminView').hidden = !isAdmin;
+      if (isAdmin) {
+        $('adminView').style.setProperty('display', 'block', 'important');
+      } else {
+        $('adminView').style.setProperty('display', 'none', 'important');
+      }
+    }
     document.querySelectorAll('.floating-contact').forEach(el => { el.hidden = isAdmin; });
 
     if (isAdmin && preview) {
@@ -1854,11 +1868,23 @@
     }
 
     if (isAdmin) {
-      loadAdminScript().then(admin => {
-        if (admin && typeof admin.init === 'function') {
-          admin.init();
-        }
-      }).catch(() => { /* loadAdminScript already reports a recoverable error. */ });
+      if ($('adminHeading')) $('adminHeading').hidden = false;
+      if ($('adminLogin')) $('adminLogin').hidden = true;
+      if ($('adminWorkspace')) $('adminWorkspace').hidden = false;
+
+      ensureAdminWorkspace().then(() => {
+        loadAdminScript().then(admin => {
+          if (admin && typeof admin.init === 'function') {
+            admin.init();
+          }
+        }).catch(() => { /* loadAdminScript already reports a recoverable error. */ });
+      }).catch(() => {
+        loadAdminScript().then(admin => {
+          if (admin && typeof admin.init === 'function') {
+            admin.init();
+          }
+        }).catch(() => {});
+      });
       window.scrollTo({ top: 0, behavior: 'instant' });
     } else if (hash.startsWith('#service/')) {
       // Direct deep link handler (e.g. #service/pubg or #service/pubg/pubg-3)

@@ -117,10 +117,13 @@ body {
 }
 
 /* Section vertical gaps & spacing */
-#storefront {
+#storefront:not([hidden]) {
   display: flex !important;
   flex-direction: column !important;
   gap: var(--section-gap, 56px) !important;
+}
+#storefront[hidden] {
+  display: none !important;
 }
 body.keno-motion :is(.collections-section,.picks-section,.catalog-section,.trust-section,.how-section,.testimonials-section,.faq-section) {
   padding-block: calc(var(--section-gap, 56px) * 0.3) !important;
