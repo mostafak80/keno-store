@@ -89,8 +89,8 @@ body.keno-motion #serviceDialog .plan-note { font-size:12px; line-height:1.4; }
 body.keno-motion #serviceDialog .plan-discount-tag { font-size:10px; padding:0 4px; white-space:normal; }
 body.keno-motion #serviceDialog .plan-selection-indicator { width:16px; height:16px; margin:0; }
 body.keno-motion #serviceDialog .plan-option:focus-within { outline:2px solid var(--accent-readable); outline-offset:2px; }
-body.keno-motion #serviceDialog .service-checkout-hero { display:grid; grid-template-columns:52px minmax(0,1fr); align-items:center; gap:10px; padding:0 0 10px; background:none; }
-body.keno-motion #serviceDialog .service-hero-media { width:52px; height:52px; border-radius:10px; box-shadow:none; }
+body.keno-motion #serviceDialog .service-checkout-hero { display:block; padding:0 0 8px; background:none; }
+body.keno-motion #serviceDialog .service-hero-media { display:none !important; }
 body.keno-motion #serviceDialog .service-hero-media img { object-fit:contain; }
 body.keno-motion #serviceDialog .banner-fallback-content { padding:0; justify-content:center; }
 body.keno-motion #serviceDialog .banner-fallback-meta { display:none; }
@@ -129,11 +129,11 @@ body.keno-motion #serviceDialog .modern-checkout-footer { flex-shrink:0; positio
 body.keno-motion #serviceDialog .checkout-scroll-body { flex:1 1 auto; min-height:0; max-height:none; overflow-y:auto; }
 /* Compact service identity and account entry: content determines the height. */
 body.keno-motion #serviceDialog .service-checkout-hero {
-  grid-template-columns:40px minmax(0,1fr); gap:8px; padding:0 0 7px;
-  min-height:48px; margin:0; border-color:var(--line);
+  display: block; padding: 0 0 6px;
+  min-height: auto; margin: 0; border-color: var(--line);
 }
 body.keno-motion #serviceDialog .service-hero-media {
-  width:40px; height:40px; min-height:0; border-radius:9px;
+  display: none !important;
 }
 body.keno-motion #serviceDialog .banner-fallback-icon-wrap {
   width:32px; height:32px; border:0; border-radius:7px; box-shadow:none;

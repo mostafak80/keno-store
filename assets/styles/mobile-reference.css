@@ -86,19 +86,14 @@
 
  /* Service and cart retain their real validation and per-item data. */
  html[data-theme="dark"] body.keno-motion :is(#serviceDialog,#cartDrawer,.mobile-more-dialog) { background:radial-gradient(at 0 0,#29115933,transparent 50%),#030713 !important; --paper:#090f20; --paper-hover:#10172d; --ink:#f4f2ff; --line:#282957; --muted:#aeb9dc; --accent-readable:#b875ff; }
- body.keno-motion #serviceDialog .service-dialog-topbar { min-height:64px; border-bottom:0; background:transparent !important; }
- body.keno-motion #serviceDialog .checkout-scroll-body { padding:8px 12px 20px; }
- body.keno-motion #serviceDialog .service-checkout-hero { display:flex; flex-direction:column; align-items:stretch; gap:12px; }
- body.keno-motion #serviceDialog .service-hero-media { display:block !important; width:100% !important; height:140px !important; max-height:none; min-height:0 !important; border:1px solid var(--line); border-radius:16px !important; }
- body.keno-motion #serviceDialog .service-hero-media .dialog-banner-fallback { display:block; width:100%; height:100%; padding:0; }
- body.keno-motion #serviceDialog .banner-fallback-content,body.keno-motion #serviceDialog .banner-fallback-ambient { display:none; }
- body.keno-motion #serviceDialog .art-pubg img { object-fit:cover; object-position:center 42%; opacity:1; }
- body.keno-motion #serviceDialog .brand-glyph { opacity:1; }
- #serviceDialog .pubg-wordmark { left:20%; bottom:28%; font-size:38px; }
- #serviceDialog .pubg-wordmark small { font-size:12px; }
- body.keno-motion #serviceDialog .service-hero-name { font-size:22px !important; }
- body.keno-motion #serviceDialog .service-hero-desc { font-size:13px !important; line-height:1.8 !important; }
- body.keno-motion #serviceDialog[data-step="2"] .service-hero-media,body.keno-motion #serviceDialog[data-step="3"] .service-hero-media { display:none !important; }
+ body.keno-motion #serviceDialog .service-dialog-topbar { min-height:50px; border-bottom:0; background:transparent !important; }
+ body.keno-motion #serviceDialog .checkout-scroll-body { padding:4px 12px 20px; }
+ body.keno-motion #serviceDialog .service-checkout-hero { display:flex; flex-direction:column; align-items:stretch; gap:4px; padding:0 0 10px; border-bottom:1px solid var(--line); margin-bottom:8px; }
+ body.keno-motion #serviceDialog .service-hero-media,
+ #serviceDialog .service-hero-media,
+ #serviceDialog #serviceDialogBanner { display:none !important; width:0 !important; height:0 !important; margin:0 !important; padding:0 !important; overflow:hidden !important; border:0 !important; }
+ body.keno-motion #serviceDialog .service-hero-name { font-size:20px !important; font-weight:800 !important; margin:0 0 2px !important; }
+ body.keno-motion #serviceDialog .service-hero-desc { font-size:13px !important; line-height:1.5 !important; margin:0 !important; color:var(--muted); }
  .service-journey-steps { display:flex; list-style:none; margin:12px 0 20px; padding:0; justify-content:space-between; direction:ltr; }
  .service-journey-steps li { position:relative; display:flex; flex:1; align-items:center; flex-direction:column; gap:8px; color:var(--muted); font-size:13px; }
  .service-journey-steps li:not(:last-child)::after { content:''; width:calc(100% - 44px); position:absolute; top:21px; left:calc(50% + 22px); border-top:2px dotted #6233aa; }

@@ -777,53 +777,12 @@
       premBadge.textContent = service.badge || (service.featured ? '⭐ مختارات كينو الحصرية' : '🔥 الأكثر طلباً وشعبية');
     }
 
-    // Hero Banner for Services with Images or Prominent Visual Fallback
+    // Hero Banner: Hidden to maximize view area so customer doesn't have to scroll up and down
     const bannerContainer = $('serviceDialogBanner');
     if (bannerContainer) {
-      bannerContainer.hidden = false;
-      const imageUrl = (service.image || '').trim();
-      const mobileImageUrl = (service.mobileImage || '').trim();
-      const toneClass = `tone-${service.color || 'red'}`;
-      const serviceIconName = service.icon || categoryObj?.icon || 'sparkles';
-      const serviceMark = service.mark || service.name || 'KENO';
-
-      const fallbackHtml = `
-        <div class="dialog-banner-fallback ${toneClass}">
-          ${window.KenoMobileUI?.artwork(service) || ''}
-          <div class="banner-fallback-ambient"></div>
-          <div class="banner-fallback-content">
-            <div class="banner-fallback-icon-wrap">
-              ${icon(serviceIconName)}
-            </div>
-            <div class="banner-fallback-meta">
-              <span class="banner-fallback-mark" dir="auto">${esc(serviceMark)}</span>
-              <span class="banner-fallback-cat">${esc(categoryName)}</span>
-            </div>
-          </div>
-        </div>
-      `;
-
-      if (imageUrl || mobileImageUrl) {
-        bannerContainer.className = 'service-hero-media has-image';
-        bannerContainer.innerHTML = `
-          <picture class="service-dialog-picture">
-            ${mobileImageUrl ? `<source media="(max-width: 780px)" srcset="${esc(mobileImageUrl)}">` : ''}
-            <img id="serviceDialogBannerImg"
-                 src="${esc(imageUrl || mobileImageUrl)}"
-                 alt="${esc(service.name)}"
-                 loading="eager"
-                 decoding="async"
-                 onload="this.classList.add('is-loaded');"
-                 onerror="this.style.display='none'; const fb = this.parentElement.nextElementSibling; if (fb) fb.style.display='flex'; this.closest('.service-hero-media').classList.remove('has-image'); this.closest('.service-hero-media').classList.add('is-fallback');">
-          </picture>
-          <div class="fallback-wrapper" style="display:none; width:100%; height:100%;">
-            ${fallbackHtml}
-          </div>
-        `;
-      } else {
-        bannerContainer.className = `service-hero-media is-fallback ${toneClass}`;
-        bannerContainer.innerHTML = fallbackHtml;
-      }
+      bannerContainer.hidden = true;
+      bannerContainer.style.display = 'none';
+      bannerContainer.innerHTML = '';
     }
 
     // Service terms/notes
