@@ -791,6 +791,11 @@
           <span>الطلبات والإيصالات</span>
           <span class="status-pill active-pill" id="adminOrdersBadge" style="margin-inline-start:4px;padding:1px 7px;font-size:0.7rem;">0</span>
         </button>
+        <button type="button" id="serviceImagesTab" role="tab" aria-selected="false" aria-controls="adminServiceImages" data-admin-tab="adminServiceImages" tabindex="-1" style="position:relative;">
+          <i data-icon="image"></i>
+          <span>صور الخدمات</span>
+          <span style="position:absolute;top:4px;inset-inline-end:6px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
+        </button>
         <button type="button" id="textsTab" role="tab" aria-selected="false" aria-controls="adminTexts" data-admin-tab="adminTexts" tabindex="-1" style="position:relative;">
           <i data-icon="file-text"></i>
           <span>نصوص وكلمات الموقع</span>
@@ -914,6 +919,80 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Tab: Service Images Manager -->
+      <div id="adminServiceImages" role="tabpanel" aria-labelledby="serviceImagesTab" hidden>
+
+        <!-- Header -->
+        <div class="simg-panel-header">
+          <div class="simg-panel-title">
+            <i data-icon="image"></i>
+            <div>
+              <h2 style="margin:0;font-size:1.15rem;">إدارة صور الخدمات</h2>
+              <p style="margin:4px 0 0;font-size:0.82rem;color:var(--txt-2);">غيّر صورة أي خدمة بكل سهولة — ويبدأ بعدها التغيير على الموقع فور النشر.</p>
+            </div>
+          </div>
+          <div class="button-row" style="gap:8px;">
+            <select id="simgCategoryFilter" class="button button-outline small" aria-label="تصفية حسب القسم">
+              <option value="all">كل الأقسام</option>
+            </select>
+            <label class="search-field" style="margin:0;">
+              <i data-icon="search"></i>
+              <input type="search" id="simgSearch" placeholder="ابحث عن خدمة..." aria-label="بحث في الخدمات" style="min-width:160px;">
+            </label>
+          </div>
+        </div>
+
+        <!-- Image Specs Guide -->
+        <div class="simg-specs-guide">
+          <div class="simg-specs-card">
+            <div class="simg-specs-icon" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6);">🖥️</div>
+            <div class="simg-specs-info">
+              <strong>صورة الكمبيوتر (Desktop)</strong>
+              <ul class="simg-specs-list">
+                <li>📐 الأبعاد المثالية: <b>1200 × 600 بكسل</b> (نسبة 2:1)</li>
+                <li>💾 الحجم الأقصى: <b>5 ميغابايت</b> (يُضغط تلقائياً)</li>
+                <li>🎨 الصيغ المدعومة: <b>JPG, PNG, WebP, GIF</b></li>
+                <li>💡 نصيحة: استخدم صورة عريضة أفقية وواضحة</li>
+              </ul>
+            </div>
+          </div>
+          <div class="simg-specs-card">
+            <div class="simg-specs-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7);">📱</div>
+            <div class="simg-specs-info">
+              <strong>صورة الموبايل (Mobile)</strong>
+              <ul class="simg-specs-list">
+                <li>📐 الأبعاد المثالية: <b>800 × 800 بكسل</b> (نسبة 1:1)</li>
+                <li>💾 الحجم الأقصى: <b>5 ميغابايت</b> (يُضغط تلقائياً)</li>
+                <li>🎨 الصيغ المدعومة: <b>JPG, PNG, WebP, GIF</b></li>
+                <li>💡 نصيحة: صورة مربعة تظهر بشكل ممتاز على الهاتف</li>
+              </ul>
+            </div>
+          </div>
+          <div class="simg-specs-card">
+            <div class="simg-specs-icon" style="background:linear-gradient(135deg,#059669,#10b981);">✅</div>
+            <div class="simg-specs-info">
+              <strong>أفضل النتائج</strong>
+              <ul class="simg-specs-list">
+                <li>🎯 خلفية تعبّر عن طبيعة الخدمة بوضوح</li>
+                <li>🌟 جودة عالية وألوان واضحة وجذابة</li>
+                <li>🚫 تجنّب النصوص الصغيرة داخل الصورة</li>
+                <li>⚡ يتم التحسين والضغط تلقائياً عند الرفع</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Services Grid -->
+        <div id="serviceImagesGrid" class="simg-grid">
+          <!-- Rendered dynamically by renderServiceImagesPanel() -->
+          <div class="simg-loading">
+            <i data-icon="loader"></i>
+            <p>جاري تحميل الخدمات...</p>
+          </div>
+        </div>
+
       </div>
 
       <!-- Tab 2: Category Management -->

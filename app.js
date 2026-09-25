@@ -2341,6 +2341,9 @@
     if (button.dataset.adminTab === 'adminTexts' && typeof window.initTextsAdminPanel === 'function') {
       window.initTextsAdminPanel();
     }
+    if (button.dataset.adminTab === 'adminServiceImages') {
+      renderServiceImagesPanel();
+    }
   }
 
   tabButtons.forEach(b => {
@@ -2355,6 +2358,260 @@
       }
     });
   });
+
+  // --- Category Management (Phase 3) ---
+
+  // ============================================================
+  // SERVICE IMAGES MANAGER — renderServiceImagesPanel()
+  // ============================================================
+  let simgActiveTab = {}; // serviceId -> 'desktop' | 'mobile'
+
+  function renderServiceImagesPanel() {
+    if (!draft) return;
+    const grid = $('serviceImagesGrid');
+    if (!grid) return;
+
+    // Populate category filter
+    const catFilter = $('simgCategoryFilter');
+    if (catFilter) {
+      const currentCat = catFilter.value || 'all';
+      catFilter.innerHTML = '<option value="all">كل الأقسام</option>' +
+        draft.categories.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+      catFilter.value = draft.categories.some(c => c.id === currentCat) ? currentCat : 'all';
+    }
+
+    _refreshSimgGrid();
+
+    // Bind search & filter
+    const search = $('simgSearch');
+    if (search && !search._simgBound) {
+      search._simgBound = true;
+      search.addEventListener('input', _refreshSimgGrid);
+    }
+    if (catFilter && !catFilter._simgBound) {
+      catFilter._simgBound = true;
+      catFilter.addEventListener('change', _refreshSimgGrid);
+    }
+  }
+
+  function _refreshSimgGrid() {
+    const grid = $('serviceImagesGrid');
+    if (!grid || !draft) return;
+
+    const searchVal = ($('simgSearch')?.value || '').toLowerCase().trim();
+    const catVal = $('simgCategoryFilter')?.value || 'all';
+
+    const services = draft.services.filter(s => {
+      if (catVal !== 'all' && s.category !== catVal) return false;
+      if (searchVal) {
+        const haystack = `${s.name} ${s.mark || ''} ${s.aliases || ''}`.toLowerCase();
+        if (!haystack.includes(searchVal)) return false;
+      }
+      return true;
+    });
+
+    if (services.length === 0) {
+      grid.innerHTML = `<div class="simg-empty"><p>لا توجد خدمات مطابقة للبحث أو التصفية.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = services.map(s => _buildSimgCard(s)).join('');
+    hydrateIcons(grid);
+
+    // Bind events for each card
+    services.forEach(s => _bindSimgCardEvents(s.id));
+  }
+
+  function _buildSimgCard(s) {
+    const activeDevice = simgActiveTab[s.id] || 'desktop';
+    const cat = draft.categories.find(c => c.id === s.category);
+    const hasDesktop = Boolean(s.image);
+    const hasMobile = Boolean(s.mobileImage);
+
+    let statusClass = 'has-none';
+    let statusText = 'لا توجد صور مخصصة';
+    if (hasDesktop && hasMobile) { statusClass = 'has-both'; statusText = 'صورة كمبيوتر وموبايل ✓'; }
+    else if (hasDesktop) { statusClass = 'has-desktop'; statusText = 'صورة كمبيوتر فقط'; }
+    else if (hasMobile) { statusClass = 'has-mobile'; statusText = 'صورة موبايل فقط'; }
+
+    const isDesktopActive = activeDevice === 'desktop';
+    const currentImg = isDesktopActive ? s.image : (s.mobileImage || s.image);
+    const hasCurrentImg = isDesktopActive ? hasDesktop : (hasMobile || hasDesktop);
+    const ratioClass = isDesktopActive ? 'desktop-ratio' : 'mobile-ratio';
+    const specLabel = isDesktopActive
+      ? '1200 × 600 بكسل — نسبة 2:1'
+      : '800 × 800 بكسل — نسبة 1:1';
+    const uploadLabel = isDesktopActive
+      ? `رفع صورة كمبيوتر${hasDesktop ? ' (تغيير)' : ''}`
+      : `رفع صورة موبايل${hasMobile ? ' (تغيير)' : ''}`;
+
+    const previewContent = hasCurrentImg
+      ? `<img class="simg-preview-img" src="${esc(currentImg)}" alt="${esc(s.name)}" loading="lazy">`
+      : `<div class="simg-preview-placeholder"><i data-icon="image"></i><span>لا توجد صورة بعد</span></div>`;
+
+    return `
+      <div class="simg-card" data-simg-service="${esc(s.id)}">
+
+        <!-- Service name -->
+        <div class="simg-card-name-row">
+          <span class="simg-card-name" title="${esc(s.name)}">${esc(s.name)}</span>
+          <span class="simg-card-cat">${esc(cat?.name || s.category)}</span>
+        </div>
+
+        <!-- Device tabs -->
+        <div class="simg-card-tabs">
+          <button type="button" class="simg-card-tab-btn ${isDesktopActive ? 'active' : ''}" data-simg-tab="desktop" data-simg-id="${esc(s.id)}">
+            <i data-icon="monitor"></i> كمبيوتر
+          </button>
+          <button type="button" class="simg-card-tab-btn ${!isDesktopActive ? 'active' : ''}" data-simg-tab="mobile" data-simg-id="${esc(s.id)}">
+            <i data-icon="smartphone"></i> موبايل
+          </button>
+        </div>
+
+        <!-- Image preview -->
+        <div class="simg-preview-area ${ratioClass}">
+          ${previewContent}
+          <div class="simg-preview-overlay">
+            <label class="button button-outline small" style="cursor:pointer;background:rgba(0,0,0,0.7);border-color:rgba(255,255,255,0.3);color:#fff;" title="${specLabel}">
+              <i data-icon="upload"></i>
+              <span>رفع صورة</span>
+              <input type="file" accept="image/*" class="simg-file-input" data-simg-upload="${esc(s.id)}" data-simg-device="${isDesktopActive ? 'desktop' : 'mobile'}">
+            </label>
+          </div>
+        </div>
+
+        <!-- Upload zone -->
+        <div class="simg-upload-zone">
+          <div class="simg-upload-label">
+            <i data-icon="info"></i>
+            ${specLabel}
+          </div>
+          <div class="simg-upload-actions">
+            <label class="simg-upload-btn ${hasCurrentImg ? 'has-image' : ''}" title="${specLabel}" style="cursor:pointer;">
+              <i data-icon="${hasCurrentImg ? 'refresh-cw' : 'upload'}"></i>
+              <span>${uploadLabel}</span>
+              <input type="file" accept="image/*" class="simg-file-input" data-simg-upload="${esc(s.id)}" data-simg-device="${isDesktopActive ? 'desktop' : 'mobile'}">
+            </label>
+            ${hasCurrentImg ? `
+            <button type="button" class="simg-remove-btn" data-simg-remove="${esc(s.id)}" data-simg-device="${isDesktopActive ? 'desktop' : 'mobile'}" title="حذف هذه الصورة">
+              <i data-icon="trash-2"></i>
+            </button>` : ''}
+          </div>
+        </div>
+
+        <!-- Status row -->
+        <div class="simg-status-row">
+          <div class="simg-status-dot ${statusClass}"></div>
+          <span>${statusText}</span>
+          <button type="button" class="button button-outline small" style="margin-inline-start:auto;padding:3px 10px;font-size:0.72rem;" data-simg-open-editor="${esc(s.id)}" title="فتح محرر الخدمة الكامل">
+            <i data-icon="settings-2"></i> تفاصيل
+          </button>
+        </div>
+
+      </div>
+    `;
+  }
+
+  function _bindSimgCardEvents(serviceId) {
+    const card = document.querySelector(`[data-simg-service="${serviceId}"]`);
+    if (!card) return;
+
+    // Tab switching (desktop / mobile)
+    card.querySelectorAll('[data-simg-tab]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        simgActiveTab[serviceId] = btn.dataset.simgTab;
+        _refreshSimgGrid();
+      });
+    });
+
+    // File upload inputs
+    card.querySelectorAll('[data-simg-upload]').forEach(input => {
+      input.addEventListener('change', async e => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const device = input.dataset.simgDevice;
+        const srvId = input.dataset.simgUpload;
+        const service = draft?.services.find(s => s.id === srvId);
+        if (!service) return;
+
+        try {
+          // Show loading on card
+          const uploadBtn = input.closest('.simg-upload-btn, label');
+          if (uploadBtn) { uploadBtn.style.opacity = '0.5'; uploadBtn.style.pointerEvents = 'none'; }
+
+          let dataUrl;
+          if (device === 'desktop') {
+            // Compress to 2:1 (1200x600) for desktop
+            if (ImageUtils && typeof ImageUtils.compressImage === 'function') {
+              dataUrl = await ImageUtils.compressImage(file, { maxWidth: 1200, maxHeight: 600, quality: 0.88 });
+            } else {
+              dataUrl = await _readFileAsDataUrl(file);
+            }
+            service.image = dataUrl;
+            simgActiveTab[srvId] = 'desktop';
+          } else {
+            // Compress to 1:1 (800x800) for mobile
+            if (ImageUtils && typeof ImageUtils.compressImage === 'function') {
+              dataUrl = await ImageUtils.compressImage(file, { maxWidth: 800, maxHeight: 800, quality: 0.88 });
+            } else {
+              dataUrl = await _readFileAsDataUrl(file);
+            }
+            service.mobileImage = dataUrl;
+            simgActiveTab[srvId] = 'mobile';
+          }
+
+          saveDraft();
+          _refreshSimgGrid();
+          toast(`✅ تم رفع صورة ${device === 'desktop' ? 'الكمبيوتر' : 'الموبايل'} لخدمة «${service.name}» بنجاح.`);
+        } catch (err) {
+          console.error('Image upload error:', err);
+          toast('تعذّر رفع الصورة. تأكد من صحة الملف وحاول مجدداً.');
+        } finally {
+          // Reset input value so same file can be re-selected
+          e.target.value = '';
+        }
+      });
+    });
+
+    // Remove image buttons
+    card.querySelectorAll('[data-simg-remove]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const srvId = btn.dataset.simgRemove;
+        const device = btn.dataset.simgDevice;
+        const service = draft?.services.find(s => s.id === srvId);
+        if (!service) return;
+
+        const fieldLabel = device === 'desktop' ? 'صورة الكمبيوتر' : 'صورة الموبايل';
+        if (!await confirmAction('حذف الصورة؟', `هل تريد حذف ${fieldLabel} لخدمة «${service.name}»؟`, 'نعم، احذف')) return;
+
+        if (device === 'desktop') {
+          service.image = '';
+        } else {
+          service.mobileImage = '';
+        }
+        saveDraft();
+        _refreshSimgGrid();
+        toast(`تم حذف ${fieldLabel} لخدمة «${service.name}».`);
+      });
+    });
+
+    // Open full editor
+    card.querySelectorAll('[data-simg-open-editor]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openEditor(btn.dataset.simgOpenEditor);
+      });
+    });
+  }
+
+  // Helper: read file as base64 data URL (fallback if ImageUtils not available)
+  function _readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
   // --- Category Management (Phase 3) ---
   function renderAdminCategories() {
