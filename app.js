@@ -4761,6 +4761,77 @@
         (window.KenoCatalogParser || CatalogParser).validate(updated);
       }
 
+      // --- PRE-PUBLISH: Auto-compress oversized images ---
+      // GitHub API + Firestore have strict payload limits (~1MB / 1MB).
+      // Base64 images can easily exceed this. We re-compress any image > 200KB.
+      const IMAGE_MAX_BYTES = 200 * 1024; // 200KB per image threshold
+      const TOTAL_MAX_BYTES = 900 * 1024; // 900KB total catalog threshold
+
+      // Helper: recompress a single base64 image to target quality/dimensions
+      async function recompressBase64(dataUrl, maxW, maxH, quality) {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.naturalWidth, h = img.naturalHeight;
+            if (w > maxW || h > maxH) {
+              const ratio = Math.min(maxW / w, maxH / h);
+              w = Math.round(w * ratio);
+              h = Math.round(h * ratio);
+            }
+            canvas.width = w;
+            canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = () => resolve(dataUrl); // keep original on error
+          img.src = dataUrl;
+        });
+      }
+
+      if (pubBtn) {
+        pubBtn.innerHTML = '<i data-icon="loader" class="spin"></i> <span>جاري تحسين الصور...</span>';
+        hydrateIcons(pubBtn);
+      }
+
+      // Recompress desktop images > 200KB
+      for (const s of updated.services) {
+        if (s.image && s.image.startsWith('data:') && s.image.length > IMAGE_MAX_BYTES) {
+          try {
+            s.image = await recompressBase64(s.image, 1200, 600, 0.75);
+          } catch (_) {}
+        }
+        if (s.mobileImage && s.mobileImage.startsWith('data:') && s.mobileImage.length > IMAGE_MAX_BYTES) {
+          try {
+            s.mobileImage = await recompressBase64(s.mobileImage, 800, 800, 0.75);
+          } catch (_) {}
+        }
+      }
+
+      // Final size check after compression
+      const serializer2 = window.KenoCatalogParser || CatalogParser;
+      const testSerialized = serializer2 ? serializer2.serialize(updated) : JSON.stringify(updated);
+      const testBytes = new TextEncoder().encode(testSerialized).length;
+
+      if (testBytes > TOTAL_MAX_BYTES) {
+        // Find the biggest offenders to tell the user
+        const bigServices = updated.services
+          .filter(s => (s.image?.length || 0) + (s.mobileImage?.length || 0) > 50000)
+          .sort((a, b) => ((b.image?.length || 0) + (b.mobileImage?.length || 0)) - ((a.image?.length || 0) + (a.mobileImage?.length || 0)))
+          .slice(0, 3)
+          .map(s => `«${s.name}»`)
+          .join('، ');
+
+        throw new Error(
+          `حجم ملف البيانات الإجمالي كبير جداً (${Math.round(testBytes / 1024)} كيلوبايت من أصل 900). ` +
+          `يرجى تقليل حجم الصور المرفوعة أو عدد العروض. ` +
+          (bigServices ? `الخدمات الأكبر حجماً: ${bigServices}. ` : '') +
+          `نصيحة: احذف الصور الكبيرة واستبدلها بصور أصغر من قسم «صور الخدمات».`
+        );
+      }
+
+
+
       // --- TIER 1: Publish to Firestore (instant for visitors) ---
       let firestoreOK = false;
       if (window.KenoFirebase && typeof window.KenoFirebase.publishCatalog === 'function') {
