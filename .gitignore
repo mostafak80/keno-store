@@ -33,3 +33,4 @@ npm-debug.log*
 # Local QA artifacts
 qa/
 keno-store-update.zip
+AUDIT-*.md

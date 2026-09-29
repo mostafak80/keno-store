@@ -421,7 +421,7 @@
 
   function readEditor(){
     const content={...(current.content || {})};
-    document.querySelectorAll('[data-content-setting]').forEach(el=>{content[el.dataset.contentSetting]=el.value;});
+    $('contentSettingsEditor').querySelectorAll('[data-content-setting]').forEach(el=>{content[el.dataset.contentSetting]=el.value;});
 
     const layout = {
       siteScale: $('layoutSiteScale')?.value || '100%',

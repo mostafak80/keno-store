@@ -95,6 +95,7 @@ KenoFirebase.getCurrentUser=()=>sessionStorage.getItem('test-owner')?{email:Keno
   await page.screenshot({path:path.join(root,'qa','mobile-catalog-final.png')});
   await page.evaluate(()=>{sessionStorage.setItem('test-owner','1');location.hash='#admin'});
   await page.locator('#adminWorkspace').waitFor({state:'visible'});
+  await page.waitForFunction(()=>window.KenoAdminAuth);
   await page.evaluate(async()=>{KenoAdminAuth.setSession('OWNER',{email:KenoFirebase.getCurrentUser().email});await ensureAdminWorkspace()});
   await overflow('admin');
   await page.locator('[data-edit-service="pubg"]').click();

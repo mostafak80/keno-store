@@ -40,12 +40,12 @@
   }
   async function saveToFirestore(s) {
     if (!root.KenoFirebase) return false;
-    try { await root.KenoFirebase.saveDesignSettings({ mobileDesign: s }); return true; }
+    try { return await root.KenoFirebase.saveDesignSettings(s, 'mobile') === true; }
     catch (_) { return false; }
   }
   async function loadFromFirestore() {
     if (!root.KenoFirebase) return null;
-    try { const r = await root.KenoFirebase.loadDesignSettings(); return r && r.mobileDesign ? r.mobileDesign : null; }
+    try { return await root.KenoFirebase.loadDesignSettings('mobile'); }
     catch (_) { return null; }
   }
 
@@ -218,7 +218,7 @@
       if(root.Icons && root.Icons.hydrate) root.Icons.hydrate();
       saveLocal(current);
       var ok = await saveToFirestore(current);
-      var text = ok ? '✅ تم حفظ ونشر تصميم الموبايل! التغييرات ظاهرة على أي هاتف فوراً.' : '⚠️ محفوظ محلياً. Firebase غير متصل.';
+      var text = ok ? '✅ تم نشر تصميم الموبايل. يظهر بعد تحديث الصفحة.' : '⚠️ محفوظ على هذا الجهاز فقط. لم تؤكد السحابة الحفظ؛ تحقق من الاتصال وصلاحية حسابك ثم أعد المحاولة.';
       var cls = ok ? 'admin-message success-message' : 'admin-message warning-message';
       if(msg){ msg.hidden=false; msg.className=cls; msg.textContent=text; setTimeout(function(){ msg.hidden=true; }, 5000); }
       btns.forEach(function(b){ b.disabled=false; b.innerHTML='<i data-icon="save"></i> حفظ ونشر تصميم الموبايل'; });

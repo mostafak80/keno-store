@@ -60,7 +60,10 @@
         if (!['text','id','email','url','tel','textarea','password'].includes(field.type)) throw new Error('نوع خانة غير مدعوم.');
         return { id: field.id, type: field.type, label: requireString(field.label,100,'اسم الخانة'), required: field.required === true,
           placeholder: requireString(field.placeholder || '',200,'مثال الخانة',true), hint: requireString(field.hint || '',500,'شرح الخانة',true),
-          helpImage: media(field.helpImage,'image'), helpAlt: requireString(field.helpAlt || '',500,'شرح صورة المساعدة',true) };
+          helpImage: media(field.helpImage,'image'), helpAlt: requireString(field.helpAlt || '',500,'شرح صورة المساعدة',true),
+          inputMode: ['text','numeric','tel','email','url'].includes(field.inputMode) ? field.inputMode : (field.type === 'id' ? 'numeric' : 'text'),
+          maxLength: Number.isInteger(Number(field.maxLength)) && Number(field.maxLength) > 0 && Number(field.maxLength) <= 800 ? Number(field.maxLength) : (field.type === 'id' ? 64 : 800),
+          numericOnly: field.numericOnly === true };
       })
     };
     if (result.fields.some(f => f.type === 'password') && !result.securityNote.includes('كلمة')) throw new Error('وضّح استخدام كلمة المرور في وصف الخصوصية لهذه الخدمة.');
@@ -73,7 +76,7 @@
      * @param {Object} raw
      * @returns {Object} Validated catalog
      */
-    validate(raw) {
+    validate(raw, { deferSizeCheck = false } = {}) {
       if (!plainObject(raw) || raw.schemaVersion !== 1 || !plainObject(raw.settings)) {
         throw new Error('ملف البيانات غير صالح أو لا يتبع بنية متجر كينو.');
       }
@@ -337,9 +340,9 @@
           mark: requireString(service.mark || 'KENO', 20, 'شعار البطاقة'),
           icon,
           color,
-          image,
-          mobileImage,
-          mobileShowWordmark: service.mobileShowWordmark !== false,
+          image: image || root.KenoServiceArt?.desktop(service.id) || '',
+          mobileImage: mobileImage || (!image ? root.KenoServiceArt?.mobile(service.id) : '') || '',
+          mobileShowWordmark: service.mobileShowWordmark === true || (service.mobileShowWordmark !== false && Boolean(image || mobileImage) && ![image,mobileImage].some(url => url.startsWith('assets/services-v1/'))),
           aliases,
           badge,
           plans: validPlans,
@@ -502,7 +505,7 @@
       };
 
       const maxBytes = root.KenoConfig?.MAX_BYTES || 800000;
-      if (new TextEncoder().encode(JSON.stringify(data)).length > maxBytes) {
+      if (!deferSizeCheck && new TextEncoder().encode(JSON.stringify(data)).length > maxBytes) {
         throw new Error('حجم ملف البيانات الإجمالي كبير جدًا. يرجى تقليل حجم الصور المرفوعة أو عدد العروض.');
       }
 

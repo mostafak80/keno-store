@@ -12,7 +12,7 @@
     container.innerHTML = `<p>${esc(f.description)}</p>` + f.fields.map(field => {
       if (field.type === 'password') return `<div class="fulfillment-field"><strong>🔒 ${esc(field.label)}</strong><p>${esc(field.hint || 'تحتاج هذه الخدمة بيانات دخول. اتفق مع المتجر على طريقة التنفيذ وإرسالها في المحادثة؛ لا تُدخل كلمة المرور داخل الموقع.')}</p></div>`;
       const id = `${prefix}-${field.id}`, value = values[field.id] || '';
-      const attrs = `id="${esc(id)}" data-fulfillment-field="${esc(field.id)}" data-kind="${esc(field.type)}" maxlength="800" ${field.required ? 'required' : ''} placeholder="${esc(field.placeholder)}" aria-describedby="${esc(id)}-hint"`;
+      const attrs = `id="${esc(id)}" data-fulfillment-field="${esc(field.id)}" data-kind="${esc(field.type)}" data-numeric-only="${field.numericOnly === true}" maxlength="${field.maxLength || (field.type === 'id' ? 64 : 800)}" inputmode="${esc(field.inputMode || (field.type === 'id' ? 'numeric' : 'text'))}" ${field.required ? 'required' : ''} placeholder="${esc(field.placeholder)}" aria-describedby="${esc(id)}-hint"`;
       return `<div class="fulfillment-field"><label for="${esc(id)}">${esc(field.label)} ${field.required ? '<span aria-label="مطلوب">*</span>' : '(اختياري)'}</label>
         ${field.type === 'textarea' ? `<textarea ${attrs} rows="3">${esc(value)}</textarea>` : `<input ${attrs} type="${['email','url','tel','password'].includes(field.type) ? field.type : 'text'}" value="${esc(value)}" dir="auto" autocomplete="${field.type === 'password' ? 'new-password' : 'off'}">`}
         <small id="${esc(id)}-hint">${esc(field.hint)}</small>
@@ -24,7 +24,14 @@
   }
   function validate(container) {
     for (const el of container.querySelectorAll('[data-fulfillment-field]')) {
+      if (el.dataset.kind === 'id' || el.dataset.numericOnly === 'true') {
+        const previous = el.value;
+        el.value = el.value.trim().replace(/[٠-٩۰-۹]/g,c => String(c.charCodeAt(0) >= 1776 ? c.charCodeAt(0)-1776 : c.charCodeAt(0)-1632));
+        if (previous !== el.value) el.dispatchEvent(new Event('input', {bubbles:true}));
+      }
       if (el.required && !el.value.trim()) el.setCustomValidity('اكتب البيانات المطلوبة.');
+      else if (el.dataset.numericOnly === 'true' && el.value && !/^\d+$/.test(el.value)) el.setCustomValidity('اكتب أرقامًا فقط بدون مسافات.');
+      else if (el.maxLength > 0 && el.value.length > el.maxLength) el.setCustomValidity('البيانات أطول من الحد المسموح.');
       else if (el.type === 'url' && el.value && !/^https?:\/\//i.test(el.value)) el.setCustomValidity('اكتب رابطًا يبدأ بـ https://');
       else el.setCustomValidity('');
       if (!el.reportValidity()) return false;
@@ -40,9 +47,11 @@
   }
   function stopAudio() { if (audio) { audio.pause(); audio = null; } }
   function audioButton(button, url) {
+    button.hidden = !url;
     button.disabled = !url;
     button.title = url ? 'تشغيل تسجيل الخطوة' : 'لم يضف المتجر تسجيلًا لهذه الخطوة بعد';
     button.onclick = async () => {
+      if (!url) return;
       stopAudio(); audio = new Audio(url);
       try { await audio.play(); } catch (_) { root.alert('تعذر تشغيل التسجيل. يمكنك متابعة النص أو طلب المساعدة على واتساب.'); }
     };
@@ -128,6 +137,9 @@
     el.innerHTML = `<legend>خانة بيانات</legend><div class="form-grid">${text('id','معرّف ثابت بالإنجليزية',field.id || 'field-'+Math.random().toString(36).slice(2,8))}${text('label','الاسم الظاهر للعميل',field.label || '')}
       <label>نوع البيانات<select data-prop="type">${Object.entries({text:'نص',id:'رقم لاعب / ID',email:'بريد إلكتروني',url:'رابط',tel:'هاتف',textarea:'تفاصيل متعددة الأسطر',password:'كلمة مرور — يتم الاتفاق عليها في المحادثة'}).map(([v,l])=>`<option value="${v}" ${field.type===v?'selected':''}>${l}</option>`).join('')}</select></label>
       <label><input type="checkbox" data-prop="required" ${field.required?'checked':''}> خانة مطلوبة</label>
+      <label>لوحة المفاتيح<select data-prop="inputMode">${['text','numeric','tel','email','url'].map(v=>`<option value="${v}" ${(field.inputMode || (field.type==='id'?'numeric':'text'))===v?'selected':''}>${({text:'نص',numeric:'أرقام',tel:'هاتف',email:'بريد',url:'رابط'})[v]}</option>`).join('')}</select></label>
+      <label>أقصى عدد حروف<input type="number" data-prop="maxLength" min="1" max="800" value="${field.maxLength || (field.type==='id'?64:800)}"></label>
+      <label><input type="checkbox" data-prop="numericOnly" ${field.numericOnly?'checked':''}> السماح بالأرقام فقط</label>
       ${text('placeholder','مثال داخل الخانة',field.placeholder)}${text('hint','شرح تحت الخانة',field.hint)}${text('helpImage','رابط صورة الشرح',field.helpImage)}${text('helpAlt','وصف الصورة والمثال للقارئ',field.helpAlt)}
       <label>رفع صورة شرح (حتى 100 كيلوبايت)<input type="file" accept="image/png,image/jpeg,image/webp" data-upload="image"></label></div>
       <button type="button" data-remove-field class="button button-outline small">حذف الخانة</button>`;

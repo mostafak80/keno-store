@@ -14,14 +14,14 @@ service cloud.firestore {
     function isAuthorizedAdmin() {
       return isAuthenticated() && (
         exists(/databases/$(database)/documents/users/$(request.auth.token.email.lower())) ||
-        request.auth.token.email in ['aboab411@gmail.com', 'aboab411@gmail.com']
+        request.auth.token.email.lower() in ['aboab411@gmail.com', 'mostafak80@gmail.com']
       );
     }
 
     function getAdminRole() {
       return exists(/databases/$(database)/documents/users/$(request.auth.token.email.lower()))
         ? getUserData().role.lower()
-        : (request.auth.token.email in ['aboab411@gmail.com'] ? 'owner' : 'editor');
+        : (request.auth.token.email.lower() in ['aboab411@gmail.com', 'mostafak80@gmail.com'] ? 'owner' : 'editor');
     }
 
     function isOwner() {
@@ -36,9 +36,33 @@ service cloud.firestore {
     // - Public customers can create new orders with status 'pending'
     // - Only authorized admins can view, update statuses, or delete orders
     match /orders/{orderId} {
+      function shortText(key, max) {
+        return request.resource.data[key] is string && request.resource.data[key].size() <= max;
+      }
+      function validReceipt() {
+        let r = request.resource.data.receipt;
+        return (r == null && request.resource.data.hasReceipt == false) ||
+          (r is map && request.resource.data.hasReceipt == true &&
+           r.keys().hasOnly(['dataUrl','fileName','size']) &&
+           r.dataUrl is string && r.dataUrl.size() <= 700000 &&
+           r.dataUrl.matches('data:image/(png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}') &&
+           r.fileName is string && r.fileName.size() <= 200 &&
+           r.size is number && r.size >= 0 && r.size <= 525000);
+      }
       allow create: if request.resource.data.keys().hasAll(['id', 'timestamp', 'total', 'status'])
+                    && request.resource.data.keys().hasOnly(['id','reviewToken','serviceIds','timestamp','dateStr','type','items','total','paymentMethod','paymentMethodId','customerAccount','customerPhone','transferNumber','hasReceipt','receipt','notes','status','createdAt','updatedAt'])
                     && request.resource.data.status == 'pending'
                     && request.resource.data.id == orderId
+                    && orderId.matches('KENO-[A-Z0-9-]{8,60}')
+                    && request.resource.data.createdAt == request.time
+                    && request.resource.data.updatedAt == request.time
+                    && shortText('dateStr', 100) && shortText('type', 20)
+                    && shortText('paymentMethod', 300) && shortText('paymentMethodId', 80)
+                    && shortText('customerAccount', 12000) && shortText('customerPhone', 40)
+                    && shortText('transferNumber', 100) && shortText('notes', 2000)
+                    && request.resource.data.reviewToken.matches('[a-f0-9]{48}')
+                    && request.resource.data.serviceIds is list && request.resource.data.serviceIds.size() <= 100
+                    && validReceipt()
                     && request.resource.data.timestamp is number
                     && request.resource.data.total is number
                     && request.resource.data.total >= 0

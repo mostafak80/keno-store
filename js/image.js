@@ -216,13 +216,13 @@
     sanitizeUrl(url) {
       if (!url || typeof url !== 'string') return '';
       const trimmed = url.trim();
-      if (/^data:image\/(png|jpeg|jpg|webp);base64,/i.test(trimmed)) {
+      if (/^data:image\/(png|jpeg|jpg|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(trimmed)) {
         return trimmed;
       }
-      if (/^https?:\/\/[^\s/$.?#].[^\s]*$/i.test(trimmed)) {
-        return trimmed;
+      if (/^https:\/\//i.test(trimmed)) {
+        try { const parsed = new URL(trimmed); if (!parsed.username && !parsed.password) return parsed.href; } catch (_) {}
       }
-      if (/^\.?\/assets\/[a-zA-Z0-9_-]+\.(png|jpg|jpeg|webp|gif)$/i.test(trimmed)) {
+      if (/^(?:\.\/)?assets\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+\.(png|jpg|jpeg|webp|gif)$/i.test(trimmed)) {
         return trimmed;
       }
       return '';
@@ -233,7 +233,7 @@
      * Gracefully falls back to hiding broken image and displaying the icon.
      */
     getFallbackAttr() {
-      return 'onerror="this.style.display=\'none\'; if(this.nextElementSibling) this.nextElementSibling.style.display=\'inline-block\';"';
+      return '';
     }
   };
 

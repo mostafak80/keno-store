@@ -38,15 +38,15 @@
   <link rel="manifest" href="./manifest.json">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./assets/store.bundle.css">
 
   <!-- Core Modules (Zero-Build Vanilla Architecture) -->
   <script src="./assets/icons.js" defer></script>
   <script src="./js/config.js" defer></script>
   <script src="./js/firebase.js" defer></script>
   <script src="./js/design-panel.js" defer></script>
-  <script src="./js/design-admin.js" defer></script>
   <script src="./js/image.js" defer></script>
+  <script src="./js/service-art.js" defer></script>
   <script src="./js/order.js" defer></script>
   <script src="./js/github.js" defer></script>
   <script src="./js/catalog-parser.js" defer></script>
@@ -58,8 +58,6 @@
   <script src="./js/storefront.js" defer></script>
   <script src="./js/mobile-ui.js" defer></script>
   <script src="./js/mobile-design-admin.js" defer></script>
-  <script src="./js/texts-admin.js" defer></script>
-  <script src="./js/admin.js" id="keno-admin-script" defer></script>
   <script src="./app.js?v=20260922-3" defer></script>
 
   <!-- Structured Data / JSON-LD for SEO -->
@@ -393,7 +391,7 @@
         </details>
         <details>
           <summary data-content="copy-109">هل اشتراكات المشاهدة والذكاء الاصطناعي رسمية ومضمونة؟<i data-icon="plus"></i></summary>
-          <p data-content="copy-110">نعم، جميع الاشتراكات تعمل بشكل ممتاز طوال فترة الاشتراك مع ضمان كامل من كينو. نوع الاشتراك (مشترك أو خاص) وعدد الأجهزة المسموح بها مذكورة بوضوح في تفاصيل وشروط كل عرض.</p>
+          <p data-content="copy-110">نوع الاشتراك ومدته وعدد الأجهزة وشروط التعويض تختلف حسب العرض. راجع تفاصيل الخدمة وأكد الشروط والإتاحة مع المتجر قبل الدفع.</p>
         </details>
         <details>
           <summary data-content="copy-111">الخدمة اللي محتاجها مش موجودة في الموقع؟<i data-icon="plus"></i></summary>
@@ -1179,6 +1177,7 @@
 
       <!-- Tab: Orders & Receipts Management -->
       <div id="adminOrders" role="tabpanel" aria-labelledby="ordersTab" hidden>
+        <p class="admin-message">راجع سعر الخدمة وبيانات التحويل قبل اعتماد الدفع. الطلب المرسل أو صورة الإيصال لا يؤكدان استلام المبلغ؛ الإيراد يحتسب بعد اعتماد الدفع فقط.</p>
         <div class="admin-toolbar">
           <div>
             <h3>سجل الطلبات وإيصالات التحويل</h3>
@@ -2600,7 +2599,7 @@
           <div class="notice-icon"><i data-icon="message-circle"></i></div>
           <div class="notice-text">
             <strong data-content="dlg-wa-title">تأكيد الطلب الفوري عبر واتساب</strong>
-            <span data-content="dlg-wa-desc">سيتم فتح المحادثة مباشرة مع تفاصيل طلبك. يمكنك إرسال صورة إيصال التحويل في الشات لتأكيد وتنفيذ طلبك في دقائق معدودة.</span>
+            <span data-content="dlg-wa-desc">سيتم فتح المحادثة مباشرة مع تفاصيل طلبك. يمكنك إرسال صورة إيصال التحويل في الشات لمراجعة التحويل وتأكيد موعد تنفيذ طلبك.</span>
           </div>
         </div>
       </section>

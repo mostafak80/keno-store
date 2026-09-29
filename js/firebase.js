@@ -437,21 +437,22 @@
       let pendingCount = 0;
       let deliveredCount = 0;
       let totalRevenue = 0;
-      const serviceCounts = {};
+      const serviceCounts = Object.create(null);
 
       list.forEach(o => {
-        const st = (o.status || 'pending').toLowerCase();
+        const st = String(o.status || 'pending').toLowerCase();
         if (st === 'pending') pendingCount++;
         if (st === 'delivered') deliveredCount++;
-        if (st !== 'cancelled') {
-          totalRevenue += Number(o.total) || 0;
+        if (['paid', 'processing', 'delivered'].includes(st)) {
+          const total = Number(o.total);
+          if (Number.isFinite(total) && total >= 0 && total <= 10000000) totalRevenue += total;
         }
 
         // Count services
         if (Array.isArray(o.items)) {
           o.items.forEach(it => {
             const name = it.serviceName || 'خدمة مخصصة';
-            serviceCounts[name] = (serviceCounts[name] || 0) + (it.quantity || 1);
+            serviceCounts[name] = (serviceCounts[name] || 0) + Math.max(1, Math.min(99, Number(it.quantity) || 1));
           });
         } else if (o.serviceName) {
           serviceCounts[o.serviceName] = (serviceCounts[o.serviceName] || 0) + 1;
@@ -610,11 +611,11 @@
    * @param {Object} settings - Design settings object from KenoDesign
    * @returns {Promise<boolean>}
    */
-  KenoFirebase.saveDesignSettings = async function (settings) {
+  KenoFirebase.saveDesignSettings = async function (settings, scope = 'general') {
     const fb = await this.init();
     if (!fb || !firestoreModules) return false;
     try {
-      const docRef = firestoreModules.doc(fb.db, 'settings', 'design');
+      const docRef = firestoreModules.doc(fb.db, 'settings', scope === 'mobile' ? 'design-mobile' : 'design-general');
       await firestoreModules.setDoc(docRef, {
         data: settings,
         updatedAt: firestoreModules.serverTimestamp ? firestoreModules.serverTimestamp() : new Date()
@@ -630,16 +631,22 @@
    * Loads design settings from Firestore doc `settings/design`.
    * @returns {Promise<Object|null>}
    */
-  KenoFirebase.loadDesignSettings = async function () {
+  KenoFirebase.loadDesignSettings = async function (scope = 'general') {
     const fb = await this.init();
     if (!fb || !firestoreModules) return null;
     try {
-      const docRef = firestoreModules.doc(fb.db, 'settings', 'design');
+      const docRef = firestoreModules.doc(fb.db, 'settings', scope === 'mobile' ? 'design-mobile' : 'design-general');
       const snap = await firestoreModules.getDoc(docRef);
       if (snap.exists()) {
         return snap.data().data || null;
       }
-      return null;
+      // Read legacy settings without overwriting the other design panel.
+      const legacy = await firestoreModules.getDoc(firestoreModules.doc(fb.db, 'settings', 'design'));
+      const data = legacy.exists() ? legacy.data().data : null;
+      if (scope === 'mobile') return data?.mobileDesign || null;
+      if (!data) return null;
+      const { mobileDesign, ...general } = data;
+      return Object.keys(general).length ? general : null;
     } catch (err) {
       console.warn('Design settings load error:', err);
       return null;
@@ -647,4 +654,3 @@
   };
 
 })(typeof window !== 'undefined' ? window : this);
-

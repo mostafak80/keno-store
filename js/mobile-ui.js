@@ -14,7 +14,7 @@
         ${showWordmark ? `<b class="pubg-wordmark custom-wordmark" style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);color:#ffc72c;border:2px solid #ffc72c;padding:2px 8px;font:900 16px/.9 Impact,'Arial Narrow',Arial,sans-serif;text-shadow:0 2px 2px #000;background:#080709cc;border-radius:4px;white-space:nowrap;">${esc(word)}</b>` : ''}
       </div>`;
     }
-    if(id.startsWith('pubg'))return '<div class="mobile-service-art art-pubg" aria-hidden="true"><img src="assets/brands/pubg-hero.png" alt="" loading="lazy"><b class="pubg-wordmark">PUBG<small>MOBILE</small></b></div>';
+    if(id.startsWith('pubg'))return '<div class="mobile-service-art art-pubg" aria-hidden="true"><img src="assets/brands/pubg-card.webp" alt="" loading="lazy"><b class="pubg-wordmark">PUBG<small>MOBILE</small></b></div>';
     const word=id==='shahid'?'شاهد':service.mark||service.name;
     return `<div class="mobile-service-art art-${esc(brand||service.color||'violet')}" aria-hidden="true"><span class="art-orbit"></span>${brand?`<img class="brand-glyph" src="assets/brands/${brand}.svg" alt="" loading="lazy">`:`<b class="art-wordmark">${esc(word)}</b>`}${id==='chatgpt'?'<b class="art-caption">PLUS</b>':''}</div>`;
   }
@@ -33,7 +33,7 @@
     // Keep packages ahead of optional budget controls on narrow screens.
     if(matchMedia('(max-width:780px)').matches){
       const section=$('planSelectionSection');
-      for(const el of [section.querySelector('.plan-tools'),$('planFilterStatus'),$('budgetSelectionNotice')])if(el)section.append(el);
+      for(const el of [section?.querySelector('.plan-tools'),$('planFilterStatus'),$('budgetSelectionNotice')])if(el)section.append(el);
     }
     const syncAccount=()=>{
       const user=$('headerUserName')?.textContent;

@@ -192,7 +192,7 @@
 
   async function saveToFirestore(s) {
     if (!root.KenoFirebase || typeof root.KenoFirebase.saveDesignSettings !== 'function') return false;
-    try { await root.KenoFirebase.saveDesignSettings(s); return true; } catch (_) { return false; }
+    try { return await root.KenoFirebase.saveDesignSettings(s) === true; } catch (_) { return false; }
   }
 
   async function loadFromFirestore() {

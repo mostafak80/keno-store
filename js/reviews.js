@@ -36,7 +36,19 @@
       $('reviewClaim').onchange();
     }
     readLink();
-    if(!loaded){loaded=true;show([]);KenoFirebase.listReviews().then(show).catch(()=>{$('reviewStatus').textContent='تعذر تحميل التعليقات من السحابة حاليًا.';loaded=false;});}
+    if(!loaded) loadReviews();
+  }
+  async function loadReviews() {
+    if (loaded) return;
+    loaded = true;
+    const host = $('testimonialsGrid');
+    host.textContent = 'جاري تحميل التعليقات…';
+    try { show(await KenoFirebase.listReviews()); }
+    catch (_) {
+      loaded = false;
+      host.innerHTML = '<p role="status">تعذر تحميل التعليقات الآن. يمكنك إعادة المحاولة.</p><button type="button" class="button button-outline small">إعادة تحميل التعليقات</button>';
+      host.querySelector('button').onclick = loadReviews;
+    }
   }
   function readLink(){
     const match=location.hash.match(/^#review\/([A-Z0-9-]+)\/([a-f0-9]{48})$/);

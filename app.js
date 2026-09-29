@@ -748,6 +748,37 @@
   $('resetFilters')?.addEventListener('click', resetFilters);
 
   // --- Order Dialog & Workflow ---
+  let serviceReviewVersion = '';
+  let cartReviewVersion = '';
+  function orderVersion(service) {
+    const data = viewData();
+    return JSON.stringify([service || data.services, data.paymentMethods, data.settings.whatsapp]);
+  }
+  function ensureServiceCurrent() {
+    const service = viewData().services.find(s => s.id === selectedService);
+    if (!service) {
+      $('reviewConfirmed').checked = false;
+      toast('الخدمة لم تعد متاحة. بياناتك محفوظة في هذه النافذة للمراجعة.');
+      return false;
+    }
+    if (serviceReviewVersion !== orderVersion(service)) {
+      const values = KenoCheckout.values($('fulfillmentFields'), false);
+      const note = $('orderNote')?.value || '';
+      const quote = $('quoteDetails')?.value || '';
+      openService(service, selectedPlan);
+      KenoCheckout.renderFields($('fulfillmentFields'), service, values);
+      if ($('orderNote')) $('orderNote').value = note;
+      if ($('quoteDetails')) $('quoteDetails').value = quote;
+      toast('اتحدثت بيانات الطلب أو السعر. بياناتك محفوظة؛ راجع العرض وأكد الطلب من جديد.');
+      return false;
+    }
+    if (!OrderUtils.isAvailable(service) || (service.plans.length && !service.plans.some(p => p.id === selectedPlan && p.available))) {
+      $('reviewConfirmed').checked = false;
+      toast('الخدمة أو الباقة لم تعد متاحة. اختار عرضًا متاحًا قبل المتابعة.');
+      return false;
+    }
+    return true;
+  }
   function openService(idOrService, planId) {
     const data = viewData();
     let service;
@@ -762,6 +793,7 @@
     }
 
     selectedService = service.id;
+    serviceReviewVersion = orderVersion(service);
     selectedPlan = (service.plans || []).some(p => p.id === planId && p.available) ? planId : ((service.plans || []).find(p => p.available)?.id || null);
 
     const categoryObj = data.categories.find(c => c.id === service.category);
@@ -1057,6 +1089,7 @@
   // Instant 1-Click WhatsApp Order
   $('orderButton')?.addEventListener('click', async () => {
     try {
+      if (!ensureServiceCurrent()) return;
       const data = viewData();
       const service = data.services.find(s => s.id === selectedService);
       const plan = service?.plans.find(p => p.id === selectedPlan) || null;
@@ -1154,6 +1187,7 @@
 
   // Copy Single Order Details
   $('copyOrderButton')?.addEventListener('click', async () => {
+    if (!ensureServiceCurrent()) return;
     try {
       const data = viewData();
       const service = data.services.find(s => s.id === selectedService);
@@ -1193,7 +1227,7 @@
       return (Array.isArray(list) ? list : []).filter(item => {
         if (!item || typeof item !== 'object') return false;
         const service = data.services.find(s => s.visible && s.id === item.serviceId);
-        return service && (!service.plans.length || service.plans.some(p => p.id === item.planId && p.available));
+        return OrderUtils.isAvailable(service) && (!service.plans.length || service.plans.some(p => p.id === item.planId && p.available));
       }).map(item => ({ ...item, quantity: Math.max(1, Math.min(99, Math.floor(Number(item.quantity)) || 1)) }));
     } catch (_) {
       return [];
@@ -1300,7 +1334,7 @@
     // Map cart items against active catalog
     const validItems = [];
     rawItems.forEach(it => {
-      const srv = data.services.find(s => s.id === it.serviceId && s.visible);
+      const srv = data.services.find(s => s.id === it.serviceId && OrderUtils.isAvailable(s));
       if (srv) {
         const pln = srv.plans.find(p => p.id === it.planId && p.available);
         if (pln || srv.plans.length === 0) {
@@ -1411,6 +1445,7 @@
       $('checkoutStep4').hidden = false;
       cartSelectedPaymentId = renderPaymentMethodsList($('cartPaymentMethods'),cartSelectedPaymentId,'cart-payment');
       renderInvoiceSummary(); $('cartReviewConfirmed').checked=false;
+      cartReviewVersion = orderVersion();
     }
     KenoCheckout.stopAudio();
     KenoCheckout.audioButton($('cartListen'),viewData().settings.stepAudio?.[currentCheckoutStep-1]);
@@ -1426,7 +1461,7 @@
     const rawItems = getCartItems();
     const validItems = [];
     rawItems.forEach(it => {
-      const srv = data.services.find(s => s.id === it.serviceId && s.visible);
+      const srv = data.services.find(s => s.id === it.serviceId && OrderUtils.isAvailable(s));
       if (srv) {
         const pln = srv.plans.find(p => p.id === it.planId && p.available);
         if (pln || srv.plans.length === 0) {
@@ -1502,6 +1537,7 @@
 
   // Add to Cart from Service Dialog
   $('addToCartBtn')?.addEventListener('click', () => {
+    if (!ensureServiceCurrent()) return;
     if (!selectedService || !KenoCheckout.ready()) return;
     addToCart(selectedService, selectedPlan, 1);
     closeDialog('serviceDialog');
@@ -1541,6 +1577,13 @@
   // Cart WhatsApp Order Final Submission
   $('cartSubmitOrderBtn')?.addEventListener('click', async () => {
     try {
+      if (cartReviewVersion !== orderVersion()) {
+        renderCart();
+        setCheckoutStep(1);
+        $('cartReviewConfirmed').checked = false;
+        toast('اتحدثت الأسعار أو الإتاحة. راجع السلة من جديد قبل تأكيد الطلب.');
+        return;
+      }
       if (!validateCart()) {setCheckoutStep(2); validateCart(); return;}
       if (!$('cartReviewConfirmed').checked) {toast('راجع بيانات كل عنصر وأكد المراجعة.'); return;}
       const data = viewData();
@@ -1548,7 +1591,7 @@
       const validItems = [];
 
       rawItems.forEach(it => {
-        const srv = data.services.find(s => s.id === it.serviceId && s.visible);
+        const srv = data.services.find(s => s.id === it.serviceId && OrderUtils.isAvailable(s));
         if (srv) {
           const pln = srv.plans.find(p => p.id === it.planId && p.available);
           if (pln || srv.plans.length === 0) {
@@ -1678,7 +1721,7 @@
       const validItems = [];
 
       rawItems.forEach(it => {
-        const srv = data.services.find(s => s.id === it.serviceId && s.visible);
+        const srv = data.services.find(s => s.id === it.serviceId && OrderUtils.isAvailable(s));
         if (srv) {
           const pln = srv.plans.find(p => p.id === it.planId && p.available);
           if (pln || srv.plans.length === 0) {
@@ -1763,10 +1806,20 @@
   if ($('branchInput')) $('branchInput').value = lastConnection?.branch || 'main';
 
   let adminScriptPromise = null;
+  async function loadAdminAssets() {
+    for (const src of ['./js/design-admin.js', './js/texts-admin.js']) {
+      if (document.querySelector('script[data-admin-src="'+src+'"]')) continue;
+      await new Promise((resolve,reject) => {
+        const script = document.createElement('script'); script.dataset.adminSrc=src; script.src=src;
+        script.onload=resolve; script.onerror=()=>{script.remove();reject(new Error('تعذر تحميل أدوات الإدارة'));};
+        document.head.append(script);
+      });
+    }
+  }
   function loadAdminScript() {
     if (window.KenoAdmin) return Promise.resolve(window.KenoAdmin);
     if (adminScriptPromise) return adminScriptPromise;
-    adminScriptPromise = new Promise((resolve, reject) => {
+    adminScriptPromise = loadAdminAssets().then(() => new Promise((resolve, reject) => {
       if (window.KenoAdmin) return resolve(window.KenoAdmin);
       const existing = document.getElementById('keno-admin-script');
       if (existing) {
@@ -1806,44 +1859,15 @@
         reject(err);
       };
       document.body.appendChild(script);
-    });
+    })).catch(err => { adminScriptPromise = null; throw err; });
     return adminScriptPromise;
   }
 
+  let verifiedAdminEmail = '';
   function isAuthorizedAdmin() {
-    // 1. Check active Firebase authenticated user against admin whitelist
-    const fbUser = window.KenoFirebase?.getCurrentUser?.();
-    if (fbUser && fbUser.email) {
-      const email = String(fbUser.email).toLowerCase().trim();
-      const adminEmails = (window.KenoConfig?.ADMIN_EMAILS || []).map(e => String(e).toLowerCase().trim());
-      const staticAdmins = window.KenoConfig?.AUTHORIZED_ADMINS || {};
-      if (adminEmails.includes(email) || staticAdmins[email]) {
-        return true;
-      }
-    }
-
-    // 2. Check active verified admin session in storage
-    try {
-      const raw = sessionStorage.getItem('keno_admin_session_v3') || localStorage.getItem('keno_admin_session_v3');
-      if (raw) {
-        const session = JSON.parse(raw);
-        if (session && session.role && session.expiresAt && Date.now() < session.expiresAt) {
-          if (session.email) {
-            const email = String(session.email).toLowerCase().trim();
-            const adminEmails = (window.KenoConfig?.ADMIN_EMAILS || []).map(e => String(e).toLowerCase().trim());
-            const staticAdmins = window.KenoConfig?.AUTHORIZED_ADMINS || {};
-            if (adminEmails.includes(email) || staticAdmins[email]) {
-              return true;
-            }
-          }
-          if (session.loginMethod === 'pin' && (session.role === 'OWNER' || session.role === 'EDITOR')) {
-            return true;
-          }
-        }
-      }
-    } catch (_) {}
-
-    return false;
+    const email = String(window.KenoFirebase?.getCurrentUser?.()?.email || '').toLowerCase().trim();
+    if (!email) return false;
+    return email === verifiedAdminEmail || (Config.ADMIN_EMAILS || []).includes(email) || Boolean(Config.AUTHORIZED_ADMINS?.[email]);
   }
 
   function route() {
@@ -2446,6 +2470,7 @@
             ${specLabel}
           </div>
           <div class="simg-upload-actions">
+            ${window.KenoServiceArt?.desktop(s.id) ? `<button type="button" class="button button-outline small" data-simg-default="${esc(s.id)}" data-simg-device="${activeDevice}">استعادة الصورة الأصلية</button>` : ''}
             <label class="simg-upload-btn ${hasCurrentImg ? 'has-image' : ''}" title="${specLabel}" style="cursor:pointer;">
               <i data-icon="${hasCurrentImg ? 'refresh-cw' : 'upload'}"></i>
               <span>${uploadLabel}</span>
@@ -2474,6 +2499,15 @@
   function _bindSimgCardEvents(serviceId) {
     const card = document.querySelector(`[data-simg-service="${serviceId}"]`);
     if (!card) return;
+    card.querySelector('[data-simg-default]')?.addEventListener('click', event => {
+      const service = draft.services.find(s => s.id === serviceId);
+      if (!service) return;
+      if (event.currentTarget.dataset.simgDevice === 'mobile') service.mobileImage = window.KenoServiceArt.mobile(serviceId);
+      else service.image = window.KenoServiceArt.desktop(serviceId);
+      service.mobileShowWordmark = false;
+      saveDraft(); _refreshSimgGrid();
+      toast('تمت استعادة الصورة الأصلية في المسودة. انشر التعديلات لإظهارها للعملاء.');
+    });
 
     // Tab switching (desktop / mobile)
     card.querySelectorAll('[data-simg-tab]').forEach(btn => {
@@ -2933,6 +2967,8 @@
           pm.description = description;
           pm.icon = iconVal;
           pm.enabled = enabled;
+          if (pm.id === 'vodafone-cash' || pm.id.includes('vodafone')) next.settings.paymentPhone = number;
+          if (pm.id === 'instapay' || pm.id.includes('insta')) next.settings.instapay = number;
         }
       } else {
         if (next.paymentMethods.some(m => m.id === id)) {
@@ -3028,10 +3064,10 @@
         const dateStr = o.dateStr || (o.timestamp ? new Date(o.timestamp).toLocaleString('ar-EG') : '—');
 
         let itemsHtml = '';
-        if (o.items && o.items.length > 0) {
+        if (Array.isArray(o.items) && o.items.length > 0) {
           itemsHtml = o.items.map(it => `
             <div class="order-item-chip">
-              <strong>${esc(it.serviceName)}</strong>: ${esc(it.planLabel || 'الخدمة')}<pre dir="auto">${esc((it.fulfillment || []).map(f=>f.label+": "+f.value).join("\n"))}</pre> ${it.quantity > 1 ? `<span class="quantity-badge">×${it.quantity}</span>` : ''}
+              <strong>${esc(it.serviceName)}</strong>: ${esc(it.planLabel || 'الخدمة')}<pre dir="auto">${esc((Array.isArray(it.fulfillment) ? it.fulfillment : []).map(f=>f.label+": "+f.value).join("\n"))}</pre> ${it.quantity > 1 ? `<span class="quantity-badge">×${it.quantity}</span>` : ''}
             </div>
           `).join('');
         } else if (o.serviceName) {
@@ -3051,10 +3087,10 @@
         const currentStatus = o.status || 'pending';
 
         let receiptHtml = '';
-        if (o.hasReceipt && o.receipt?.dataUrl) {
+        if (o.hasReceipt && OrderUtils.safeReceiptUrl(o.receipt?.dataUrl)) {
           receiptHtml = `
             <button type="button" class="receipt-table-preview-btn" data-order-action="view-receipt" data-order-id="${esc(o.id)}" title="فحص الإيصال بالحجم الكامل">
-              <img src="${o.receipt.dataUrl}" alt="إيصال" class="receipt-table-thumb" loading="lazy">
+              <img src="${esc(OrderUtils.safeReceiptUrl(o.receipt.dataUrl))}" alt="إيصال" class="receipt-table-thumb" loading="lazy">
               <span>عرض</span>
             </button>
           `;
@@ -3070,7 +3106,7 @@
             </td>
             <td><div class="order-acc-cell">${accHtml}</div></td>
             <td><div class="order-items-cell">${itemsHtml}</div></td>
-            <td><strong class="order-price">${o.total || 0} ج.م</strong></td>
+            <td><strong class="order-price">${esc(o.total || 0)} ج.م</strong></td>
             <td><span class="status-pill active-pill" style="font-size:0.75rem;">${esc(o.paymentMethod || 'فودافون كاش')}</span></td>
             <td>
               <select class="order-status-select" data-order-action="change-status" data-order-id="${esc(o.id)}" aria-label="تغيير حالة الطلب">
@@ -3168,7 +3204,7 @@
       const dateStr = order.dateStr || (order.timestamp ? new Date(order.timestamp).toLocaleString('ar-EG') : '—');
       if ($('orderModalDate')) $('orderModalDate').textContent = dateStr;
       if ($('orderModalPaymentMethod')) $('orderModalPaymentMethod').textContent = order.paymentMethod || '—';
-      if ($('orderModalTotalAmount')) $('orderModalTotalAmount').textContent = `${order.total || 0} ج.م`;
+      if ($('orderModalTotalAmount')) $('orderModalTotalAmount').textContent = `${esc(order.total || 0)} ج.م`;
 
       const statusBadge = $('orderModalStatusBadge');
       if (statusBadge) {
@@ -3207,13 +3243,13 @@
       // Items Table in Modal
       const itemsTbody = $('orderModalItemsBody');
       if (itemsTbody) {
-        if (order.items && order.items.length > 0) {
+        if (Array.isArray(order.items) && order.items.length > 0) {
           itemsTbody.innerHTML = order.items.map(it => `
             <tr>
               <td><strong>${esc(it.serviceName)}</strong></td>
-              <td>${esc(it.planLabel || '—')}<pre dir="auto">${esc((it.fulfillment || []).map(f=>f.label+": "+f.value).join("\n"))}</pre></td>
-              <td>${it.quantity || 1}</td>
-              <td><strong>${it.price || 0} ج.م</strong></td>
+              <td>${esc(it.planLabel || '—')}<pre dir="auto">${esc((Array.isArray(it.fulfillment) ? it.fulfillment : []).map(f=>f.label+": "+f.value).join("\n"))}</pre></td>
+              <td>${esc(it.quantity || 1)}</td>
+              <td><strong>${esc(it.price || 0)} ج.م</strong></td>
             </tr>
           `).join('');
         } else {
@@ -3222,7 +3258,7 @@
               <td><strong>${esc(order.serviceName || 'طلب مخصص')}</strong></td>
               <td>${esc(order.planLabel || '—')}</td>
               <td>1</td>
-              <td><strong>${order.total || 0} ج.م</strong></td>
+              <td><strong>${esc(order.total || 0)} ج.م</strong></td>
             </tr>
           `;
         }
@@ -3234,15 +3270,15 @@
         if (order.hasReceipt && order.receipt?.dataUrl) {
           receiptPanel.hidden = false;
           if ($('orderModalReceiptImg')) {
-            $('orderModalReceiptImg').src = order.receipt.dataUrl;
+            $('orderModalReceiptImg').src = OrderUtils.safeReceiptUrl(order.receipt.dataUrl);
             $('orderModalReceiptImg').onclick = () => {
               activeViewerReceipt = {
                 orderId: order.id,
-                dataUrl: order.receipt.dataUrl,
+                dataUrl: OrderUtils.safeReceiptUrl(order.receipt.dataUrl),
                 fileName: order.receipt.fileName || `receipt-${order.id}.webp`
               };
               if ($('receiptViewerOrderCode')) $('receiptViewerOrderCode').textContent = order.id;
-              if ($('receiptViewerImg')) $('receiptViewerImg').src = order.receipt.dataUrl;
+              if ($('receiptViewerImg')) $('receiptViewerImg').src = OrderUtils.safeReceiptUrl(order.receipt.dataUrl);
               $('receiptViewerDialog')?.showModal();
             };
           }
@@ -3250,11 +3286,11 @@
             $('orderModalViewReceiptFullBtn').onclick = () => {
               activeViewerReceipt = {
                 orderId: order.id,
-                dataUrl: order.receipt.dataUrl,
+                dataUrl: OrderUtils.safeReceiptUrl(order.receipt.dataUrl),
                 fileName: order.receipt.fileName || `receipt-${order.id}.webp`
               };
               if ($('receiptViewerOrderCode')) $('receiptViewerOrderCode').textContent = order.id;
-              if ($('receiptViewerImg')) $('receiptViewerImg').src = order.receipt.dataUrl;
+              if ($('receiptViewerImg')) $('receiptViewerImg').src = OrderUtils.safeReceiptUrl(order.receipt.dataUrl);
               $('receiptViewerDialog')?.showModal();
             };
           }
@@ -3313,19 +3349,19 @@
 
       activeViewerReceipt = {
         orderId: order.id,
-        dataUrl: order.receipt.dataUrl,
+        dataUrl: OrderUtils.safeReceiptUrl(order.receipt.dataUrl),
         fileName: order.receipt.fileName || `receipt-${order.id}.webp`
       };
 
       if ($('receiptViewerOrderCode')) $('receiptViewerOrderCode').textContent = '#' + order.id;
-      if ($('receiptViewerImg')) $('receiptViewerImg').src = order.receipt.dataUrl;
+      if ($('receiptViewerImg')) $('receiptViewerImg').src = OrderUtils.safeReceiptUrl(order.receipt.dataUrl);
 
       const metaContainer = $('receiptViewerMeta');
       if (metaContainer) {
         metaContainer.innerHTML = `
           <div class="receipt-meta-grid">
             <div><span class="meta-label">تاريخ الطلب:</span> <strong>${esc(order.dateStr || (order.timestamp ? new Date(order.timestamp).toLocaleString('ar-EG') : '—'))}</strong></div>
-            <div><span class="meta-label">إجمالي المبلغ:</span> <strong>${order.total || 0} ج.م</strong></div>
+            <div><span class="meta-label">إجمالي المبلغ:</span> <strong>${esc(order.total || 0)} ج.م</strong></div>
             <div><span class="meta-label">وسيلة الدفع:</span> <strong>${esc(order.paymentMethod || '—')}</strong></div>
             ${order.customerAccount ? `<div><span class="meta-label">الحساب المستلم:</span> <strong>${esc(order.customerAccount)}</strong></div>` : ''}
             ${order.customerPhone ? `<div><span class="meta-label">هاتف العميل:</span> <strong dir="ltr">${esc(order.customerPhone)}</strong></div>` : ''}
@@ -3346,9 +3382,9 @@
         order = await window.KenoFirebase.getOrder(orderId);
       }
       if (!order) order = await KenoOrderStore.getOrder(orderId);
-      if (order && order.receipt?.dataUrl) {
+      if (order && OrderUtils.safeReceiptUrl(order.receipt?.dataUrl)) {
         const link = document.createElement('a');
-        link.href = order.receipt.dataUrl;
+        link.href = OrderUtils.safeReceiptUrl(order.receipt.dataUrl);
         link.download = order.receipt.fileName || `receipt-${order.id}.webp`;
         document.body.appendChild(link);
         link.click();
@@ -4710,21 +4746,21 @@
 
     try {
       // Stamp update timestamp
-      const updated = {
+      let updated = {
         ...JSON.parse(JSON.stringify(draft)),
         updatedAt: new Date().toISOString()
       };
 
       // Validate before publishing
       if (window.KenoCatalogParser || CatalogParser) {
-        (window.KenoCatalogParser || CatalogParser).validate(updated);
+        updated = (window.KenoCatalogParser || CatalogParser).validate(updated, { deferSizeCheck: true });
       }
 
       // --- PRE-PUBLISH: Auto-compress oversized images ---
       // GitHub API + Firestore have strict payload limits (~1MB / 1MB).
       // Base64 images can easily exceed this. We re-compress any image > 200KB.
       const IMAGE_MAX_BYTES = 200 * 1024; // 200KB per image threshold
-      const TOTAL_MAX_BYTES = 900 * 1024; // 900KB total catalog threshold
+      const TOTAL_MAX_BYTES = Config.MAX_BYTES || 800000;
 
       // Helper: recompress a single base64 image to target quality/dimensions
       async function recompressBase64(dataUrl, maxW, maxH, quality) {
@@ -4769,7 +4805,7 @@
 
       // Final size check after compression
       const serializer2 = window.KenoCatalogParser || CatalogParser;
-      const testSerialized = serializer2 ? serializer2.serialize(updated) : JSON.stringify(updated);
+      const testSerialized = JSON.stringify(updated);
       const testBytes = new TextEncoder().encode(testSerialized).length;
 
       if (testBytes > TOTAL_MAX_BYTES) {
@@ -4782,7 +4818,7 @@
           .join('، ');
 
         throw new Error(
-          `حجم ملف البيانات الإجمالي كبير جداً (${Math.round(testBytes / 1024)} كيلوبايت من أصل 900). ` +
+          `حجم ملف البيانات الإجمالي كبير جداً (${Math.round(testBytes / 1024)} كيلوبايت من أصل ${Math.floor(TOTAL_MAX_BYTES / 1024)}). ` +
           `يرجى تقليل حجم الصور المرفوعة أو عدد العروض. ` +
           (bigServices ? `الخدمات الأكبر حجماً: ${bigServices}. ` : '') +
           `نصيحة: احذف الصور الكبيرة واستبدلها بصور أصغر من قسم «صور الخدمات».`
@@ -4790,6 +4826,8 @@
       }
 
 
+
+      updated = serializer2.validate(updated);
 
       // --- TIER 1: Publish to Firestore (instant for visitors) ---
       let firestoreOK = false;
@@ -5047,6 +5085,7 @@
 
     async function applyAuthState(user) {
       if (!user) {
+        verifiedAdminEmail = '';
         if (loginBtn) {
           loginBtn.hidden = false;
           loginBtn.disabled = false;
@@ -5087,6 +5126,7 @@
         console.warn('Failed checking admin role:', err);
       }
 
+      verifiedAdminEmail = isAdmin ? String(user.email).toLowerCase().trim() : '';
       if (isAdmin) {
         if (adminBtn) adminBtn.hidden = false;
         if (navAdminLink) navAdminLink.hidden = false;
@@ -5260,6 +5300,8 @@
               const validated = CatalogParser.validate(liveCatalog);
               live = validated;
               renderStore();
+              if ($('serviceDialog').open) ensureServiceCurrent();
+              if (!$('cartDrawer').hidden) { renderCart(); setCheckoutStep(1); toast('اتحدثت بيانات الكتالوج؛ راجع السلة قبل الإرسال.'); }
               console.log('Storefront hydrated with live Firestore catalog.');
             } catch (parseErr) {
               console.warn('Live catalog from Firestore failed validation:', parseErr);

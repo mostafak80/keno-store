@@ -33,7 +33,7 @@
  body.keno-motion #catalog .results-meta { display:flex; align-items:center; justify-content:space-between; margin:4px 0 14px; padding:0; gap:12px; }
  body.keno-motion #resultsTitle { font-size:20px !important; color:var(--ink); display:flex; align-items:center; gap:8px; }
  #resultsTitle::before { content:'▦'; font:30px/1 Arial,sans-serif; color:var(--accent-readable); }
- body.keno-motion #resultCount { display:none; }
+ body.keno-motion #resultCount { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
  .mobile-category-label { display:block; max-width:42%; }
  body.keno-motion #mobileCategoryFilter { width:100%; min-height:44px; padding:6px 12px; border-radius:24px; background:var(--paper); color:var(--accent-readable); border:1px solid var(--line); font-size:14px !important; }
  body.keno-motion #serviceGrid[class] { gap:clamp(8px,var(--kd-mobile-gap,10px),20px) !important; direction:ltr; }
@@ -94,23 +94,31 @@
  #serviceDialog #serviceDialogBanner { display:none !important; width:0 !important; height:0 !important; margin:0 !important; padding:0 !important; overflow:hidden !important; border:0 !important; }
  body.keno-motion #serviceDialog .service-hero-name { font-size:20px !important; font-weight:800 !important; margin:0 0 2px !important; }
  body.keno-motion #serviceDialog .service-hero-desc { font-size:13px !important; line-height:1.5 !important; margin:0 !important; color:var(--muted); }
- .service-journey-steps { display:flex; list-style:none; margin:12px 0 20px; padding:0; justify-content:space-between; direction:ltr; }
- .service-journey-steps li { position:relative; display:flex; flex:1; align-items:center; flex-direction:column; gap:8px; color:var(--muted); font-size:13px; }
+ .service-journey-steps { display:flex; list-style:none; margin:8px 0 12px; padding:0; justify-content:space-between; direction:ltr; }
+ .service-journey-steps li { position:relative; display:flex; flex:1; align-items:center; flex-direction:column; gap:5px; color:var(--muted); font-size:13px; }
  .service-journey-steps li:not(:last-child)::after { content:''; width:calc(100% - 44px); position:absolute; top:21px; left:calc(50% + 22px); border-top:2px dotted #6233aa; }
- .service-journey-steps b { display:grid; place-items:center; width:42px; height:42px; border:1px solid #9467de; border-radius:50%; font:500 20px/1 Arial; background:#111329; }
+ .service-journey-steps b { display:grid; place-items:center; width:42px; height:42px; border:1px solid #9467de; border-radius:50%; font:500 20px/1 Arial; background:var(--paper); }
  .service-journey-steps .active { color:var(--ink); font-weight:800; }
  .service-journey-steps .active b { background:linear-gradient(140deg,#b841ff,#5120ed); border:2px solid #dbc5ff; box-shadow:0 0 16px #8a34ff99; color:#fff; }
  body.keno-motion #serviceDialog .checkout-step-section { border:1px solid var(--line); border-radius:18px; padding:12px; background:linear-gradient(145deg,#50239f0d,transparent); }
  body.keno-motion #serviceDialog .step-number-badge { display:none; }
- body.keno-motion #serviceDialog .checkout-step-header { margin-bottom:14px; }
+ body.keno-motion #serviceDialog .checkout-step-header { margin-bottom:8px; }
  body.keno-motion #serviceDialog .service-notes-card { margin-bottom:10px; padding:6px 10px; background:#50288812; border-color:#503772; color:var(--muted); }
  #serviceNotes summary { min-height:36px; cursor:pointer; }
  #planSelectionSection .step-desc { display:none; }
- body.keno-motion #serviceDialog .plan-tools { margin-bottom:12px; }
+ body.keno-motion #serviceDialog .plan-tools { margin-block:8px 0; order:3; }
+ body.keno-motion #planSelectionSection { display:flex; flex-direction:column; gap:8px; }
+ #planGroups { order:1; }
+ #planFilterStatus { order:2; }
+ #budgetSelectionNotice { order:4; }
+ #budgetSelectionNotice:empty { display:none; }
+ html[data-theme="light"] body.keno-motion { --plan-bg:#fff; --selected-plan-bg:#eee5ff; --payment-option-bg:#fff; }
+ html[data-theme="light"] body.keno-motion :is(#serviceDialog,#cartDrawer) { --accent-readable:#6330a2; }
+ html[data-theme="light"] body.keno-motion #serviceDialog .plan-price { color:#6330a2; }
  body.keno-motion #serviceDialog .plan-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; direction:ltr; }
- body.keno-motion #serviceDialog .plan-option { border:1px solid #353867; background:linear-gradient(150deg,#111a31,#040b19); border-radius:15px; padding:10px 5px 24px !important; min-height:138px; }
+ body.keno-motion #serviceDialog .plan-option { border:1px solid #353867; background:var(--plan-bg,linear-gradient(150deg,#111a31,#040b19)); border-radius:15px; padding:10px 5px 24px !important; min-height:138px; }
  body.keno-motion #serviceDialog .plan-option { direction:rtl; }
- body.keno-motion #serviceDialog .plan-option.selected { border:2px solid #ba6dff !important; box-shadow:0 0 10px #983aff66,inset 0 0 15px #8829ee22 !important; background:linear-gradient(160deg,#32166a,#0b0d27) !important; }
+ body.keno-motion #serviceDialog .plan-option.selected { border:2px solid #ba6dff !important; box-shadow:0 0 10px #983aff66,inset 0 0 15px #8829ee22 !important; background:var(--selected-plan-bg,linear-gradient(160deg,#32166a,#0b0d27)) !important; }
  body.keno-motion #serviceDialog .plan-option.selected .plan-selection-indicator { background:#9740f6; border-color:#c697ff; }
  #serviceDialog .plan-art { display:flex; position:relative; align-items:center; justify-content:center; color:#edc365; height:40px; margin-bottom:8px; filter:drop-shadow(0 3px 3px #000); }
  #serviceDialog .plan-art > .icon { width:40px; height:40px; stroke-width:1.4; }
@@ -128,7 +136,7 @@
  body.keno-motion :is(#serviceDialog,#cartDrawer) :is(input:not([type="checkbox"]):not([type="radio"]),textarea) { border-radius:13px; border:1px solid #343965; background:#19223a44; color:var(--ink); }
  body.keno-motion :is(#serviceDialog,#cartDrawer) input[type="checkbox"] { accent-color:#9a3dff; width:23px; height:23px; }
  body.keno-motion :is(#serviceDialog,#cartDrawer) .fulfillment-field { padding:14px; }
- body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector .payment-card-header { background:linear-gradient(140deg,#191434,#080e1f) !important; border-color:#36325e !important; box-shadow:none !important; }
+ body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector .payment-card-header { background:var(--payment-option-bg,linear-gradient(140deg,#191434,#080e1f)) !important; border-color:#36325e !important; box-shadow:none !important; }
  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-methods-selector .selected .payment-card-header { border-color:#b16aff !important; box-shadow:0 0 10px #9a35ff33 !important; }
  body.keno-motion :is(#serviceDialog,#cartDrawer) .payment-details-drawer { border-color:#554080 !important; }
  body.keno-motion :is(#serviceDialog,#cartDrawer) .drawer-copy-btn { background:#6f30bc !important; }

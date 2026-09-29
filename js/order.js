@@ -7,6 +7,13 @@
   'use strict';
 
   const KenoOrder = {
+    // Receipts are untrusted even when loaded from the admin's database.
+    safeReceiptUrl(value) {
+      return typeof value === 'string' && value.length <= 700000 && /^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(value) ? value : '';
+    },
+    isAvailable(service) {
+      return Boolean(service && service.visible !== false && service.available !== false && service.status !== 'unavailable');
+    },
     /**
      * Generates a unique, short order reference code (timestamp plus a random suffix; safe for repeated order creation).
      */

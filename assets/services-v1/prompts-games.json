@@ -1,0 +1,30 @@
+{
+  "mode": "built-in image_gen",
+  "status": "blocked",
+  "assets": [
+    {
+      "id": "pubg",
+      "prompt": "Use case: stylized-concept. Asset type: professional digital storefront service card, square 1024x1024 raster illustration. Primary request: PUBG Mobile premium cinematic cover art for a navy-violet mobile shop. Subject: a single iconic anonymous PUBG soldier with steel ballistic helmet and white shirt, upper body in central safe area, golden UC coin details and a distant battle royale island skyline at blue hour. Rich realistic 3D game key art, detailed metal and cloth, warm gold highlights with restrained violet rim lighting, deep midnight navy environment. Composition: main helmet and chest centered; all key information inside central half of image height so the same image crops well to2:1 desktop and1:1 mobile. Polished uncluttered impact at thumbnail size. Exact short brand text only: \"PUBG MOBILE\" subtly incorporated center-left beside subject. No prices, no ratings, no sales promises, no phone frame, no website UI, no extra text, no watermark.",
+      "status": "failed",
+      "error": "HTTP 400 moderation_blocked; output stage; category other",
+      "requestId": "436e490b-58df-4d8b-9d89-f9f9ec15716f",
+      "originalToolPath": null,
+      "outputs": []
+    }
+  ],
+  "notAttempted": [
+    "netflix",
+    "chatgpt",
+    "shahid",
+    "efootball",
+    "tiktok",
+    "pubg-korea",
+    "roblox",
+    "free-fire",
+    "fc-mobile",
+    "yalla-ludo",
+    "pubg-vietnam",
+    "mobile-legends",
+    "blood-strike"
+  ]
+}
