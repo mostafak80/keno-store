@@ -226,16 +226,19 @@
     containerEl.innerHTML = enabledMethods.map(pm => {
       const isSelected = pm.id === selectedId;
       const cleanName = esc(pm.name.replace(/\s*\([^)]*\)/g, ''));
+      const englishName = esc(({ 'vodafone-cash': 'Vodafone Cash', instapay: 'InstaPay', telda: 'Telda' })[pm.id]
+        || pm.name.match(/\(([A-Za-z][^)]*)\)/)?.[1] || '');
       return `
         <div class="payment-card ${isSelected ? 'selected' : ''}" data-pm-id="${esc(pm.id)}">
-          <div class="payment-card-header" role="button" tabindex="0" aria-label="${esc(pm.name)}" aria-expanded="${isSelected ? 'true' : 'false'}" aria-pressed="${isSelected ? 'true' : 'false'}">
+          <div class="payment-card-header" role="button" tabindex="0" aria-label="${cleanName}${englishName ? ' — ' + englishName : ''}" aria-expanded="${isSelected ? 'true' : 'false'}" aria-pressed="${isSelected ? 'true' : 'false'}">
             <span class="custom-radio ${isSelected ? 'checked' : ''}" aria-hidden="true"></span>
             <input type="radio" name="${esc(radioName)}" value="${esc(pm.id)}" ${isSelected ? 'checked' : ''} style="display:none;">
             <div class="payment-icon-wrap">
               ${icon(pm.icon || 'wallet-cards')}
             </div>
             <div class="payment-info-title">
-              <strong>${cleanName}</strong>
+              <strong dir="auto">${cleanName}</strong>
+              ${englishName ? `<span class="payment-name-en" lang="en" dir="ltr">${englishName}</span>` : ''}
             </div>
           </div>
 
@@ -4260,6 +4263,11 @@
       }
       if ($('mobileImageModeSame')?.checked) {
         service.mobileImage = '';
+      }
+      for (const [field, label] of [['image', 'الكمبيوتر'], ['mobileImage', 'الهاتف']]) {
+        if (service[field] && !ImageUtils.sanitizeUrl(service[field])) {
+          throw new Error(`صورة ${label}: استخدم رابط HTTPS صالحًا أو مسار صورة داخل assets/، أو ارفع الصورة من جهازك.`);
+        }
       }
       service.mobileShowWordmark = form.elements.mobileShowWordmark ? form.elements.mobileShowWordmark.checked : true;
       const st = form.elements.serviceStatus?.value || 'visible';

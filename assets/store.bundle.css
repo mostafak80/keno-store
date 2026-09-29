@@ -13857,6 +13857,16 @@ overflow: hidden !important;
 text-overflow: ellipsis !important;
 padding-inline: 2px !important;
 }
+.payment-info-title .payment-name-en {
+display: block;
+margin-top: 3px;
+color: var(--muted);
+font-family: Arial, sans-serif;
+font-size: 11px;
+font-weight: 500;
+line-height: 1.35;
+white-space: normal;
+}
 :is(#serviceDialog, #cartDrawer) .payment-methods-selector .custom-radio {
 position: absolute !important;
 top: 6px !important;
