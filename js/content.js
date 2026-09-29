@@ -48,6 +48,7 @@
 
   // Stable keys are stamped in HTML; only static storefront content is editable here.
   document.querySelectorAll('[data-content]').forEach(el=>{
+    if (el.closest('#heroFeature')) return;
     const section = getSection(el);
     [...el.childNodes].forEach((node,i)=>{
       if(node.nodeType!==3 || !node.textContent.trim() || dynamic.has(el.id))return;
@@ -86,7 +87,7 @@
     const vis = settings.sectionVisibility || {};
     for (const [id, visible] of Object.entries(vis)) {
       const el = $(id);
-      if (el) el.hidden = !visible || (id==='picks' && !$('picksGrid')?.children.length) || (id==='payments' && !$('paymentShowcaseGrid')?.children.length);
+      if (el && id !== 'heroFeature') el.hidden = !visible || (id==='picks' && !$('picksGrid')?.children.length) || (id==='payments' && !$('paymentShowcaseGrid')?.children.length);
     }
     const compMap = {
       announcement: document.querySelector('.announcement'),
@@ -95,7 +96,6 @@
       cartButton: $('cartButton') || document.querySelector('.cart-trigger'),
       heroSearches: document.querySelector('.hero-searches'),
       heroTags: document.querySelector('.hero-tags'),
-      heroFeature: $('heroFeature'),
       stageMiniOffers: $('stageMiniOffers'),
       catalogToolbar: document.querySelector('.catalog-toolbar'),
       categoryTabs: $('categoryTabs'),
@@ -104,6 +104,13 @@
     };
     for (const [key, el] of Object.entries(compMap)) {
       if (el && vis[key] !== undefined) el.hidden = vis[key] === false;
+    }
+    const feature = $('heroFeature');
+    if (feature) {
+      feature.hidden = feature.dataset.eligible !== 'true' || vis.heroFeature === false;
+      document.querySelector('.hero')?.classList.toggle('hero-without-feature', feature.hidden);
+      const stage = feature.closest('.hero-stage');
+      if (stage) stage.hidden = feature.hidden && (!$('stageMiniOffers')?.children.length || $('stageMiniOffers').hidden);
     }
 
     const base=settings.siteUrl || new URL('./',location.href).href.split('#')[0];

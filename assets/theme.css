@@ -63,10 +63,8 @@ html[data-theme="light"] .theme-sun { display:none; }
 body.keno-motion .theme-toggle:hover { color:var(--accent-readable); border-color:var(--accent-readable); transform:translateY(-1px); }
 body.keno-motion :is(a,button,[role="button"]):focus-visible { outline-color:var(--accent-readable) !important; }
 /* Fixed brand artwork keeps its own foreground/background pair in both themes. */
-body.keno-motion #heroFeature :is(#heroDescription,.hero-offer-icon) { color:#fff4f1 !important; }
 body.keno-motion #heroFeature .feature-word span:first-child { color:#fff; }
 body.keno-motion #heroFeature .feature-word span:last-child { color:#ffdf87; }
-body.keno-motion #heroActionButton { color:#71182b !important; background:#fff3da !important; }
 body.keno-motion #heroActionButton span { color:inherit; }
 body.keno-motion .pick-art { color:#28251f; }
 body.keno-motion .pick-card:nth-child(2) .pick-art { color:#fff; }

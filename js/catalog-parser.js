@@ -466,6 +466,8 @@
 
         featuredCard = {
           enabled: typeof fc.enabled === 'boolean' ? fc.enabled : true,
+          size: ['compact', 'standard', 'large'].includes(fc.size) ? fc.size : 'standard',
+          widthPercent: typeof fc.widthPercent === 'number' && Number.isFinite(fc.widthPercent) ? Math.min(100, Math.max(60, Math.round(fc.widthPercent))) : 100,
           badge: requireString(fc.badge || 'الأكثر طلبًا', 40, 'شارة البطاقة المميزة', true),
           icon,
           titleLine1: requireString(fc.titleLine1 || 'PLAY MORE', 60, 'السطر الأول للعنوان', true),
@@ -482,6 +484,8 @@
       } else {
         featuredCard = {
           enabled: true,
+          size: 'standard',
+          widthPercent: 100,
           badge: 'الأكثر طلبًا',
           icon: 'gamepad-2',
           titleLine1: 'PLAY MORE',

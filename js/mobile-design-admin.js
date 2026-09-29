@@ -125,7 +125,6 @@
       var el = $(p[0]); if(el) el.checked = !!s[p[1]];
     });
     if($('mdImageFit')) $('mdImageFit').value = s.imageFit || 'cover';
-    if($('mdShowWordmark')) $('mdShowWordmark').checked = s.showWordmark !== false;
     [['mdAccentColor','mdAccentColorText','accentColor'],['mdBgColor','mdBgColorText','bgColor'],['mdCardBgColor','mdCardBgColorText','cardBgColor'],['mdInkColor','mdInkColorText','inkColor'],['mdNavBgColor','mdNavBgColorText','navBgColor'],['mdHeaderBgColor','mdHeaderBgColorText','headerBgColor']].forEach(function(p){
       var v = (s[p[2]] || '#000000').slice(0,7);
       if($(p[0])) $(p[0]).value = v;
@@ -170,8 +169,6 @@
     });
     var fitEl = $('mdImageFit');
     if(fitEl) fitEl.addEventListener('change', function(e){ liveApply({ imageFit: e.target.value }); });
-    var wmEl = $('mdShowWordmark');
-    if(wmEl) wmEl.addEventListener('change', function(e){ liveApply({ showWordmark: e.target.checked }); });
     function wireColor(colorId, textId, key){
       var ci = $(colorId), ti = $(textId); if(!ci||!ti) return;
       ci.addEventListener('input', function(){ ti.value = ci.value; liveApply({ [key]: ci.value }); });

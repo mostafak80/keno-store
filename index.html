@@ -1961,18 +1961,6 @@
                 </select>
               </div>
 
-              <!-- Show gold wordmark badge on custom cards -->
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
-                <div>
-                  <strong style="font-size:13px;">✨ بادج الشعار/الاسم الذهبي (نمط ببجي)</strong>
-                  <p class="field-hint" style="margin:2px 0 0;font-size:11px;">إظهار أو إخفاء البادج الذهبي البارز أسفل صورة الخدمة على الموبايل</p>
-                </div>
-                <label class="design-toggle">
-                  <input type="checkbox" id="mdShowWordmark" checked>
-                  <span class="design-toggle-track"><span class="design-toggle-thumb"></span></span>
-                </label>
-              </div>
-
               <!-- Show price on card -->
               <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--line,#ffffff16);">
                 <div>
@@ -2286,12 +2274,22 @@
           <!-- Form controls -->
           <form id="featuredForm" class="panel">
             <div class="form-grid">
-              <div class="checkbox-group span-2">
+              <div class="checkbox-group span-2 featured-visibility-control">
                 <label class="checkbox-label" style="font-size: 0.95rem; font-weight: 800;">
                   <input type="checkbox" id="fcEnabledInput" checked>
                   <span>تفعيل وعرض البطاقة في الصفحة الرئيسية للزوار</span>
                 </label>
+                <button type="button" class="button button-outline small" id="fcVisibilityToggle" aria-pressed="true">إخفاء البطاقة</button>
+                <p class="field-hint">احفظ في المسودة لمعاينة التغيير بالموقع، ثم انشر التغييرات لتظهر للزوار.</p>
               </div>
+
+              <label>حجم البطاقة
+                <select id="fcSizeInput"><option value="compact">صغير</option><option value="standard" selected>متوسط</option><option value="large">كبير</option></select>
+              </label>
+              <label>عرض البطاقة <output id="fcWidthValue" for="fcWidthInput">100%</output>
+                <input type="range" id="fcWidthInput" min="60" max="100" step="5" value="100">
+                <span class="field-hint">نسبة من المساحة المتاحة؛ تتكيف تلقائيًا مع الشاشة.</span>
+              </label>
 
               <!-- Theme Color Selector -->
               <div class="span-2">
@@ -2401,6 +2399,7 @@
                 <span class="preview-badge">تحديث مباشر</span>
               </div>
               <div class="preview-container">
+                <p id="fcPreviewStatus" class="field-hint" role="status" aria-live="polite"></p>
                 <div class="hero-feature hero-theme-red" id="adminHeroPreview">
                   <div class="feature-top">
                     <span class="pill pill-light" id="previewBadge">الأكثر طلبًا</span>
@@ -2860,10 +2859,7 @@
                   <input name="mobileImage" id="editorMobileImage" type="text" inputmode="url" dir="ltr" spellcheck="false" placeholder="https://example.com/mobile-card-art.png أو assets/image.webp">
                 </label>
 
-                <label class="checkbox-label" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;cursor:pointer;font-size:12px;color:var(--ink,#fff);">
-                  <input type="checkbox" id="editorMobileShowWordmark" name="mobileShowWordmark" checked>
-                  <span>✨ إظهار بادج الشعار/الاسم الذهبي فوق الصورة (مثل كارت ببجي)</span>
-                </label>
+                <p class="field-hint">تظهر صورة الخدمة وحدها بدون إضافة اسم أو شعار فوقها.</p>
               </div>
 
               <!-- Mobile Mockup Preview when using same image -->

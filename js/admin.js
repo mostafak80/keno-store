@@ -513,6 +513,10 @@
 
     // --- Dynamic Featured Card Controller ---
     bindFeaturedEditor() {
+      $('fcVisibilityToggle')?.addEventListener('click', () => {
+        $('fcEnabledInput').checked = !$('fcEnabledInput').checked;
+        this.updateLivePreview();
+      });
       // Theme Chips Click
       document.querySelectorAll('#fcThemeSelector .theme-chip').forEach(chip => {
         chip.addEventListener('click', () => {
@@ -528,7 +532,7 @@
       [
         'fcEnabledInput', 'fcBadgeInput', 'fcTitle1Input', 'fcTitle2Input',
         'fcDescInput', 'fcQuantityInput', 'fcPriceInput', 'fcButtonTextInput',
-        'fcTaglineInput', 'fcIconSelect'
+        'fcTaglineInput', 'fcIconSelect', 'fcSizeInput', 'fcWidthInput'
       ].forEach(id => {
         $(id)?.addEventListener('input', () => this.updateLivePreview());
         $(id)?.addEventListener('change', () => this.updateLivePreview());
@@ -558,7 +562,7 @@
           const theme = document.querySelector('input[name="fcTheme"]:checked')?.value || 'red';
           const icon = $('fcIconSelect')?.value || 'gamepad-2';
 
-          const linkedService = draft.services.find(s => s.id === $('fcServiceSelect')?.value && s.visible);
+          const linkedService = draft.services.find(s => s.id === $('fcServiceSelect')?.value && s.visible && s.available !== false && s.status !== 'unavailable');
           const linkedPlan = linkedService?.plans?.find(p => p.id === $('fcPlanSelect')?.value && p.available);
           if ($('fcEnabledInput')?.checked && !linkedPlan) {
             throw new Error('اختار خدمة ظاهرة وعرض متاح للبطاقة الرئيسية.');
@@ -566,6 +570,8 @@
           this.updateLivePreview();
           draft.featuredCard = {
             enabled: $('fcEnabledInput')?.checked !== false,
+            size: $('fcSizeInput')?.value || 'standard',
+            widthPercent: Number($('fcWidthInput')?.value || 100),
             badge: $('fcBadgeInput')?.value.trim() || 'الأكثر طلبًا',
             icon,
             titleLine1: $('fcTitle1Input')?.value.trim() || 'PLAY MORE',
@@ -579,6 +585,10 @@
             theme,
             tagline: $('fcTaglineInput')?.value.trim() || 'KENO / FEATURED'
           };
+
+          // Keep the older page visibility control in sync with this card's switch.
+          draft.settings.sectionVisibility ||= {};
+          draft.settings.sectionVisibility.heroFeature = draft.featuredCard.enabled;
 
           if (typeof root.saveAdminDraft === 'function') {
             root.saveAdminDraft();
@@ -614,7 +624,9 @@
       };
 
       // Set values in inputs
-      if ($('fcEnabledInput')) $('fcEnabledInput').checked = fc.enabled !== false;
+      if ($('fcEnabledInput')) $('fcEnabledInput').checked = fc.enabled !== false && draft.settings.sectionVisibility?.heroFeature !== false;
+      if ($('fcSizeInput')) $('fcSizeInput').value = fc.size || 'standard';
+      if ($('fcWidthInput')) $('fcWidthInput').value = fc.widthPercent || 100;
       if ($('fcBadgeInput')) $('fcBadgeInput').value = fc.badge || '';
       if ($('fcTitle1Input')) $('fcTitle1Input').value = fc.titleLine1 || '';
       if ($('fcTitle2Input')) $('fcTitle2Input').value = fc.titleLine2 || '';
@@ -727,6 +739,17 @@
 
       // Update Theme Class
       previewCard.className = `hero-feature hero-theme-${theme}`;
+      previewCard.dataset.size = $('fcSizeInput')?.value || 'standard';
+      previewCard.style.setProperty('--feature-width', `${$('fcWidthInput')?.value || 100}%`);
+      if ($('fcWidthValue')) $('fcWidthValue').textContent = `${$('fcWidthInput')?.value || 100}%`;
+      const enabled = $('fcEnabledInput')?.checked !== false;
+      const available = service?.visible && service.available !== false && service.status !== 'unavailable' && plan;
+      previewCard.hidden = !enabled || !available;
+      if ($('fcVisibilityToggle')) {
+        $('fcVisibilityToggle').textContent = enabled ? 'إخفاء البطاقة' : 'إظهار البطاقة';
+        $('fcVisibilityToggle').setAttribute('aria-pressed', String(enabled));
+      }
+      if ($('fcPreviewStatus')) $('fcPreviewStatus').textContent = !enabled ? 'البطاقة مخفية. اضغط «إظهار البطاقة» لعرضها مجددًا.' : !available ? 'اختار خدمة ظاهرة وعرضًا متاحًا لعرض المعاينة.' : 'معاينة البطاقة — المقاس يتكيف مع المساحة المتاحة.';
 
       if ($('previewBadge')) $('previewBadge').textContent = badge;
       if ($('previewIcon')) $('previewIcon').innerHTML = `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${root.KENO_ICONS?.[icon] || ''}</svg>`;

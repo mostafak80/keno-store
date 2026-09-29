@@ -91,3 +91,17 @@ test('catalog import/export preserves all three payment methods and plan prices'
   assert.equal(target.window.KENO_CATALOG.paymentMethods.length,3);
   assert.equal(JSON.stringify(target.window.KENO_CATALOG.services.map(s => s.plans.map(p=>p.price))), JSON.stringify(catalog.services.map(s => s.plans.map(p=>p.price))));
 });
+
+test('featured card layout survives catalog export and rejects invalid sizing', () => {
+  const edited = clone(catalog);
+  Object.assign(edited.featuredCard, {enabled:false, size:'compact', widthPercent:75});
+  const serialized = context.window.KenoCatalogParser.serialize(edited);
+  const target = {window:{}}; vm.createContext(target); vm.runInContext(serialized,target);
+  const card = context.window.KenoCatalogParser.validate(target.window.KENO_CATALOG).featuredCard;
+  assert.equal(card.enabled,false); assert.equal(card.size,'compact'); assert.equal(card.widthPercent,75);
+  for (const [input,expected] of [[500,100],[-1,60],[null,100],['90%;color:red',100]]) {
+    Object.assign(edited.featuredCard, {size:'invalid',widthPercent:input});
+    const normalized=context.window.KenoCatalogParser.validate(edited).featuredCard;
+    assert.equal(normalized.size,'standard'); assert.equal(normalized.widthPercent,expected);
+  }
+});

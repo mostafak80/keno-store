@@ -502,6 +502,9 @@
     if (!heroFeatureEl) return;
 
     const isEnabled = cardData ? cardData.enabled !== false : true;
+    heroFeatureEl.dataset.eligible = 'false';
+    heroFeatureEl.dataset.size = cardData?.size || 'standard';
+    heroFeatureEl.style.setProperty('--feature-width', `${cardData?.widthPercent || 100}%`);
     if (!isEnabled) {
       heroFeatureEl.hidden = true;
       document.querySelector('.hero')?.classList.add('hero-without-feature');
@@ -529,6 +532,7 @@
       heroFeatureEl.hidden = true;
       return;
     }
+    heroFeatureEl.dataset.eligible = 'true';
 
     // Badge
     if ($('heroBadge')) {
@@ -3581,8 +3585,6 @@
     const mobileImgVal = form.elements.mobileImage?.value?.trim() || '';
     const badgeVal = form.elements.badge?.value?.trim() || '';
     const serviceName = form.elements.name?.value?.trim() || 'اسم الخدمة';
-    const wordmarkText = form.elements.mark?.value?.trim() || serviceName.split('—')[0].trim() || 'KENO';
-    const showWordmark = form.elements.mobileShowWordmark ? form.elements.mobileShowWordmark.checked : true;
 
     // 1. Desktop Image Preview
     if (desktopPreviewContainer) {
@@ -3628,7 +3630,6 @@
           <div class="mobile-mock-card" style="margin: 0 auto; max-width: 170px;">
             <div class="mobile-mock-visual">
               <img src="${esc(mobileImgVal)}" alt="معاينة كارت الموبايل" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23080c25\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%2394a3b8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-size=\\'10\\'>صورة غير صالحة</text></svg>'">
-              ${showWordmark ? `<b class="mobile-mock-wordmark">${esc(wordmarkText)}</b>` : ''}
             </div>
             <div class="mobile-mock-body">
               <div class="mobile-mock-title" dir="auto">${esc(serviceName)}</div>
@@ -3668,7 +3669,6 @@
           <div class="mobile-mock-card" style="margin: 0 auto; max-width: 170px;">
             <div class="mobile-mock-visual">
               <img src="${esc(imgVal)}" alt="معاينة الهاتف بصورة الكمبيوتر" loading="lazy">
-              ${showWordmark ? `<b class="mobile-mock-wordmark">${esc(wordmarkText)}</b>` : ''}
             </div>
             <div class="mobile-mock-body">
               <div class="mobile-mock-title" dir="auto">${esc(serviceName)}</div>
@@ -4237,7 +4237,7 @@
       color: form?.elements.color?.value || 'red',
       image: form?.elements.image?.value.trim() || '',
       mobileImage: form?.elements.mobileImage?.value.trim() || '',
-      mobileShowWordmark: form?.elements.mobileShowWordmark ? form.elements.mobileShowWordmark.checked : true,
+      mobileShowWordmark: false,
       visible: true,
       featured: Boolean(form?.elements.featured?.checked),
       plans: currentEditorPlans.length > 0 ? currentEditorPlans : [
@@ -4269,7 +4269,7 @@
           throw new Error(`صورة ${label}: استخدم رابط HTTPS صالحًا أو مسار صورة داخل assets/، أو ارفع الصورة من جهازك.`);
         }
       }
-      service.mobileShowWordmark = form.elements.mobileShowWordmark ? form.elements.mobileShowWordmark.checked : true;
+      service.mobileShowWordmark = false;
       const st = form.elements.serviceStatus?.value || 'visible';
       service.visible = st !== 'hidden';
       service.available = st === 'visible';

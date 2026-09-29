@@ -11,6 +11,16 @@ for (const file of ['js/config.js', 'js/image.js', 'js/service-art.js', 'js/cata
 }
 const {KenoServiceArt: art, KenoCatalogParser: parser, KENO_CATALOG: raw} = context.window;
 const clone = value => JSON.parse(JSON.stringify(value));
+context.document = {addEventListener(){}};
+vm.runInContext(fs.readFileSync(path.join(root,'js/mobile-ui.js'),'utf8'),context);
+
+test('mobile images have no added text even with a legacy wordmark enabled', () => {
+  for (const service of parser.validate(clone(raw)).services) {
+    const html = context.window.KenoMobileUI.artwork({...service,mobileShowWordmark:true});
+    assert.match(html, /<img /);
+    assert.doesNotMatch(html, /wordmark|art-caption|<b[ >]/);
+  }
+});
 test('every catalog service has real mobile and desktop WebP artwork', () => {
   for (const service of raw.services) for (const size of ['mobile', 'desktop']) {
     const file = fs.readFileSync(path.join(root, art[size](service.id)));
