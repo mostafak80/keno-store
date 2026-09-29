@@ -637,9 +637,10 @@
       const cat = data.categories.find(c => c.id === s.category);
       const toneClass = `tone-${s.color || 'red'}`;
 
-      const hasImage = Boolean(s.image);
-      const desktopVisualHtml = hasImage
-        ? `<img class="service-image" src="${esc(s.image)}" alt="${esc(s.name)}" loading="lazy" decoding="async" ${ImageUtils.getFallbackAttr?.() || ''}><span class="fallback-icon" style="display:none;">${icon(s.icon)}</span>`
+      const hasImage = Boolean(s.image || window.KenoServiceArt?.desktop(s.id));
+      const resolvedImage = s.image || window.KenoServiceArt?.desktop(s.id) || '';
+      const desktopVisualHtml = resolvedImage
+        ? `<img class="service-image" src="${esc(resolvedImage)}" alt="${esc(s.name)}" loading="lazy" decoding="async" ${ImageUtils.getFallbackAttr?.() || ''}><span class="fallback-icon" style="display:none;">${icon(s.icon)}</span>`
         : `${icon(s.icon)}<span class="card-mark" dir="auto">${esc(s.mark || 'KENO')}</span>`;
 
       const visualHtml = `

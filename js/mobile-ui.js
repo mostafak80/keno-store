@@ -5,7 +5,7 @@
   const brands={netflix:'netflix',chatgpt:'openai',gemini:'googlegemini',music:'spotify',tiktok:'tiktok','tiktok-ads':'tiktok','instagram-ads':'instagram',roblox:'roblox','google-play':'googleplay','facebook-ads':'facebook','facebook-pages':'facebook',paypal:'paypal'};
   function artwork(service){
     const id=service.id,brand=brands[id];
-    const customImg = service.mobileImage || service.image;
+    const customImg = service.mobileImage || service.image || root.KenoServiceArt?.mobile(id) || root.KenoServiceArt?.desktop(id);
     if(customImg){
       const word = id==='shahid'?'شاهد':service.mark||service.name.split('—')[0].trim();
       const showWordmark = service.mobileShowWordmark !== false;

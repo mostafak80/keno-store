@@ -62,7 +62,8 @@
     if ($('picks')) $('picks').hidden = picks.length === 0;
     if ($('picksGrid')) $('picksGrid').innerHTML = picks.map(({service: s, plan: p}) => {
       const category = data.categories.find(c => c.id === s.category);
-      const image = s.image ? `<img src="${esc(s.image)}" alt="" loading="lazy" decoding="async">` : '';
+      const imgSrc = s.image || root.KenoServiceArt?.desktop(s.id) || '';
+      const image = imgSrc ? `<img src="${esc(imgSrc)}" alt="" loading="lazy" decoding="async">` : '';
       return `<button type="button" class="pick-card" data-open-service="${esc(s.id)}" data-plan="${esc(p.id)}" aria-label="${esc(`${s.name}، ${p.label}، ${money(p.price)} جنيه`)}">
         <span class="pick-art">${image || `<strong dir="auto">${esc(s.mark || s.name)}</strong>${icon(s.icon)}`}</span>
         <span class="pick-content"><small>${esc(category?.name || '')}</small><b>${esc(s.name)}</b><span class="pick-plan">${esc(p.label)}</span>
