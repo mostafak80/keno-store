@@ -324,13 +324,16 @@
           : '';
 
         // Safe Image handling
-        const image = root.KenoImage
+        const sourceImage = root.KenoImage
           ? root.KenoImage.sanitizeUrl(service.image)
           : (typeof service.image === 'string' ? service.image.trim() : '');
 
-        const mobileImage = root.KenoImage
+        const sourceMobileImage = root.KenoImage
           ? root.KenoImage.sanitizeUrl(service.mobileImage)
           : (typeof service.mobileImage === 'string' ? service.mobileImage.trim() : '');
+
+        const image = root.KenoServiceArt?.upgrade?.(sourceImage, service.id) ?? sourceImage;
+        const mobileImage = root.KenoServiceArt?.upgrade?.(sourceMobileImage, service.id) ?? sourceMobileImage;
 
         return {
           id: service.id,
@@ -342,7 +345,7 @@
           color,
           image: image || root.KenoServiceArt?.desktop(service.id) || '',
           mobileImage: mobileImage || (!image ? root.KenoServiceArt?.mobile(service.id) : '') || '',
-          mobileShowWordmark: service.mobileShowWordmark === true || (service.mobileShowWordmark !== false && Boolean(image || mobileImage) && ![image,mobileImage].some(url => url.startsWith('assets/services-v1/'))),
+          mobileShowWordmark: service.mobileShowWordmark === true || (service.mobileShowWordmark !== false && Boolean(image || mobileImage) && ![image,mobileImage].some(url => /^assets\/services-(?:v1|glass-v2)\//.test(url))),
           aliases,
           badge,
           plans: validPlans,

@@ -14643,6 +14643,7 @@ body.keno-motion .cart-body { flex:0 0 auto; overflow:visible; }
 }
 .mobile-service-art,.mobile-service-name,.mobile-brand-name,.mobile-category-label,.plan-art,.service-journey-steps,.mobile-review-heading,.review-service-art,.invoice-item-art { display:none; }
 .desktop-card-visual { display: contents; }
+.card-visual.has-image .service-image[src*="assets/services-glass-v2/"] { object-fit:contain; background:#070e22; }
 .mobile-more-dialog { width:min(420px,calc(100% - 24px)); padding:20px; border:1px solid var(--line); border-radius:22px; background:var(--paper); color:var(--ink); }
 .mobile-more-dialog .button,.mobile-more-dialog > a,.mobile-more-dialog > label { display:flex; width:100%; margin-block:10px; min-height:44px; align-items:center; }
 .mobile-more-dialog > label { flex-direction:column; align-items:stretch; gap:8px; }
