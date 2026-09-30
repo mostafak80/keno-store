@@ -13181,6 +13181,22 @@ html { scroll-behavior: auto !important; }
 }
 .keno-motion .hero-offer-icon { display: grid; place-items: center; width: 32px; height: 32px; color: #fff; }
 .keno-motion .hero-offer-icon .icon { width: 31px; height: 31px; }
+@media (min-width:781px) {
+body.keno-motion:not(.kd-preview-mobile) #categoryTabs {
+display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px;
+overflow:visible; padding:0; margin:0 0 16px;
+}
+body.keno-motion:not(.kd-preview-mobile) #categoryTabs button {
+min-width:0; width:100%; min-height:48px; justify-content:flex-start;
+white-space:normal; text-align:start; gap:8px; padding:10px 14px;
+}
+body.keno-motion:not(.kd-preview-mobile) #categoryTabs button[data-category="all"] {
+grid-column:1 / -1; width:auto; justify-self:start;
+}
+body.keno-motion:not(.kd-preview-mobile) #categoryTabs .icon,
+body.keno-motion:not(.kd-preview-mobile) #categoryTabs .category-count { flex-shrink:0; }
+body.keno-motion:not(.kd-preview-mobile) #categoryTabs .category-count { margin-inline-start:auto; }
+}
 html { color-scheme: dark; background: #101114; }
 html[data-theme="light"] { color-scheme: light; background: #f5f6f8; }
 html body.keno-motion {
