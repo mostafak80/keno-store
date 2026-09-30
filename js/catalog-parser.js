@@ -15,6 +15,56 @@
     return value.trim();
   }
 
+  // Migrate only known old names from saved catalogs; owner-renamed services stay editable.
+  const bilingualNames = {
+    "pubg": ["ببجي العالمية","ببجي العالمية — PUBG Global"],
+    "netflix": ["نتفليكس — أفلام ومسلسلات","نتفليكس — Netflix"],
+    "chatgpt": ["شات جي بي تي — مساعد للكتابة والدراسة","شات جي بي تي — ChatGPT"],
+    "shahid": ["شاهد — مسلسلات وبرامج عربية","شاهد — Shahid"],
+    "efootball": ["بيس إي فوتبول — شحن كوينز","بيس إي فوتبول — eFootball"],
+    "tiktok": ["تيك توك — شحن عملات","شحن عملات تيك توك — TikTok Coins"],
+    "pubg-korea": ["ببجي الكورية","ببجي الكورية — PUBG Korea"],
+    "roblox": ["روبلوكس — شحن روبوكس","روبلوكس — Roblox"],
+    "free-fire": ["فري فاير — جواهر وعضويات","فري فاير — Free Fire"],
+    "fc-mobile": ["إف سي موبايل — شحن عملات","إف سي موبايل — FC Mobile"],
+    "yalla-ludo": ["يلا لودو — شحن ذهب وجواهر","يلا لودو — Yalla Ludo"],
+    "pubg-vietnam": ["ببجي الفيتنامية","ببجي الفيتنامية — PUBG Vietnam"],
+    "mobile-legends": ["موبايل ليجندز — شحن عملات","موبايل ليجندز — Mobile Legends"],
+    "blood-strike": ["بلود سترايك — شحن اللعبة","بلود سترايك — Blood Strike"],
+    "coin-master": ["كوين ماستر — شحن اللعبة","كوين ماستر — Coin Master"],
+    "other-games": ["أي لعبة أخرى","أي لعبة أخرى — Other Games"],
+    "osn": ["أو إس إن بلس — أفلام ومسلسلات","أو إس إن بلس — OSN+"],
+    "yango": ["يانجو بلاي — مشاهدة وترفيه","يانجو بلاي — Yango Play"],
+    "crunchyroll": ["كرانشي رول — مشاهدة أنمي","كرانشي رول — Crunchyroll"],
+    "iptv": ["آي بي تي في — عروض مشاهدة","آي بي تي في — IPTV"],
+    "music": ["اشتراكات الموسيقى","اشتراكات الموسيقى — Music Subscriptions"],
+    "gemini": ["جيميني — مساعد جوجل الذكي","جيميني — Google Gemini"],
+    "claude": ["كلود — مساعد للكتابة والبرمجة","كلود — Claude"],
+    "other-ai": ["أي منصة ذكاء اصطناعي","أي منصة ذكاء اصطناعي — Other AI Platforms"],
+    "google-play": ["جوجل بلاي — تطبيقات وألعاب","جوجل بلاي — Google Play"],
+    "app-store": ["آب ستور — تطبيقات آيفون","آب ستور — App Store"],
+    "software": ["البرامج والخدمات المدفوعة","البرامج والخدمات الرقمية — Software & Digital Services"],
+    "renew": ["الاشتراكات والتجديد","تجديد الاشتراكات — Subscription Renewals"],
+    "courses": ["دفع الكورسات","دفع الكورسات — Course Payments"],
+    "websites": ["دفع المواقع والاشتراكات","دفع المواقع والاشتراكات — Website & Subscription Payments"],
+    "paypal": ["باي بال — تحويل رصيد","تحويلات باي بال — PayPal Transfers"],
+    "online-buy": ["الشراء أونلاين","الشراء أونلاين — Online Shopping"],
+    "facebook-ads": ["فيسبوك — إعلانات ممولة","إعلانات فيسبوك — Facebook Ads"],
+    "instagram-ads": ["إنستجرام — إعلانات ممولة","إعلانات إنستجرام — Instagram Ads"],
+    "tiktok-ads": ["تيك توك — إعلانات ممولة","إعلانات تيك توك — TikTok Ads"],
+    "snapchat-ads": ["سناب شات — إعلانات ممولة","إعلانات سناب شات — Snapchat Ads"],
+    "campaigns": ["إدارة الحملات الإعلانية","إدارة الحملات الإعلانية — Ad Campaign Management"],
+    "design": ["التصميم والمحتوى الإعلاني","التصميم والمحتوى الإعلاني — Design & Ad Content"],
+    "facebook-pages": ["فيسبوك — صفحات متاحة","صفحات فيسبوك — Facebook Pages"],
+    "social-setup": ["تجهيز وإدارة الصفحات","تجهيز وإدارة الصفحات — Social Media Setup & Management"],
+    "custom-service": ["خدمة رقمية حسب طلبك","خدمة رقمية حسب طلبك — Custom Digital Service"]
+  };
+  function serviceName(service) {
+    const name = requireString(service.name, 100, 'اسم الخدمة');
+    const entry = Object.hasOwn(bilingualNames, service.id) ? bilingualNames[service.id] : null;
+    return entry && (name === entry[0] || name === entry[0].split('—')[0].trim()) ? entry[1] : name;
+  }
+
   function validId(id) {
     return typeof id === 'string' && /^[a-z0-9][a-z0-9-]{0,79}$/.test(id);
   }
@@ -337,7 +387,7 @@
 
         return {
           id: service.id,
-          name: requireString(service.name, 100, 'اسم الخدمة'),
+          name: serviceName(service),
           category: service.category,
           description: requireString(service.description, 500, 'وصف الخدمة'),
           mark: requireString(service.mark || 'KENO', 20, 'شعار البطاقة'),

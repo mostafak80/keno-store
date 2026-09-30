@@ -14,6 +14,14 @@ for (const file of ['js/config.js','js/catalog-parser.js','js/search.js','js/ord
 const raw = context.window.KENO_CATALOG;
 const catalog = context.window.KenoCatalogParser.validate(raw);
 const clone = v => JSON.parse(JSON.stringify(v));
+test('bilingual service names migrate saved defaults while preserving owner edits', () => {
+  for (const service of catalog.services) assert.match(service.name, /[\u0600-\u06ff].* — [A-Za-z]/);
+  const saved = clone(catalog), netflix = saved.services.find(s => s.id === 'netflix');
+  netflix.name = 'نتفليكس — أفلام ومسلسلات';
+  assert.equal(context.window.KenoCatalogParser.validate(saved).services.find(s => s.id === 'netflix').name, 'نتفليكس — Netflix');
+  netflix.name = 'باقة نتفليكس الخاصة — Netflix Family';
+  assert.equal(context.window.KenoCatalogParser.validate(saved).services.find(s => s.id === 'netflix').name, netflix.name);
+});
 test('existing catalog validates and all plan prices survive validation', () => {
   assert.equal(catalog.services.length, raw.services.length);
   for (const s of raw.services) for (const p of s.plans || []) {

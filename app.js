@@ -695,7 +695,7 @@
               ${s.plans?.length ? `<span class="plans-count-tag">${s.plans.length} عروض</span>` : ''}
               ${s.featured ? '<span class="featured-tag">مختارات كينو</span>' : ''}
             </div>
-            <h3 dir="auto"><span class="desktop-service-name">${esc(s.name)}</span><span class="mobile-service-name">${esc(s.name.split('—')[0].trim())}</span></h3>
+            <h3 dir="auto"><span class="desktop-service-name">${esc(s.name)}</span><span class="mobile-service-name">${esc(s.name)}</span></h3>
             <p class="card-description" dir="auto">${esc(s.description || 'خدمة رقمية فورية مع عروض متعددة وضمان كامل.')}</p>
             <div class="card-footer">
               <div class="card-price">

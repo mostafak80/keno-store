@@ -103,7 +103,7 @@ window.KENO_CATALOG = {
   "services": [
     {
       "id": "pubg",
-      "name": "ببجي العالمية",
+      "name": "ببجي العالمية — PUBG Global",
       "category": "games",
       "description": "شدات PUBG Mobile العالمية، بكميات تناسب لعبك.",
       "mark": "PUBG",
@@ -333,7 +333,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "netflix",
-      "name": "نتفليكس — أفلام ومسلسلات",
+      "name": "نتفليكس — Netflix",
       "category": "entertainment",
       "description": "أفلام ومسلسلات، وملف مشاهدة خاص باسمك.",
       "mark": "NETFLIX",
@@ -413,7 +413,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "chatgpt",
-      "name": "شات جي بي تي — مساعد للكتابة والدراسة",
+      "name": "شات جي بي تي — ChatGPT",
       "category": "ai",
       "description": "للدراسة والبرمجة وكتابة المحتوى وتحليل الملفات.",
       "mark": "GPT",
@@ -471,7 +471,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "shahid",
-      "name": "شاهد — مسلسلات وبرامج عربية",
+      "name": "شاهد — Shahid",
       "category": "entertainment",
       "description": "مسلسلات وبرامج عربية، مع خيارات اشتراك متعددة.",
       "mark": "SHAHID",
@@ -551,7 +551,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "efootball",
-      "name": "بيس إي فوتبول — شحن كوينز",
+      "name": "بيس إي فوتبول — eFootball",
       "category": "games",
       "description": "كوينز بيس العادية والعروض الخاصة المتاحة لحسابك.",
       "mark": "PES",
@@ -701,7 +701,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "tiktok",
-      "name": "تيك توك — شحن عملات",
+      "name": "شحن عملات تيك توك — TikTok Coins",
       "category": "social",
       "description": "اختار عدد العملات المناسب لحساب تيك توك.",
       "mark": "TikTok",
@@ -819,7 +819,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "pubg-korea",
-      "name": "ببجي الكورية",
+      "name": "ببجي الكورية — PUBG Korea",
       "category": "games",
       "description": "شحن شدات PUBG Mobile Korea.",
       "mark": "PUBG KR",
@@ -968,7 +968,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "roblox",
-      "name": "روبلوكس — شحن روبوكس",
+      "name": "روبلوكس — Roblox",
       "category": "games",
       "description": "Robux لعروض صغيرة أو كميات أكبر.",
       "mark": "ROBLOX",
@@ -1110,7 +1110,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "free-fire",
-      "name": "فري فاير — جواهر وعضويات",
+      "name": "فري فاير — Free Fire",
       "category": "games",
       "description": "جواهر فري فاير، عضويات وعروض المستوى.",
       "mark": "FREE FIRE",
@@ -1251,7 +1251,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "fc-mobile",
-      "name": "إف سي موبايل — شحن عملات",
+      "name": "إف سي موبايل — FC Mobile",
       "category": "games",
       "description": "شحن Silver وFIFA Points بالكميات المتاحة.",
       "mark": "FC",
@@ -1392,7 +1392,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "yalla-ludo",
-      "name": "يلا لودو — شحن ذهب وجواهر",
+      "name": "يلا لودو — Yalla Ludo",
       "category": "games",
       "description": "شحن جواهر وذهب يلا لودو بالـ ID.",
       "mark": "LUDO",
@@ -1501,7 +1501,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "pubg-vietnam",
-      "name": "ببجي الفيتنامية",
+      "name": "ببجي الفيتنامية — PUBG Vietnam",
       "category": "games",
       "description": "شحن PUBG Vietnam؛ السعر حسب الكمية.",
       "mark": "PUBG VN",
@@ -1537,7 +1537,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "mobile-legends",
-      "name": "موبايل ليجندز — شحن عملات",
+      "name": "موبايل ليجندز — Mobile Legends",
       "category": "games",
       "description": "شحن عملات موبايل ليجندز حسب العرض.",
       "mark": "ML",
@@ -1574,7 +1574,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "blood-strike",
-      "name": "بلود سترايك — شحن اللعبة",
+      "name": "بلود سترايك — Blood Strike",
       "category": "games",
       "description": "شحن اللعبة بالكميات المتاحة.",
       "mark": "BS",
@@ -1611,7 +1611,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "coin-master",
-      "name": "كوين ماستر — شحن اللعبة",
+      "name": "كوين ماستر — Coin Master",
       "category": "games",
       "description": "طلبات شحن كوين ماستر حسب المتاح.",
       "mark": "CM",
@@ -1648,7 +1648,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "other-games",
-      "name": "أي لعبة أخرى",
+      "name": "أي لعبة أخرى — Other Games",
       "category": "games",
       "description": "ابعت اسم اللعبة والكمية أو الإضافة المطلوبة.",
       "mark": "PLAY",
@@ -1684,7 +1684,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "osn",
-      "name": "أو إس إن بلس — أفلام ومسلسلات",
+      "name": "أو إس إن بلس — OSN+",
       "category": "entertainment",
       "description": "اشتراكات مشاهدة حسب المدة والخطة المتاحة.",
       "mark": "OSN+",
@@ -1721,7 +1721,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "yango",
-      "name": "يانجو بلاي — مشاهدة وترفيه",
+      "name": "يانجو بلاي — Yango Play",
       "category": "entertainment",
       "description": "اشتراكات يانجو بلاي؛ اسأل عن المدد المتاحة.",
       "mark": "YANGO",
@@ -1758,7 +1758,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "crunchyroll",
-      "name": "كرانشي رول — مشاهدة أنمي",
+      "name": "كرانشي رول — Crunchyroll",
       "category": "entertainment",
       "description": "اشتراكات الأنمي حسب الخطة المتاحة.",
       "mark": "CRUNCHY",
@@ -1795,7 +1795,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "iptv",
-      "name": "آي بي تي في — عروض مشاهدة",
+      "name": "آي بي تي في — IPTV",
       "category": "entertainment",
       "description": "اسأل عن العروض والمحتوى والأجهزة المدعومة.",
       "mark": "IPTV",
@@ -1832,7 +1832,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "music",
-      "name": "اشتراكات الموسيقى",
+      "name": "اشتراكات الموسيقى — Music Subscriptions",
       "category": "entertainment",
       "description": "اشتراكات منصات الموسيقى والترفيه حسب المتاح.",
       "mark": "MUSIC",
@@ -1868,7 +1868,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "gemini",
-      "name": "جيميني — مساعد جوجل الذكي",
+      "name": "جيميني — Google Gemini",
       "category": "ai",
       "description": "اشتراكات أدوات Google للذكاء الاصطناعي حسب الخطة.",
       "mark": "GEMINI",
@@ -1905,7 +1905,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "claude",
-      "name": "كلود — مساعد للكتابة والبرمجة",
+      "name": "كلود — Claude",
       "category": "ai",
       "description": "اشتراكات كلود للكتابة والتحليل والبرمجة.",
       "mark": "CLAUDE",
@@ -1942,7 +1942,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "other-ai",
-      "name": "أي منصة ذكاء اصطناعي",
+      "name": "أي منصة ذكاء اصطناعي — Other AI Platforms",
       "category": "ai",
       "description": "ابعت اسم الأداة والخطة المطلوبة للتسعير.",
       "mark": "AI",
@@ -1978,7 +1978,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "google-play",
-      "name": "جوجل بلاي — تطبيقات وألعاب",
+      "name": "جوجل بلاي — Google Play",
       "category": "apps",
       "description": "شراء التطبيقات والألعاب والاشتراكات المتاحة.",
       "mark": "PLAY",
@@ -2015,7 +2015,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "app-store",
-      "name": "آب ستور — تطبيقات آيفون",
+      "name": "آب ستور — App Store",
       "category": "apps",
       "description": "شراء تطبيقات وألعاب واشتراكات أجهزة Apple.",
       "mark": "APP",
@@ -2052,7 +2052,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "software",
-      "name": "البرامج والخدمات المدفوعة",
+      "name": "البرامج والخدمات الرقمية — Software & Digital Services",
       "category": "apps",
       "description": "شراء وتفعيل البرامج والخدمات الإلكترونية حسب المتاح.",
       "mark": "APPS",
@@ -2088,7 +2088,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "renew",
-      "name": "الاشتراكات والتجديد",
+      "name": "تجديد الاشتراكات — Subscription Renewals",
       "category": "apps",
       "description": "اشتراك أو تجديد لتطبيقك أو منصتك الحالية.",
       "mark": "RENEW",
@@ -2124,7 +2124,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "courses",
-      "name": "دفع الكورسات",
+      "name": "دفع الكورسات — Course Payments",
       "category": "payments",
       "description": "ابعت رابط الكورس وقيمته لمعرفة تكلفة الدفع.",
       "mark": "LEARN",
@@ -2170,7 +2170,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "websites",
-      "name": "دفع المواقع والاشتراكات",
+      "name": "دفع المواقع والاشتراكات — Website & Subscription Payments",
       "category": "payments",
       "description": "دفع اشتراك أي موقع أو خدمة إلكترونية متاحة.",
       "mark": "WEB",
@@ -2216,7 +2216,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "paypal",
-      "name": "باي بال — تحويل رصيد",
+      "name": "تحويلات باي بال — PayPal Transfers",
       "category": "payments",
       "description": "اسأل عن قيمة التحويل والرسوم قبل التنفيذ.",
       "mark": "PayPal",
@@ -2263,7 +2263,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "online-buy",
-      "name": "الشراء أونلاين",
+      "name": "الشراء أونلاين — Online Shopping",
       "category": "payments",
       "description": "شراء الخدمات الرقمية أونلاين حسب طلبك.",
       "mark": "BUY",
@@ -2309,7 +2309,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "facebook-ads",
-      "name": "فيسبوك — إعلانات ممولة",
+      "name": "إعلانات فيسبوك — Facebook Ads",
       "category": "marketing",
       "description": "إعداد إعلان ممول حسب الهدف والميزانية.",
       "mark": "FACEBOOK",
@@ -2356,7 +2356,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "instagram-ads",
-      "name": "إنستجرام — إعلانات ممولة",
+      "name": "إعلانات إنستجرام — Instagram Ads",
       "category": "marketing",
       "description": "إعلانات ممولة للوصول إلى جمهورك المناسب.",
       "mark": "INSTAGRAM",
@@ -2403,7 +2403,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "tiktok-ads",
-      "name": "تيك توك — إعلانات ممولة",
+      "name": "إعلانات تيك توك — TikTok Ads",
       "category": "marketing",
       "description": "تجهيز وإدارة الإعلان حسب نشاطك وهدفك.",
       "mark": "TIKTOK",
@@ -2450,7 +2450,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "snapchat-ads",
-      "name": "سناب شات — إعلانات ممولة",
+      "name": "إعلانات سناب شات — Snapchat Ads",
       "category": "marketing",
       "description": "حملات إعلانية ممولة حسب الميزانية.",
       "mark": "SNAP",
@@ -2497,7 +2497,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "campaigns",
-      "name": "إدارة الحملات الإعلانية",
+      "name": "إدارة الحملات الإعلانية — Ad Campaign Management",
       "category": "marketing",
       "description": "إعداد ومتابعة الحملات على منصات السوشيال ميديا.",
       "mark": "ADS",
@@ -2543,7 +2543,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "design",
-      "name": "التصميم والمحتوى الإعلاني",
+      "name": "التصميم والمحتوى الإعلاني — Design & Ad Content",
       "category": "marketing",
       "description": "صور وبوستات ومحتوى للإعلان، وتصميمات مجانية مع الإعلانات الممولة.",
       "mark": "DESIGN",
@@ -2579,7 +2579,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "facebook-pages",
-      "name": "فيسبوك — صفحات متاحة",
+      "name": "صفحات فيسبوك — Facebook Pages",
       "category": "social",
       "description": "استفسر عن الصفحات المتاحة وتفاصيل كل صفحة.",
       "mark": "PAGES",
@@ -2616,7 +2616,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "social-setup",
-      "name": "تجهيز وإدارة الصفحات",
+      "name": "تجهيز وإدارة الصفحات — Social Media Setup & Management",
       "category": "social",
       "description": "تجهيز صفحات السوشيال وتحسين وجود نشاطك الرقمي.",
       "mark": "SOCIAL",
@@ -2662,7 +2662,7 @@ window.KENO_CATALOG = {
     },
     {
       "id": "custom-service",
-      "name": "خدمة رقمية حسب طلبك",
+      "name": "خدمة رقمية حسب طلبك — Custom Digital Service",
       "category": "custom",
       "description": "محتاج خدمة مش موجودة؟ ابعت تفاصيلها ونساعدك في تنفيذها.",
       "mark": "KENO",
