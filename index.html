@@ -801,12 +801,12 @@
         <button type="button" id="serviceImagesTab" role="tab" aria-selected="false" aria-controls="adminServiceImages" data-admin-tab="adminServiceImages" tabindex="-1" style="position:relative;">
           <i data-icon="image"></i>
           <span>صور الخدمات</span>
-          <span style="position:absolute;top:4px;inset-inline-end:6px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
+          <span class="admin-new-badge" style="position:absolute;top:4px;inset-inline-end:6px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
         </button>
         <button type="button" id="textsTab" role="tab" aria-selected="false" aria-controls="adminTexts" data-admin-tab="adminTexts" tabindex="-1" style="position:relative;">
           <i data-icon="file-text"></i>
           <span>نصوص وكلمات الموقع</span>
-          <span style="position:absolute;top:4px;inset-inline-end:6px;background:var(--red,#e52d3f);color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
+          <span class="admin-new-badge" style="position:absolute;top:4px;inset-inline-end:6px;background:var(--red,#e52d3f);color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
         </button>
         <button type="button" id="settingsTab" role="tab" aria-selected="false" aria-controls="adminSettings" data-admin-tab="adminSettings" tabindex="-1">
           <i data-icon="settings-2"></i>
@@ -823,7 +823,7 @@
         <button type="button" id="mobileDesignTab" role="tab" aria-selected="false" aria-controls="adminMobileDesign" data-admin-tab="adminMobileDesign" tabindex="-1" style="position:relative;">
           <i data-icon="smartphone"></i>
           <span>شكل الموبايل</span>
-          <span style="position:absolute;top:4px;inset-inline-end:6px;background:#ffce50;color:#1a1500;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
+          <span class="admin-new-badge" style="position:absolute;top:4px;inset-inline-end:6px;background:#ffce50;color:#1a1500;font-size:9px;font-weight:900;padding:1px 5px;border-radius:4px;line-height:1.4;">جديد</span>
         </button>
       </div>
 
@@ -2240,7 +2240,7 @@
           <!-- ─────────────────────────────────────────────────────
                زر الحفظ النهائي
                ───────────────────────────────────────────────────── -->
-          <div style="background:linear-gradient(135deg,rgba(255,206,80,0.08),rgba(25,27,32,0.9));border:2px solid rgba(255,206,80,0.4);border-radius:16px;padding:20px;text-align:center;">
+          <div class="admin-guidance-surface" style="background:linear-gradient(135deg,rgba(255,206,80,0.08),rgba(25,27,32,0.9));border:2px solid rgba(255,206,80,0.4);border-radius:16px;padding:20px;text-align:center;">
             <p style="font-size:14px;margin:0 0 12px;color:var(--ink,#f7f6f2);">📱 لما تخلص التعديلات، اضغط الزر ده وهتشوف التغييرات على أي هاتف فوراً</p>
             <p class="field-hint" style="margin:0 0 16px;">⚠️ التعديلات دي بتأثر على الموبايل بس — مش بتأثر على شكل الموقع على الكمبيوتر</p>
             <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
@@ -3245,7 +3245,7 @@
             </div>
             <div class="info-row">
               <span class="info-label">حالة الطلب:</span>
-              <span id="orderModalStatusBadge" class="status-pill">قيد الانتظار</span>
+              <span id="orderModalStatusBadge" class="status-pill status-pending">قيد الانتظار</span>
             </div>
             <div class="status-changer-box" style="margin-top:12px;">
               <label for="orderModalStatusSelect" class="field-caption" style="font-weight:700;display:block;margin-bottom:4px;">تحديث حالة الطلب السحابية:</label>

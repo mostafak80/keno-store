@@ -3758,7 +3758,7 @@
             ${hasDiscount ? `
               <span class="plan-old-price-del">${money(p.originalPrice)} ج.م</span>
               <span class="badge-saving">وفر ${savings} (${discountPct}%)</span>
-            ` : '<span style="color:#94a3b8;">—</span>'}
+            ` : '<span class="empty-table-value" style="color:#94a3b8;">—</span>'}
           </td>
           <td data-label="المجموعة">
             <span class="group-tag-pill">${esc(p.group || 'العروض')}</span>
@@ -4444,7 +4444,7 @@
             ${hasDiscount ? `
               <span class="plan-old-price-del">${money(p.originalPrice)} ج.م</span>
               <span class="badge-saving">وفر ${savings} (${discountPct}%)</span>
-            ` : '<span style="color:#94a3b8;">—</span>'}
+            ` : '<span class="empty-table-value" style="color:#94a3b8;">—</span>'}
           </td>
           <td data-label="المجموعة">
             <span class="group-tag-pill">${esc(p.group || 'العروض')}</span>
