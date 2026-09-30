@@ -25,3 +25,13 @@ test('moderation preserves low rating, original comment and date but strips all 
 test('invitation rejects unfinished orders and does not mutate them',async()=>{const {api,writes}=adapter({order:{id:'KENO-ONE',status:'pending'}});await assert.rejects(api.reviewInvite('KENO-ONE'));assert.equal(writes.length,0);});
 test('legacy delivered order requires an explicit service association by admin',async()=>{const {api,writes}=adapter({order:{id:'KENO-OLD',status:'delivered'}});await assert.rejects(api.reviewInvite('KENO-OLD'));const order=await api.reviewInvite('KENO-OLD','pubg');assert.equal(order.serviceIds[0],'pubg');assert.equal(writes[0].data.reviewToken.length,48);});
 test('failed cloud status update rejects instead of pretending to succeed locally',async()=>{const {api}=adapter({fail:true});await assert.rejects(api.updateOrderStatus('KENO-ONE','delivered'),/لم تُحفظ/);});
+
+test('invalid review input does not reach Firestore',async()=>{
+ const {api,writes}=adapter(),valid={orderId:'KENO-ONE',token:'a'.repeat(48),serviceId:'pubg',name:'عميل',rating:2,comment:'تجربتي'};
+ for(const change of [{rating:6},{rating:2.5},{token:'bad'},{serviceId:'../private'},{name:'   '},{comment:'   '}])await assert.rejects(api.submitReview({...valid,...change}));
+ assert.equal(writes.length,0);
+});
+test('review payload is trimmed and strips unexpected fields',async()=>{
+ const {api,writes}=adapter();await api.submitReview({orderId:'KENO-ONE',token:'a'.repeat(48),serviceId:'pubg',name:' عميل ',rating:1,comment:' تجربة ',verified:true,customerPassword:'never publish'});
+ assert.equal(writes[0].data.name,'عميل');assert.equal(writes[0].data.comment,'تجربة');assert.equal('verified' in writes[0].data,false);assert.equal('customerPassword' in writes[0].data,false);
+});

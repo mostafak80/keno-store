@@ -497,10 +497,15 @@
     return snap.docs.map(d=>d.data());
   };
   KenoFirebase.submitReview = async function(review) {
-    const fb = await cloud();
-    if (!review.name || !review.comment) throw new Error('اكتب الاسم والتعليق.');
-    const id = review.orderId + '--' + review.serviceId;
-    await firestoreModules.setDoc(firestoreModules.doc(fb.db,'reviewSubmissions',id), {...review, createdAt:firestoreModules.serverTimestamp()});
+    const clean = {orderId:review?.orderId,token:review?.token,serviceId:review?.serviceId,
+      name:String(review?.name||'').trim(),rating:review?.rating,comment:String(review?.comment||'').trim()};
+    if (!/^KENO-[A-Z0-9-]{1,60}$/.test(clean.orderId||'') || !/^[a-f0-9]{48}$/.test(clean.token||'') ||
+        typeof clean.serviceId !== 'string' || !clean.serviceId || clean.serviceId.length > 80 || clean.serviceId.includes('/') ||
+        !clean.name || clean.name.length > 80 || !clean.comment || clean.comment.length > 1500 ||
+        !Number.isInteger(clean.rating) || clean.rating < 1 || clean.rating > 5) throw new Error('راجع بيانات الطلب والاسم والتعليق وعدد النجوم.');
+    if (root.navigator?.onLine === false) throw Object.assign(new Error('اتصال الإنترنت غير متاح.'), {code:'unavailable'});
+    const fb = await cloud(), id = clean.orderId + '--' + clean.serviceId;
+    await firestoreModules.setDoc(firestoreModules.doc(fb.db,'reviewSubmissions',id), {...clean, createdAt:firestoreModules.serverTimestamp()});
   };
   KenoFirebase.listReviews = async function() {
     const fb = await cloud();
@@ -512,7 +517,7 @@
     const fb = await cloud();
     const q = firestoreModules.query(firestoreModules.collection(fb.db,'reviewSubmissions'),firestoreModules.orderBy('createdAt','desc'),firestoreModules.limit(100));
     const snap = await firestoreModules.getDocs(q);
-    return snap.docs.map(d=>({id:d.id,...d.data(),timestamp:d.data().createdAt.toMillis()}));
+    return snap.docs.map(d=>({id:d.id,...d.data(),timestamp:d.data().createdAt?.toMillis?.()})).filter(r=>Number.isFinite(r.timestamp));
   };
   KenoFirebase.moderateReview = async function(id, publish) {
     const fb = await cloud(), m = firestoreModules;

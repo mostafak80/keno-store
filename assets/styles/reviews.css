@@ -1,0 +1,81 @@
+/* Reviews use the same readable surfaces in both themes, with no fabricated ratings. */
+body.keno-motion #testimonials { --review-accent:var(--accent-readable); }
+body.keno-motion .reviews-toolbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:18px; margin-bottom:20px; }
+body.keno-motion .review-summary { display:flex; align-items:center; gap:14px; padding:16px 20px; border:1px solid var(--line); background:var(--paper); border-radius:18px; }
+body.keno-motion .review-summary>strong { font-size:40px; line-height:1; color:var(--ink); font-weight:900; }
+body.keno-motion .review-summary>span { color:var(--muted); font-size:15px; }
+body.keno-motion .review-summary small { display:block; margin-top:4px; font-size:12px; color:var(--muted); }
+body.keno-motion .reviews-controls { display:flex; align-items:end; flex-wrap:wrap; gap:12px; }
+body.keno-motion .reviews-controls label { display:grid; gap:7px; font-size:12px; font-weight:700; color:var(--muted); }
+body.keno-motion .reviews-controls select { max-width:320px; min-height:44px; border-radius:12px; padding:8px 12px; font:inherit; border:1px solid var(--line); }
+body.keno-motion .testimonials-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+body.keno-motion .purchase-review-card { display:flex; flex-direction:column; gap:18px; padding:22px; min-width:0; border-radius:20px; box-shadow:var(--shadow-sm); }
+body.keno-motion .purchase-review-stars { color:var(--review-accent); letter-spacing:2px; font-size:19px; white-space:nowrap; }
+body.keno-motion .testimonial-header { align-items:center; gap:10px; flex-wrap:wrap; }
+body.keno-motion .purchase-review-card time { color:var(--muted); font-size:12px; }
+body.keno-motion .purchase-review-card .testimonial-comment { margin:0; line-height:1.85; overflow-wrap:anywhere; white-space:pre-line; }
+body.keno-motion .purchase-review-author { display:flex; align-items:center; gap:12px; margin-top:auto; padding-top:14px; border-top:1px solid var(--line); }
+body.keno-motion .purchase-review-author strong { color:var(--ink); font-size:15px; }
+body.keno-motion .purchase-review-author small { display:block; color:var(--muted); font-size:12px; line-height:1.6; margin-top:3px; overflow-wrap:anywhere; }
+body.keno-motion .review-avatar { display:grid; place-items:center; flex-shrink:0; width:42px; height:42px; background:var(--paper-hover); border:1px solid var(--line); border-radius:14px; color:var(--ink); font-size:20px; font-weight:800; }
+body.keno-motion .review-empty { grid-column:1/-1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px; min-height:210px; padding:28px; background:var(--paper); border:1px dashed var(--line); border-radius:20px; }
+body.keno-motion .review-empty h3 { font-size:22px; margin:0; color:var(--ink); }
+body.keno-motion .review-empty p { color:var(--muted); max-width:560px; line-height:1.8; margin:0; }
+body.keno-motion .review-empty-icon { display:grid; place-items:center; width:52px; height:52px; border-radius:16px; background:var(--paper-hover); color:var(--review-accent); font-size:32px; }
+body.keno-motion .review-empty .button { margin-top:10px; width:auto; max-width:100%; }
+body.keno-motion .review-loading-dot { width:18px; height:18px; border:3px solid var(--line); border-top-color:var(--review-accent); border-radius:50%; animation:review-spin .9s linear infinite; }
+@keyframes review-spin { to{transform:rotate(360deg)} }
+body.keno-motion .review-load-more { display:flex; margin:20px auto 0; }
+body.keno-motion .purchase-review-form { padding:28px; border-radius:24px; margin-top:28px; box-shadow:var(--shadow-sm); }
+body.keno-motion .review-form-heading { display:flex; align-items:flex-start; gap:16px; }
+body.keno-motion .review-form-icon { display:grid; place-items:center; width:54px; height:54px; border:1px solid var(--line); border-radius:16px; background:var(--paper-hover); color:var(--review-accent); font-size:34px; flex-shrink:0; }
+body.keno-motion .review-form-eyebrow { color:var(--review-accent); font-size:12px; font-weight:800; }
+body.keno-motion .review-form-heading h3 { font-size:24px; color:var(--ink); margin:3px 0 8px; }
+body.keno-motion .review-form-heading p { color:var(--muted); margin:0; line-height:1.8; max-width:750px; }
+body.keno-motion .review-order-step { margin-top:22px; border:1px solid var(--line); background:var(--paper-hover); padding:18px; border-radius:16px; }
+body.keno-motion .review-order-step>label { font-weight:800; display:block; margin-bottom:10px; }
+body.keno-motion #reviewOrderHint,body.keno-motion .review-no-orders { margin:10px 0 0; color:var(--muted); font-size:13px; line-height:1.8; }
+body.keno-motion .review-link-entry { margin-top:12px; border-top:1px solid var(--line); padding-top:12px; }
+body.keno-motion .review-link-entry summary { color:var(--review-accent); font-weight:750; cursor:pointer; min-height:36px; }
+body.keno-motion .review-link-entry label { display:block; margin:10px 0; color:var(--muted); font-size:13px; }
+body.keno-motion .review-link-entry>div { display:flex; gap:10px; }
+body.keno-motion .review-link-entry input { min-width:0; flex:1; }
+body.keno-motion .review-link-entry .button { flex-shrink:0; }
+body.keno-motion .purchase-review-form .form-grid { gap:18px 24px; margin-block:22px 12px; }
+body.keno-motion .purchase-review-form label { color:var(--ink); font-size:14px; font-weight:750; }
+body.keno-motion .purchase-review-form :is(input,select,textarea) { margin-top:8px; min-height:48px; border-radius:12px; }
+body.keno-motion .purchase-review-form :is(input,select,textarea):disabled { opacity:1; color:var(--muted) !important; cursor:not-allowed; }
+body.keno-motion .review-star-picker { display:flex; direction:ltr; gap:8px; margin-block:10px; width:fit-content; }
+body.keno-motion .review-star-picker button { display:grid; place-items:center; width:44px; height:44px; border-radius:12px; border:1px solid var(--line); background:var(--paper); color:var(--muted); font-size:25px; cursor:pointer; transition:transform .15s,border-color .15s; }
+body.keno-motion .review-star-picker button.filled { color:var(--review-accent); background:var(--paper-hover); border-color:var(--review-accent); }
+body.keno-motion .review-star-picker button:hover:not(:disabled) { transform:translateY(-2px); }
+body.keno-motion .review-star-picker button:disabled { opacity:1; cursor:not-allowed; }
+body.keno-motion #reviewRating { width:auto; max-width:100%; min-width:170px; font-weight:500; }
+body.keno-motion .review-comment-meta { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; color:var(--muted); font-size:12px; }
+body.keno-motion .review-comment-meta p { margin:0; color:var(--muted); line-height:1.7; }
+body.keno-motion #reviewCommentCount { white-space:nowrap; }
+body.keno-motion .review-submit-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; border-top:1px solid var(--line); padding-top:20px; margin-top:20px; }
+body.keno-motion .review-submit-row p { margin:0; font-size:13px; color:var(--muted); }
+body.keno-motion #reviewSubmit { background:#b91c37 !important; color:#fff !important; border-color:#b91c37 !important; min-width:180px; border-radius:12px; }
+body.keno-motion #reviewSubmit:disabled { background:var(--paper-elevated) !important; color:var(--muted) !important; border-color:var(--line) !important; opacity:1; box-shadow:none !important; }
+body.keno-motion .purchase-review-form .review-status { margin:18px 0 0; padding:12px 16px; border:1px solid var(--line); border-inline-start:4px solid var(--review-accent); border-radius:12px; background:var(--paper-hover); color:var(--ink) !important; line-height:1.8; }
+body.keno-motion .review-status[data-kind="error"] { border-inline-start-color:var(--red); }
+body.keno-motion .review-status[data-kind="success"] { border-inline-start-color:#16834b; }
+body.keno-motion .review-status:empty { display:none; }
+body.keno-motion .review-admin-panel .form-grid { margin-block:16px; }
+body.keno-motion .review-admin-panel #reviewAdminStatus { overflow-wrap:anywhere; line-height:1.8; }
+@media(max-width:900px){body.keno-motion .testimonials-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+ body.keno-motion .testimonials-grid{grid-template-columns:1fr}
+ body.keno-motion .purchase-review-form{padding:18px;border-radius:20px}
+ body.keno-motion .review-form-heading{gap:12px}
+ body.keno-motion .review-form-icon{width:42px;height:42px;font-size:28px}
+ body.keno-motion .review-form-heading h3{font-size:20px}
+ body.keno-motion .review-form-heading p{font-size:13px}
+ body.keno-motion .review-order-step{padding:14px}
+ body.keno-motion .review-link-entry>div{flex-direction:column}
+ body.keno-motion .review-submit-row .button{width:100%}
+ body.keno-motion .reviews-controls,body.keno-motion .reviews-controls label,body.keno-motion .reviews-controls select{width:100%;max-width:100%}
+ body.keno-motion .review-summary{width:100%;padding:16px}
+}
+@media(prefers-reduced-motion:reduce){body.keno-motion .review-loading-dot{animation:none}body.keno-motion .review-star-picker button{transition:none}}
