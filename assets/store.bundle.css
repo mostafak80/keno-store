@@ -13190,9 +13190,6 @@ body.keno-motion:not(.kd-preview-mobile) #categoryTabs button {
 min-width:0; width:100%; min-height:48px; justify-content:flex-start;
 white-space:normal; text-align:start; gap:8px; padding:10px 14px;
 }
-body.keno-motion:not(.kd-preview-mobile) #categoryTabs button[data-category="all"] {
-grid-column:1 / -1; width:auto; justify-self:start;
-}
 body.keno-motion:not(.kd-preview-mobile) #categoryTabs .icon,
 body.keno-motion:not(.kd-preview-mobile) #categoryTabs .category-count { flex-shrink:0; }
 body.keno-motion:not(.kd-preview-mobile) #categoryTabs .category-count { margin-inline-start:auto; }

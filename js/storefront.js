@@ -20,7 +20,7 @@
     return chosen.map(service => ({ service, plan: lowestPlan(service) }));
   }
   function collections(data) {
-    return (data.categories || []).map(category => ({ ...category,
+    return (data.categories || []).filter(category => category.id !== 'custom').map(category => ({ ...category,
       count: (data.services || []).filter(s => s.visible && s.category === category.id).length
     })).filter(c => c.count > 0);
   }

@@ -474,7 +474,7 @@
     KenoContent.render(s);
 
     // Ensure selected category is valid
-    if (!data.categories.some(c => c.id === category)) {
+    if (!data.categories.some(c => c.id === category && c.id !== 'custom')) {
       category = 'all';
     }
 
@@ -482,7 +482,7 @@
     const allTab = { id: 'all', name: 'كل الخدمات', icon: 'layout-grid', count: visibleServices.length };
     const categoryTabs = [
       allTab,
-      ...data.categories.map(c => ({
+      ...data.categories.filter(c => c.id !== 'custom').map(c => ({
         ...c,
         count: visibleServices.filter(srv => srv.category === c.id).length
       }))

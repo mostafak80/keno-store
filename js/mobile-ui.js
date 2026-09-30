@@ -18,7 +18,7 @@
   function refresh(data){
     const select=document.getElementById('mobileCategoryFilter');if(!select)return;
     const selected=document.querySelector('#categoryTabs [aria-pressed="true"]')?.dataset.category||'all';
-    select.innerHTML='<option value="all">الكل</option>'+data.categories.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+    select.innerHTML='<option value="all">الكل</option>'+data.categories.filter(c=>c.id!=='custom').map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
     select.value=selected;
     const brand=document.querySelector('.brand');
     brand?.classList.toggle('has-custom-logo',Boolean(data.settings.logo&&data.settings.logo!=='assets/logo.png'));
