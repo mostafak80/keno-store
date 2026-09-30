@@ -274,6 +274,7 @@
       { id: 'catalog', label: 'قسم كتالوج الخدمات بالكامل' },
       { id: 'catalogToolbar', label: 'شريط البحث والترتيب في الكتالوج' },
       { id: 'categoryTabs', label: 'تبويبات الأقسام في الكتالوج' },
+      { id: 'discoveryPlay', label: 'اقتراح الخدمات التفاعلي «فاجئني بخدمة»' },
       { id: 'customBanner', label: 'بانر «خدمتك مش في القائمة؟»' },
       { id: 'payments', label: 'قسم طرق الدفع' },
       { id: 'how', label: 'قسم إزاي أطلب (الخطوات الثلاث)' },

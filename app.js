@@ -490,8 +490,8 @@
 
     $('categoryTabs').innerHTML = categoryTabs.map(c => `
       <button type="button" data-category="${esc(c.id)}" aria-pressed="${c.id === category}">
-        ${icon(c.icon)}
-        <span>${esc(c.name)}</span>
+        <span class="category-symbol" aria-hidden="true">${icon(c.icon)}</span>
+        <span class="category-name">${esc(c.name)}</span>
         <span class="category-count">${c.count}</span>
       </button>
     `).join('');

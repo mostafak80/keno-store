@@ -31,6 +31,31 @@
   const $ = id => document.getElementById(id);
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   let data = null;
+  let presentation = null;
+  let lastSuggestion = '';
+  function discoveryCandidates() {
+    const ids = new Set([...document.querySelectorAll('#serviceGrid .service-card[data-open-service]')].map(el => el.dataset.openService));
+    return (data?.services || []).filter(s => ids.has(s.id) && isOrderable(s) && lowestPlan(s));
+  }
+  function resetDiscovery() {
+    $('discoverySuggestion')?.replaceChildren();
+  }
+  function suggestService() {
+    if (!presentation) return;
+    let candidates = discoveryCandidates();
+    if (candidates.length > 1) candidates = candidates.filter(s => s.id !== lastSuggestion);
+    if (!candidates.length) return;
+    const service = candidates[Math.floor(Math.random() * candidates.length)];
+    const plan = lowestPlan(service);
+    const {esc,money} = presentation;
+    lastSuggestion = service.id;
+    const image = service.mobileImage || service.image || root.KenoServiceArt?.mobile(service.id);
+    $('discoverySuggestion').innerHTML = `<article class="discovery-result">
+      ${image ? `<img src="${esc(image)}" alt="" loading="lazy">` : ''}
+      <div class="discovery-result-copy"><strong dir="auto">${esc(service.name)}</strong><p>${esc(plan.label)}</p><span class="discovery-result-price">${money(plan.price)} جنيه</span></div>
+      <div class="discovery-result-actions"><button type="button" class="button button-red" data-open-service="${esc(service.id)}" data-plan="${esc(plan.id)}">شوف العرض</button><button type="button" class="button button-outline" data-dismiss-discovery>إغلاق الاقتراح</button></div>
+    </article>`;
+  }
   let observer = null;
   const observed = new WeakSet();
   function updateMotion() {
@@ -38,6 +63,11 @@
     document.documentElement.classList.toggle('motion-paused', reduced.matches);
   }
   function refresh() {
+    if ($('discoverService')) {
+      const available = discoveryCandidates().length > 0;
+      $('discoverService').disabled = !available;
+      $('discoverService').title = available ? 'اكتشف عرضًا من النتائج الحالية' : 'لا توجد عروض متاحة في النتائج الحالية؛ جرّب قسمًا آخر';
+    }
     if (!observer && 'IntersectionObserver' in window) {
       observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -53,6 +83,8 @@
   }
   function render(catalog, utils) {
     data = catalog;
+    presentation = utils;
+    resetDiscovery();
     const { esc, icon, money } = utils;
     if ($('collectionGrid')) $('collectionGrid').innerHTML = collections(data).map(c => `
       <button type="button" class="collection-tile" data-collection="${esc(c.id)}" aria-pressed="false">
@@ -120,8 +152,32 @@
     });
     $('categoryTabs')?.addEventListener('click', event => {
       const tab = event.target.closest('[data-category]');
-      if (tab) document.querySelectorAll('[data-collection]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.collection === tab.dataset.category)));
+      if (tab) {
+        document.querySelectorAll('[data-collection]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.collection === tab.dataset.category)));
+        resetDiscovery();
+        if (!reduced.matches && !document.body.classList.contains('kd-no-animations')) {
+          tab.classList.remove('category-pop');
+          void tab.offsetWidth;
+          tab.classList.add('category-pop');
+        }
+      }
     });
+    $('categoryTabs')?.addEventListener('pointermove', event => {
+      if (reduced.matches || event.pointerType !== 'mouse' || document.body.classList.contains('kd-no-animations')) return;
+      const tab = event.target.closest('[data-category]');
+      if (!tab) return;
+      const rect = tab.getBoundingClientRect();
+      tab.style.setProperty('--pointer-x', `${event.clientX - rect.left}px`);
+      tab.style.setProperty('--pointer-y', `${event.clientY - rect.top}px`);
+    });
+    $('discoverService')?.addEventListener('click', suggestService);
+    $('discoverySuggestion')?.addEventListener('click', event => {
+      if (event.target.closest('[data-dismiss-discovery]')) {
+        resetDiscovery();
+        $('discoverService')?.focus({preventScroll:true});
+      }
+    });
+    $('searchInput')?.addEventListener('input', resetDiscovery);
     document.addEventListener('click', async event => {
       const tile = event.target.closest('[data-collection]');
       if (tile) discover('', tile.dataset.collection);

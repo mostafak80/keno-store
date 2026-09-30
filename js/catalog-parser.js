@@ -254,7 +254,7 @@
       }
       settings.trustBadges = (s.trustBadges || root.KenoConfig?.TRUST_BADGES || []).slice(0,8).map(b => ({icon: String(b.icon || 'shield').slice(0,40), title:displayString(b.title,100,'عنوان الثقة'), desc:displayString(b.desc,500,'وصف الثقة')}));
       settings.sectionVisibility = {};
-      const knownComponents = ['home','collections','picks','trust','catalog','payments','how','testimonials','faq', 'header', 'announcement', 'audioIntro', 'cartButton', 'themeToggle', 'heroSearches', 'heroTags', 'heroFeature', 'stageMiniOffers', 'catalogToolbar', 'categoryTabs', 'customBanner', 'footer', 'dlgVoice', 'dlgQuote'];
+      const knownComponents = ['home','collections','picks','trust','catalog','payments','how','testimonials','faq', 'header', 'announcement', 'audioIntro', 'cartButton', 'themeToggle', 'heroSearches', 'heroTags', 'heroFeature', 'stageMiniOffers', 'catalogToolbar', 'categoryTabs', 'discoveryPlay', 'customBanner', 'footer', 'dlgVoice', 'dlgQuote'];
       for (const id of knownComponents) settings.sectionVisibility[id] = s.sectionVisibility?.[id] !== false;
 
       // Studio layout, dimensions, gaps and scaling
