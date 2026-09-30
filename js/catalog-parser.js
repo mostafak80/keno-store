@@ -15,6 +15,11 @@
     return value.trim();
   }
 
+  // Keep older saved catalog and interface copy consistent with the store's offer terminology.
+  function displayString(value, max, label, allowEmpty = false) {
+    return requireString(value, max, label, allowEmpty).replace(/باقات/g, 'عروض').replace(/باقة/g, 'عرض');
+  }
+
   // Migrate only known old names from saved catalogs; owner-renamed services stay editable.
   const bilingualNames = {
     "pubg": ["ببجي العالمية","ببجي العالمية — PUBG Global"],
@@ -60,7 +65,7 @@
     "custom-service": ["خدمة رقمية حسب طلبك","خدمة رقمية حسب طلبك — Custom Digital Service"]
   };
   function serviceName(service) {
-    const name = requireString(service.name, 100, 'اسم الخدمة');
+    const name = displayString(service.name, 100, 'اسم الخدمة');
     const entry = Object.hasOwn(bilingualNames, service.id) ? bilingualNames[service.id] : null;
     return entry && (name === entry[0] || name === entry[0].split('—')[0].trim()) ? entry[1] : name;
   }
@@ -99,18 +104,18 @@
     if (!Array.isArray(fields) || fields.length > 12) throw new Error('الحد الأقصى 12 خانة لكل خدمة.');
     const ids = new Set();
     const result = {
-      title: requireString(f.title || 'بيانات الحساب / الشحن', 100, 'عنوان بيانات الشحن'),
-      description: requireString(f.description || 'اكتب بيانات هذه الخدمة فقط، وراجعها قبل إرسال الطلب.', 500, 'شرح الشحن'),
-      securityNote: requireString(f.securityNote || 'نستخدم البيانات المحددة لتنفيذ هذه الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.', 500, 'وصف الخصوصية'),
+      title: displayString(f.title || 'بيانات الحساب / الشحن', 100, 'عنوان بيانات الشحن'),
+      description: displayString(f.description || 'اكتب بيانات هذه الخدمة فقط، وراجعها قبل إرسال الطلب.', 500, 'شرح الشحن'),
+      securityNote: displayString(f.securityNote || 'نستخدم البيانات المحددة لتنفيذ هذه الخدمة. لا ترسل بيانات بطاقتك البنكية أو رموز التحقق.', 500, 'وصف الخصوصية'),
       audio: [0,1,2].map(i => media(f.audio?.[i], 'audio')),
       featuredPlanIds: Array.isArray(f.featuredPlanIds) ? [...new Set(f.featuredPlanIds)].filter(id => service.plans?.some(p => p.id === id)).slice(0,8) : [],
       fields: fields.map(field => {
         if (!plainObject(field) || !validId(field.id) || ids.has(field.id)) throw new Error('معرّف خانة غير صالح أو مكرر.');
         ids.add(field.id);
         if (!['text','id','email','url','tel','textarea','password'].includes(field.type)) throw new Error('نوع خانة غير مدعوم.');
-        return { id: field.id, type: field.type, label: requireString(field.label,100,'اسم الخانة'), required: field.required === true,
-          placeholder: requireString(field.placeholder || '',200,'مثال الخانة',true), hint: requireString(field.hint || '',500,'شرح الخانة',true),
-          helpImage: media(field.helpImage,'image'), helpAlt: requireString(field.helpAlt || '',500,'شرح صورة المساعدة',true),
+        return { id: field.id, type: field.type, label: displayString(field.label,100,'اسم الخانة'), required: field.required === true,
+          placeholder: displayString(field.placeholder || '',200,'مثال الخانة',true), hint: displayString(field.hint || '',500,'شرح الخانة',true),
+          helpImage: media(field.helpImage,'image'), helpAlt: displayString(field.helpAlt || '',500,'شرح صورة المساعدة',true),
           inputMode: ['text','numeric','tel','email','url'].includes(field.inputMode) ? field.inputMode : (field.type === 'id' ? 'numeric' : 'text'),
           maxLength: Number.isInteger(Number(field.maxLength)) && Number(field.maxLength) > 0 && Number(field.maxLength) <= 800 ? Number(field.maxLength) : (field.type === 'id' ? 64 : 800),
           numericOnly: field.numericOnly === true };
@@ -217,7 +222,7 @@
 
       const settings = {
         storeName: requireString(s.storeName, 80, 'اسم المتجر'),
-        tagline: requireString(s.tagline, 140, 'الجملة التعريفية'),
+        tagline: displayString(s.tagline, 140, 'الجملة التعريفية'),
         whatsapp,
         paymentPhone,
         instapay,
@@ -230,7 +235,7 @@
         tiktokEnabled,
         telegram,
         telegramEnabled,
-        announcement: requireString(s.announcement, 180, 'الشريط الإعلاني العلوي'),
+        announcement: displayString(s.announcement, 180, 'الشريط الإعلاني العلوي'),
         currency: 'EGP'
       };
       settings.siteUrl = requireString(s.siteUrl || '', 500, 'عنوان الموقع', true);
@@ -245,9 +250,9 @@
       settings.content = {};
       for (const [key, value] of Object.entries(s.content || {})) {
         if (!/^[a-zA-Z0-9_-]{1,80}$/.test(key) || Object.keys(settings.content).length >= 300) throw new Error('مفتاح محتوى غير صالح.');
-        settings.content[key] = requireString(value, 2000, 'نص الواجهة', true);
+        settings.content[key] = displayString(value, 2000, 'نص الواجهة', true);
       }
-      settings.trustBadges = (s.trustBadges || root.KenoConfig?.TRUST_BADGES || []).slice(0,8).map(b => ({icon: String(b.icon || 'shield').slice(0,40), title:requireString(b.title,100,'عنوان الثقة'), desc:requireString(b.desc,500,'وصف الثقة')}));
+      settings.trustBadges = (s.trustBadges || root.KenoConfig?.TRUST_BADGES || []).slice(0,8).map(b => ({icon: String(b.icon || 'shield').slice(0,40), title:displayString(b.title,100,'عنوان الثقة'), desc:displayString(b.desc,500,'وصف الثقة')}));
       settings.sectionVisibility = {};
       const knownComponents = ['home','collections','picks','trust','catalog','payments','how','testimonials','faq', 'header', 'announcement', 'audioIntro', 'cartButton', 'themeToggle', 'heroSearches', 'heroTags', 'heroFeature', 'stageMiniOffers', 'catalogToolbar', 'categoryTabs', 'customBanner', 'footer', 'dlgVoice', 'dlgQuote'];
       for (const id of knownComponents) settings.sectionVisibility[id] = s.sectionVisibility?.[id] !== false;
@@ -291,7 +296,7 @@
         const icon = iconNames.has(c.icon) ? c.icon : 'globe';
         return {
           id: c.id,
-          name: requireString(c.name, 80, 'اسم القسم'),
+          name: displayString(c.name, 80, 'اسم القسم'),
           icon
         };
       });
@@ -321,7 +326,7 @@
         }
 
         const notes = Array.isArray(service.notes)
-          ? service.notes.slice(0, 30).map(n => requireString(n, 500, 'شروط الخدمة'))
+          ? service.notes.slice(0, 30).map(n => displayString(n, 500, 'شروط الخدمة'))
           : [];
 
         // Validate Plans / Offers
@@ -354,11 +359,11 @@
           totalPlanCount++;
           return {
             id: plan.id,
-            label: requireString(plan.label, 150, 'اسم العرض'),
+            label: displayString(plan.label, 150, 'اسم العرض'),
             price: Math.round(price * 100) / 100,
             originalPrice,
-            group: requireString(plan.group || 'العروض', 80, 'مجموعة العرض'),
-            note: requireString(plan.note || '', 500, 'ملاحظة العرض', true),
+            group: displayString(plan.group || 'العروض', 80, 'مجموعة العرض'),
+            note: displayString(plan.note || '', 500, 'ملاحظة العرض', true),
             available: typeof plan.available === 'boolean' ? plan.available : true
           };
         });
@@ -389,7 +394,7 @@
           id: service.id,
           name: serviceName(service),
           category: service.category,
-          description: requireString(service.description, 500, 'وصف الخدمة'),
+          description: displayString(service.description, 500, 'وصف الخدمة'),
           mark: requireString(service.mark || 'KENO', 20, 'شعار البطاقة'),
           icon,
           color,
@@ -477,7 +482,7 @@
           number: requireString(pm.number, 80, 'رقم أو معرّف الدفع'),
           accountName: requireString(pm.accountName || '', 80, 'اسم صاحب الحساب', true),
           link,
-          description: requireString(pm.description || '', 300, 'وصف وسيلة الدفع', true),
+          description: displayString(pm.description || '', 300, 'وصف وسيلة الدفع', true),
           icon,
           enabled: typeof pm.enabled === 'boolean' ? pm.enabled : true
         };
@@ -518,18 +523,18 @@
           enabled: typeof fc.enabled === 'boolean' ? fc.enabled : true,
           size: ['compact', 'standard', 'large'].includes(fc.size) ? fc.size : 'standard',
           widthPercent: typeof fc.widthPercent === 'number' && Number.isFinite(fc.widthPercent) ? Math.min(100, Math.max(60, Math.round(fc.widthPercent))) : 100,
-          badge: requireString(fc.badge || 'الأكثر طلبًا', 40, 'شارة البطاقة المميزة', true),
+          badge: displayString(fc.badge || 'الأكثر طلبًا', 40, 'شارة البطاقة المميزة', true),
           icon,
-          titleLine1: requireString(fc.titleLine1 || 'PLAY MORE', 60, 'السطر الأول للعنوان', true),
-          titleLine2: requireString(fc.titleLine2 || 'WITH KENO.', 60, 'السطر الثاني للعنوان', true),
-          description: requireString(fc.description || '', 250, 'وصف البطاقة المميزة', true),
+          titleLine1: displayString(fc.titleLine1 || 'PLAY MORE', 60, 'السطر الأول للعنوان', true),
+          titleLine2: displayString(fc.titleLine2 || 'WITH KENO.', 60, 'السطر الثاني للعنوان', true),
+          description: displayString(fc.description || '', 250, 'وصف البطاقة المميزة', true),
           serviceId: typeof fc.serviceId === 'string' ? fc.serviceId.trim() : '',
           planId: typeof fc.planId === 'string' ? fc.planId.trim() : '',
-          offerQuantity: requireString(fc.offerQuantity || '', 60, 'كمية أو مسمى العرض', true),
+          offerQuantity: displayString(fc.offerQuantity || '', 60, 'كمية أو مسمى العرض', true),
           offerPrice: requireString(fc.offerPrice || '', 60, 'سعر العرض المميز', true),
-          buttonText: requireString(fc.buttonText || 'اكتشف العروض', 60, 'نص زر الطلب', true),
+          buttonText: displayString(fc.buttonText || 'اكتشف العروض', 60, 'نص زر الطلب', true),
           theme,
-          tagline: requireString(fc.tagline || 'KENO / FEATURED', 40, 'العلامة السفلية للبطاقة', true)
+          tagline: displayString(fc.tagline || 'KENO / FEATURED', 40, 'العلامة السفلية للبطاقة', true)
         };
       } else {
         featuredCard = {

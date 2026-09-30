@@ -45,7 +45,7 @@
     'copy-37-0': { label: 'عنوان العرض الإنجليزي (سطر 1)', loc: 'كارت الهيرو البارز' },
     'copy-38-0': { label: 'عنوان العرض الإنجليزي (سطر 2)', loc: 'كارت الهيرو البارز' },
     'copy-39-0': { label: 'وصف كارت العرض البارز', loc: 'كارت الهيرو البارز' },
-    'copy-40-0': { label: 'كمية/باقة كارت العرض البارز', loc: 'كارت الهيرو البارز' },
+    'copy-40-0': { label: 'كمية/عرض كارت العرض البارز', loc: 'كارت الهيرو البارز' },
 
     // Collections & Picks
     'copy-49-0': { label: 'شارة قسم الأقسام السريعة (Eyebrow)', loc: 'قسم التصنيفات' },
@@ -58,7 +58,7 @@
 
     // Catalog & Search
     'copy-58-0': { label: 'عنوان قسم الكتالوج والخدمات', loc: 'الكتالوج الرئيسي • H2' },
-    'copy-60-0': { label: 'وصف قسم الكتالوج وتصفح الباقات', loc: 'الكتالوج الرئيسي' },
+    'copy-60-0': { label: 'وصف قسم الكتالوج وتصفح العروض', loc: 'الكتالوج الرئيسي' },
     'copy-62-0': { label: 'عنوان فلتر الأقسام', loc: 'شريط أدوات الكتالوج' },
     'copy-64-0': { label: 'عنوان خيارات الترتيب والفرز', loc: 'شريط أدوات الكتالوج' },
     'copy-65-0': { label: 'عنوان حالة عرض النتائج', loc: 'الكتالوج الرئيسي' },
@@ -97,14 +97,14 @@
     'cart-title-0': { label: 'عنوان نافذة سلة المشتريات والطلب', loc: 'سلة الطلبات' },
     'cart-empty-title-0': { label: 'عنوان تنبيه السلة الفارغة', loc: 'سلة الطلبات' },
     'cart-empty-desc-0': { label: 'نص إرشاد السلة الفارغة', loc: 'سلة الطلبات' },
-    'cart-s1-title-0': { label: 'عنوان خطوة السلة 1: مراجعة الباقات', loc: 'سلة الطلبات' },
+    'cart-s1-title-0': { label: 'عنوان خطوة السلة 1: مراجعة العروض', loc: 'سلة الطلبات' },
     'cart-s2-title-0': { label: 'عنوان خطوة السلة 2: بيانات العميل', loc: 'سلة الطلبات' },
     'cart-s3-title-0': { label: 'عنوان خطوة السلة 3: طريقة الدفع', loc: 'سلة الطلبات' },
     'cart-s4-title-0': { label: 'عنوان خطوة السلة 4: إرفاق الإيصال', loc: 'سلة الطلبات' },
 
     // Service Dialog Popup
-    'dialog-title-0': { label: 'عنوان نافذة تفاصيل الباقة والطلب', loc: 'نافذة الخدمة Popup' },
-    'dialog-features-title-0': { label: 'عنوان قسم مميزات الباقة', loc: 'نافذة الخدمة Popup' },
+    'dialog-title-0': { label: 'عنوان نافذة تفاصيل العرض والطلب', loc: 'نافذة الخدمة Popup' },
+    'dialog-features-title-0': { label: 'عنوان قسم مميزات العرض', loc: 'نافذة الخدمة Popup' },
     'dialog-order-title-0': { label: 'عنوان قسم إتمام الطلب السريع', loc: 'نافذة الخدمة Popup' },
 
     // Footer
@@ -125,7 +125,7 @@
     { id: 'how', icon: '📋', label: 'خطوات الطلب (١، ٢، ٣)' },
     { id: 'payments', icon: '💳', label: 'طرق ووسائل الدفع' },
     { id: 'cart', icon: '🛒', label: 'سلة الطلبات والدفع' },
-    { id: 'dialog', icon: '🪟', label: 'تفاصيل الخدمة والباقات' },
+    { id: 'dialog', icon: '🪟', label: 'تفاصيل الخدمة والعروض' },
     { id: 'trust', icon: '🛡️', label: 'شارات الثقة والضمان' },
     { id: 'testimonials', icon: '💬', label: 'آراء العملاء' },
     { id: 'faq', icon: '❓', label: 'الأسئلة الشائعة' },
@@ -236,7 +236,7 @@
           <div class="texts-search-row">
             <div class="texts-search-wrap">
               <span class="texts-search-icon">🔍</span>
-              <input type="search" id="textsLiveSearchInput" class="texts-search-input" placeholder="ابحث عن أي كلمة أو عبارة لتعديلها فوراً (مثال: اشحن، واتساب، فوري، باقة)..." autocomplete="off">
+              <input type="search" id="textsLiveSearchInput" class="texts-search-input" placeholder="ابحث عن أي كلمة أو عبارة لتعديلها فوراً (مثال: اشحن، واتساب، فوري، عرض)..." autocomplete="off">
               <button type="button" id="textsClearSearchBtn" class="texts-search-clear" title="مسح البحث">✕</button>
             </div>
             <span class="texts-search-count" id="textsResultsCount">عرض الكل</span>

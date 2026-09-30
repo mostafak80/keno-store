@@ -782,7 +782,7 @@
     }
     if (!OrderUtils.isAvailable(service) || (service.plans.length && !service.plans.some(p => p.id === selectedPlan && p.available))) {
       $('reviewConfirmed').checked = false;
-      toast('الخدمة أو الباقة لم تعد متاحة. اختار عرضًا متاحًا قبل المتابعة.');
+      toast('الخدمة أو العرض غير متاح حاليًا. اختار عرضًا متاحًا قبل المتابعة.');
       return false;
     }
     return true;

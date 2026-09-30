@@ -19,8 +19,20 @@ test('bilingual service names migrate saved defaults while preserving owner edit
   const saved = clone(catalog), netflix = saved.services.find(s => s.id === 'netflix');
   netflix.name = 'نتفليكس — أفلام ومسلسلات';
   assert.equal(context.window.KenoCatalogParser.validate(saved).services.find(s => s.id === 'netflix').name, 'نتفليكس — Netflix');
-  netflix.name = 'باقة نتفليكس الخاصة — Netflix Family';
+  netflix.name = 'عرض نتفليكس الخاص — Netflix Family';
   assert.equal(context.window.KenoCatalogParser.validate(saved).services.find(s => s.id === 'netflix').name, netflix.name);
+});
+test('saved public copy uses offer terminology without changing payment identities or prices', () => {
+  const saved=clone(catalog);
+  saved.settings.content={'review-edit-plan-0':'تعديل الباقة','plans-label':'كل الباقات'};
+  saved.services[0].plans[0].label='باقة 60 شدة';
+  saved.paymentMethods[0].accountName='باقة';
+  const updated=context.window.KenoCatalogParser.validate(saved);
+  assert.equal(updated.settings.content['review-edit-plan-0'],'تعديل العرض');
+  assert.equal(updated.settings.content['plans-label'],'كل العروض');
+  assert.equal(updated.services[0].plans[0].label,'عرض 60 شدة');
+  assert.equal(updated.services[0].plans[0].price,saved.services[0].plans[0].price);
+  assert.equal(updated.paymentMethods[0].accountName,'باقة');
 });
 test('existing catalog validates and all plan prices survive validation', () => {
   assert.equal(catalog.services.length, raw.services.length);
