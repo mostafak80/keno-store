@@ -33,6 +33,33 @@
   let data = null;
   let presentation = null;
   let lastSuggestion = '';
+  let resultsScrollFrame = null;
+  function scrollToServices() {
+    // Wait for the filtered cards and heading to finish rendering before measuring.
+    if (resultsScrollFrame !== null) cancelAnimationFrame(resultsScrollFrame);
+    resultsScrollFrame = requestAnimationFrame(() => {
+      resultsScrollFrame = null;
+      const target = $('resultsTitle')?.closest('.results-meta') || $('serviceGrid');
+      if (!target || !target.getClientRects().length) return;
+      const header = document.querySelector('.site-header');
+      const headerStyle = header && getComputedStyle(header);
+      const stickyHeight = headerStyle && ['sticky', 'fixed'].includes(headerStyle.position)
+        ? header.getBoundingClientRect().height + Math.max(0, parseFloat(headerStyle.top) || 0) : 0;
+      const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - stickyHeight - 16);
+      const noMotion = reduced.matches || document.body.classList.contains('kd-no-animations') ||
+        document.body.classList.contains('kd-m-no-animations');
+      if (noMotion) {
+        window.scrollTo({ top, behavior: 'instant' });
+      } else {
+        // Commit cancellation before starting another animation to the same destination.
+        window.scrollTo({ top: window.scrollY, behavior: 'instant' });
+        resultsScrollFrame = requestAnimationFrame(() => {
+          resultsScrollFrame = null;
+          window.scrollTo({ top, behavior: 'smooth' });
+        });
+      }
+    });
+  }
   function discoveryCandidates() {
     const ids = new Set([...document.querySelectorAll('#serviceGrid .service-card[data-open-service]')].map(el => el.dataset.openService));
     return (data?.services || []).filter(s => ids.has(s.id) && isOrderable(s) && lowestPlan(s));
@@ -139,7 +166,7 @@
     input.dispatchEvent(new Event('input', { bubbles: true }));
     tab?.click();
     location.hash = '#catalog';
-    $('catalog')?.scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'start' });
+    scrollToServices();
     input.focus({ preventScroll: true });
     document.querySelectorAll('[data-collection]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.collection === collection)));
   }
@@ -197,5 +224,5 @@
     document.addEventListener('visibilitychange', () => document.body.classList.toggle('motion-background', document.hidden));
     refresh();
   });
-  root.KenoStorefront = { ...api, render, refresh };
+  root.KenoStorefront = { ...api, render, refresh, scrollToServices };
 })(typeof window !== 'undefined' ? window : globalThis);

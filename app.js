@@ -739,6 +739,7 @@
       el.setAttribute('aria-pressed', String(el === btn));
     });
     renderGrid();
+    window.KenoStorefront?.scrollToServices();
   });
 
   function resetFilters() {

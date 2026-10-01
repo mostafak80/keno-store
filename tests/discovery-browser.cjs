@@ -19,20 +19,30 @@ const mock=';KenoFirebase.init=async()=>null;KenoFirebase.fetchLiveCatalog=async
     const ctx=await browser.newContext({viewport:{width,height:1000},reducedMotion:width===390?'reduce':'no-preference'});
     await ctx.route('**/*',r=>r.request().url().startsWith(url)?r.continue():r.abort());
     const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+    const resultsVisible=async()=>{try{await page.waitForFunction(()=>{
+     const heading=document.querySelector('.results-meta').getBoundingClientRect(),header=document.querySelector('.site-header').getBoundingClientRect();
+     const gap=heading.top-header.bottom;
+     return gap>=12&&gap<=20&&document.querySelector('#serviceGrid .service-card').getBoundingClientRect().top<innerHeight;
+    });}catch(error){console.log('Scroll diagnostic:',await page.evaluate(()=>({category:document.querySelector('#categoryTabs [aria-pressed=true]')?.dataset.category,heading:document.querySelector('.results-meta').getBoundingClientRect().toJSON(),header:document.querySelector('.site-header').getBoundingClientRect().toJSON(),scrollY,scrollHeight:document.documentElement.scrollHeight,innerHeight,zoom:getComputedStyle(document.body).zoom})));throw error;}};
     await page.goto(url);await page.locator('#serviceGrid .service-card').first().waitFor();
     await page.evaluate(t=>document.documentElement.dataset.theme=t,theme);
     if(width>780){
      for(const tab of await page.locator('#categoryTabs button').all()){
       const before=await tab.locator('.category-count').textContent();await tab.click();
+      await resultsVisible();
       assert.equal(await tab.locator('.category-count').textContent(),before);
       const contrast=await tab.locator('.category-count').evaluate(el=>{
        const s=getComputedStyle(el),lum=color=>{const c=color.match(/[\d.]+/g).slice(0,3).map(x=>Number(x)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2];},a=lum(s.color),b=lum(s.backgroundColor);
        return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
       });assert(contrast>=4.5,'count contrast '+contrast);
      }
-     await page.locator('#categoryTabs [data-category="ai"]').click();
+     await page.locator('#categoryTabs [data-category="ai"]').focus();
+     await page.locator('#categoryTabs [data-category="ai"]').press('Enter');await resultsVisible();
     }else{
-     await page.locator('#mobileCategoryFilter').selectOption('ai');
+     for(const category of ['games','entertainment','ai','apps','payments','marketing','social','all']){
+      await page.locator('#mobileCategoryFilter').selectOption(category);await resultsVisible();
+     }
+     await page.locator('#mobileCategoryFilter').selectOption('ai');await resultsVisible();
     }
     await page.locator('#discoverService').click();
     const first=await page.locator('.discovery-result [data-open-service]').getAttribute('data-open-service');
