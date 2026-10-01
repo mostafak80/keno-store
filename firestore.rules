@@ -14,14 +14,14 @@ service cloud.firestore {
     function isAuthorizedAdmin() {
       return isAuthenticated() && (
         exists(/databases/$(database)/documents/users/$(request.auth.token.email.lower())) ||
-        request.auth.token.email.lower() in ['aboab411@gmail.com', 'mostafak80@gmail.com']
+        request.auth.token.email.lower() in ['aboab411@gmail.com']
       );
     }
 
     function getAdminRole() {
       return exists(/databases/$(database)/documents/users/$(request.auth.token.email.lower()))
         ? getUserData().role.lower()
-        : (request.auth.token.email.lower() in ['aboab411@gmail.com', 'mostafak80@gmail.com'] ? 'owner' : 'editor');
+        : (request.auth.token.email.lower() in ['aboab411@gmail.com'] ? 'owner' : 'editor');
     }
 
     function isOwner() {
