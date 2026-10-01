@@ -58,7 +58,8 @@
   <script src="./js/storefront.js" defer></script>
   <script src="./js/mobile-ui.js" defer></script>
   <script src="./js/mobile-design-admin.js" defer></script>
-  <script src="./app.js?v=20260922-3" defer></script>
+  <script src="./js/customer-care.js" defer></script>
+  <script src="./app.js?v=20261001-pubg-price-badge" defer></script>
 
   <!-- Structured Data / JSON-LD for SEO -->
   <script type="application/ld+json">
@@ -177,6 +178,7 @@
         <a href="#payments" data-content="copy-14">طرق الدفع</a>
         <a href="#how" data-content="copy-15">إزاي تطلب؟</a>
         <a href="#faq" data-content="copy-16">الأسئلة الشائعة</a>
+        <a href="#customerCare" id="navCustomerHub"><i data-icon="shopping-bag"></i>طلباتي</a>
         <a href="#admin" id="navAdminLink" class="nav-admin-link" hidden><i data-icon="shield"></i>لوحة التحكم</a>
       </nav>
     </div>
@@ -324,6 +326,13 @@
       </div>
     </section>
 
+    <section class="care-section container" id="customerCare" aria-labelledby="careTitle">
+      <div class="care-banner">
+        <div><span class="care-kicker">معاك بعد كل طلب</span><h2 id="careTitle">كل طلباتك. في مكان واحد.</h2><p>تابع التنفيذ، كرر طلبك المفضل، ورتّب موعد تجديد اشتراكك.</p></div>
+        <button type="button" class="button button-yellow" id="openCustomerHub"><i data-icon="shopping-bag"></i><span>افتح طلباتي</span><span id="careOrderCount" class="care-count">0</span></button>
+      </div>
+      <div class="care-benefits"><span><i data-icon="shield-check"></i> رابط متابعة خاص</span><span><i data-icon="rotate-ccw"></i> إعادة الطلب بسهولة</span><span><i data-icon="bell"></i> تجديد في معاده</span></div>
+    </section>
     <section class="payment-showcase container" id="payments" aria-labelledby="paymentsTitle">
       <div class="payment-intro"><span class="eyebrow" data-content="copy-75">بالطريقة اللي تريحك</span><h2 id="paymentsTitle" data-content="copy-76">دفع محلي.<br><span data-content="copy-77">خطوات واضحة.</span></h2><p data-content="copy-78">أكّد السعر والإتاحة مع كينو قبل التحويل، وبعدها ابعت إيصالك على واتساب.</p></div>
       <div><div id="paymentShowcaseGrid" class="payment-showcase-grid"></div><p class="payment-copy-status" id="paymentCopyStatus" role="status" aria-live="polite" data-content="copy-79"></p></div>
@@ -793,6 +802,7 @@
           <i data-icon="wallet-cards"></i>
           <span>طرق الدفع</span>
         </button>
+        <button type="button" id="careAdminTab" role="tab" aria-selected="false" aria-controls="adminCare" data-admin-tab="adminCare" tabindex="-1"><i data-icon="chart-no-axes-combined"></i><span>العملاء والتحليلات</span></button>
         <button type="button" id="ordersTab" role="tab" aria-selected="false" aria-controls="adminOrders" data-admin-tab="adminOrders" tabindex="-1">
           <i data-icon="shopping-bag"></i>
           <span>الطلبات والإيصالات</span>
@@ -1185,6 +1195,11 @@
       </div>
 
       <!-- Tab: Orders & Receipts Management -->
+      <div id="adminCare" role="tabpanel" aria-labelledby="careAdminTab" hidden>
+        <div class="section-heading"><div><span class="care-kicker">قرارات مبنية على طلبات حقيقية</span><h2>العملاء ومسار الشراء</h2></div><button type="button" class="button button-outline" id="refreshCareAdmin">تحديث البيانات</button></div>
+        <p id="careAdminStatus" role="status"></p><div id="careAnalytics" class="care-metrics"></div><div id="carePopular"></div>
+        <div class="care-admin-grid"><section class="care-panel"><h3>تنبيهات التوفر</h3><p>طلبات التواصل بموافقة العميل. تظهر الخدمات المتاحة أولًا.</p><div id="careWaitlist"></div></section><section class="care-panel"><h3>تذكيرات التجديد</h3><p>تواصل مع العميل عند اقتراب الموعد الذي اختاره.</p><div id="careRenewals"></div></section></div>
+      </div>
       <div id="adminOrders" role="tabpanel" aria-labelledby="ordersTab" hidden>
         <p class="admin-message">راجع سعر الخدمة وبيانات التحويل قبل اعتماد الدفع. الطلب المرسل أو صورة الإيصال لا يؤكدان استلام المبلغ؛ الإيراد يحتسب بعد اعتماد الدفع فقط.</p>
         <div class="admin-toolbar">
@@ -3048,6 +3063,14 @@
             شرط أو ملاحظة خاصة بالعرض (اختياري)
             <input id="planNoteInput" maxlength="500" placeholder="مثال: حساب مشترك، جهاز واحد، شحن بالـ ID">
           </label>
+          <fieldset class="care-editor span-2"><legend>تفاصيل الباقة ومقارنتها</legend><p>اكتب المعلومات الفعلية. الخانات الفارغة تظهر للعميل باعتبارها تحتاج تأكيدًا قبل الدفع.</p><div class="form-grid">
+            <label>نوع الحساب<input id="careDetail-accountType" maxlength="100" placeholder="شخصي / مشترك / شحن رصيد"></label>
+            <label>المدة<input id="careDetail-duration" maxlength="100" placeholder="شهر / 3 شهور / شحن مرة واحدة"></label>
+            <label>الأجهزة أو الاستخدام<input id="careDetail-devices" maxlength="100" placeholder="جهاز واحد / حسب الباقة"></label>
+            <label>طريقة التفعيل<input id="careDetail-activation" maxlength="300" placeholder="على حسابك / حساب جديد"></label>
+            <label>وقت التنفيذ المتوقع<input id="careDetail-delivery" maxlength="150" placeholder="مثال: خلال ساعتين بعد تأكيد الدفع"></label>
+            <label>شروط التعويض<textarea id="careDetail-compensation" maxlength="500" rows="2" placeholder="اكتب الشروط الفعلية الخاصة بالباقة"></textarea></label>
+          </div></fieldset>
         </div>
       </div>
       <div class="editor-footer">

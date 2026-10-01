@@ -23,6 +23,10 @@
     minimumFractionDigits: 0,
     maximumFractionDigits: 2
   });
+  // Retired PUBG promotion: cached/cloud catalogs may still contain the old reference price.
+  const hasPlanDiscount = (service, plan) => Boolean(plan &&
+    !(service?.id === 'pubg' && plan.id === 'pubg-1') &&
+    plan.originalPrice && plan.originalPrice > plan.price);
 
   const icon = name => {
     const icons = window.KENO_ICONS || {};
@@ -659,7 +663,7 @@
       let priceDisplayHtml = '';
       if (minPrice !== null) {
         const minPlan = (s.plans || []).find(p => p.price === minPrice && p.available);
-        if (minPlan && minPlan.originalPrice && minPlan.originalPrice > minPrice) {
+        if (hasPlanDiscount(s, minPlan)) {
           const saving = Math.round((minPlan.originalPrice - minPrice) * 100) / 100;
           priceDisplayHtml = `
             <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;">
@@ -679,7 +683,7 @@
       let badgeHtml = '';
       if (isUnavailable) {
         badgeHtml = '<span class="card-badge unavailable-badge">غير متاح حاليًا</span>';
-      } else if (s.badge) {
+      } else if (s.badge && s.id !== 'pubg') {
         badgeHtml = `<span class="card-badge">${esc(s.badge)}</span>`;
       }
 
@@ -713,6 +717,7 @@
     }).join('');
     window.KenoStorefront?.refresh();
     window.KenoMobileUI?.refresh(data);
+    window.KenoCare?.refresh(data);
   }
 
   // --- Filtering & Search Event Handlers ---
@@ -814,6 +819,7 @@
 
     const premBadge = $('servicePremiumBadge');
     if (premBadge) {
+      premBadge.hidden = service.id === 'pubg';
       premBadge.textContent = service.badge || (service.featured ? '⭐ مختارات كينو الحصرية' : '🔥 الأكثر طلباً وشعبية');
     }
 
@@ -845,7 +851,7 @@
             <div class="plan-grid">
               ${groupPlans.map(p => {
                 const isSelected = selectedPlan === p.id;
-                const hasDiscount = p.originalPrice && p.originalPrice > p.price;
+                const hasDiscount = hasPlanDiscount(service, p);
                 const savings = hasDiscount ? Math.round(p.originalPrice - p.price) : 0;
                 const discountPct = hasDiscount ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
                 return `
@@ -895,6 +901,7 @@
     dialogSelectedPaymentId = renderPaymentMethodsList($('dialogPaymentMethods'), dialogSelectedPaymentId, 'dialog-payment');
 
     KenoCheckout.open(service, data.settings, syncCustomerAccount);
+    window.KenoCare?.openService(service);
     updateSelectedPlan();
     if (window.Icons && typeof window.Icons.hydrate === 'function') {
       window.Icons.hydrate();
@@ -934,7 +941,7 @@
     // Update discounts & savings badges
     const origPriceEl = $('selectedOriginalPrice');
     const savingsBadgeEl = $('summarySavingsBadge');
-    if (plan && plan.originalPrice && plan.originalPrice > plan.price) {
+    if (hasPlanDiscount(service, plan)) {
       const diff = Math.round(plan.originalPrice - plan.price);
       if (origPriceEl) {
         origPriceEl.hidden = false;
@@ -1119,6 +1126,7 @@
         type: 'single',
         items: [{
           serviceId: service.id,
+          planId: plan?.id || '',
           fulfillment: KenoCheckout.entries(service,KenoCheckout.values($('fulfillmentFields'),false)),
           serviceName: service?.name || '',
           planLabel: plan?.label || options.quoteDetails || 'خدمة حسب الطلب',
@@ -1143,6 +1151,8 @@
       }
 
       orderObj.serviceIds = [...new Set(orderObj.items.map(it=>it.serviceId))];
+      window.KenoCare?.prepareOrder(orderObj);
+      options.trackingUrl = window.KenoCare?.trackingLink(orderObj);
       KenoReviews.remember(orderObj);
       // 1. Validate WhatsApp number exists and is valid
       const storePhone = data?.settings?.whatsapp;
@@ -1180,6 +1190,7 @@
 
       // 4. Open WhatsApp immediately with 1-click
       const opened = OrderUtils.openWhatsApp(url);
+      if (opened) window.KenoCare?.whatsappOpened(orderObj);
       if (!opened) {
         toast('تعذر فتح واتساب، يرجى المحاولة مرة أخرى.');
         return;
@@ -1437,6 +1448,7 @@
   function setCheckoutStep(step) {
     currentCheckoutStep = getCartItems().length ? Math.max(1, Math.min(3, step)) : 1;
     $('cartDrawer').dataset.step=String(currentCheckoutStep);
+    window.KenoCare?.event('cart_step', '', String(currentCheckoutStep));
     for (let s=1;s<=3;s++) {
       $('checkoutStep'+s).hidden = s !== currentCheckoutStep;
       $('stepIndicator'+s)?.classList.toggle('active',s===currentCheckoutStep);
@@ -1632,6 +1644,7 @@
         type: 'cart',
         items: validItems.map(it => ({
           serviceId: it.service.id,
+          planId: it.plan.id || '',
           fulfillment: KenoCheckout.entries(it.service,it.fields || {}),
           serviceName: it.service.name,
           planLabel: it.plan.label,
@@ -1657,6 +1670,7 @@
       }
 
       orderObj.serviceIds = [...new Set(orderObj.items.map(it=>it.serviceId))];
+      window.KenoCare?.prepareOrder(orderObj);
       KenoReviews.remember(orderObj);
       // 1. Validate WhatsApp number exists and is valid
       const storePhone = data?.settings?.whatsapp;
@@ -1672,7 +1686,8 @@
         transferNumber: orderObj.transferNumber,
         hasReceipt: orderObj.hasReceipt,
         orderNote: orderObj.notes,
-        orderCode: orderCode
+        orderCode: orderCode,
+        trackingUrl: window.KenoCare?.trackingLink(orderObj)
       };
 
       // 2. Generate & validate WhatsApp URL synchronously before opening to prevent popup blocking
@@ -1710,6 +1725,7 @@
       }
 
       // Clear cart, reset stepper, close drawer
+      window.KenoCare?.whatsappOpened(orderObj);
       saveCartItems([]);
       currentCheckoutStep = 1;
       if ($('invoiceOrderCode')) $('invoiceOrderCode').dataset.code = '';
@@ -2044,6 +2060,21 @@
   };
   window.showToast = msg => toast(msg);
   window.getStoreCatalog = () => viewData();
+  window.repeatKenoOrder = order => {
+    const items = (order.items || []).map(it => {
+      const service = viewData().services.find(s => s.id === it.serviceId && OrderUtils.isAvailable(s));
+      if (!service) return null;
+      const plan = service.plans.find(p => (it.planId ? p.id === it.planId : p.label === it.planLabel) && p.available);
+      if (!plan && service.plans.length) return null;
+      const allowed = new Set((service.fulfillment?.fields || []).filter(f => f.type !== 'password').map(f => f.id));
+      return {lineId:OrderUtils.generateOrderCode(),addedAt:Date.now(),serviceId:service.id, planId:plan?.id || null, quantity:Math.min(99,Math.max(1,Number(it.quantity)||1)),
+        quoteDetails:plan ? '' : it.planLabel, fields:Object.fromEntries((it.fulfillment || []).filter(f => allowed.has(f.id)).map(f => [f.id,f.value]))};
+    }).filter(Boolean);
+    if (!items.length) { toast('عروض الطلب غير متاحة الآن. اختار باقة أخرى من المتجر.'); return false; }
+    saveCartItems([...getCartItems(), ...items]); currentCheckoutStep = 1; openCart();
+    toast(items.length < order.items.length ? 'أضفنا العروض المتاحة فقط بالسعر الحالي. راجع السلة وبيانات الحساب.' : 'أضفنا طلبك بالسعر الحالي. راجع السلة وبيانات الحساب قبل التأكيد.');
+    return true;
+  };
 
   function updateAdminStatus() {
     if ($('connectionStatus')) {
@@ -2329,6 +2360,7 @@
     if (button.dataset.adminTab === 'adminOrders') {
       renderAdminOrders();
     }
+    if (button.dataset.adminTab === 'adminCare') window.KenoCare?.renderAdmin();
     if (button.dataset.adminTab === 'adminTexts' && typeof window.initTextsAdminPanel === 'function') {
       window.initTextsAdminPanel();
     }
@@ -3188,6 +3220,7 @@
       }
 
       if ($('orderModalCode')) $('orderModalCode').textContent = '#' + order.id;
+      window.KenoCare?.renderOrderAdmin(order);
       if ($('orderModalCustomerName')) $('orderModalCustomerName').textContent = order.customerName || 'عميل كينو';
       if ($('orderModalCustomerPhone')) $('orderModalCustomerPhone').textContent = order.customerPhone || '—';
       
@@ -3799,6 +3832,7 @@
     $('planGroupInput').value = plan?.group || (currentEditorPlans[0]?.group || 'العروض');
     $('planNoteInput').value = plan?.note || '';
     $('planAvailableInput').checked = plan ? Boolean(plan.available) : true;
+    window.KenoCare?.loadPlanEditor(plan);
 
     $('planDialog').showModal();
     $('planLabelInput').focus();
@@ -4007,6 +4041,7 @@
     const group = $('planGroupInput').value.trim() || 'العروض';
     const note = $('planNoteInput').value.trim();
     const available = $('planAvailableInput').checked;
+    const details = window.KenoCare?.readPlanEditor() || {};
 
     if (!label) {
       toast('يرجى كتابة اسم العرض.');
@@ -4028,7 +4063,7 @@
       if (srv) {
         const pIdx = srv.plans.findIndex(p => p.id === planId);
         if (pIdx !== -1) {
-          srv.plans[pIdx] = { ...srv.plans[pIdx], label, price, originalPrice, group, note, available };
+          srv.plans[pIdx] = { ...srv.plans[pIdx], label, price, originalPrice, group, note, available, details };
           saveDraft();
           renderMasterPlansTable();
           renderAdmin();
@@ -4051,7 +4086,8 @@
           originalPrice,
           group,
           note,
-          available
+          available,
+          details
         };
       }
       toast(`تم تعديل عرض "${label}" بنجاح.`);
@@ -4063,7 +4099,8 @@
         originalPrice,
         group,
         note,
-        available
+        available,
+        details
       };
       currentEditorPlans.push(newPlan);
       toast(`تمت إضافة عرض "${label}" بنجاح.`);

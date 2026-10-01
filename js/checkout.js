@@ -59,6 +59,7 @@
   function setStep(next) {
     step = Math.max(1, Math.min(3, next)); stopAudio();
     $('serviceDialog').dataset.step=String(step);
+    root.KenoCare?.event('checkout_step', active?.id || '', String(step));
     document.querySelectorAll('[data-journey-indicator]').forEach(el=>{
       el.classList.toggle('active',Number(el.dataset.journeyIndicator)===step);
       if(Number(el.dataset.journeyIndicator)===step)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');

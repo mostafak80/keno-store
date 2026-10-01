@@ -32,6 +32,17 @@ service cloud.firestore {
       return isAuthorizedAdmin() && (getAdminRole() == 'owner' || getAdminRole() == 'editor');
     }
 
+    function validTracking(data) {
+      return data is map && data.keys().hasAll(['id','status','timestamp','updatedAt','expectedAt','total','items'])
+        && data.keys().hasOnly(['id','status','timestamp','updatedAt','expectedAt','total','items'])
+        && data.id is string && data.id.matches('KENO-[A-Z0-9-]{8,60}')
+        && data.status in ['pending','paid','processing','delivered','cancelled']
+        && data.timestamp is number && data.updatedAt is number
+        && data.expectedAt is number && data.expectedAt >= 0
+        && data.total is number && data.total >= 0 && data.total <= 10000000
+        && data.items is list && data.items.size() > 0 && data.items.size() <= 100;
+    }
+
     // Orders Collection
     // - Public customers can create new orders with status 'pending'
     // - Only authorized admins can view, update statuses, or delete orders
@@ -50,7 +61,7 @@ service cloud.firestore {
            r.size is number && r.size >= 0 && r.size <= 525000);
       }
       allow create: if request.resource.data.keys().hasAll(['id', 'timestamp', 'total', 'status'])
-                    && request.resource.data.keys().hasOnly(['id','reviewToken','serviceIds','timestamp','dateStr','type','items','total','paymentMethod','paymentMethodId','customerAccount','customerPhone','transferNumber','hasReceipt','receipt','notes','status','createdAt','updatedAt'])
+                    && request.resource.data.keys().hasOnly(['id','trackingToken','trackingSummary','reviewToken','serviceIds','timestamp','dateStr','type','items','total','paymentMethod','paymentMethodId','customerAccount','customerPhone','transferNumber','hasReceipt','receipt','notes','status','createdAt','updatedAt'])
                     && request.resource.data.status == 'pending'
                     && request.resource.data.id == orderId
                     && orderId.matches('KENO-[A-Z0-9-]{8,60}')
@@ -69,9 +80,67 @@ service cloud.firestore {
                     && request.resource.data.total <= 10000000
                     && request.resource.data.items is list
                     && request.resource.data.items.size() > 0
-                    && request.resource.data.items.size() <= 100;
+                    && request.resource.data.items.size() <= 100
+                    && (!('trackingToken' in request.resource.data) ||
+                      (request.resource.data.trackingToken == '' && request.resource.data.trackingSummary == null) ||
+                      (request.resource.data.trackingToken.matches('[a-f0-9]{48}')
+                        && validTracking(request.resource.data.trackingSummary)
+                        && request.resource.data.trackingSummary.id == orderId
+                        && request.resource.data.trackingSummary.status == 'pending'
+                        && getAfter(/databases/$(database)/documents/orderTracking/$(request.resource.data.trackingToken)).data == request.resource.data.trackingSummary));
       allow read: if isAuthorizedAdmin();
       allow update, delete: if isEditorOrOwner();
+    }
+
+    // Bearer links reveal a deliberately small projection. Private orders remain admin-only.
+    match /orderTracking/{token} {
+      function linkedOrder() {
+        return getAfter(/databases/$(database)/documents/orders/$(request.resource.data.id)).data;
+      }
+      allow get: if token.matches('[a-f0-9]{48}');
+      allow list: if isAuthorizedAdmin();
+      allow create: if token.matches('[a-f0-9]{48}') && validTracking(request.resource.data)
+        && linkedOrder().trackingToken == token
+        && linkedOrder().status == request.resource.data.status
+        && (isEditorOrOwner() || (request.resource.data.status == 'pending'
+          && linkedOrder().createdAt == request.time
+          && linkedOrder().trackingSummary == request.resource.data));
+      allow update: if isEditorOrOwner() && validTracking(request.resource.data)
+        && linkedOrder().trackingToken == token && linkedOrder().status == request.resource.data.status;
+      allow delete: if isEditorOrOwner();
+    }
+
+    match /careRequests/{token} {
+      allow create: if token.matches('[a-f0-9]{48}')
+        && request.resource.data.keys().hasOnly(['id','kind','serviceId','planId','phone','consent','expiresAt','timestamp','status','createdAt'])
+        && request.resource.data.id == token
+        && request.resource.data.kind in ['availability','renewal']
+        && request.resource.data.serviceId is string && request.resource.data.serviceId.size() > 0 && request.resource.data.serviceId.size() <= 80
+        && request.resource.data.planId is string && request.resource.data.planId.size() <= 80
+        && request.resource.data.phone is string && request.resource.data.phone.matches('[0-9]{8,16}')
+        && request.resource.data.consent == true
+        && request.resource.data.expiresAt is number && request.resource.data.expiresAt >= 0
+        && request.resource.data.timestamp is number
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt == request.time;
+      allow read, delete: if isEditorOrOwner();
+      // The unguessable cancellation token allows revocation without exposing contact details.
+      allow update: if (isEditorOrOwner() && request.resource.data.status in ['pending','done','cancelled']) ||
+        (token.matches('[a-f0-9]{48}') && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+          && request.resource.data.status == 'cancelled');
+    }
+
+    match /careEvents/{eventId} {
+      allow create: if eventId.matches('[a-f0-9]{48}')
+        && request.resource.data.keys().hasOnly(['id','name','serviceId','step','timestamp','createdAt'])
+        && request.resource.data.id == eventId
+        && request.resource.data.name in ['service_view','checkout_step','cart_step','whatsapp_open','reorder']
+        && request.resource.data.serviceId is string && request.resource.data.serviceId.size() <= 80
+        && request.resource.data.step is string && request.resource.data.step.size() <= 3
+        && request.resource.data.timestamp is number
+        && request.resource.data.createdAt == request.time;
+      allow read: if isAuthorizedAdmin();
+      allow update, delete: if isOwner();
     }
 
     // The private claim is never exposed in the public review collection.

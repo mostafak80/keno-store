@@ -266,8 +266,7 @@
       let localSaved = false;
       try {
         if (root.KenoOrderStore) {
-          await root.KenoOrderStore.saveOrder(orderObj);
-          localSaved = true;
+          localSaved = await root.KenoOrderStore.saveOrder(orderObj);
         }
       } catch (err) {
         console.warn('Local backup save failed:', err);
@@ -280,6 +279,8 @@
           const docRef = firestoreModules.doc(fb.db, 'orders', orderObj.id);
           const firestorePayload = {
             id: orderObj.id,
+            trackingToken: orderObj.trackingToken || '',
+            trackingSummary: root.KenoCare?.projection(orderObj) || null,
             reviewToken: orderObj.reviewToken || '',
             serviceIds: orderObj.serviceIds || [],
             timestamp: orderObj.timestamp || Date.now(),
@@ -304,7 +305,15 @@
             updatedAt: firestoreModules.serverTimestamp ? firestoreModules.serverTimestamp() : new Date()
           };
 
-          await firestoreModules.setDoc(docRef, firestorePayload);
+          if (orderObj.trackingToken && root.KenoCare) {
+            const batch = firestoreModules.writeBatch(fb.db);
+            batch.set(docRef, firestorePayload);
+            batch.set(firestoreModules.doc(fb.db,'orderTracking',orderObj.trackingToken),root.KenoCare.projection(orderObj));
+            await batch.commit();
+          } else {
+            await firestoreModules.setDoc(docRef, firestorePayload);
+          }
+          root.KenoCare?.remember({...orderObj,cloud:true});
           return { success: true, cloud: true, orderId: orderObj.id };
         } catch (err) {
           console.error('Firestore order write error:', err);
@@ -371,6 +380,7 @@
      */
     async updateOrderStatus(orderId, newStatus, adminEmail = '') {
       if (!orderId || !newStatus) return false;
+      if (!['pending','paid','processing','delivered','cancelled'].includes(newStatus)) throw new Error('حالة الطلب غير صالحة.');
 
       // 1. Update Cloud Firestore
       const fb = await this.init();
@@ -378,11 +388,16 @@
       if (fb && firestoreModules) {
         try {
           const docRef = firestoreModules.doc(fb.db, 'orders', orderId);
-          await firestoreModules.updateDoc(docRef, {
+          const snap = await firestoreModules.getDoc(docRef);
+          const order = snap.exists() ? snap.data() : null;
+          const batch = firestoreModules.writeBatch(fb.db);
+          batch.update(docRef, {
             status: newStatus,
             updatedAt: Date.now(),
             updatedBy: adminEmail || 'admin'
           });
+          if (order?.trackingToken) batch.set(firestoreModules.doc(fb.db,'orderTracking',order.trackingToken),root.KenoCare.projection({...order,status:newStatus,updatedAt:Date.now()}));
+          await batch.commit();
         } catch (e) {
           throw new Error('لم تُحفظ حالة الطلب في السحابة: ' + e.message);
         }
@@ -415,7 +430,11 @@
       if (fb && firestoreModules) {
         try {
           const docRef = firestoreModules.doc(fb.db, 'orders', orderId);
-          await firestoreModules.deleteDoc(docRef);
+          const snap = await firestoreModules.getDoc(docRef);
+          const batch = firestoreModules.writeBatch(fb.db);
+          batch.delete(docRef);
+          if (snap.exists() && snap.data().trackingToken) batch.delete(firestoreModules.doc(fb.db,'orderTracking',snap.data().trackingToken));
+          await batch.commit();
         } catch (e) {
           throw new Error('لم يُحذف الطلب من السحابة: ' + e.message);
         }
@@ -486,6 +505,51 @@
     if (!fb || !firestoreModules) throw new Error('الاتصال بالسحابة غير متاح؛ لم يتم حفظ التغيير.');
     return fb;
   }
+  KenoFirebase.getTracking = async function(token) {
+    if (!/^[a-f0-9]{48}$/.test(token || '')) throw new Error('رابط المتابعة غير صالح.');
+    const fb=await cloud(),snap=await firestoreModules.getDoc(firestoreModules.doc(fb.db,'orderTracking',token));
+    return snap.exists()?snap.data():null;
+  };
+  KenoFirebase.subscribeTracking = async function(token,onUpdate,onError) {
+    if (!/^[a-f0-9]{48}$/.test(token || '')) throw new Error('رابط المتابعة غير صالح.');
+    const fb=await cloud();
+    return firestoreModules.onSnapshot(firestoreModules.doc(fb.db,'orderTracking',token),snap=>onUpdate(snap.exists()?snap.data():null),onError);
+  };
+  KenoFirebase.saveTrackingSchedule = async function(id,expectedAt) {
+    if (!Number.isFinite(expectedAt) || expectedAt<0) throw new Error('موعد غير صالح.');
+    const fb=await cloud(),m=firestoreModules,ref=m.doc(fb.db,'orders',id),snap=await m.getDoc(ref);
+    if(!snap.exists())throw new Error('الطلب غير موجود.');
+    const order=snap.data(),trackingToken=order.trackingToken || root.KenoReviews.newToken(),updatedAt=Date.now();
+    const summary=root.KenoCare.projection({...order,expectedAt,updatedAt}),batch=m.writeBatch(fb.db);
+    batch.update(ref,{trackingToken,expectedAt,updatedAt,trackingSummary:summary});
+    batch.set(m.doc(fb.db,'orderTracking',trackingToken),summary);await batch.commit();
+    return {...order,trackingToken,expectedAt,updatedAt};
+  };
+  KenoFirebase.createCareRequest = async function(record) {
+    if(!/^[a-f0-9]{48}$/.test(record?.id||'') || record.consent!==true || !root.KenoOrder.isValidWhatsAppNumber(record.phone))throw new Error('راجع رقم التواصل والموافقة.');
+    const fb=await cloud();await firestoreModules.setDoc(firestoreModules.doc(fb.db,'careRequests',record.id),{...record,createdAt:firestoreModules.serverTimestamp()});
+  };
+  KenoFirebase.cancelCareRequest = async function(id) {
+    if(!/^[a-f0-9]{48}$/.test(id||''))throw new Error('معرّف غير صالح.');
+    const fb=await cloud();await firestoreModules.updateDoc(firestoreModules.doc(fb.db,'careRequests',id),{status:'cancelled'});
+  };
+  KenoFirebase.closeCareRequest = async function(id) {
+    const fb=await cloud();await firestoreModules.updateDoc(firestoreModules.doc(fb.db,'careRequests',id),{status:'done'});
+  };
+  KenoFirebase.getCareRequest = async function(id) {
+    if(!/^[a-f0-9]{48}$/.test(id||''))throw new Error('معرّف غير صالح.');
+    const fb=await cloud(),snap=await firestoreModules.getDoc(firestoreModules.doc(fb.db,'careRequests',id));
+    return snap.exists()?snap.data():null;
+  };
+  KenoFirebase.recordCareEvent = async function(event) {
+    const fb=await cloud();await firestoreModules.setDoc(firestoreModules.doc(fb.db,'careEvents',event.id),{...event,createdAt:firestoreModules.serverTimestamp()});
+  };
+  KenoFirebase.getCareDashboard = async function() {
+    const fb=await cloud(),m=firestoreModules,since=Date.now()-30*86400000;
+    const load=async (collection,limit)=>{const snap=await m.getDocs(m.query(m.collection(fb.db,collection),m.orderBy('timestamp','desc'),m.limit(limit)));return snap.docs.map(d=>({...d.data(),id:d.id}));};
+    const [events,requests,orders]=await Promise.all([load('careEvents',1000),load('careRequests',200),load('orders',500)]);
+    return {events:events.filter(e=>e.timestamp>=since),requests,orders:orders.filter(o=>o.timestamp>=since)};
+  };
   KenoFirebase.getOrder = async function(id) {
     const fb = await cloud();
     const snap = await firestoreModules.getDoc(firestoreModules.doc(fb.db,'orders',id));

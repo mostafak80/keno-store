@@ -20,6 +20,7 @@
 @import url("./assets/styles/discovery.css");
 @import url("./assets/styles/light.css");
 @import url("./assets/styles/reviews.css");
+@import url("./assets/styles/customer-care.css");
 
 /* Master view state enforcement */
 [hidden],

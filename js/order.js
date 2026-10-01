@@ -87,6 +87,7 @@
         '',
         `طريقة الدفع: ${paymentInfo}`,
         `كود الطلب: ${orderCode}`,
+        options.trackingUrl ? `رابط متابعة الطلب (خاص بك): ${options.trackingUrl}` : '',
         '',
         'سيتم إرسال صورة إيصال التحويل في المحادثة لتأكيد وتنفيذ الطلب فورًا.'
       ];
@@ -139,6 +140,7 @@
         'طلب سلة جديد',
         '',
         `رقم الطلب: ${orderCode}`,
+        options.trackingUrl ? `رابط متابعة الطلب (خاص بك): ${options.trackingUrl}` : '',
         '',
         'المنتجات المطلوبة:',
         itemsList.join('\n'),

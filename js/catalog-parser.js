@@ -364,6 +364,14 @@
             originalPrice,
             group: displayString(plan.group || 'العروض', 80, 'مجموعة العرض'),
             note: displayString(plan.note || '', 500, 'ملاحظة العرض', true),
+            details: {
+              accountType: displayString(plan.details?.accountType || notes.find(n => /الحساب مشترك|ملف مشاهدة داخل حساب مشترك/.test(n))?.slice(0,100) || '', 100, 'نوع الحساب', true),
+              duration: displayString(plan.details?.duration || (/شهر|شهور|سنة|سنوي|أسبوع|يوم/.test(plan.label) ? plan.label.slice(0,100) : ''), 100, 'مدة الباقة', true),
+              devices: displayString(plan.details?.devices || notes.find(n => /جهاز/.test(n))?.slice(0,100) || '', 100, 'الأجهزة', true),
+              activation: displayString(plan.details?.activation || '', 300, 'طريقة التفعيل', true),
+              delivery: displayString(plan.details?.delivery || '', 150, 'موعد التنفيذ', true),
+              compensation: displayString(plan.details?.compensation || '', 500, 'التعويض', true)
+            },
             available: typeof plan.available === 'boolean' ? plan.available : true
           };
         });

@@ -107,14 +107,13 @@ window.KENO_CATALOG = {
       "category": "games",
       "description": "شدات PUBG Mobile العالمية، بكميات تناسب لعبك.",
       "mark": "PUBG",
-      "badge": "🔥 الأكثر مبيعًا",
+      "badge": "",
       "icon": "gamepad-2",
       "plans": [
         {
           "id": "pubg-1",
           "label": "60 شدة",
           "price": 55,
-          "originalPrice": 65,
           "group": "الشحن",
           "note": "",
           "available": true
